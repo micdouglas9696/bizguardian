@@ -61,7 +61,7 @@ function LazyImage({ id, index }: { id: string; index: number }) {
                 <img
                     src={getThumbnailUrl(id)}
                     alt={`Memória ${index + 1}`}
-                    className={`w-full h-full object-cover grayscale brightness-[0.35] group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                    className={`w-full h-full object-cover grayscale brightness-[0.35] group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-[1.2] group-hover:scale-110 transition-all duration-700 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
                     loading="lazy"
                     decoding="async"
                     onLoad={() => setLoaded(true)}

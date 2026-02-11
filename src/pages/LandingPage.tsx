@@ -2,18 +2,28 @@ import { Link } from 'react-router-dom';
 import EcosystemMolecule from '../components/EcosystemMolecule';
 import HeroBillboard from '../components/HeroBillboard';
 import MainHero from '../components/MainHero';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import ManifestoModal from '../components/ManifestoModal';
 import ManifestoHook from '../components/ManifestoHook';
 import VideoModal from '../components/VideoModal';
 import QuotesMarquee from '../components/QuotesMarquee';
 import PhotoMural from '../components/PhotoMural';
 
+const NAV_ITEMS = [
+    { name: 'Quem sou', id: 'sobre' },
+    { name: 'Ecossistema', id: 'ecossistema' },
+    { name: 'Para Franqueados', id: 'franchise' },
+    { name: 'Para Marcas', id: 'internacionalize' },
+    { name: 'Depoimentos', id: 'membros' },
+    { name: 'Fale comigo', id: 'contato' }
+];
+
 export default function LandingPage() {
     const [scrolled, setScrolled] = useState(false);
     const [isManifestoOpen, setIsManifestoOpen] = useState(false);
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -23,26 +33,56 @@ export default function LandingPage() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Scroll-reveal observer for sections
+    const mainRef = useRef<HTMLElement>(null);
+    useEffect(() => {
+        const el = mainRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            },
+            { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+        );
+        el.querySelectorAll('.section-reveal').forEach((s) => observer.observe(s));
+        return () => observer.disconnect();
+    }, []);
+
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [mobileMenuOpen]);
+
+    const handleMobileNavClick = useCallback((id: string) => {
+        setMobileMenuOpen(false);
+        setTimeout(() => {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+    }, []);
+
     return (
         <div className="bg-black text-white min-h-screen overflow-x-hidden selection:bg-accent-gold selection:text-black font-sans">
             {/* Header */}
-            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/90 backdrop-blur-xl py-4 border-b border-white/5' : 'bg-transparent py-8'}`}>
-                <div className="max-w-[1700px] mx-auto px-6 md:px-12 flex items-center justify-between">
+            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/90 backdrop-blur-xl py-4 border-b border-white/5' : 'bg-transparent py-6 sm:py-8'}`}>
+                <div className="max-w-[1700px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="flex flex-col leading-none select-none cursor-pointer group">
                             <img src="/marinho final.png" alt="Marinho Signature Logo" className="h-10 sm:h-14 md:h-20 lg:h-24 w-auto object-contain transition-transform group-hover:scale-105" />
                         </Link>
                     </div>
 
+                    {/* Desktop Nav */}
                     <nav className="hidden lg:flex items-center gap-8">
-                        {[
-                            { name: 'Quem sou', id: 'sobre' },
-                            { name: 'Ecossistema', id: 'ecossistema' },
-                            { name: 'Para Franqueados', id: 'franchise' },
-                            { name: 'Para Marcas', id: 'internacionalize' },
-                            { name: 'Depoimentos', id: 'membros' },
-                            { name: 'Fale comigo', id: 'contato' }
-                        ].map((item) => (
+                        {NAV_ITEMS.map((item) => (
                             <a
                                 key={item.name}
                                 href={`#${item.id}`}
@@ -54,15 +94,77 @@ export default function LandingPage() {
                         ))}
                     </nav>
 
-                    <div className="flex items-center gap-6">
-                        <Link to="/login" className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-white text-black text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] hover:bg-accent-gold hover:text-white transition-all duration-500 whitespace-nowrap">
+                    <div className="flex items-center gap-3 sm:gap-6">
+                        {/* Smaller member button */}
+                        <Link to="/login" className="hidden sm:inline-block px-3 sm:px-5 md:px-8 py-2 sm:py-2.5 md:py-3 bg-white text-black text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.3em] hover:bg-accent-gold hover:text-white transition-all duration-500 whitespace-nowrap">
                             Área do Membro
                         </Link>
+
+                        {/* Hamburger Menu — Mobile/Tablet only */}
+                        <button
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            className="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-[5px] group"
+                            aria-label="Menu de navegação"
+                        >
+                            <span className={`block w-6 h-[2px] bg-white transition-all duration-300 origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-[7px]' : 'group-hover:w-5 group-hover:bg-accent-gold'}`}></span>
+                            <span className={`block w-6 h-[2px] bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0 scale-x-0' : 'group-hover:bg-accent-gold'}`}></span>
+                            <span className={`block w-6 h-[2px] bg-white transition-all duration-300 origin-center ${mobileMenuOpen ? '-rotate-45 -translate-y-[7px]' : 'group-hover:w-4 group-hover:bg-accent-gold'}`}></span>
+                        </button>
                     </div>
                 </div>
             </header>
 
-            <main>
+            {/* Mobile Navigation Drawer */}
+            <div className={`fixed inset-0 z-[45] lg:hidden transition-all duration-500 ${mobileMenuOpen ? 'visible' : 'invisible'}`}>
+                {/* Backdrop */}
+                <div
+                    className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-500 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                />
+
+                {/* Drawer Panel */}
+                <div className={`absolute top-0 right-0 h-full w-full sm:w-[380px] bg-[#0a0a0a] border-l border-white/5 transition-transform duration-500 ease-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                    <div className="flex flex-col h-full pt-28 px-8 pb-12">
+                        {/* Nav Links */}
+                        <nav className="flex flex-col gap-1 flex-1">
+                            {NAV_ITEMS.map((item, index) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => handleMobileNavClick(item.id)}
+                                    className={`text-left py-4 border-b border-white/5 transition-all duration-500 group ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
+                                    style={{ transitionDelay: mobileMenuOpen ? `${index * 60 + 100}ms` : '0ms' }}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-[10px] font-mono text-accent-gold/30 font-bold">0{index + 1}</span>
+                                            <span className="text-sm font-black uppercase tracking-[0.2em] text-white/70 group-hover:text-accent-gold transition-colors duration-300">
+                                                {item.name}
+                                            </span>
+                                        </div>
+                                        <span className="material-symbols-outlined text-white/10 text-sm group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>
+                                    </div>
+                                </button>
+                            ))}
+                        </nav>
+
+                        {/* Bottom CTA */}
+                        <div className={`mt-auto transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: mobileMenuOpen ? '500ms' : '0ms' }}>
+                            <Link
+                                to="/login"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="block w-full py-4 bg-accent-gold text-black text-[10px] font-black uppercase tracking-[0.3em] text-center hover:bg-white transition-all duration-500"
+                            >
+                                Área do Membro
+                            </Link>
+                            <p className="text-[9px] text-white/20 font-bold uppercase tracking-[0.3em] text-center mt-4">
+                                Marinho Ponci · Season 2026
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main ref={mainRef}>
                 <MainHero />
 
                 <QuotesMarquee />
@@ -70,7 +172,7 @@ export default function LandingPage() {
                 <HeroBillboard />
 
                 {/* Section :: Sobre o Marinho */}
-                <section className="py-16 sm:py-20 md:py-32 relative overflow-hidden bg-[#050505]" id="sobre">
+                <section className="py-16 sm:py-20 md:py-32 relative overflow-hidden bg-[#050505] section-reveal" id="sobre">
                     <div className="max-w-[1700px] mx-auto grid lg:grid-cols-12 min-h-[700px] relative gap-0">
                         {/* Full-Bleed Immersive Media Area */}
                         <div className="lg:col-span-5 relative h-full min-h-[400px] lg:min-h-0 flex items-center justify-center">
@@ -87,7 +189,7 @@ export default function LandingPage() {
                         </div>
 
                         {/* Descriptive Content Area */}
-                        <div className="lg:col-span-7 relative z-30 p-5 sm:p-8 md:p-16 lg:p-24 flex flex-col justify-center">
+                        <div className="lg:col-span-7 relative z-30 p-5 sm:p-8 md:p-16 lg:p-24 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
                             {/* Signature watermark */}
                             <img src="/2.png" alt="" className="absolute top-4 -left-16 w-48 h-auto opacity-20 pointer-events-none" />
                             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-accent-gold mb-8 tracking-tight leading-[1.05]">
@@ -104,7 +206,7 @@ export default function LandingPage() {
                                 <p>Atuo como mentor e conselheiro estratégico de diretores e CEOs, entregando o "playbook" de quem viveu a internacionalização nos últimos 38 anos.</p>
                                 <p className="text-white/40 italic">Se você acredita que eu posso ajudar com a minha experiência, vai ser um prazer caminhar ao seu lado e ajudar a construir o próximo capítulo da história da sua marca.</p>
                             </div>
-                            <div className="mt-8 sm:mt-12 flex flex-wrap gap-6 sm:gap-8 md:gap-12 border-t border-white/10 pt-8 sm:pt-10">
+                            <div className="mt-8 sm:mt-12 flex flex-wrap justify-center sm:justify-start gap-6 sm:gap-8 md:gap-12 border-t border-white/10 pt-8 sm:pt-10">
                                 <div className="flex flex-col gap-1">
                                     <span className="text-3xl font-black text-white">850+</span>
                                     <span className="text-[9px] font-black uppercase tracking-widest text-accent-gold">Pontos Geridos</span>
@@ -127,20 +229,20 @@ export default function LandingPage() {
 
                 <div className="relative z-10 bg-black pt-24">
                     {/* Ecosystem Section :: Topological Shift */}
-                    <section className="mb-48 relative w-full" id="ecossistema">
+                    <section className="mb-48 relative w-full section-reveal" id="ecossistema">
                         <div className="max-w-[1700px] mx-auto px-6 md:px-12 grid lg:grid-cols-12 gap-16 items-center">
-                            <div className="lg:col-span-5 relative z-20">
+                            <div className="lg:col-span-5 relative z-20 flex flex-col items-center sm:items-start text-center sm:text-left">
                                 <span className="inline-block py-1.5 px-4 bg-accent-gold/5 border border-accent-gold/20 text-accent-gold text-[10px] font-black tracking-[0.4em] uppercase mb-10 shadow-glow-primary">
                                     Comando Central
                                 </span>
-                                <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white mb-10 tracking-tighter leading-tight cinematic-text-shadow animate-reveal-skew opacity-0">
+                                <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white mb-10 tracking-tighter leading-tight cinematic-text-shadow animate-reveal-skew opacity-0 text-center sm:text-left">
                                     Ecossistema <br /> <span className="text-accent-gold italic block mt-4 animate-reveal-skew opacity-0 [animation-delay:200ms]">Conectado.</span>
                                 </h2>
                                 <p className="text-xl text-white/40 font-medium max-w-xl leading-relaxed mb-12">
                                     Navegue pela estrutura completa de suporte estratégico europeu. Uma rede integrada projetada para escala global.
                                 </p>
 
-                                <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-12">
+                                <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-12 text-center sm:text-left">
                                     <div>
                                         <span className="text-3xl font-black text-white block mb-1">07</span>
                                         <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">Países Ativos</span>
@@ -160,7 +262,7 @@ export default function LandingPage() {
                     </section>
 
                     {/* Section :: Franchise-se */}
-                    <section className="mb-20 sm:mb-32 md:mb-48 bg-[#080808] py-16 sm:py-24 md:py-32 sm:rounded-[2rem] md:rounded-[3rem] sm:border sm:border-white/5 sm:mx-6 md:mx-12 overflow-hidden relative" id="franchise">
+                    <section className="mb-20 sm:mb-32 md:mb-48 bg-[#080808] py-16 sm:py-24 md:py-32 sm:rounded-[2rem] md:rounded-[3rem] sm:border sm:border-white/5 sm:mx-6 md:mx-12 overflow-hidden relative section-reveal" id="franchise">
                         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-gold/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2"></div>
                         <div className="max-w-[1700px] mx-auto grid lg:grid-cols-12 min-h-[600px] relative gap-0">
                             {/* Full-Bleed Immersive Media Area */}
@@ -222,7 +324,7 @@ export default function LandingPage() {
                     </section>
 
                     {/* Section :: Internacionalize-se */}
-                    <section className="mb-20 sm:mb-32 md:mb-48 bg-[#080808] py-16 sm:py-24 md:py-32 sm:rounded-[2rem] md:rounded-[3rem] sm:border sm:border-white/5 sm:mx-6 md:mx-12 overflow-hidden relative" id="internacionalize">
+                    <section className="mb-20 sm:mb-32 md:mb-48 bg-[#080808] py-16 sm:py-24 md:py-32 sm:rounded-[2rem] md:rounded-[3rem] sm:border sm:border-white/5 sm:mx-6 md:mx-12 overflow-hidden relative section-reveal" id="internacionalize">
                         <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-accent-gold/5 rounded-full blur-[150px] -translate-y-1/2 -translate-x-1/2"></div>
                         <div className="max-w-[1700px] mx-auto grid lg:grid-cols-12 min-h-[600px] relative gap-0">
                             {/* Media Area :: Immersive & Bleeding (ORDER 1 ON MOBILE) */}
@@ -311,13 +413,12 @@ export default function LandingPage() {
                     </section>
 
                     {/* Testimonials :: Cinematic Reel */}
-                    <section className="mb-20 sm:mb-32 md:mb-48 px-3 sm:px-6 md:px-12" id="membros">
+                    <section className="mb-20 sm:mb-32 md:mb-48 px-3 sm:px-6 md:px-12 section-reveal" id="membros">
                         <div className="max-w-[1700px] mx-auto">
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 md:mb-24 border-b border-white/10 pb-8 sm:pb-12 gap-6">
-                                <div className="max-w-2xl">
-                                    <span className="text-accent-gold font-black uppercase tracking-[0.4em] text-[10px] block mb-6">Membros Registrados</span>
+                                <div className="max-w-2xl text-center sm:text-left">
                                     <h3 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white mb-8 leading-tight animate-reveal-skew opacity-0">
-                                        Histórias de <br /><span className="text-accent-gold italic animate-reveal-skew opacity-0 [animation-delay:200ms]">Auto Padrão.</span>
+                                        Histórias de <br /><span className="text-accent-gold italic animate-reveal-skew opacity-0 [animation-delay:200ms]">Alto Padrão.</span>
                                     </h3>
                                 </div>
                                 <div className="hidden md:flex flex-col items-end gap-6">
@@ -429,18 +530,18 @@ export default function LandingPage() {
                     </section>
 
                     {/* CTA Final :: Contact Form */}
-                    <section className="pb-20 sm:pb-32 md:pb-48 px-3 sm:px-6 md:px-12" id="contato">
+                    <section className="pb-20 sm:pb-32 md:pb-48 px-3 sm:px-6 md:px-12 section-reveal" id="contato">
                         <div className="max-w-[1700px] mx-auto relative overflow-hidden bg-[#050505] p-5 sm:p-10 md:p-16 lg:p-24 xl:p-32 rounded-2xl sm:rounded-[2rem]">
                             <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
                             <div className="relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
-                                <div>
+                                <div className="text-center sm:text-left">
                                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[0.9] tracking-tighter mb-6 uppercase">
                                         FALE COM O <br /> <span className="text-accent-gold italic">ESPECIALISTA.</span>
                                     </h2>
                                     <p className="text-sm md:text-base text-white/50 max-w-md font-medium mb-12 leading-relaxed">
                                         Se você acredita que eu posso ajudar com a minha experiência, vai ser um prazer caminhar ao seu lado e ajudar a construir o próximo capítulo da história da sua marca.
                                     </p>
-                                    <div className="flex flex-col gap-6">
+                                    <div className="flex flex-col gap-6 items-center sm:items-start">
                                         <a href="mailto:contato@marinhoponci.com" className="flex items-center gap-4 group w-fit">
                                             <div className="w-12 h-12 rounded-full bg-gradient-to-b from-accent-gold to-[#a47e4b] flex items-center justify-center shadow-[0_0_20px_rgba(234,179,8,0.2)]">
                                                 <span className="material-symbols-outlined text-white text-lg">mail</span>

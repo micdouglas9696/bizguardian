@@ -5,6 +5,7 @@ interface Node {
     id: number;
     icon: string;
     label: string;
+    shortLabel?: string;
     angle: number;
     distance: number;
     highlight?: boolean;
@@ -12,7 +13,7 @@ interface Node {
 }
 
 const NODES: Node[] = [
-    { id: 1, icon: 'public', label: 'Internacionalização', angle: 0, distance: 300, highlight: true, description: 'Passo a passo para preparar e fazer o processo de internacionalização de sua marca.' },
+    { id: 1, icon: 'public', label: 'Internacionalização', shortLabel: 'Internacio-\nnalização', angle: 0, distance: 300, highlight: true, description: 'Passo a passo para preparar e fazer o processo de internacionalização de sua marca.' },
     { id: 2, icon: 'school', label: 'Franchise-se', angle: 32.7, distance: 280, description: 'Expo sobre o que é o mundo do franchising para que você avalie se ele é ou não para você.' },
     { id: 3, icon: 'record_voice_over', label: 'Palestras', angle: 65.4, distance: 310, description: 'Palestra de Marinho Pond.' },
     { id: 4, icon: 'psychology', label: 'Mentoria', angle: 98.1, distance: 270, highlight: true, description: 'Mentoria estratégica diretamente com Marinho Pond.' },
@@ -182,36 +183,50 @@ export default function EcosystemMolecule() {
                 })}
             </div>
 
-            {/* Mobile/Tablet Card Grid Layout */}
-            <div className="lg:hidden w-full space-y-4 px-2 overflow-y-auto max-h-[700px] py-8 custom-scrollbar">
-                {NODES.map((node) => (
-                    <div
-                        key={node.id}
-                        className={`p-6 rounded-2xl border transition-all duration-300 ${node.highlight
-                            ? 'bg-accent-gold/5 border-accent-gold/30 shadow-glow-primary'
-                            : 'bg-white/5 border-white/5'
-                            }`}
-                    >
-                        <div className="flex items-center gap-4 mb-4">
-                            {/* Gold Circular Orb for Mobile */}
-                            <div className={`w-14 h-14 rounded-full flex items-center justify-center border ${node.highlight ? 'bg-gradient-to-b from-accent-gold to-[#a47e4b] border-accent-gold/50 shadow-[0_0_20px_rgba(234,179,8,0.3)]' : 'bg-gradient-to-b from-accent-gold to-[#a47e4b] border-accent-gold/30'}`}>
-                                <span className="material-symbols-outlined text-xl text-white font-bold">
-                                    {node.icon}
+            {/* Mobile/Tablet Compact Grid Layout */}
+            <div className="lg:hidden w-full px-2 py-6">
+                <div className="grid grid-cols-2 gap-2.5">
+                    {NODES.map((node) => (
+                        <div
+                            key={node.id}
+                            onClick={() => setSelectedNode(selectedNode === node.id ? null : node.id)}
+                            className={`relative p-3.5 rounded-xl border cursor-pointer transition-colors duration-200 ${selectedNode === node.id
+                                ? 'bg-accent-gold/10 border-accent-gold/30 col-span-2'
+                                : node.highlight
+                                    ? 'bg-accent-gold/5 border-accent-gold/15'
+                                    : 'bg-white/[0.03] border-white/5'
+                                }`}
+                        >
+                            <div className={`flex items-center gap-2.5 min-w-0 ${selectedNode === node.id ? 'mb-3' : ''}`}>
+                                <div className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center bg-gradient-to-b from-accent-gold to-[#a47e4b]">
+                                    <span className="material-symbols-outlined text-white font-bold text-base">
+                                        {node.icon}
+                                    </span>
+                                </div>
+                                <span className={`text-[8px] font-black uppercase tracking-[0.1em] leading-tight min-w-0 whitespace-pre-line ${selectedNode === node.id ? 'text-accent-gold' : 'text-white/60'
+                                    }`}>
+                                    {node.shortLabel || node.label}
                                 </span>
                             </div>
-                            <h4 className="text-sm font-black text-white uppercase tracking-widest leading-none">{node.label}</h4>
+
+                            {/* Expanded Content */}
+                            {selectedNode === node.id && (
+                                <div className="animate-fadeIn">
+                                    <p className="text-[11px] text-white/40 leading-relaxed mb-3 font-medium">
+                                        {node.description}
+                                    </p>
+                                    <a
+                                        href={node.label === 'Internacionalização' ? '/internationalization' : node.label === 'Franchise-se' ? '#franchise' : '#contato'}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="inline-block w-full py-2.5 bg-white/5 border border-white/10 text-white text-[9px] font-black uppercase tracking-[0.15em] rounded-lg text-center transition-colors duration-200"
+                                    >
+                                        Explorar
+                                    </a>
+                                </div>
+                            )}
                         </div>
-                        <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest leading-relaxed mb-6">
-                            {node.description}
-                        </p>
-                        <a
-                            href={node.label === 'Internacionalização' ? '/internationalization' : node.label === 'Franchise-se' ? '#franchise' : '#contato'}
-                            className="inline-block px-8 py-3 bg-white/5 border border-white/10 text-white text-[9px] font-black uppercase tracking-[0.3em] rounded hover:bg-white hover:text-black transition-all"
-                        >
-                            Explorar Unidade
-                        </a>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </>
     );

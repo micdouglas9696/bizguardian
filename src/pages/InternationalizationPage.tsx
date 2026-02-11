@@ -19,7 +19,7 @@ export default function InternationalizationPage() {
                 <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="flex flex-col leading-none select-none cursor-pointer group">
-                            <img src="/LOGO FUNDO ESCURO.png" alt="Biz Guardian Logo" className="h-14 md:h-20 w-auto object-contain transition-transform group-hover:scale-105" />
+                            <img src="/LOGO FUNDO BRANCO.png" alt="Biz Guardian Logo" className="h-14 md:h-20 w-auto object-contain transition-transform group-hover:scale-105" />
                         </Link>
                     </div>
 
@@ -165,7 +165,7 @@ export default function InternationalizationPage() {
             {/* Footer */}
             <footer className="bg-black text-white pt-32 pb-16 border-t border-white/5">
                 <div className="max-w-[1400px] mx-auto px-6 md:px-12 text-center">
-                    <img src="/LOGO FUNDO ESCURO.png" alt="Biz Guardian Logo" className="h-12 w-auto object-contain mx-auto mb-10 opacity-30" />
+                    <img src="/LOGO FUNDO BRANCO.png" alt="Biz Guardian Logo" className="h-12 w-auto object-contain mx-auto mb-10 opacity-30" />
                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">
                         © 2026 BIZGUARDIAN. BORN FOR GLOBAL.
                     </p>
