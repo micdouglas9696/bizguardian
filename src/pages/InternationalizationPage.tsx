@@ -30,9 +30,7 @@ export default function InternationalizationPage() {
                     </nav>
 
                     <div className="flex items-center gap-4">
-                        <Link to="/login" className="px-6 py-2.5 rounded-md bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-accent-gold hover:text-white transition-all duration-300">
-                            Área do Membro
-                        </Link>
+                        {/* Member Area button removed as requested */}
                     </div>
                 </div>
             </header>
@@ -44,7 +42,7 @@ export default function InternationalizationPage() {
                         Diagnóstico Estratégico
                     </div>
                     <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 max-w-6xl text-white leading-[0.9] cinematic-text-shadow">
-                        Internacionalizar com <br /><span className="text-accent-gold italic font-serif">Inteligência e Estratégia.</span>
+                        A inteligência da internacionalização agora em <br /><span className="text-accent-gold italic font-serif">escala tecnológica.</span>
                     </h1>
                     <p className="text-xl text-white/40 max-w-3xl mb-12 leading-relaxed font-medium">
                         Um sistema de inteligência e tecnologia que analisa a maturidade do seu negócio com precisão cirúrgica atrelado a 38 anos de experiência em internacionalização.
@@ -54,14 +52,10 @@ export default function InternationalizationPage() {
                         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
                         <img alt="Marinho Ponci Hero Banner" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000" src="/_DSC4559.jpg" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                        <div className="absolute inset-0 flex items-center justify-center z-10">
-                            <button className="w-24 h-24 bg-white text-black rounded-full flex items-center justify-center shadow-2xl transform transition duration-500 hover:scale-110 hover:bg-accent-gold hover:text-white">
-                                <span className="material-symbols-outlined text-5xl ml-2 font-black">play_arrow</span>
-                            </button>
-                        </div>
+
                         <div className="absolute bottom-10 left-10 text-left">
-                            <p className="text-white font-black text-lg uppercase tracking-tighter">Trailer Estratégico</p>
-                            <p className="text-accent-gold text-xs font-black uppercase tracking-[0.2em]">A verdade sobre expandir</p>
+                            <p className="text-white font-black text-lg uppercase tracking-tighter">A verdade sobre expandir</p>
+                            <p className="text-accent-gold text-xs font-black uppercase tracking-[0.2em] mt-1">Inteligência em Internacionalização</p>
                         </div>
                     </div>
                 </section>
@@ -133,7 +127,7 @@ export default function InternationalizationPage() {
                                 <span className="material-symbols-outlined font-black">map</span>
                             </div>
                             <h3 className="text-2xl font-black text-white tracking-tighter uppercase mb-4">Roadmap Tático</h3>
-                            <p className="text-white/40 font-medium leading-relaxed">Um plano de ação passo a passo, do visto ao primeiro contrato assinado em solo internacional.</p>
+                            <p className="text-white/40 font-medium leading-relaxed">O passo a passo estratégico do primeiro contato até a inauguração.</p>
                         </div>
 
                         <div className="md:col-span-6 bg-white text-black p-12 rounded-2xl group hover:bg-accent-gold transition-colors">
@@ -141,7 +135,7 @@ export default function InternationalizationPage() {
                                 <span className="material-symbols-outlined font-black">handshake</span>
                             </div>
                             <h3 className="text-2xl font-black tracking-tighter uppercase mb-4">Conexões Diretas</h3>
-                            <p className="text-black/60 font-bold leading-relaxed group-hover:text-black">Feche negócios imediatamente com advogados e parceiros logísticos direto pelo sistema Bizguardian.</p>
+                            <p className="text-black/60 font-bold leading-relaxed group-hover:text-black">Feche negócios imediatamente com a rede de parceiros e fornecedores da Bizguardian.</p>
                         </div>
                     </div>
                 </section>
@@ -152,11 +146,20 @@ export default function InternationalizationPage() {
                         <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 leading-none relative z-10 cinematic-text-shadow">
                             Pronto para atravessar <br /> <span className="text-accent-gold italic font-serif">fronteiras?</span>
                         </h2>
-                        <p className="text-xl text-white/40 max-w-2xl mx-auto mb-12 font-medium relative z-10">
-                            O mundo é grande demais para você ficar limitado a um único CEP. Descubra a real capacidade de expansão do seu negócio.
+                        <h3 className="text-2xl md:text-3xl text-white font-bold opacity-80 mb-6 relative z-10">
+                            Uma nova era de expansão guiada por dados.
+                        </h3>
+                        <p className="text-lg text-white/40 max-w-2xl mx-auto mb-12 font-medium relative z-10">
+                            O mundo é grande demais para você ficar limitado a um único CEP. Descubra a real capacidade de expansão do seu negócio. Não se trata de automação genérica, mas da codificação do método que levou marcas a mais de 10 países.
                         </p>
-                        <button className="bg-white text-black text-xs font-black uppercase tracking-[0.3em] px-12 py-6 rounded-md shadow-2xl hover:bg-accent-gold hover:text-white transition-all transform hover:scale-105 active:scale-95 relative z-10">
-                            Iniciar Diagnóstico
+                        <button
+                            onClick={() => {
+                                alert("Você entrará para a lista de prioridades. Por favor, preencha o formulário a seguir para ser avisado.");
+                                window.location.href = "/#contato";
+                            }}
+                            className="inline-block bg-white text-black text-xs font-black uppercase tracking-[0.3em] px-12 py-6 rounded-md shadow-2xl hover:bg-accent-gold hover:text-white transition-all transform hover:scale-105 active:scale-95 relative z-10"
+                        >
+                            Quero Internacionalizar
                         </button>
                     </div>
                 </section>

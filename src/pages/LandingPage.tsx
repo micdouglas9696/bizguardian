@@ -96,9 +96,7 @@ export default function LandingPage() {
 
                     <div className="flex items-center gap-3 sm:gap-6">
                         {/* Smaller member button */}
-                        <Link to="/login" className="hidden sm:inline-block px-3 sm:px-5 md:px-8 py-2 sm:py-2.5 md:py-3 bg-white text-black text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.3em] hover:bg-accent-gold hover:text-white transition-all duration-500 whitespace-nowrap">
-                            Área do Membro
-                        </Link>
+                        {/* Removed member area button as requested */}
 
                         {/* Hamburger Menu — Mobile/Tablet only */}
                         <button
@@ -149,13 +147,6 @@ export default function LandingPage() {
 
                         {/* Bottom CTA */}
                         <div className={`mt-auto transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: mobileMenuOpen ? '500ms' : '0ms' }}>
-                            <Link
-                                to="/login"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="block w-full py-4 bg-accent-gold text-black text-[10px] font-black uppercase tracking-[0.3em] text-center hover:bg-white transition-all duration-500"
-                            >
-                                Área do Membro
-                            </Link>
                             <p className="text-[9px] text-white/20 font-bold uppercase tracking-[0.3em] text-center mt-4">
                                 Marinho Ponci · Season 2026
                             </p>
@@ -173,12 +164,12 @@ export default function LandingPage() {
                         <div className="flex flex-wrap justify-center gap-10 sm:gap-16 md:gap-24 lg:gap-32">
                             <div className="flex flex-col items-center gap-2 group">
                                 <span className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter group-hover:text-accent-gold transition-colors duration-500">850+</span>
-                                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/70">Pontos Geridos</span>
+                                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/70">Pontos "inaugurados"</span>
                             </div>
                             <div className="w-px h-16 bg-white/10 hidden sm:block self-center"></div>
                             <div className="flex flex-col items-center gap-2 group">
-                                <span className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter group-hover:text-accent-gold transition-colors duration-500">10</span>
-                                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/70">Países Ativos</span>
+                                <span className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter group-hover:text-accent-gold transition-colors duration-500">10+</span>
+                                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/70">"Novos" países</span>
                             </div>
                             <div className="w-px h-16 bg-white/10 hidden sm:block self-center"></div>
                             <div className="flex flex-col items-center gap-2 group">
@@ -221,9 +212,9 @@ export default function LandingPage() {
                                 <p className="text-white/40 italic">Se você acredita que eu posso ajudar com a minha experiência, vai ser um prazer caminhar ao seu lado e ajudar a construir o próximo capítulo da história da sua marca.</p>
                             </div>
 
-                            {/* Signature — below text, proportional */}
-                            <div className="mt-5 sm:mt-6">
-                                <img src="/2.png" alt="Assinatura Marinho Ponci" className="h-10 sm:h-12 w-auto object-contain opacity-30" />
+                            {/* Signature — below text, right aligned, less transparent */}
+                            <div className="mt-5 sm:mt-6 w-full flex justify-end">
+                                <img src="/2.png" alt="Assinatura Marinho Ponci" className="h-10 sm:h-12 w-auto object-contain opacity-70" />
                             </div>
 
                             {/* Action Buttons */}
@@ -233,7 +224,7 @@ export default function LandingPage() {
                                     onClick={() => setIsQuotesOpen(true)}
                                     className="w-full sm:w-auto px-10 py-5 bg-accent-gold text-black text-xs sm:text-sm font-black uppercase tracking-[0.2em] hover:bg-white transition-all duration-500 flex items-center justify-center gap-3 group"
                                 >
-                                    <span className="transition-transform group-hover:-translate-x-1">Minhas Citações</span>
+                                    <span className="transition-transform group-hover:-translate-x-1">CITAÇÕES</span>
                                     <span className="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">auto_stories</span>
                                 </button>
                             </div>
@@ -249,20 +240,16 @@ export default function LandingPage() {
                         <div className="max-w-[1700px] mx-auto px-6 md:px-12 grid lg:grid-cols-12 gap-16 items-center">
                             <div className="lg:col-span-5 relative z-20 flex flex-col items-center sm:items-start text-center sm:text-left">
                                 <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white mb-10 tracking-tighter leading-tight cinematic-text-shadow animate-reveal-skew opacity-0 text-center sm:text-left mt-6">
-                                    Ecossistema <br /> <span className="text-accent-gold italic block mt-4 animate-reveal-skew opacity-0 [animation-delay:200ms]">Biz Guardian.</span>
+                                    Ecossistema <br /> <span className="text-accent-gold italic block mt-4 animate-reveal-skew opacity-0 [animation-delay:200ms]">Bizguardian.</span>
                                 </h2>
                                 <p className="text-xl text-white/40 font-medium max-w-xl leading-relaxed mb-12">
                                     Navegue pela estrutura completa de suporte estratégico. Uma rede integrada projetada para escala global.
                                 </p>
 
-                                <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-12 text-center sm:text-left">
-                                    <div>
+                                <div className="pt-12 text-center sm:text-left">
+                                    <div className="inline-block border-t border-white/10 pt-8 mt-4">
                                         <span className="text-3xl font-black text-white block mb-1">🇵🇹 🇦🇹 🇺🇸 🇧🇷</span>
                                         <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">Parceria presente em</span>
-                                    </div>
-                                    <div>
-                                        <span className="text-3xl font-black text-white block mb-1">24/7</span>
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">Monitoramento</span>
                                     </div>
                                 </div>
                             </div>
@@ -319,10 +306,10 @@ export default function LandingPage() {
                                     O Próximo Nível do Ecossistema
                                 </span>
                                 <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-tight cinematic-text-shadow">
-                                    A Inteligência de 38 anos, agora em <span className="text-accent-gold italic">escala tecnológica.</span>
+                                    A inteligência da internacionalização agora em <span className="text-accent-gold italic">escala tecnológica.</span>
                                 </h2>
                                 <p className="text-lg md:text-xl text-white/50 mb-6 leading-relaxed font-medium max-w-xl">
-                                    Estamos em fase de construção da primeira plataforma de inteligência aplicada à internacionalização de marcas do Brasil. Não se trata de automação genérica, mas da codificação do método que levou marcas brasileiras a mais de 10 países, agora potencializado por IA.
+                                    Estamos em fase de construção da primeira plataforma de inteligência aplicada à internacionalização de marcas. Não se trata de automação genérica, mas da codificação do método que levou marcas a mais de 10 países, agora potencializado por IA.
                                 </p>
                                 <p className="text-base text-white/40 mb-10 leading-relaxed font-semibold max-w-xl">
                                     Estamos estruturando um ecossistema digital onde marcas terão acesso a:
@@ -331,8 +318,8 @@ export default function LandingPage() {
                                 <div className="flex flex-col gap-10 mb-12">
                                     {[
                                         { id: '01', title: 'Diagnóstico de Maturidade', desc: 'Análise cirúrgica da prontidão do seu negócio para o mercado global.', icon: 'monitoring' },
-                                        { id: '02', title: 'Roadmap Tático Digital', desc: 'O passo a passo estratégico, do visto ao primeiro contrato, guiado por dados.', icon: 'map' },
-                                        { id: '03', title: 'Conexões de Elite', desc: 'Acesso direto à rede de parceiros logísticos e jurídicos da Bizguardian.', icon: 'handshake' }
+                                        { id: '02', title: 'Roadmap Tático Digital', desc: 'O passo a passo estratégico do primeiro contato até a inauguração.', icon: 'map' },
+                                        { id: '03', title: 'Conexões de Elite', desc: 'Acesso direto à rede de parceiros fornecedores e jurídicos da Bizguardian.', icon: 'handshake' }
                                     ].map((item) => (
                                         <div key={item.id} className="flex items-start gap-6 group">
                                             <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-accent-gold transition-all duration-500 shadow-hud flex-shrink-0">
@@ -360,10 +347,13 @@ export default function LandingPage() {
 
                                 <div className="flex flex-col sm:flex-row flex-wrap items-center gap-8 w-full sm:w-auto">
                                     <button
-                                        onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                                        onClick={() => {
+                                            alert("Você entrará para a lista de prioridades. Por favor, preencha o formulário a seguir para ser avisado.");
+                                            document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+                                        }}
                                         className="px-8 sm:px-10 md:px-14 py-5 sm:py-6 md:py-7 bg-accent-gold text-black text-sm sm:text-base font-black uppercase tracking-[0.15em] sm:tracking-[0.3em] hover:bg-white transition-all duration-500 shadow-[0_0_30px_rgba(234,179,8,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] text-center w-full sm:w-auto"
                                     >
-                                        Entrar na Lista Prioritária
+                                        Quero internacionalizar
                                     </button>
                                 </div>
                             </div>
@@ -557,7 +547,7 @@ export default function LandingPage() {
                                 contato@marinhoponci.com
                             </a>
                             <p className="text-white/40 text-sm leading-relaxed max-w-xs md:max-w-[200px]">
-                                Atendimento global. <br /> Parceria e estruturação estratégica 24/7.
+                                Atendimento global. <br /> Parceria e estruturação estratégica.
                             </p>
                             <button onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })} className="mt-8 px-8 py-4 bg-transparent border border-white/20 text-white text-[9px] font-black uppercase tracking-[0.3em] hover:bg-accent-gold hover:text-black hover:border-accent-gold transition-all duration-500 rounded-md">
                                 Falar Agora

@@ -56,9 +56,7 @@ export default function HeroBillboard() {
                 >
                     {/* Headline — large bold italic uppercase like reference */}
                     <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.0] tracking-tighter uppercase italic mb-10 cinematic-text-shadow">
-                        Franquia pode ser o{' '}
-                        <span className="text-accent-gold">melhor ou o pior</span>{' '}
-                        negócio da sua vida!
+                        Franquia pode ser o <span className="text-accent-gold">melhor</span> ou o <span className="text-accent-gold">pior</span> negócio da sua vida!
                     </h1>
 
                     {/* Subtitle — aligned with button */}
@@ -97,9 +95,7 @@ export default function HeroBillboard() {
                 {/* Text Block */}
                 <div className="relative z-20 flex-1 flex flex-col justify-center items-center text-center px-6 pb-12 -mt-8">
                     <h1 className="text-[1.6rem] font-black text-white leading-[1.1] tracking-tight italic mb-5">
-                        Franquia pode ser o{' '}
-                        <span className="text-accent-gold">melhor ou o pior</span>{' '}
-                        negócio da sua vida!
+                        Franquia pode ser o <span className="text-accent-gold">melhor</span> ou o <span className="text-accent-gold">pior</span> negócio da sua vida!
                     </h1>
 
                     <p className="text-[14px] text-white/60 font-medium leading-relaxed mb-8 tracking-tight max-w-xs italic">
