@@ -41,6 +41,7 @@ const getThumbnailUrl = (id: string, size = 220) =>
 
 function LazyImage({ id, index }: { id: string; index: number }) {
     const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState(false);
     const [inView, setInView] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -55,16 +56,19 @@ function LazyImage({ id, index }: { id: string; index: number }) {
         return () => observer.disconnect();
     }, []);
 
+    if (error) return null;
+
     return (
-        <div ref={ref} className="relative aspect-square overflow-hidden group bg-zinc-900/80">
+        <div ref={ref} className="relative aspect-square group bg-zinc-900/80 hover:z-50 transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.3] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
             {inView && (
                 <img
                     src={getThumbnailUrl(id)}
                     alt={`Memória ${index + 1}`}
-                    className={`w-full h-full object-cover grayscale brightness-[0.35] group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-[1.2] group-hover:scale-110 transition-all duration-700 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                    className={`w-full h-full object-cover grayscale brightness-[0.5] group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-[1.2] transition-all duration-500 ease-out shadow-none group-hover:shadow-[0_0_30px_rgba(0,0,0,0.8)] ${loaded ? 'opacity-100' : 'opacity-0'}`}
                     loading="lazy"
                     decoding="async"
                     onLoad={() => setLoaded(true)}
+                    onError={() => setError(true)}
                 />
             )}
             {!loaded && (
@@ -90,21 +94,8 @@ export default function PhotoMural() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative py-16 sm:py-20 md:py-28 lg:py-32 bg-black overflow-hidden">
-            {/* Header — Centered + Scroll Reveal */}
-            <div className={`max-w-3xl mx-auto px-6 md:px-12 text-center mb-12 sm:mb-16 md:mb-20 transition-all duration-1000 ease-out ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-                <span className="text-accent-gold font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[9px] sm:text-[10px] block mb-4 sm:mb-6">
-                    Mural de Conexões
-                </span>
-                <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter text-white mb-4 sm:mb-6 leading-tight">
-                    38 Anos de <br /><span className="text-accent-gold italic">História.</span>
-                </h3>
-                <p className="text-white/30 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] leading-relaxed max-w-sm mx-auto">
-                    Um mosaico vivo da jornada que construiu a BizGuardian World Connections.
-                </p>
-            </div>
-
-            {/* Mural Grid — responsive from 4 cols (mobile) to 20 cols (4k) */}
+        <section ref={sectionRef} className="relative py-8 sm:py-12 md:py-16 bg-black overflow-hidden">
+            {/* Mural Grid — responsive */}
             <div className={`relative transition-all duration-1200 ease-out delay-300 ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-14 xl:grid-cols-16 2xl:grid-cols-20 gap-[1px] sm:gap-[2px]">
                     {PHOTO_IDS.map((id, index) => (
@@ -112,14 +103,22 @@ export default function PhotoMural() {
                     ))}
                 </div>
 
-                {/* Netflix-style vignette: all edges fade to black */}
-                <div className="absolute inset-0 pointer-events-none z-10" style={{
-                    boxShadow: 'inset 0 0 80px 40px rgba(0,0,0,0.95), inset 0 0 160px 80px rgba(0,0,0,0.6)'
-                }} />
-                <div className="absolute inset-x-0 top-0 h-16 sm:h-20 md:h-28 bg-gradient-to-b from-black via-black/80 to-transparent z-10 pointer-events-none" />
-                <div className="absolute inset-x-0 bottom-0 h-16 sm:h-20 md:h-28 bg-gradient-to-t from-black via-black/80 to-transparent z-10 pointer-events-none" />
-                <div className="absolute inset-y-0 left-0 w-8 sm:w-16 md:w-24 bg-gradient-to-r from-black via-black/70 to-transparent z-10 pointer-events-none" />
-                <div className="absolute inset-y-0 right-0 w-8 sm:w-16 md:w-24 bg-gradient-to-l from-black via-black/70 to-transparent z-10 pointer-events-none" />
+                {/* Removed Netflix-style vignette border to show bright pictures edge to edge */}
+
+                {/* Overlaid Header — centered on top of photos */}
+                <div className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-all duration-1000 ease-out ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    <div className="text-center px-6">
+                        <span className="text-accent-gold font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[9px] sm:text-[10px] block mb-4 sm:mb-6 drop-shadow-lg">
+                            Mural de Conexões
+                        </span>
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter text-white mb-4 sm:mb-6 leading-tight drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
+                            38 Anos de <br /><span className="text-accent-gold italic">História.</span>
+                        </h3>
+                        <p className="text-white/50 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] leading-relaxed max-w-sm mx-auto drop-shadow-lg">
+                            Um mosaico vivo da jornada que construiu a BizGuardian World Connections.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
     );
