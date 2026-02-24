@@ -31,8 +31,8 @@ export default {
         "eco-light": "#e6d3d3",
       },
       fontFamily: {
-        sans: ["Neue Montreal", "Satoshi", "sans-serif"],
-        display: ["Neue Montreal", "Satoshi", "sans-serif"],
+        sans: ["Satoshi", "Inter", "sans-serif"],
+        display: ["Satoshi", "Inter", "sans-serif"],
       },
       borderRadius: {
         DEFAULT: "12px",

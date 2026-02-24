@@ -370,7 +370,7 @@ export default function LandingPage() {
                         </div>
                     </section>
 
-                    <PhotoMural />
+
 
                     {/* Section :: Depoimentos */}
                     <section className="pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-12 px-3 sm:px-6 md:px-12 section-reveal" id="membros">
@@ -433,6 +433,8 @@ export default function LandingPage() {
                             </div>
                         </div>
                     </section>
+
+                    <PhotoMural />
 
                     {/* CTA Final :: Contact Form */}
                     <section className="pb-16 sm:pb-24 md:pb-32 px-3 sm:px-6 md:px-12 section-reveal" id="contato">
