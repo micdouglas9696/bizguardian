@@ -248,7 +248,7 @@ export default function LandingPage() {
 
                                 <div className="pt-12 text-center sm:text-left">
                                     <div className="inline-block border-t border-white/10 pt-8 mt-4">
-                                        <span className="text-3xl font-black text-white block mb-1">🇵🇹 🇦🇹 🇺🇸 🇧🇷</span>
+                                        <span className="text-3xl font-black text-white block mb-1">🇵🇹 🇪🇸 🇦🇹 🇺🇸 🇧🇷</span>
                                         <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">Parceria presente em</span>
                                     </div>
                                 </div>
@@ -378,10 +378,10 @@ export default function LandingPage() {
 
                             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                                 {[
-                                    { id: 1, name: 'Diego Bim', role: 'Sócio-Administrador', company: 'InFlux', videoId: '1-KrKwsMfvkY4N5F7dIAt7C1nOv1k_Jve', image: 'diego.png' },
-                                    { id: 2, name: 'Marcelo Zacarias', role: 'CEO & Founder', company: 'Tio Fafá Company', videoId: '1EG5DkA2uXy4T-J1uEBe1k-kXvBic1RSd', image: 'marcelo.png' },
-                                    { id: 3, name: 'João Ferrari', role: 'CEO & Estrategista', company: 'Expansão de Suplementos', videoId: '1K4mt7vXUixgIl4iWPpELkQf65luThiKv', image: 'joao ferrai.png' },
-                                    { id: 4, name: 'Adriana Auriemo', role: 'Franqueadora', company: 'Nutty Bavarian', videoId: '1XmOVBBCADaln-Xrok18xYcSDegA5QSeg', image: 'adriana .png' },
+                                    { id: 1, name: 'Diego Bim', role: 'Franqueado', company: 'Influx Escola de Inglês', videoId: '1-KrKwsMfvkY4N5F7dIAt7C1nOv1k_Jve', image: 'diego.png' },
+                                    { id: 2, name: 'Marcelo Zacarias', role: 'CEO & Founder', company: 'Tio Fafá Hamburgueria', videoId: '1EG5DkA2uXy4T-J1uEBe1k-kXvBic1RSd', image: 'marcelo.png' },
+                                    { id: 3, name: 'João Ferrari', role: 'CEO', company: 'Nutrafit', videoId: '1K4mt7vXUixgIl4iWPpELkQf65luThiKv', image: 'joao ferrai.png' },
+                                    { id: 4, name: 'Adriana Auriemo', role: 'CEO e Founder', company: 'Nutty Bavarian', videoId: '1XmOVBBCADaln-Xrok18xYcSDegA5QSeg', image: 'adriana .png' },
                                     { id: 5, name: 'Leandro Otávio', role: 'Founder', company: "D'avila Finance", videoId: '13RlGI5ejkXUb6W7VmicjueK2MjvZxM5P', image: 'leandro.png' }
                                 ].map((item) => (
                                     <div
@@ -433,7 +433,7 @@ export default function LandingPage() {
                             <div className="relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
                                 <div className="text-center sm:text-left">
                                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[0.9] tracking-tighter mb-6 uppercase">
-                                        FALE COM O <br /> <span className="text-accent-gold italic">MARINHO PONCI.</span>
+                                        FALE COM <br /> <span className="text-accent-gold italic">MARINHO PONCI.</span>
                                     </h2>
                                     <p className="text-sm md:text-base text-white/50 max-w-md font-medium mb-12 leading-relaxed">
                                         Se você acredita que eu posso ajudar com a minha experiência, vai ser um prazer caminhar ao seu lado e ajudar a construir o próximo capítulo da história da sua marca.
