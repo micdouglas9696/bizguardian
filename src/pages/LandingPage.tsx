@@ -439,11 +439,11 @@ export default function LandingPage() {
                                         Se você acredita que eu posso ajudar com a minha experiência, vai ser um prazer caminhar ao seu lado e ajudar a construir o próximo capítulo da história da sua marca.
                                     </p>
                                     <div className="flex flex-col gap-6 items-center sm:items-start">
-                                        <a href="mailto:contato@marinhoponci.com" className="flex items-center gap-4 group w-fit">
+                                        <a href="mailto:info@marinhoponci.com" className="flex items-center gap-4 group w-fit">
                                             <div className="w-12 h-12 rounded-full bg-gradient-to-b from-accent-gold to-[#a47e4b] flex items-center justify-center shadow-[0_0_20px_rgba(234,179,8,0.2)]">
                                                 <span className="material-symbols-outlined text-white text-lg">mail</span>
                                             </div>
-                                            <span className="text-sm font-medium text-white/70 group-hover:text-accent-gold transition-colors">contato@marinhoponci.com</span>
+                                            <span className="text-sm font-medium text-white/70 group-hover:text-accent-gold transition-colors">info@marinhoponci.com</span>
                                         </a>
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 rounded-full bg-gradient-to-b from-accent-gold to-[#a47e4b] flex items-center justify-center shadow-[0_0_20px_rgba(234,179,8,0.2)]">
@@ -543,8 +543,8 @@ export default function LandingPage() {
                         {/* Column 3: Contact */}
                         <div className="flex flex-col md:items-end md:text-right">
                             <h5 className="text-white font-black uppercase tracking-[0.2em] text-[10px] mb-6">Contato Direto</h5>
-                            <a href="mailto:contato@marinhoponci.com" className="text-lg font-black text-white hover:text-accent-gold transition-colors mb-4 block">
-                                contato@marinhoponci.com
+                            <a href="mailto:info@marinhoponci.com" className="text-lg font-black text-white hover:text-accent-gold transition-colors mb-4 block">
+                                info@marinhoponci.com
                             </a>
                             <p className="text-white/40 text-sm leading-relaxed max-w-xs md:max-w-[200px]">
                                 Atendimento global. <br /> Parceria e estruturação estratégica.
