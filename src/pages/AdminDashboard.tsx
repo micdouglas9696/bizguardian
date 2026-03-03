@@ -22,12 +22,24 @@ interface PriorityLead {
     status: string;
 }
 
+interface ContactLead {
+    id: string;
+    created_at: string;
+    name: string;
+    email: string;
+    whatsapp: string;
+    service: string;
+    message: string;
+    status: string;
+}
+
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [leadType, setLeadType] = useState<'quiz' | 'priority'>('quiz');
+    const [leadType, setLeadType] = useState<'quiz' | 'priority' | 'contact'>('quiz');
     const [view, setView] = useState<'table' | 'kanban'>('table');
     const [quizLeads, setQuizLeads] = useState<QuizLead[]>([]);
     const [priorityLeads, setPriorityLeads] = useState<PriorityLead[]>([]);
+    const [contactLeads, setContactLeads] = useState<ContactLead[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [selectedLead, setSelectedLead] = useState<QuizLead | null>(null);
@@ -41,22 +53,28 @@ export default function AdminDashboard() {
 
         const fetchLeads = async () => {
             try {
-                const [quizRes, priorityRes] = await Promise.all([
-                    fetch('http://localhost:3001/api/leads/quiz', {
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+                const [quizRes, priorityRes, contactRes] = await Promise.all([
+                    fetch(`${apiUrl}/api/leads/quiz`, {
                         headers: { 'Authorization': `Basic ${token}` }
                     }),
-                    fetch('http://localhost:3001/api/leads/priority', {
+                    fetch(`${apiUrl}/api/leads/priority`, {
+                        headers: { 'Authorization': `Basic ${token}` }
+                    }),
+                    fetch(`${apiUrl}/api/leads/contact`, {
                         headers: { 'Authorization': `Basic ${token}` }
                     })
                 ]);
 
-                if (!quizRes.ok || !priorityRes.ok) throw new Error('Falha ao carregar dados');
+                if (!quizRes.ok || !priorityRes.ok || !contactRes.ok) throw new Error('Falha ao carregar dados');
 
                 const quizData = await quizRes.json();
                 const priorityData = await priorityRes.json();
+                const contactData = await contactRes.json();
 
                 setQuizLeads(quizData);
                 setPriorityLeads(priorityData);
+                setContactLeads(contactData);
             } catch (err: any) {
                 setError(err.message);
                 if (err.message.includes('401') || err.message.includes('403')) {
@@ -88,12 +106,12 @@ export default function AdminDashboard() {
     return (
         <div className="min-h-screen bg-[#030303] text-white">
             {/* Nav Header */}
-            <header className="fixed top-0 w-full bg-[#050505]/80 backdrop-blur-md border-b border-white/5 z-40 px-6 py-4 flex items-center justify-between">
+            <header className="fixed top-0 w-full bg-[#050505]/80 backdrop-blur-md border-b border-white/5 z-40 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
                 <div>
-                    <img src="/marinho final.png" alt="Marinho Ponci" className="h-10 object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.15)]" />
+                    <img src="/marinho final.png" alt="Marinho Ponci" className="h-8 md:h-10 object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.15)]" />
                 </div>
-                <div className="flex items-center gap-6">
-                    <div className="flex gap-2 p-1 bg-white/5 rounded-lg border border-white/10">
+                <div className="flex items-center gap-3 md:gap-6">
+                    <div className="flex gap-1 md:gap-2 p-1 bg-white/5 rounded-lg border border-white/10 hidden sm:flex">
                         <button
                             onClick={() => setView('table')}
                             className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] rounded transition-all ${view === 'table' ? 'bg-accent-gold text-black shadow-glow-primary' : 'text-white/40 hover:text-white'}`}
@@ -116,39 +134,85 @@ export default function AdminDashboard() {
             </header>
 
             {/* Main Content */}
-            <main className="pt-24 px-6 pb-12 max-w-[1600px] mx-auto">
+            <main className="pt-24 px-4 md:px-6 pb-12 max-w-[1600px] mx-auto w-full">
                 {error && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-4 rounded-xl mb-8">
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-4 rounded-xl mb-8 text-sm md:text-base">
                         {error}
                     </div>
                 )}
 
-                <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                    <div>
-                        <h2 className="text-3xl font-black uppercase tracking-tight mb-2">
-                            {leadType === 'quiz' ? 'Leads: Diagnóstico' : 'Leads: Internacionalização'}
+                <div className="mb-8 md:mb-12 flex flex-col xl:flex-row xl:items-end justify-between gap-6 overflow-hidden">
+                    <div className="shrink-0">
+                        <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-2">
+                            {leadType === 'quiz' ? 'Leads: Diagnóstico' : leadType === 'priority' ? 'Leads: Internacionalização' : 'Leads: Contato Direto'}
                         </h2>
                         <p className="text-white/40 text-sm">
-                            {leadType === 'quiz' ? 'Respostas do questionário avançado' : 'Lista de espera VIP Internacional'}
+                            {leadType === 'quiz' ? 'Respostas do questionário avançado' : leadType === 'priority' ? 'Lista de espera VIP Internacional' : 'Mensagens recebidas pelo formulário de contato'}
                         </p>
                     </div>
-                    <div className="flex bg-[#050505] p-1.5 rounded-xl border border-white/5 shadow-inner shrink-0">
+                    <div className="flex overflow-x-auto scrollbar-hide bg-[#050505] p-1.5 rounded-xl border border-white/5 shadow-inner shrink-0 w-full xl:w-auto">
                         <button
                             onClick={() => { setLeadType('quiz'); }}
-                            className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg transition-all ${leadType === 'quiz' ? 'bg-white/10 text-white shadow-md' : 'text-white/40 hover:text-white/70'}`}
+                            className={`px-4 md:px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg transition-all whitespace-nowrap ${leadType === 'quiz' ? 'bg-white/10 text-white shadow-md' : 'text-white/40 hover:text-white/70'}`}
                         >
                             Diagnóstico ({quizLeads.length})
                         </button>
                         <button
                             onClick={() => { setLeadType('priority'); setView('table'); }}
-                            className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg transition-all ${leadType === 'priority' ? 'bg-white/10 text-white shadow-md' : 'text-white/40 hover:text-white/70'}`}
+                            className={`px-4 md:px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg transition-all whitespace-nowrap ${leadType === 'priority' ? 'bg-white/10 text-white shadow-md' : 'text-white/40 hover:text-white/70'}`}
                         >
                             Internacionalizar ({priorityLeads.length})
+                        </button>
+                        <button
+                            onClick={() => { setLeadType('contact'); setView('table'); }}
+                            className={`px-4 md:px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg transition-all whitespace-nowrap ${leadType === 'contact' ? 'bg-white/10 text-white shadow-md' : 'text-white/40 hover:text-white/70'}`}
+                        >
+                            Contato ({contactLeads.length})
                         </button>
                     </div>
                 </div>
 
-                {leadType === 'priority' ? (
+                {leadType === 'contact' ? (
+                    <div className="overflow-x-auto bg-[#050505] border border-white/5 rounded-2xl shadow-2xl animate-in fade-in">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="border-b border-white/10 text-[10px] font-black uppercase tracking-[0.3em] text-white/40 bg-white/[0.02]">
+                                    <th className="p-5">Data</th>
+                                    <th className="p-5">Nome</th>
+                                    <th className="p-5">Contato</th>
+                                    <th className="p-5">Serviço</th>
+                                    <th className="p-5">Mensagem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {contactLeads.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="p-8 text-center text-white/40 text-sm">Nenhuma mensagem de contato recebida.</td>
+                                    </tr>
+                                ) : (
+                                    contactLeads.map(lead => (
+                                        <tr key={lead.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                                            <td className="p-5 text-xs text-white/60">
+                                                {new Date(lead.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
+                                            </td>
+                                            <td className="p-5 font-bold">{lead.name}</td>
+                                            <td className="p-5">
+                                                <div className="text-sm text-white/80">{lead.email}</div>
+                                                <div className="text-[10px] text-accent-gold mt-1">{lead.whatsapp}</div>
+                                            </td>
+                                            <td className="p-5">
+                                                <span className="px-3 py-1 rounded text-[10px] font-black bg-white/5 text-white/70 border border-white/10 uppercase tracking-[0.1em]">
+                                                    {lead.service || '—'}
+                                                </span>
+                                            </td>
+                                            <td className="p-5 text-sm text-white/60 max-w-xs truncate">{lead.message || '—'}</td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : leadType === 'priority' ? (
                     <div className="overflow-x-auto bg-[#050505] border border-white/5 rounded-2xl shadow-2xl animate-in fade-in">
                         <table className="w-full text-left border-collapse">
                             <thead>

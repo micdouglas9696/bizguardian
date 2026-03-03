@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CountryPhoneInput from './CountryPhoneInput';
 
 interface PriorityListModalProps {
     isOpen: boolean;
@@ -32,7 +33,8 @@ export default function PriorityListModal({ isOpen, onClose }: PriorityListModal
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:3001/api/leads/priority', {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${apiUrl}/api/leads/priority`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,19 +145,13 @@ export default function PriorityListModal({ isOpen, onClose }: PriorityListModal
                                             className="w-full bg-black/60 border border-white/10 px-6 py-5 text-base text-white focus:outline-none focus:border-accent-gold/60 focus:bg-white/[0.03] transition-all rounded-xl"
                                         />
                                     </div>
-                                    <div>
-                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/50 mb-3 px-1">
-                                            WhatsApp
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            value={phone}
-                                            onChange={(e) => setPhone(e.target.value)}
-                                            placeholder="(11) 99999-9999"
-                                            required
-                                            className="w-full bg-black/60 border border-white/10 px-6 py-5 text-base text-white focus:outline-none focus:border-accent-gold/60 focus:bg-white/[0.03] transition-all rounded-xl"
-                                        />
-                                    </div>
+                                    <CountryPhoneInput
+                                        value={phone}
+                                        onChange={setPhone}
+                                        required
+                                        label="WhatsApp"
+                                        className="w-full"
+                                    />
                                     <div className="md:col-span-2">
                                         <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/50 mb-3 px-1">
                                             E-mail Profissional

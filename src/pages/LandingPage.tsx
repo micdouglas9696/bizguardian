@@ -9,6 +9,7 @@ import QuotesModal from '../components/QuotesModal';
 import PhotoMural from '../components/PhotoMural';
 import VideoModal from '../components/VideoModal';
 import PriorityListModal from '../components/PriorityListModal';
+import CountryPhoneInput from '../components/CountryPhoneInput';
 
 const NAV_ITEMS = [
     { name: 'Quem sou', id: 'sobre' },
@@ -26,6 +27,15 @@ export default function LandingPage() {
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
+
+    // Contact Form State
+    const [contactName, setContactName] = useState('');
+    const [contactEmail, setContactEmail] = useState('');
+    const [contactPhone, setContactPhone] = useState('');
+    const [contactService, setContactService] = useState('');
+    const [contactMessage, setContactMessage] = useState('');
+    const [contactSubmitting, setContactSubmitting] = useState(false);
+    const [contactSuccess, setContactSuccess] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -452,33 +462,79 @@ export default function LandingPage() {
                                         </div>
                                     </div>
                                 </div>
-                                <form className="space-y-5">
-                                    <select
-                                        id="contact-service-select"
-                                        defaultValue=""
-                                        className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full appearance-none cursor-pointer"
-                                    >
-                                        <option value="">SELECIONE O SERVIÇO DE INTERESSE</option>
-                                        <option value="Internacionalização">INTERNACIONALIZAÇÃO</option>
-                                        <option value="Franchise-se">FRANCHISE-SE</option>
-                                        <option value="Palestras">PALESTRAS</option>
-                                        <option value="Mentoria">MENTORIA</option>
-                                        <option value="Conselheiro">CONSELHEIRO</option>
-                                        <option value="Expansão">EXPANSÃO</option>
-                                        <option value="Real State">REAL STATE</option>
-                                        <option value="Eventos">EVENTOS</option>
-                                        <option value="Podcast">PODCAST</option>
-                                        <option value="Representação">REPRESENTAÇÃO</option>
-                                        <option value="Licenciamentos">LICENCIAMENTOS</option>
-                                    </select>
-                                    <div className="grid md:grid-cols-2 gap-5">
-                                        <input type="text" placeholder="NOME COMPLETO" className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full placeholder:text-white/30" />
-                                        <input type="email" placeholder="EMAIL" className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full placeholder:text-white/30" />
-                                    </div>
-                                    <textarea placeholder="como posso te ajudar?" rows={5} className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full resize-none placeholder:text-white/30"></textarea>
-                                    <button className="w-full py-5 bg-transparent border-2 border-accent-gold text-accent-gold text-xs sm:text-sm font-black uppercase tracking-[0.3em] hover:bg-accent-gold hover:text-black transition-all duration-500 rounded-md">
-                                        Enviar Mensagem
-                                    </button>
+                                <form className="space-y-5" onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    setContactSubmitting(true);
+                                    try {
+                                        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+                                        const res = await fetch(`${apiUrl}/api/leads/contact`, {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                name: contactName,
+                                                email: contactEmail,
+                                                whatsapp: contactPhone,
+                                                service: contactService,
+                                                message: contactMessage
+                                            })
+                                        });
+                                        if (!res.ok) throw new Error('Erro');
+                                        setContactSuccess(true);
+                                        setContactName(''); setContactEmail(''); setContactPhone(''); setContactService(''); setContactMessage('');
+                                    } catch {
+                                        alert('Erro ao enviar. Tente novamente.');
+                                    } finally {
+                                        setContactSubmitting(false);
+                                    }
+                                }}>
+                                    {contactSuccess ? (
+                                        <div className="text-center py-12">
+                                            <div className="w-16 h-16 bg-accent-gold/10 border border-accent-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                                                <span className="material-symbols-outlined text-accent-gold text-3xl">check</span>
+                                            </div>
+                                            <h3 className="text-2xl font-black text-white mb-3 uppercase tracking-tight">Mensagem Enviada!</h3>
+                                            <p className="text-white/50 text-sm mb-6">Entraremos em contato em breve.</p>
+                                            <button type="button" onClick={() => setContactSuccess(false)} className="text-accent-gold text-xs font-black uppercase tracking-[0.2em] hover:text-white transition-colors">Enviar outra mensagem</button>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <select
+                                                id="contact-service-select"
+                                                value={contactService}
+                                                onChange={(e) => setContactService(e.target.value)}
+                                                required
+                                                className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full appearance-none cursor-pointer"
+                                            >
+                                                <option value="">SELECIONE O SERVIÇO DE INTERESSE</option>
+                                                <option value="Internacionalização">INTERNACIONALIZAÇÃO</option>
+                                                <option value="Franchise-se">FRANCHISE-SE</option>
+                                                <option value="Palestras">PALESTRAS</option>
+                                                <option value="Mentoria">MENTORIA</option>
+                                                <option value="Conselheiro">CONSELHEIRO</option>
+                                                <option value="Expansão">EXPANSÃO</option>
+                                                <option value="Real State">REAL STATE</option>
+                                                <option value="Eventos">EVENTOS</option>
+                                                <option value="Podcast">PODCAST</option>
+                                                <option value="Representação">REPRESENTAÇÃO</option>
+                                                <option value="Licenciamentos">LICENCIAMENTOS</option>
+                                            </select>
+                                            <div className="grid md:grid-cols-2 gap-5">
+                                                <input type="text" placeholder="NOME COMPLETO" value={contactName} onChange={(e) => setContactName(e.target.value)} required className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full placeholder:text-white/30" />
+                                                <input type="email" placeholder="EMAIL" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} required className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full placeholder:text-white/30" />
+                                            </div>
+                                            <CountryPhoneInput
+                                                value={contactPhone}
+                                                onChange={setContactPhone}
+                                                label="Telefone / WhatsApp"
+                                            />
+                                            <textarea placeholder="como posso te ajudar?" rows={5} value={contactMessage} onChange={(e) => setContactMessage(e.target.value)} className="bg-zinc-900/60 border border-white/10 rounded-md px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all w-full resize-none placeholder:text-white/30"></textarea>
+                                            <button type="submit" disabled={contactSubmitting} className="w-full py-5 bg-transparent border-2 border-accent-gold text-accent-gold text-xs sm:text-sm font-black uppercase tracking-[0.3em] hover:bg-accent-gold hover:text-black transition-all duration-500 rounded-md flex items-center justify-center gap-3 disabled:opacity-50">
+                                                {contactSubmitting ? (
+                                                    <><span className="material-symbols-outlined animate-spin text-sm">autorenew</span> Enviando...</>
+                                                ) : 'Enviar Mensagem'}
+                                            </button>
+                                        </>
+                                    )}
                                 </form>
                             </div>
                         </div>

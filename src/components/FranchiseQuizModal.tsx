@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CountryPhoneInput from './CountryPhoneInput';
 
 export interface Option {
     text: string;
@@ -230,7 +231,8 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
         setScore(totalScore);
 
         try {
-            const response = await fetch('http://localhost:3001/api/leads/quiz', {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${apiUrl}/api/leads/quiz`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -418,18 +420,11 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                                         className="w-full bg-black border border-white/10 px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all rounded"
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">
-                                        WhatsApp <span className="text-white/20 ml-2">(opcional)</span>
-                                    </label>
-                                    <input
-                                        type="tel"
-                                        value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
-                                        placeholder="(11) 99999-9999"
-                                        className="w-full bg-black border border-white/10 px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all rounded"
-                                    />
-                                </div>
+                                <CountryPhoneInput
+                                    value={phone}
+                                    onChange={setPhone}
+                                    label="WhatsApp"
+                                />
 
                                 <button
                                     type="submit"

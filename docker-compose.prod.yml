@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - bizguardian_pgdata:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: bizguardian_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-CHANGE_ME_STRONG_PASSWORD}
+      POSTGRES_DB: bizguardian_crm
+    networks:
+      - bizguardian_internal
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  api:
+    image: ${DOCKER_IMAGE:-bizguardian-api:latest}
+    environment:
+      - PORT=3001
+      - DATABASE_URL=postgresql://bizguardian_admin:${DB_PASSWORD:-CHANGE_ME_STRONG_PASSWORD}@db:5432/bizguardian_crm
+      - CORS_ORIGIN=${CORS_ORIGIN:-https://marinhoponci.com}
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PASS=${ADMIN_PASS:-bizguardian2025}
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_SECURE=${SMTP_SECURE:-false}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - SMTP_FROM=${SMTP_FROM:-info@marinhoponci.com}
+    networks:
+      - bizguardian_internal
+      - mycom
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.bizguardian-api.rule=Host(`api.marinhoponci.com`)"
+        - "traefik.http.routers.bizguardian-api.entrypoints=websecure"
+        - "traefik.http.routers.bizguardian-api.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.bizguardian-api.loadbalancer.server.port=3001"
+
+volumes:
+  bizguardian_pgdata:
+
+
+networks:
+  bizguardian_internal:
+    driver: overlay
+  mycom:
+    external: true
+    name: mycom

@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
 
 export default function MainHero() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -75,20 +74,20 @@ export default function MainHero() {
                     {/* Two CTA Buttons — single-line text, bigger font */}
                     <div className="flex flex-row flex-wrap items-center gap-4 lg:gap-5">
                         <button
-                            onClick={() => document.getElementById('franchise')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => document.getElementById('herobillboard')?.scrollIntoView({ behavior: 'smooth' })}
                             className="group relative px-8 md:px-10 py-4 md:py-5 bg-white text-black font-black uppercase hover:bg-accent-gold hover:text-white transition-all duration-500 shadow-glow-primary overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span className="relative block text-xs md:text-sm tracking-[0.15em] lg:tracking-[0.2em] whitespace-nowrap">SOU/QUERO SER UM FRANQUEADO</span>
                         </button>
 
-                        <Link
-                            to="/internationalization"
+                        <button
+                            onClick={() => document.getElementById('internacionalize')?.scrollIntoView({ behavior: 'smooth' })}
                             className="group relative px-8 md:px-10 py-4 md:py-5 bg-transparent border-2 border-accent-gold text-accent-gold font-black uppercase hover:bg-accent-gold hover:text-black transition-all duration-500 overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent-gold/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span className="relative block text-xs md:text-sm tracking-[0.15em] lg:tracking-[0.2em] whitespace-nowrap">TENHO/QUERO CRIAR UMA MARCA</span>
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -126,20 +125,20 @@ export default function MainHero() {
 
                     <div className="flex flex-col gap-3 w-full">
                         <button
-                            onClick={() => document.getElementById('franchise')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => document.getElementById('herobillboard')?.scrollIntoView({ behavior: 'smooth' })}
                             className="group relative w-full px-6 py-4 bg-white text-black font-black uppercase hover:bg-accent-gold hover:text-white transition-all duration-500 shadow-glow-primary overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span className="relative block text-[11px] tracking-[0.2em]">SOU/QUERO SER UM FRANQUEADO</span>
                         </button>
 
-                        <Link
-                            to="/internationalization"
-                            className="group relative w-full px-6 py-4 bg-transparent border-2 border-accent-gold text-accent-gold font-black uppercase hover:bg-accent-gold hover:text-black transition-all duration-500 overflow-hidden block text-center"
+                        <button
+                            onClick={() => document.getElementById('internacionalize')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="group relative w-full px-6 py-4 bg-transparent border-2 border-accent-gold text-accent-gold font-black uppercase hover:bg-accent-gold hover:text-black transition-all duration-500 overflow-hidden text-center"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent-gold/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span className="relative block text-[11px] tracking-[0.2em]">TENHO/QUERO CRIAR UMA MARCA</span>
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>
