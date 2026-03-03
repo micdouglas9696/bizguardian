@@ -37,42 +37,58 @@ const PHOTO_IDS = [
 ];
 
 const getThumbnailUrl = (id: string, size = 220) =>
-    `https://lh3.googleusercontent.com/d/${id}=w${size}-h${size}-c`;
+    `https://images.weserv.nl/?url=${encodeURIComponent(`https://drive.google.com/uc?export=view&id=${id}`)}&w=${size}&h=${size}&fit=cover`;
 
 function LazyImage({ id, index }: { id: string; index: number }) {
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
     const [inView, setInView] = useState(false);
+    const [retryKey, setRetryKey] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const el = ref.current;
         if (!el) return;
         const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
-            { rootMargin: '200px' }
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    // Stagger loading to prevent Google Drive 429 Rate Limits
+                    setTimeout(() => setInView(true), (index % 12) * 200 + Math.random() * 200);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '50px' } // Load closer to viewport
         );
         observer.observe(el);
         return () => observer.disconnect();
-    }, []);
+    }, [index]);
 
-    if (error) return null;
+    const handleError = () => {
+        if (retryKey < 3) {
+            setTimeout(() => {
+                setRetryKey(prev => prev + 1);
+            }, 1500 + Math.random() * 1000);
+        } else {
+            setError(true);
+        }
+    };
 
     return (
-        <div ref={ref} className="relative aspect-square group bg-zinc-900/80 hover:z-50 transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.3] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-            {inView && (
+        <div ref={ref} className="relative aspect-square group bg-zinc-900/80 hover:z-50 transition-all duration-500 hover:-translate-y-2 hover:scale-125 shadow-none hover:shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
+            {inView && !error && (
                 <img
+                    key={retryKey}
                     src={getThumbnailUrl(id)}
                     alt={`Memória ${index + 1}`}
-                    className={`w-full h-full object-cover grayscale brightness-[0.5] group-hover:grayscale-0 group-hover:brightness-110 group-hover:saturate-[1.2] transition-all duration-500 ease-out shadow-none group-hover:shadow-[0_0_30px_rgba(0,0,0,0.8)] ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                    className={`w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
                     loading="lazy"
                     decoding="async"
                     onLoad={() => setLoaded(true)}
-                    onError={() => setError(true)}
+                    onError={handleError}
                 />
             )}
-            {!loaded && (
-                <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 animate-pulse" />
+            {(!loaded || error) && (
+                <div className={`absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 ${error ? 'opacity-30' : 'animate-pulse'}`} />
             )}
         </div>
     );

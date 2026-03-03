@@ -1,8 +1,14 @@
 import { useState, useRef } from 'react';
+import FranchiseQuizModal from './FranchiseQuizModal';
 
 export default function HeroBillboard() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [isQuizOpen, setIsQuizOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const scrollToForm = () => {
+        document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     const handleMouseMove = (e: React.MouseEvent) => {
         if (!containerRef.current) return;
@@ -68,7 +74,7 @@ export default function HeroBillboard() {
 
                     {/* CTA Button */}
                     <button
-                        onClick={() => document.getElementById('franchise')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() => setIsQuizOpen(true)}
                         className="group relative px-10 md:px-14 py-5 md:py-6 bg-accent-gold text-black text-sm md:text-base font-black uppercase tracking-[0.2em] hover:bg-white transition-all duration-500 shadow-[0_0_30px_rgba(234,179,8,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -106,7 +112,7 @@ export default function HeroBillboard() {
 
                     {/* CTA Button */}
                     <button
-                        onClick={() => document.getElementById('franchise')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() => setIsQuizOpen(true)}
                         className="group relative w-full max-w-xs px-8 py-5 bg-accent-gold text-black text-sm font-black uppercase tracking-[0.15em] hover:bg-white transition-all duration-500 shadow-[0_0_30px_rgba(234,179,8,0.3)] overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -125,6 +131,15 @@ export default function HeroBillboard() {
                 <span>Marinho Ponci</span>
                 <span>Production 2026</span>
             </div>
+
+            <FranchiseQuizModal
+                isOpen={isQuizOpen}
+                onClose={() => setIsQuizOpen(false)}
+                onGoToForm={() => {
+                    setIsQuizOpen(false);
+                    setTimeout(scrollToForm, 300);
+                }}
+            />
         </section>
     );
 }

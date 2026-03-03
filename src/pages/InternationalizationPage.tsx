@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import PriorityListModal from '../components/PriorityListModal';
 
 export default function InternationalizationPage() {
     const [scrolled, setScrolled] = useState(false);
+    const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -153,10 +155,7 @@ export default function InternationalizationPage() {
                             O mundo é grande demais para você ficar limitado a um único CEP. Descubra a real capacidade de expansão do seu negócio. Não se trata de automação genérica, mas da codificação do método que levou marcas a mais de 10 países.
                         </p>
                         <button
-                            onClick={() => {
-                                alert("Você entrará para a lista de prioridades. Por favor, preencha o formulário a seguir para ser avisado.");
-                                window.location.href = "/#contato";
-                            }}
+                            onClick={() => setIsPriorityModalOpen(true)}
                             className="inline-block bg-white text-black text-xs font-black uppercase tracking-[0.3em] px-12 py-6 rounded-md shadow-2xl hover:bg-accent-gold hover:text-white transition-all transform hover:scale-105 active:scale-95 relative z-10"
                         >
                             Quero Internacionalizar
@@ -174,6 +173,11 @@ export default function InternationalizationPage() {
                     </p>
                 </div>
             </footer>
+
+            <PriorityListModal
+                isOpen={isPriorityModalOpen}
+                onClose={() => setIsPriorityModalOpen(false)}
+            />
         </div>
     );
 }

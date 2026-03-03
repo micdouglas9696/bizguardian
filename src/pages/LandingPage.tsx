@@ -8,6 +8,7 @@ import ManifestoHook from '../components/ManifestoHook';
 import QuotesModal from '../components/QuotesModal';
 import PhotoMural from '../components/PhotoMural';
 import VideoModal from '../components/VideoModal';
+import PriorityListModal from '../components/PriorityListModal';
 
 const NAV_ITEMS = [
     { name: 'Quem sou', id: 'sobre' },
@@ -24,6 +25,7 @@ export default function LandingPage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+    const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -347,10 +349,7 @@ export default function LandingPage() {
 
                                 <div className="flex flex-col sm:flex-row flex-wrap items-center gap-8 w-full sm:w-auto">
                                     <button
-                                        onClick={() => {
-                                            alert("Você entrará para a lista de prioridades. Por favor, preencha o formulário a seguir para ser avisado.");
-                                            document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
-                                        }}
+                                        onClick={() => setIsPriorityModalOpen(true)}
                                         className="px-8 sm:px-10 md:px-14 py-5 sm:py-6 md:py-7 bg-accent-gold text-black text-sm sm:text-base font-black uppercase tracking-[0.15em] sm:tracking-[0.3em] hover:bg-white transition-all duration-500 shadow-[0_0_30px_rgba(234,179,8,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] text-center w-full sm:w-auto"
                                     >
                                         Quero internacionalizar
@@ -581,6 +580,11 @@ export default function LandingPage() {
                 isOpen={isVideoModalOpen}
                 onClose={() => { setIsVideoModalOpen(false); setSelectedVideoId(null); }}
                 videoId={selectedVideoId}
+            />
+
+            <PriorityListModal
+                isOpen={isPriorityModalOpen}
+                onClose={() => setIsPriorityModalOpen(false)}
             />
         </div>
     );

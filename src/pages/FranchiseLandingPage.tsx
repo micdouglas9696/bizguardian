@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FranchiseQuizModal from '../components/FranchiseQuizModal';
 
 const BENEFITS = [
     {
@@ -81,6 +82,7 @@ export default function FranchiseLandingPage() {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
     const mainRef = useRef<HTMLElement>(null);
     const [heroLoaded, setHeroLoaded] = useState(false);
+    const [isQuizOpen, setIsQuizOpen] = useState(false);
 
     // ─── Hero entrance trigger ───
     useEffect(() => {
@@ -297,7 +299,7 @@ export default function FranchiseLandingPage() {
                         {/* ── CTA Button ── */}
                         <div className="hero-el flex flex-col items-center gap-4 w-full sm:w-auto" style={{ transitionDelay: '600ms' }}>
                             <button
-                                onClick={scrollToForm}
+                                onClick={() => setIsQuizOpen(true)}
                                 className="btn-franchise px-8 sm:px-14 md:px-20 py-4 sm:py-5 md:py-6 bg-accent-gold text-black text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] hover:bg-white transition-colors duration-500 shadow-glow-gold w-full sm:w-auto active:scale-95"
                             >
                                 Quero Participar Gratuitamente
@@ -678,6 +680,15 @@ export default function FranchiseLandingPage() {
                     </div>
                 </div>
             </footer>
+
+            <FranchiseQuizModal
+                isOpen={isQuizOpen}
+                onClose={() => setIsQuizOpen(false)}
+                onGoToForm={() => {
+                    setIsQuizOpen(false);
+                    setTimeout(scrollToForm, 300);
+                }}
+            />
         </div>
     );
 }
