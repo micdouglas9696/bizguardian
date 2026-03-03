@@ -41,6 +41,10 @@ ssh ${VPS_USER}@${VPS_IP} << 'REMOTE_COMMANDS'
     sed -i 's|./backend/init.sql|/root/bizguardian/init.sql|g' /root/bizguardian.yaml
 
     echo "Deploying stack..."
+    if [ -f /root/.env.bizguardian ]; then
+        echo "Loading production secrets..."
+        source /root/.env.bizguardian
+    fi
     export DB_PASSWORD="BizG_Pr0d_2026!Secure"
     export CORS_ORIGIN="https://marinhoponci.com,https://www.marinhoponci.com"
     export ADMIN_USER="admin"
