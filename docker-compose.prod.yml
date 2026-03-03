@@ -44,6 +44,7 @@ services:
         - "traefik.http.routers.bizguardian-api.entrypoints=websecure"
         - "traefik.http.routers.bizguardian-api.tls.certresolver=letsencryptresolver"
         - "traefik.http.services.bizguardian-api.loadbalancer.server.port=3001"
+        - "traefik.docker.network=mycom"
 
 volumes:
   bizguardian_pgdata:

@@ -15,7 +15,7 @@ IMAGE_NAME="bizguardian-api"
 IMAGE_TAG="latest"
 
 echo "🔨 Step 1: Building Docker image..."
-docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ./backend
+docker build --platform linux/amd64 -t ${IMAGE_NAME}:${IMAGE_TAG} ./backend
 
 echo "📦 Step 2: Saving image to tar..."
 docker save ${IMAGE_NAME}:${IMAGE_TAG} -o /tmp/${IMAGE_NAME}.tar
