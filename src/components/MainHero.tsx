@@ -30,6 +30,8 @@ export default function MainHero() {
                     <img
                         src="/marinho principal.png"
                         alt="Marinho Ponci"
+                        loading="eager"
+                        fetchPriority="high"
                         className="w-full h-full object-contain object-right lg:object-[80%_center] scale-[1.4] opacity-90 transition-opacity duration-700 hover:opacity-100"
                     />
                 </div>
@@ -56,8 +58,8 @@ export default function MainHero() {
                     {/* Headline — Scaled down for 14" */}
                     <div className="relative mb-6 lg:mb-8">
                         <div className="absolute -inset-6 bg-accent-gold/5 blur-[60px] rounded-full pointer-events-none"></div>
-                        <h1 className="relative text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-[0.92] tracking-tighter uppercase cinematic-text-shadow">
-                            <span className="block text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-accent-gold italic drop-shadow-[0_0_30px_rgba(225,169,96,0.3)]" style={{ textShadow: '0 0 50px rgba(225,169,96,0.2), 0 4px 40px rgba(0,0,0,0.9)' }}>38 ANOS</span>
+                        <h1 className="relative font-black text-white leading-[0.92] tracking-tighter uppercase cinematic-text-shadow max-w-[90vw] lg:max-w-none text-[clamp(1.5rem,4vw,3.75rem)]">
+                            <span className="block text-[clamp(2.5rem,5.5vw,4.5rem)] text-accent-gold italic drop-shadow-[0_0_30px_rgba(225,169,96,0.3)]" style={{ textShadow: '0 0 50px rgba(225,169,96,0.2), 0 4px 40px rgba(0,0,0,0.9)' }}>38 ANOS</span>
                             <span className="text-accent-gold italic drop-shadow-[0_0_20px_rgba(225,169,96,0.2)]">CONECTANDO</span> <br />
                             MARCAS, PESSOAS <br />
                             E MERCADOS.
@@ -98,6 +100,8 @@ export default function MainHero() {
                     <img
                         src="/marinho principal.png"
                         alt="Marinho Ponci"
+                        loading="eager"
+                        fetchPriority="high"
                         className="w-full h-full object-cover object-[65%_15%] scale-110"
                     />
                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
@@ -109,8 +113,8 @@ export default function MainHero() {
                 <div className="relative z-20 flex-1 flex flex-col justify-center items-center text-center px-6 pb-8 -mt-12">
                     <div className="relative mb-5">
                         <div className="absolute -inset-6 bg-accent-gold/5 blur-[50px] rounded-full pointer-events-none"></div>
-                        <h1 className="relative text-[1.75rem] font-black text-white leading-[0.92] tracking-tighter uppercase cinematic-text-shadow">
-                            <span className="block text-[2.2rem] text-accent-gold italic drop-shadow-[0_0_25px_rgba(225,169,96,0.25)]" style={{ textShadow: '0 0 30px rgba(225,169,96,0.15), 0 4px 30px rgba(0,0,0,0.9)' }}>38 ANOS</span>
+                        <h1 className="relative text-[clamp(1.25rem,5vw,1.65rem)] font-black text-white leading-[0.92] tracking-tighter uppercase cinematic-text-shadow">
+                            <span className="block text-[clamp(1.8rem,7vw,2.2rem)] text-accent-gold italic drop-shadow-[0_0_25px_rgba(225,169,96,0.25)]" style={{ textShadow: '0 0 30px rgba(225,169,96,0.15), 0 4px 30px rgba(0,0,0,0.9)' }}>38 ANOS</span>
                             <span className="text-accent-gold italic drop-shadow-[0_0_15px_rgba(225,169,96,0.2)]">CONECTANDO</span> <br />
                             MARCAS, PESSOAS <br />
                             E MERCADOS.

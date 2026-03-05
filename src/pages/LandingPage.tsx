@@ -212,7 +212,7 @@ export default function LandingPage() {
 
                         {/* Descriptive Content Area */}
                         <div className="lg:col-span-7 relative z-30 p-5 sm:p-8 md:p-16 lg:p-24 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-accent-gold mb-8 tracking-tight leading-[1.05]">
+                            <h2 className="font-black text-accent-gold mb-8 tracking-tight leading-[1.05] text-[clamp(1.75rem,4vw,3rem)]">
                                 Estratégia, Escala e <br />Legado no Franchising
                             </h2>
                             <div className="space-y-5 text-sm md:text-base text-white/60 font-medium leading-relaxed">
@@ -251,7 +251,7 @@ export default function LandingPage() {
                     <section className="mb-12 relative w-full section-reveal" id="ecossistema">
                         <div className="max-w-[1700px] mx-auto px-6 md:px-12 grid lg:grid-cols-12 gap-16 items-center">
                             <div className="lg:col-span-5 relative z-20 flex flex-col items-center sm:items-start text-center sm:text-left">
-                                <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white mb-10 tracking-tighter leading-tight cinematic-text-shadow animate-reveal-skew opacity-0 text-center sm:text-left mt-6">
+                                <h2 className="font-black text-white mb-10 tracking-tighter leading-tight cinematic-text-shadow animate-reveal-skew opacity-0 text-center sm:text-left mt-6 text-[clamp(2.5rem,6vw,4.5rem)]">
                                     Ecossistema <br /> <span className="text-accent-gold italic block mt-4 animate-reveal-skew opacity-0 [animation-delay:200ms]">Bizguardian.</span>
                                 </h2>
                                 <p className="text-xl text-white/40 font-medium max-w-xl leading-relaxed mb-12">
@@ -303,9 +303,6 @@ export default function LandingPage() {
                                         <div className="absolute inset-0 flex items-center justify-center z-20">
                                             <div className="relative">
                                                 <div className="absolute -inset-20 bg-accent-gold/20 blur-[80px] rounded-full animate-pulse opacity-40 group-hover:opacity-60 transition-opacity"></div>
-                                                <button className="relative w-32 h-32 bg-black/40 backdrop-blur-2xl border border-white/10 text-white rounded-full flex items-center justify-center hover:bg-accent-gold hover:text-black hover:border-accent-gold transition-all duration-700 transform hover:scale-110 group/play shadow-2xl">
-                                                    <span className="material-symbols-outlined text-7xl ml-1 font-black transition-transform group-hover/play:scale-110">play_arrow</span>
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -317,7 +314,7 @@ export default function LandingPage() {
                                 <span className="inline-block py-1.5 px-4 bg-accent-gold/5 border border-accent-gold/20 text-accent-gold text-[10px] font-black tracking-[0.4em] uppercase mb-10 w-fit">
                                     O Próximo Nível do Ecossistema
                                 </span>
-                                <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-tight cinematic-text-shadow">
+                                <h2 className="font-black text-white mb-8 tracking-tighter leading-tight cinematic-text-shadow text-[clamp(2rem,4.5vw,3.75rem)]">
                                     A inteligência da internacionalização agora em <span className="text-accent-gold italic">escala tecnológica.</span>
                                 </h2>
                                 <p className="text-lg md:text-xl text-white/50 mb-6 leading-relaxed font-medium max-w-xl">
@@ -376,7 +373,7 @@ export default function LandingPage() {
                         <div className="max-w-[1700px] mx-auto">
                             <div className="flex flex-col items-center text-center justify-center mb-12 sm:mb-16 md:mb-24 border-b border-white/10 pb-8 sm:pb-12 gap-6">
                                 <div className="max-w-3xl flex flex-col items-center">
-                                    <h3 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white mb-4 leading-tight animate-reveal-skew opacity-0 mt-6">
+                                    <h3 className="font-black tracking-tighter text-white mb-4 leading-tight animate-reveal-skew opacity-0 mt-6 text-[clamp(2.5rem,5.5vw,4.5rem)]">
                                         Histórias de <br /><span className="text-accent-gold italic animate-reveal-skew opacity-0 [animation-delay:200ms]">Alto Padrão.</span>
                                     </h3>
                                     <p className="text-white/40 text-center text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] leading-relaxed max-w-lg mt-6">
@@ -395,7 +392,7 @@ export default function LandingPage() {
                                 ].map((item) => (
                                     <div
                                         key={item.id}
-                                        className="group relative aspect-[10/16] overflow-hidden will-change-gpu cursor-pointer bg-zinc-900/40 rounded-sm border border-white/5 hover:border-accent-gold/30 transition-all duration-700"
+                                        className="group relative aspect-[9/16] sm:aspect-[10/16] overflow-hidden will-change-gpu cursor-pointer bg-zinc-900/40 rounded-xl sm:rounded-sm border border-white/5 hover:border-accent-gold/30 transition-all duration-700"
                                         onClick={() => {
                                             if (item.videoId) {
                                                 setSelectedVideoId(item.videoId);
@@ -441,7 +438,7 @@ export default function LandingPage() {
                             <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
                             <div className="relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
                                 <div className="text-center sm:text-left">
-                                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[0.9] tracking-tighter mb-6 uppercase">
+                                    <h2 className="font-black text-white leading-[0.9] tracking-tighter mb-6 uppercase text-[clamp(2rem,4vw,3.5rem)]">
                                         FALE COM <br /> <span className="text-accent-gold italic">MARINHO PONCI.</span>
                                     </h2>
                                     <p className="text-sm md:text-base text-white/50 max-w-md font-medium mb-12 leading-relaxed">
@@ -604,9 +601,6 @@ export default function LandingPage() {
                             <p className="text-white/40 text-sm leading-relaxed max-w-xs md:max-w-[200px]">
                                 Atendimento global. <br /> Parceria e estruturação estratégica.
                             </p>
-                            <button onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })} className="mt-8 px-8 py-4 bg-transparent border border-white/20 text-white text-[9px] font-black uppercase tracking-[0.3em] hover:bg-accent-gold hover:text-black hover:border-accent-gold transition-all duration-500 rounded-md">
-                                Falar Agora
-                            </button>
                         </div>
                     </div>
 

@@ -7,13 +7,19 @@ interface QuotesModalProps {
 
 const quotes = [
     {
-        text: "Fazer marketing para rede de franquias torna você um profissional com visão mais ampla e em 360 graus, uma vez que o faz avaliar não somente a logística e os resultados, mas também os impactos na empresa, desde a criação até o cliente final. Precisamos pensar que temos dois clientes – o franqueado e o consumidor final – e o objetivo é satisfazer e gerar resultados para ambos",
-        source: "MARKETING PARA FRANQUIAS",
-        authors: "Denis Santini & Filomena Garcia",
-        cover: "/mkt para franquias .jpg"
+        text: "Lojas que crescem mais rápido e deslancham são aquelas que têm por trás um franqueado apaixonado pela marca.....é mais fácil ensinar a fazer fluxo de caixa ou gestão de capital de giro do que ensinar alguém a gostar do negócio.",
+        source: "OS 7 FRANQUEAHÁBITOS",
+        authors: "Denis Santini",
+        cover: "/0s 7 mandamentos.jpg"
     },
     {
-        text: "O sucesso no marketing para rede de franquias se da quando o franqueador senta na cadeira do franqueado e entende que existem dois targets : o cliente da ponta e o cliente-franqueado. E juntos buscam a satisfação de ambos com resultados positivos",
+        text: "The processes could not influence the person, the person needed to influence the process.",
+        source: "BOLD - HOW TO BE BRAVE IN BUSINESS AND WIN",
+        authors: "Shaun Smith & Andy Milligan",
+        cover: "/bold.jpg"
+    },
+    {
+        text: "Fazer marketing para rede de franquias torna você um profissional com visão mais ampla e em 360 graus, uma vez que o faz avaliar não somente a logística e os resultados, mas também os impactos na empresa, desde a criação até o cliente final. Precisamos pensar que temos dois clientes – o franqueado e o consumidor final – e o objetivo é satisfazer e gerar resultados para ambos",
         source: "MARKETING PARA FRANQUIAS",
         authors: "Denis Santini & Filomena Garcia",
         cover: "/mkt para franquias .jpg"
@@ -25,7 +31,19 @@ const quotes = [
         cover: "/bold.jpg"
     },
     {
-        text: "The processes could not influence the person, the person needed to influence the process.",
+        text: "Quem quer empreender em Portugal dou duas dicas : Paciência e Reserva financeira de pelo menos dois anos – O primeiro ano é terrível; no segundo, entende-se o mercado; e no terceiro o negócio pode deslanchar",
+        source: "REVISTA VEJA",
+        authors: "Setembro 2019",
+        cover: null
+    },
+    {
+        text: "O sucesso no marketing para rede de franquias se da quando o franqueador senta na cadeira do franqueado e entende que existem dois targets : o cliente da ponta e o cliente-franqueado. E juntos buscam a satisfação de ambos com resultados positivos",
+        source: "MARKETING PARA FRANQUIAS",
+        authors: "Denis Santini & Filomena Garcia",
+        cover: "/mkt para franquias .jpg"
+    },
+    {
+        text: "When I hire a new employee I keep in mind the following questions: is this person capable of being part of our family and will enjoy working with this person?",
         source: "BOLD - HOW TO BE BRAVE IN BUSINESS AND WIN",
         authors: "Shaun Smith & Andy Milligan",
         cover: "/bold.jpg"
@@ -41,24 +59,6 @@ const quotes = [
         source: "BOLD - HOW TO BE BRAVE IN BUSINESS AND WIN",
         authors: "Shaun Smith & Andy Milligan",
         cover: "/bold.jpg"
-    },
-    {
-        text: "When I hire a new employee I keep in mind the following questions: is this person capable of being part of our family and will enjoy working with this person?",
-        source: "BOLD - HOW TO BE BRAVE IN BUSINESS AND WIN",
-        authors: "Shaun Smith & Andy Milligan",
-        cover: "/bold.jpg"
-    },
-    {
-        text: "Lojas que crescem mais rápido e deslancham são aquelas que têm por trás um franqueado apaixonado pela marca.....é mais fácil ensinar a fazer fluxo de caixa ou gestão de capital de giro do que ensinar alguém a gostar do negócio.",
-        source: "OS 7 FRANQUEAHÁBITOS",
-        authors: "Denis Santini",
-        cover: "/0s 7 mandamentos.jpg"
-    },
-    {
-        text: "Quem quer empreender em Portugal dou duas dicas : Paciência e Reserva financeira de pelo menos dois anos – O primeiro ano é terrível; no segundo, entende-se o mercado; e no terceiro o negócio pode deslanchar",
-        source: "REVISTA VEJA",
-        authors: "Setembro 2019",
-        cover: null
     }
 ];
 
@@ -119,8 +119,8 @@ export default function QuotesModal({ isOpen, onClose }: QuotesModalProps) {
                             style={{ animationDelay: `${idx * 80}ms` }}
                         >
                             {quote.cover && (
-                                <div className="flex-shrink-0 w-24 h-36 group-hover:scale-105 overflow-hidden rounded shadow-lg border border-white/10 hidden sm:block transition-transform duration-500">
-                                    <img src={quote.cover} alt={quote.source} className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
+                                <div className="flex-shrink-0 w-20 h-28 sm:w-24 sm:h-36 group-hover:scale-105 overflow-hidden rounded shadow-lg border border-white/10 block transition-transform duration-500 mb-4 sm:mb-0 mx-auto sm:mx-0">
+                                    <img src={quote.cover} alt={quote.source} loading="lazy" decoding="async" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
                                 </div>
                             )}
 
@@ -134,7 +134,7 @@ export default function QuotesModal({ isOpen, onClose }: QuotesModalProps) {
                                     </span>
                                 </div>
 
-                                <p className="text-sm sm:text-base text-white/70 font-medium leading-relaxed italic mb-5">
+                                <p className="text-sm sm:text-base text-white/70 font-medium leading-[1.6] italic mb-5 text-balance text-center sm:text-left">
                                     "{quote.text}"
                                 </p>
 

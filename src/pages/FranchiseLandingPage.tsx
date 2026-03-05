@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import FranchiseQuizModal from '../components/FranchiseQuizModal';
 
 const BENEFITS = [
@@ -259,11 +259,13 @@ export default function FranchiseLandingPage() {
                     <div className="relative z-10 w-full max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 text-center flex flex-col items-center pt-16 sm:pt-20 md:pt-24 pb-24 sm:pb-32">
                         {/* ── Franchise-se Logo — BIG & Centered ── */}
                         <div className="hero-el mb-6 sm:mb-8" style={{ transitionDelay: '0ms' }}>
-                            <img
-                                src="/LOGO FUNDO ESCURO.png"
-                                alt="Franchise-se"
-                                className="h-16 sm:h-20 md:h-28 lg:h-36 w-auto object-contain mx-auto drop-shadow-[0_0_40px_rgba(225,169,96,0.2)]"
-                            />
+                            <Link to="/" className="inline-block hover:-translate-y-1 transition-transform duration-300">
+                                <img
+                                    src="/LOGO FUNDO ESCURO.png"
+                                    alt="Franchise-se"
+                                    className="h-16 sm:h-20 md:h-28 lg:h-36 w-auto object-contain mx-auto drop-shadow-[0_0_40px_rgba(225,169,96,0.2)]"
+                                />
+                            </Link>
                         </div>
 
                         {/* ── Urgency Badge — Centered below logo ── */}
@@ -673,7 +675,9 @@ export default function FranchiseLandingPage() {
             <footer className="bg-black text-white py-10 sm:py-14 border-t border-white/5">
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <img src="/marinho final.png" alt="Marinho Ponci Logo" className="h-10 sm:h-12 w-auto object-contain" />
+                        <Link to="/">
+                            <img src="/marinho final.png" alt="Marinho Ponci Logo" className="h-10 sm:h-12 w-auto object-contain hover:opacity-80 transition-opacity" />
+                        </Link>
                         <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-white/10 text-center">
                             © 2026 MARINHO PONCI. ALL RIGHTS RESERVED. BORN FOR GLOBAL.
                         </p>

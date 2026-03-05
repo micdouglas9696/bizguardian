@@ -93,8 +93,8 @@ export default function PriorityListModal({ isOpen, onClose }: PriorityListModal
                             <span className="inline-block py-1.5 px-6 bg-accent-gold/10 border border-accent-gold/30 text-accent-gold text-xs font-black tracking-[0.4em] uppercase mb-6 rounded-full shadow-[0_0_20px_rgba(234,179,8,0.15)]">
                                 Acesso Exclusivo
                             </span>
-                            <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-tight cinematic-text-shadow">
-                                <span className="text-accent-gold italic font-serif opacity-90 pr-3">Expansão</span>
+                            <h2 className="text-[clamp(2.5rem,6vw,4.5rem)] sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-tight cinematic-text-shadow">
+                                <span className="text-accent-gold italic font-serif opacity-90 pr-2 sm:pr-3 block sm:inline">Expansão</span>
                                 Internacional
                             </h2>
                             <p className="text-white/50 text-base sm:text-lg mt-6 max-w-2xl mx-auto font-medium">

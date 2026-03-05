@@ -165,6 +165,8 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [answers, setAnswers] = useState<Record<number, number>>({});
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [transitionDirection, setTransitionDirection] = useState<'forward' | 'backward'>('forward');
 
     // Lead Form State
     const [name, setName] = useState('');
@@ -199,9 +201,12 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     };
 
     const handleAnswer = (points: number) => {
+        if (isTransitioning) return;
         setAnswers(prev => ({ ...prev, [currentQuestionIndex]: points }));
 
-        // Go back up to next logically
+        setIsTransitioning(true);
+        setTransitionDirection('forward');
+
         setTimeout(() => {
             if (currentQuestionIndex + 1 >= QUESTIONS.length) {
                 setPhase('lead');
@@ -210,16 +215,33 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
             } else {
                 setCurrentQuestionIndex(prev => prev + 1);
             }
-        }, 300);
+            setIsTransitioning(false);
+        }, 350);
+    };
+
+    const handleBack = () => {
+        if (isTransitioning || currentQuestionIndex === 0) return;
+        setIsTransitioning(true);
+        setTransitionDirection('backward');
+
+        setTimeout(() => {
+            setCurrentQuestionIndex(prev => prev - 1);
+            setIsTransitioning(false);
+        }, 350);
     };
 
     const handleContinueFromStatement = () => {
-        if (currentQuestionIndex + 1 >= QUESTIONS.length) {
-            setPhase('lead');
-        } else {
-            setCurrentQuestionIndex(prev => prev + 1);
-            setPhase('question');
-        }
+        setIsTransitioning(true);
+        setTransitionDirection('forward');
+        setTimeout(() => {
+            if (currentQuestionIndex + 1 >= QUESTIONS.length) {
+                setPhase('lead');
+            } else {
+                setCurrentQuestionIndex(prev => prev + 1);
+                setPhase('question');
+            }
+            setIsTransitioning(false);
+        }, 300);
     };
 
     const handleLeadCapture = async (e: React.FormEvent) => {
@@ -290,183 +312,199 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     const outcome = getOutcome();
 
     return (
-        <div className="fixed inset-0 z-[200] flex bg-[#030303] overflow-y-auto animate-in slide-in-from-bottom-[100%] fade-in duration-700 ease-out">
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50">
-                <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:rotate-90 hover:scale-110 transition-all duration-300 shadow-glow-primary">
+        <div className="fixed inset-0 z-[200] flex flex-col bg-[#030303] animate-in slide-in-from-bottom-[100%] fade-in duration-700 ease-out">
+            {/* Fixed Close Button */}
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[250]">
+                <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:rotate-90 hover:scale-110 transition-all duration-300 shadow-glow-primary">
                     <span className="material-symbols-outlined text-xl sm:text-2xl">close</span>
                 </button>
             </div>
 
-            <div className="w-full max-w-4xl mx-auto px-4 py-10 sm:px-8 relative min-h-screen flex flex-col">
-                <div className="my-auto w-full pt-10 pb-4">
+            {/* Scrollable Content Area */}
+            <div className="flex-1 overflow-y-auto w-full flex">
+                <div className="w-full max-w-4xl mx-auto px-4 py-10 sm:px-8 relative min-h-max flex flex-col my-auto">
+                    <div className="w-full pt-10 pb-4">
 
-                    {phase === 'start' && (
-                        <div className="text-center animate-in slide-in-from-bottom-4 duration-500">
-                            <span className="inline-block py-1 px-3 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black tracking-[0.3em] uppercase mb-6 rounded-full">
-                                Por Marinho Ponci
-                            </span>
-                            <h2 className="text-3xl sm:text-5xl font-black text-white mb-6 uppercase tracking-tight">
-                                Diagnóstico de Maturidade para <span className="text-accent-gold italic">Franchising</span>
-                            </h2>
-                            <p className="text-white/60 mb-6 font-medium text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
-                                Antes de conversar com qualquer franqueadora, descubra em qual nível de consciência você realmente está.
-                            </p>
-                            <ul className="text-white/40 text-xs sm:text-sm text-left mx-auto max-w-sm mb-10 space-y-2 font-medium">
-                                <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">check_circle</span> São 12 perguntas essenciais.</li>
-                                <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">timer</span> Tempo estimado: 3 minutos.</li>
-                                <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">psychology</span> Seja honesto — o mercado vai ser.</li>
-                            </ul>
-                            <button
-                                onClick={handleStart}
-                                className="w-full sm:w-auto px-10 py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all duration-300 shadow-glow-primary rounded"
-                            >
-                                Começar Diagnóstico
-                            </button>
-                        </div>
-                    )}
-
-                    {phase === 'question' && (
-                        <div key={currentQuestionIndex} className="animate-in slide-in-from-right-16 fade-in duration-500 ease-out">
-                            <div className="flex flex-row items-center justify-between gap-4 mb-5 sm:mb-6">
-                                <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-accent-gold whitespace-nowrap">
-                                    Pergunta {currentQuestion.id} <span className="text-white/30">/ {QUESTIONS.length}</span>
+                        {phase === 'start' && (
+                            <div className="text-center animate-in slide-in-from-bottom-4 duration-500">
+                                <span className="inline-block py-1 px-3 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black tracking-[0.3em] uppercase mb-6 rounded-full">
+                                    Por Marinho Ponci
                                 </span>
-                                <div className="flex gap-1 sm:gap-1.5 h-1 flex-1 w-full max-w-[120px] sm:max-w-[200px]">
-                                    {QUESTIONS.map((_, i) => (
-                                        <div key={i} className={`flex-1 rounded-full transition-all duration-500 ${i <= currentQuestionIndex ? 'bg-accent-gold shadow-[0_0_8px_rgba(234,179,8,0.5)]' : 'bg-white/10'}`} />
+                                <h2 className="text-3xl sm:text-5xl font-black text-white mb-6 uppercase tracking-tight">
+                                    Diagnóstico de Maturidade para <span className="text-accent-gold italic">Franchising</span>
+                                </h2>
+                                <p className="text-white/60 mb-6 font-medium text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
+                                    Antes de conversar com qualquer franqueadora, descubra em qual nível de consciência você realmente está.
+                                </p>
+                                <ul className="text-white/40 text-xs sm:text-sm text-left mx-auto max-w-sm mb-10 space-y-2 font-medium">
+                                    <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">check_circle</span> São 12 perguntas essenciais.</li>
+                                    <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">timer</span> Tempo estimado: 3 minutos.</li>
+                                    <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">psychology</span> Seja honesto — o mercado vai ser.</li>
+                                </ul>
+                                <button
+                                    onClick={handleStart}
+                                    className="w-full sm:w-auto px-10 py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all duration-300 shadow-glow-primary rounded"
+                                >
+                                    Começar Diagnóstico
+                                </button>
+                            </div>
+                        )}
+
+                        {phase === 'question' && (
+                            <div key={currentQuestionIndex}
+                                className={`animate-in fade-in duration-500 ease-out fill-mode-forwards ${transitionDirection === 'forward' ? 'slide-in-from-right-8' : 'slide-in-from-left-8'} transition-all ${isTransitioning ? (transitionDirection === 'forward' ? 'opacity-0 -translate-x-12 duration-300' : 'opacity-0 translate-x-12 duration-300') : 'opacity-100 translate-x-0'}`}>
+                                <div className="flex flex-row items-center justify-between gap-4 mb-5 sm:mb-6">
+                                    <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-accent-gold whitespace-nowrap">
+                                        Pergunta {currentQuestion.id} <span className="text-white/30">/ {QUESTIONS.length}</span>
+                                    </span>
+                                    <div className="flex gap-1 sm:gap-1.5 h-1 flex-1 w-full max-w-[120px] sm:max-w-[200px]">
+                                        {QUESTIONS.map((_, i) => (
+                                            <div key={i} className={`flex-1 rounded-full transition-all duration-500 ${i <= currentQuestionIndex ? 'bg-accent-gold shadow-[0_0_8px_rgba(234,179,8,0.5)]' : 'bg-white/10'}`} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-6 sm:mb-8 leading-[1.25] tracking-tight">
+                                    {currentQuestion.title}
+                                </h3>
+
+                                <div className="space-y-3">
+                                    {currentQuestion.options.map((option, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleAnswer(option.points)}
+                                            className="w-full text-left p-4 sm:p-5 rounded-none border-l-4 border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-accent-gold transition-all duration-300 group flex items-start gap-4 hover:shadow-[0_0_30px_rgba(234,179,8,0.1)] hover:-translate-y-1"
+                                        >
+                                            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent-gold group-hover:border-accent-gold transition-colors duration-300 mt-0.5">
+                                                <span className="text-white/50 group-hover:text-black font-black text-sm">
+                                                    {String.fromCharCode(65 + index)}
+                                                </span>
+                                            </div>
+                                            <span className="text-sm sm:text-base font-medium text-white/70 group-hover:text-white pt-1">
+                                                {option.text}
+                                            </span>
+                                        </button>
                                     ))}
                                 </div>
-                            </div>
 
-                            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-6 sm:mb-8 leading-[1.25] tracking-tight">
-                                {currentQuestion.title}
-                            </h3>
-
-                            <div className="space-y-3">
-                                {currentQuestion.options.map((option, index) => (
+                                {currentQuestionIndex > 0 && (
                                     <button
-                                        key={index}
-                                        onClick={() => handleAnswer(option.points)}
-                                        className="w-full text-left p-4 sm:p-5 rounded-none border-l-4 border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-accent-gold transition-all duration-300 group flex items-start gap-4 hover:shadow-[0_0_30px_rgba(234,179,8,0.1)] hover:-translate-y-1"
+                                        onClick={handleBack}
+                                        disabled={isTransitioning}
+                                        className="mt-6 flex items-center gap-2 text-white/40 hover:text-white transition-colors text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]"
                                     >
-                                        <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent-gold group-hover:border-accent-gold transition-colors duration-300 mt-0.5">
-                                            <span className="text-white/50 group-hover:text-black font-black text-sm">
-                                                {String.fromCharCode(65 + index)}
-                                            </span>
-                                        </div>
-                                        <span className="text-sm sm:text-base font-medium text-white/70 group-hover:text-white pt-1">
-                                            {option.text}
-                                        </span>
+                                        <span className="material-symbols-outlined text-sm">arrow_back</span>
+                                        Voltar para pergunta anterior
                                     </button>
+                                )}
+                            </div>
+                        )}
+
+                        {phase === 'statement' && STATEMENTS[currentQuestionIndex + 1] && (
+                            <div className="text-center animate-in zoom-in-95 duration-500 py-6 sm:py-10">
+                                <span className="material-symbols-outlined text-4xl sm:text-5xl text-accent-gold/30 mb-6 block">format_quote</span>
+                                <blockquote className="text-xl sm:text-3xl text-white font-medium italic leading-relaxed mb-8">
+                                    {STATEMENTS[currentQuestionIndex + 1].quote}
+                                </blockquote>
+                                <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-accent-gold mb-12">
+                                    — {STATEMENTS[currentQuestionIndex + 1].author}
+                                </p>
+                                <button
+                                    onClick={handleContinueFromStatement}
+                                    className="w-full sm:w-auto px-10 py-5 bg-white text-black text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] hover:bg-accent-gold transition-all duration-300 rounded"
+                                >
+                                    {STATEMENTS[currentQuestionIndex + 1].buttonText} →
+                                </button>
+                            </div>
+                        )}
+
+                        {phase === 'lead' && (
+                            <div className="animate-in slide-in-from-right-8 duration-500">
+                                <span className="inline-block py-1 px-3 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black tracking-[0.3em] uppercase mb-6 rounded-full">
+                                    Passo Final
+                                </span>
+                                <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 uppercase tracking-tighter">
+                                    Seu diagnóstico está <span className="text-accent-gold italic">pronto.</span>
+                                </h3>
+                                <p className="text-white/50 text-sm sm:text-base font-medium mb-8">
+                                    Para onde devemos enviar o seu Diagnóstico de Maturidade para o Franchising e o próximo passo recomendado pelo Marinho?
+                                </p>
+
+                                <form onSubmit={handleLeadCapture} className="space-y-5">
+                                    <div>
+                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">
+                                            Nome Completo
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            placeholder="Seu nome"
+                                            required
+                                            className="w-full bg-black border border-white/10 px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all rounded"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">
+                                            E-mail
+                                        </label>
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="seu@email.com"
+                                            required
+                                            className="w-full bg-black border border-white/10 px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all rounded"
+                                        />
+                                    </div>
+                                    <CountryPhoneInput
+                                        value={phone}
+                                        onChange={setPhone}
+                                        label="WhatsApp"
+                                    />
+
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="w-full py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-glow-primary rounded mt-4"
+                                    >
+                                        {isSubmitting ? 'Gerando Resultado...' : 'Ver Meu Resultado →'}
+                                    </button>
+                                    <p className="text-[9px] font-bold text-white/20 text-center uppercase tracking-widest mt-4">
+                                        Seus dados são usados exclusivamente para envio do resultado e informações sobre a Imersão Franchise-se. Sem spam.
+                                    </p>
+                                </form>
+                            </div>
+                        )}
+
+                        {phase === 'result' && (
+                            <div className="text-center animate-in slide-in-from-bottom-8 duration-700">
+                                <div className="w-20 h-20 bg-accent-gold/10 border border-accent-gold rounded-full flex items-center justify-center mx-auto mb-8 shadow-glow-primary">
+                                    <span className="material-symbols-outlined text-accent-gold text-4xl">verified</span>
+                                </div>
+                                <h3 className="text-2xl sm:text-4xl font-black text-white mb-6 uppercase tracking-tighter">
+                                    {outcome.title}
+                                </h3>
+                                {outcome.desc.split('\n\n').map((paragraph, idx) => (
+                                    <p key={idx} className="text-sm sm:text-base text-white/60 mb-5 font-medium leading-relaxed max-w-2xl mx-auto">
+                                        {paragraph}
+                                    </p>
                                 ))}
-                            </div>
-                        </div>
-                    )}
 
-                    {phase === 'statement' && STATEMENTS[currentQuestionIndex + 1] && (
-                        <div className="text-center animate-in zoom-in-95 duration-500 py-6 sm:py-10">
-                            <span className="material-symbols-outlined text-4xl sm:text-5xl text-accent-gold/30 mb-6 block">format_quote</span>
-                            <blockquote className="text-xl sm:text-3xl text-white font-medium italic leading-relaxed mb-8">
-                                {STATEMENTS[currentQuestionIndex + 1].quote}
-                            </blockquote>
-                            <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-accent-gold mb-12">
-                                — {STATEMENTS[currentQuestionIndex + 1].author}
-                            </p>
-                            <button
-                                onClick={handleContinueFromStatement}
-                                className="w-full sm:w-auto px-10 py-5 bg-white text-black text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] hover:bg-accent-gold transition-all duration-300 rounded"
-                            >
-                                {STATEMENTS[currentQuestionIndex + 1].buttonText} →
-                            </button>
-                        </div>
-                    )}
-
-                    {phase === 'lead' && (
-                        <div className="animate-in slide-in-from-right-8 duration-500">
-                            <span className="inline-block py-1 px-3 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black tracking-[0.3em] uppercase mb-6 rounded-full">
-                                Passo Final
-                            </span>
-                            <h3 className="text-2xl sm:text-4xl font-black text-white mb-4 uppercase tracking-tighter">
-                                Seu diagnóstico está <span className="text-accent-gold italic">pronto.</span>
-                            </h3>
-                            <p className="text-white/50 text-sm sm:text-base font-medium mb-8">
-                                Para onde devemos enviar o seu Diagnóstico de Maturidade para o Franchising e o próximo passo recomendado pelo Marinho?
-                            </p>
-
-                            <form onSubmit={handleLeadCapture} className="space-y-5">
-                                <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">
-                                        Nome Completo
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        placeholder="Seu nome"
-                                        required
-                                        className="w-full bg-black border border-white/10 px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all rounded"
-                                    />
+                                <div className="mt-10">
+                                    <button
+                                        onClick={() => {
+                                            onClose();
+                                            onGoToForm();
+                                        }}
+                                        className="w-full sm:w-auto px-10 py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-glow-primary rounded"
+                                    >
+                                        {outcome.btnText} →
+                                    </button>
                                 </div>
-                                <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">
-                                        E-mail
-                                    </label>
-                                    <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="seu@email.com"
-                                        required
-                                        className="w-full bg-black border border-white/10 px-5 py-4 text-sm text-white focus:outline-none focus:border-accent-gold/50 transition-all rounded"
-                                    />
-                                </div>
-                                <CountryPhoneInput
-                                    value={phone}
-                                    onChange={setPhone}
-                                    label="WhatsApp"
-                                />
-
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="w-full py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-glow-primary rounded mt-4"
-                                >
-                                    {isSubmitting ? 'Gerando Resultado...' : 'Ver Meu Resultado →'}
-                                </button>
-                                <p className="text-[9px] font-bold text-white/20 text-center uppercase tracking-widest mt-4">
-                                    Seus dados são usados exclusivamente para envio do resultado e informações sobre a Imersão Franchise-se. Sem spam.
-                                </p>
-                            </form>
-                        </div>
-                    )}
-
-                    {phase === 'result' && (
-                        <div className="text-center animate-in slide-in-from-bottom-8 duration-700">
-                            <div className="w-20 h-20 bg-accent-gold/10 border border-accent-gold rounded-full flex items-center justify-center mx-auto mb-8 shadow-glow-primary">
-                                <span className="material-symbols-outlined text-accent-gold text-4xl">verified</span>
                             </div>
-                            <h3 className="text-2xl sm:text-4xl font-black text-white mb-6 uppercase tracking-tighter">
-                                {outcome.title}
-                            </h3>
-                            {outcome.desc.split('\n\n').map((paragraph, idx) => (
-                                <p key={idx} className="text-sm sm:text-base text-white/60 mb-5 font-medium leading-relaxed max-w-2xl mx-auto">
-                                    {paragraph}
-                                </p>
-                            ))}
-
-                            <div className="mt-10">
-                                <button
-                                    onClick={() => {
-                                        onClose();
-                                        onGoToForm();
-                                    }}
-                                    className="w-full sm:w-auto px-10 py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-glow-primary rounded"
-                                >
-                                    {outcome.btnText} →
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

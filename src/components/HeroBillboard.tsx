@@ -55,13 +55,13 @@ export default function HeroBillboard() {
             {/* Desktop Content (sm+) */}
             <div className="relative z-20 w-full max-w-[1700px] mx-auto px-6 md:px-12 lg:px-24 h-screen hidden sm:flex flex-col justify-center pt-24 pb-20 lg:pt-32 lg:pb-24">
                 <div
-                    className="max-w-2xl animate-reveal-skew"
+                    className="max-w-xl xl:max-w-2xl animate-reveal-skew"
                     style={{
                         transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 4}px)`
                     }}
                 >
                     {/* Headline — large bold italic uppercase like reference */}
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.0] tracking-tighter uppercase italic mb-10 cinematic-text-shadow">
+                    <h1 className="font-black text-white leading-[1.0] tracking-tighter uppercase italic mb-10 cinematic-text-shadow max-w-[95vw] lg:max-w-none text-[clamp(1.5rem,3.5vw,3.5rem)] xl:text-[clamp(2rem,4vw,4.5rem)]">
                         Franquia pode ser o <span className="text-accent-gold">melhor</span> ou o <span className="text-accent-gold">pior</span> negócio da sua vida!
                     </h1>
 
@@ -100,7 +100,7 @@ export default function HeroBillboard() {
 
                 {/* Text Block */}
                 <div className="relative z-20 flex-1 flex flex-col justify-center items-center text-center px-6 pb-12 -mt-8">
-                    <h1 className="text-[1.6rem] font-black text-white leading-[1.1] tracking-tight italic mb-5">
+                    <h1 className="font-black text-white leading-[1.1] tracking-tight italic mb-5 text-[clamp(1.25rem,5vw,1.6rem)]">
                         Franquia pode ser o <span className="text-accent-gold">melhor</span> ou o <span className="text-accent-gold">pior</span> negócio da sua vida!
                     </h1>
 

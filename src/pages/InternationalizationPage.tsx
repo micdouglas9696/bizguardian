@@ -43,8 +43,8 @@ export default function InternationalizationPage() {
                         <span className="w-2 h-2 rounded-full bg-accent-gold animate-pulse"></span>
                         Diagnóstico Estratégico
                     </div>
-                    <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 max-w-6xl text-white leading-[0.9] cinematic-text-shadow">
-                        A inteligência da internacionalização agora em <br /><span className="text-accent-gold italic font-serif">escala tecnológica.</span>
+                    <h1 className="font-black tracking-tighter mb-8 max-w-6xl text-white leading-[0.9] cinematic-text-shadow text-[clamp(2.5rem,7vw,5.5rem)]">
+                        A inteligência da expansão <br className="block sm:hidden" /> internacional agora em <br className="hidden sm:block" /><span className="text-accent-gold italic font-serif">escala tecnológica.</span>
                     </h1>
                     <p className="text-xl text-white/40 max-w-3xl mb-12 leading-relaxed font-medium">
                         Um sistema de inteligência e tecnologia que analisa a maturidade do seu negócio com precisão cirúrgica atrelado a 38 anos de experiência em internacionalização.
@@ -57,7 +57,9 @@ export default function InternationalizationPage() {
 
                         <div className="absolute bottom-10 left-10 text-left">
                             <p className="text-white font-black text-lg uppercase tracking-tighter">A verdade sobre expandir</p>
-                            <p className="text-accent-gold text-xs font-black uppercase tracking-[0.2em] mt-1">Inteligência em Internacionalização</p>
+                            <p className="text-accent-gold text-xs font-black uppercase tracking-[0.2em] mt-1">
+                                Inteligência em Expansão <br className="block sm:hidden" /> Internacional
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -67,7 +69,7 @@ export default function InternationalizationPage() {
                     <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-red/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
                     <div className="relative z-10 max-w-5xl mx-auto">
                         <div className="text-center mb-20">
-                            <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter">O erro não está <br /> <span className="text-accent-red italic font-serif">no país.</span></h2>
+                            <h2 className="font-black mb-8 tracking-tighter text-[clamp(2.25rem,6vw,4rem)]">O erro não está <br /> <span className="text-accent-red italic font-serif">no país.</span></h2>
                             <p className="text-white/40 text-xl font-medium max-w-3xl mx-auto leading-relaxed">
                                 A maioria falha não por falta de produto, mas por apostar em vez de planejar. O custo da ignorância é sempre maior que o do planejamento.
                             </p>
@@ -94,7 +96,7 @@ export default function InternationalizationPage() {
                 <section className="mb-32" id="method">
                     <div className="text-center mb-20">
                         <span className="text-accent-gold font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Nosso Método</span>
-                        <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">Inteligência & <span className="text-accent-gold italic font-serif">Conexão Real</span></h2>
+                        <h2 className="font-black text-white tracking-tighter text-[clamp(2.25rem,6vw,4rem)]">Inteligência & <span className="text-accent-gold italic font-serif">Conexão Real</span></h2>
                         <p className="text-white/40 mt-6 max-w-2xl mx-auto font-medium text-lg">Não vendemos cursos genéricos. Unimos a experiência de 38 anos de Marinho Ponci com o poder da tecnologia.</p>
                     </div>
 
@@ -106,7 +108,7 @@ export default function InternationalizationPage() {
                             </div>
                             <div className="relative z-10 p-12 h-full flex flex-col justify-center max-w-md">
                                 <span className="text-accent-gold text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">Tecnologia Proprietária</span>
-                                <h3 className="text-3xl font-black text-white mb-6 tracking-tighter uppercase leading-none">Clone IA do <br /> <span className="text-accent-gold italic font-serif">Marinho Ponci</span></h3>
+                                <h3 className="font-black text-white mb-6 tracking-tighter uppercase leading-none text-[clamp(1.75rem,4vw,2.5rem)]">Clone IA do <br /> <span className="text-accent-gold italic font-serif">Marinho Ponci</span></h3>
                                 <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                                     Você será guiado a cada passo pela inteligência digital que carrega 38 anos de expertise do Marinho.
                                 </p>
@@ -145,7 +147,7 @@ export default function InternationalizationPage() {
                 <section className="mb-32 text-center max-w-5xl mx-auto" id="cta-footer">
                     <div className="bg-gradient-to-br from-[#111] to-black rounded-[3rem] p-16 md:p-24 border border-white/5 shadow-2xl relative overflow-hidden">
                         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-                        <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 leading-none relative z-10 cinematic-text-shadow">
+                        <h2 className="font-black text-white tracking-tighter mb-8 leading-[1.05] relative z-10 cinematic-text-shadow text-[clamp(2.5rem,6vw,4.5rem)]">
                             Pronto para atravessar <br /> <span className="text-accent-gold italic font-serif">fronteiras?</span>
                         </h2>
                         <h3 className="text-2xl md:text-3xl text-white font-bold opacity-80 mb-6 relative z-10">
