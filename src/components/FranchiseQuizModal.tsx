@@ -267,6 +267,16 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
         }, 350);
     };
 
+    const handleBack = () => {
+        if (isTransitioning || currentQuestionIndex === 0) return;
+        setIsTransitioning(true);
+        setTransitionDirection('backward');
+
+        setTimeout(() => {
+            setCurrentQuestionIndex(prev => prev - 1);
+            setIsTransitioning(false);
+        }, 350);
+    };
 
     const handleContinueFromStatement = () => {
         setIsTransitioning(true);
@@ -351,8 +361,8 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
 
     return (
         <div className="fixed inset-0 z-[200] flex flex-col bg-[#030303] h-[100dvh] w-full overflow-hidden overscroll-none animate-in slide-in-from-bottom-[100%] fade-in duration-700 ease-out">
-            {/* Fixed Close Button */}
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[250]">
+            {/* Fixed Close Button (Hidden on Mobile, relying on Native Back / Header interaction if needed, or keeping it hidden per request) */}
+            <div className="hidden sm:block absolute top-4 right-4 sm:top-6 sm:right-6 z-[250]">
                 <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:rotate-90 hover:scale-110 transition-all duration-300 shadow-glow-primary">
                     <span className="material-symbols-outlined text-xl sm:text-2xl">close</span>
                 </button>
@@ -424,6 +434,17 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                                         </button>
                                     ))}
                                 </div>
+
+                                {currentQuestionIndex > 0 && (
+                                    <button
+                                        onClick={handleBack}
+                                        disabled={isTransitioning}
+                                        className="mt-6 flex items-center gap-2 text-white/40 hover:text-white transition-colors text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]"
+                                    >
+                                        <span className="material-symbols-outlined text-sm">arrow_back</span>
+                                        Voltar para pergunta anterior
+                                    </button>
+                                )}
 
                             </div>
                         )}
