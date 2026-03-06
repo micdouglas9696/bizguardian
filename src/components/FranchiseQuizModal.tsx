@@ -267,16 +267,6 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
         }, 350);
     };
 
-    const handleBack = () => {
-        if (isTransitioning || currentQuestionIndex === 0) return;
-        setIsTransitioning(true);
-        setTransitionDirection('backward');
-
-        setTimeout(() => {
-            setCurrentQuestionIndex(prev => prev - 1);
-            setIsTransitioning(false);
-        }, 350);
-    };
 
     const handleContinueFromStatement = () => {
         setIsTransitioning(true);
@@ -435,16 +425,6 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                                     ))}
                                 </div>
 
-                                {currentQuestionIndex > 0 && (
-                                    <button
-                                        onClick={handleBack}
-                                        disabled={isTransitioning}
-                                        className="mt-6 flex items-center gap-2 text-white/40 hover:text-white transition-colors text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]"
-                                    >
-                                        <span className="material-symbols-outlined text-sm">arrow_back</span>
-                                        Voltar para pergunta anterior
-                                    </button>
-                                )}
                             </div>
                         )}
 
