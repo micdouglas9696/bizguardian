@@ -31,7 +31,7 @@ export default function VideoModal({ isOpen, videoId, onClose }: VideoModalProps
             ></div>
 
             {/* Content Container */}
-            <div className={`relative w-full aspect-video md:max-w-4xl mx-auto bg-black border-0 sm:border sm:border-white/10 shadow-2xl sm:rounded-2xl transition-all duration-700 sm:duration-1000 sm:delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+            <div className={`relative w-full aspect-[9/16] sm:w-auto sm:h-[85vh] mx-auto bg-black border-0 sm:border sm:border-white/10 shadow-2xl sm:rounded-2xl transition-all duration-700 sm:duration-1000 sm:delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
 
                 {/* Close Button */}
                 <button
