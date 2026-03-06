@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CountryPhoneInput from './CountryPhoneInput';
 
 export interface Option {
@@ -174,11 +174,17 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     const [phone, setPhone] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Keep a stable ref of onClose to use in the popstate listener
+    const onCloseRef = useRef(onClose);
+    useEffect(() => {
+        onCloseRef.current = onClose;
+    }, [onClose]);
+
     // Reset when opened and handle body scroll lock & mobile back button
     useEffect(() => {
         const handlePopState = () => {
             if (isOpen) {
-                onClose();
+                onCloseRef.current();
             }
         };
 
@@ -209,7 +215,7 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
             document.body.style.overflow = '';
             window.removeEventListener('popstate', handlePopState);
         };
-    }, [isOpen, onClose]);
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
