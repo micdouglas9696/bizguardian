@@ -41,17 +41,21 @@ export default function VideoModal({ isOpen, videoId, onClose }: VideoModalProps
                     <span className="material-symbols-outlined text-white text-xl group-hover:text-accent-gold">close</span>
                 </button>
 
-                {/* Google Drive Video Player (Native Form) */}
+                {/* Google Drive Iframe Player */}
                 {videoId && (
                     <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center sm:rounded-2xl">
-                        <video
+                        <iframe
                             key={videoId}
-                            src={`https://drive.google.com/uc?export=download&id=${videoId}`}
-                            className="absolute border-0 w-full h-full object-cover sm:object-contain bg-black"
-                            controls
-                            autoPlay
-                            playsInline
-                        />
+                            src={`https://drive.google.com/file/d/${videoId}/preview`}
+                            className="absolute border-0 w-full h-full inset-0"
+                            allow="autoplay; fullscreen"
+                            title="Depoimento Video Player"
+                            loading="eager"
+                        ></iframe>
+
+                        {/* Overlay to block the top-right button while allowing central interaction */}
+                        <div className="absolute top-0 right-0 w-[80px] h-[60px] bg-transparent z-30 cursor-default"></div>
+                        <div className="absolute top-0 left-0 w-full h-[60px] bg-transparent z-30 cursor-default"></div>
                     </div>
                 )}
 
