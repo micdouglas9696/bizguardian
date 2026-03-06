@@ -384,11 +384,11 @@ export default function LandingPage() {
 
                             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                                 {[
-                                    { id: 1, name: 'Diego Bim', role: 'Franqueado', company: 'Influx Escola de Inglês', videoId: '1-KrKwsMfvkY4N5F7dIAt7C1nOv1k_Jve', image: 'diego.png' },
-                                    { id: 2, name: 'Marcelo Zacarias', role: 'CEO & Founder', company: 'Tio Fafá Hamburgueria', videoId: '1EG5DkA2uXy4T-J1uEBe1k-kXvBic1RSd', image: 'marcelo.png' },
-                                    { id: 3, name: 'João Ferrari', role: 'CEO', company: 'Nutrafit', videoId: '1K4mt7vXUixgIl4iWPpELkQf65luThiKv', image: 'joao ferrai.png' },
-                                    { id: 4, name: 'Adriana Auriemo', role: 'CEO e Founder', company: 'Nutty Bavarian', videoId: '1XmOVBBCADaln-Xrok18xYcSDegA5QSeg', image: 'adriana .png' },
-                                    { id: 5, name: 'Leandro Otávio', role: 'Founder', company: "D'avila Finance", videoId: '13RlGI5ejkXUb6W7VmicjueK2MjvZxM5P', image: 'leandro.png' }
+                                    { id: 1, name: 'Diego Bim', role: 'Franqueado', company: 'Influx Escola de Inglês', videoId: '/videos/diego.mp4', image: 'diego.png' },
+                                    { id: 2, name: 'Marcelo Zacarias', role: 'CEO & Founder', company: 'Tio Fafá Hamburgueria', videoId: '/videos/marcelo.mp4', image: 'marcelo.png' },
+                                    { id: 3, name: 'João Ferrari', role: 'CEO', company: 'Nutrafit', videoId: '/videos/joao.mp4', image: 'joao ferrai.png' },
+                                    { id: 4, name: 'Adriana Auriemo', role: 'CEO e Founder', company: 'Nutty Bavarian', videoId: '/videos/adriana.mp4', image: 'adriana .png' },
+                                    { id: 5, name: 'Leandro Otávio', role: 'Founder', company: "D'avila Finance", videoId: '/videos/leandro.mp4', image: 'leandro.png' }
                                 ].map((item) => (
                                     <div
                                         key={item.id}
