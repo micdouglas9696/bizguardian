@@ -31,22 +31,19 @@ export default function VideoModal({ isOpen, videoId, onClose }: VideoModalProps
             ></div>
 
             {/* Content Container */}
-            <div className={`relative w-full h-[100dvh] sm:h-auto sm:aspect-video max-w-5xl bg-black/40 border-0 sm:border sm:border-white/10 shadow-2xl transition-all duration-700 sm:duration-1000 sm:delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+            <div className={`relative w-full h-[100dvh] sm:h-[85vh] sm:max-w-[400px] md:max-w-[450px] mx-auto bg-black border-0 sm:border sm:border-white/10 shadow-2xl sm:rounded-2xl transition-all duration-700 sm:duration-1000 sm:delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
 
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 sm:-top-16 sm:right-0 flex items-center gap-2 sm:gap-4 group transition-colors z-50 bg-black/50 sm:bg-transparent rounded-full sm:rounded-none px-3 py-1.5 sm:p-0 backdrop-blur-md border border-white/20 sm:border-0"
+                    className="absolute top-4 right-4 sm:-top-4 sm:-right-16 flex items-center justify-center z-50 bg-black/50 hover:bg-white/10 rounded-full p-2 backdrop-blur-md border border-white/20 transition-all duration-300"
                 >
-                    <span className="hidden sm:block text-[10px] font-black uppercase tracking-[0.4em] text-white/40 group-hover:text-accent-gold transition-colors">Fechar</span>
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 border border-transparent sm:border-white/20 flex items-center justify-center group-hover:border-accent-gold transition-colors sm:bg-black/50 rounded-full sm:rounded-none">
-                        <span className="material-symbols-outlined text-white text-base sm:text-lg group-hover:text-accent-gold">close</span>
-                    </div>
+                    <span className="material-symbols-outlined text-white text-xl group-hover:text-accent-gold">close</span>
                 </button>
 
                 {/* Google Drive Iframe Player */}
                 {videoId && (
-                    <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center rounded-xl sm:rounded-none">
+                    <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center sm:rounded-2xl">
                         <iframe
                             key={videoId}
                             src={`https://drive.google.com/file/d/${videoId}/preview`}
