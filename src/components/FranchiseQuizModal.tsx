@@ -196,7 +196,12 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
             setName('');
             setEmail('');
             setPhone('');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            // Strict iOS Scroll Lock
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
 
             // Push state for mobile back button
             if (window.location.hash !== '#diagnostico') {
@@ -204,7 +209,16 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
             }
             window.addEventListener('popstate', handlePopState);
         } else {
-            document.body.style.overflow = ''; // Restore scrolling
+            // Restore scrolling
+            const scrollYStr = document.body.style.top;
+            if (document.body.style.position === 'fixed') {
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                if (scrollYStr) {
+                    window.scrollTo(0, parseInt(scrollYStr || '0') * -1);
+                }
+            }
 
             // If closed via "X" button, clean up the URL hash
             if (window.location.hash === '#diagnostico') {
@@ -212,7 +226,15 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
             }
         }
         return () => {
-            document.body.style.overflow = '';
+            const scrollYStr = document.body.style.top;
+            if (document.body.style.position === 'fixed') {
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                if (scrollYStr) {
+                    window.scrollTo(0, parseInt(scrollYStr || '0') * -1);
+                }
+            }
             window.removeEventListener('popstate', handlePopState);
         };
     }, [isOpen]);
@@ -338,7 +360,7 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     const outcome = getOutcome();
 
     return (
-        <div className="fixed inset-0 z-[200] flex flex-col bg-[#030303] animate-in slide-in-from-bottom-[100%] fade-in duration-700 ease-out">
+        <div className="fixed inset-0 z-[200] flex flex-col bg-[#030303] h-[100dvh] w-full overflow-hidden overscroll-none animate-in slide-in-from-bottom-[100%] fade-in duration-700 ease-out">
             {/* Fixed Close Button */}
             <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[250]">
                 <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:rotate-90 hover:scale-110 transition-all duration-300 shadow-glow-primary">
