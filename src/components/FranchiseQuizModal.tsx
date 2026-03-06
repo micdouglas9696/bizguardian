@@ -174,8 +174,14 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     const [phone, setPhone] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Reset when opened and handle body scroll lock
+    // Reset when opened and handle body scroll lock & mobile back button
     useEffect(() => {
+        const handlePopState = () => {
+            if (isOpen) {
+                onClose();
+            }
+        };
+
         if (isOpen) {
             setPhase('start');
             setCurrentQuestionIndex(0);
@@ -185,11 +191,25 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
             setEmail('');
             setPhone('');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            // Push state for mobile back button
+            if (window.location.hash !== '#diagnostico') {
+                window.history.pushState({ modal: 'diagnostico' }, '', window.location.pathname + window.location.search + '#diagnostico');
+            }
+            window.addEventListener('popstate', handlePopState);
         } else {
             document.body.style.overflow = ''; // Restore scrolling
+
+            // If closed via "X" button, clean up the URL hash
+            if (window.location.hash === '#diagnostico') {
+                window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
         }
-        return () => { document.body.style.overflow = ''; };
-    }, [isOpen]);
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [isOpen, onClose]);
 
     if (!isOpen) return null;
 

@@ -392,7 +392,7 @@ export default function LandingPage() {
                                 ].map((item) => (
                                     <div
                                         key={item.id}
-                                        className="group relative aspect-[9/16] sm:aspect-[10/16] overflow-hidden will-change-gpu cursor-pointer bg-zinc-900/40 rounded-xl sm:rounded-sm border border-white/5 hover:border-accent-gold/30 transition-all duration-700"
+                                        className="group relative aspect-video overflow-hidden will-change-gpu cursor-pointer bg-zinc-900/40 rounded-xl sm:rounded-sm border border-white/5 hover:border-accent-gold/30 transition-all duration-700"
                                         onClick={() => {
                                             if (item.videoId) {
                                                 setSelectedVideoId(item.videoId);
@@ -402,10 +402,10 @@ export default function LandingPage() {
                                     >
                                         <img
                                             alt={`Depoimento ${item.name}`}
-                                            className="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.3] group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-105 transition-all duration-1000 ease-out"
+                                            className="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.4] group-hover:grayscale-0 group-hover:brightness-90 group-hover:scale-105 transition-all duration-1000 ease-out"
                                             src={`/${item.image}`}
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700"></div>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-700"></div>
                                         <div className="absolute inset-0 p-8 flex flex-col justify-end">
                                             <div className="mb-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
                                                 <div className="w-12 h-12 rounded-full bg-accent-gold flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(234,179,8,0.3)] group-hover:scale-110 transition-transform duration-500">
