@@ -121,13 +121,16 @@ export default function PhotoMural() {
 
                 {/* Removed Netflix-style vignette border to show bright pictures edge to edge */}
 
+                {/* Radial Gradient overlay to darken the center for better readability */}
+                <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.75)_0%,rgba(0,0,0,0.4)_40%,transparent_100%)] z-10 pointer-events-none transition-opacity duration-1000 ${revealed ? 'opacity-100' : 'opacity-0'}`}></div>
+
                 {/* Overlaid Header — centered on top of photos */}
                 <div className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-all duration-1000 ease-out ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
                     <div className="text-center px-6">
                         <span className="text-accent-gold font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[9px] sm:text-[10px] block mb-4 sm:mb-6 drop-shadow-lg">
                             Mural de Conexões
                         </span>
-                        <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter text-white mb-4 sm:mb-6 leading-tight drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter text-white mb-4 sm:mb-6 leading-tight drop-shadow-[0_4px_30px_rgba(0,0,0,1)]">
                             38 Anos de <br /><span className="text-accent-gold italic">História.</span>
                         </h3>
                         <p className="text-white/50 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] leading-relaxed max-w-sm mx-auto drop-shadow-lg">

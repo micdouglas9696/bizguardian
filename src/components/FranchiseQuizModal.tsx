@@ -167,6 +167,7 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     const [answers, setAnswers] = useState<Record<number, number>>({});
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [transitionDirection, setTransitionDirection] = useState<'forward' | 'backward'>('forward');
+    const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
     // Lead Form State
     const [name, setName] = useState('');
@@ -193,6 +194,7 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
             setCurrentQuestionIndex(0);
             setScore(0);
             setAnswers({});
+            setClickedIndex(null);
             setName('');
             setEmail('');
             setPhone('');
@@ -248,8 +250,9 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
         setPhase('question');
     };
 
-    const handleAnswer = (points: number) => {
+    const handleAnswer = (points: number, index: number) => {
         if (isTransitioning) return;
+        setClickedIndex(index);
         setAnswers(prev => ({ ...prev, [currentQuestionIndex]: points }));
 
         setIsTransitioning(true);
@@ -264,6 +267,7 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                 setCurrentQuestionIndex(prev => prev + 1);
             }
             setIsTransitioning(false);
+            setClickedIndex(null);
         }, 350);
     };
 
@@ -416,23 +420,35 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                                     {currentQuestion.title}
                                 </h3>
 
-                                <div className="space-y-3">
-                                    {currentQuestion.options.map((option, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => handleAnswer(option.points)}
-                                            className="w-full text-left p-4 sm:p-5 rounded-none border-l-4 border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-accent-gold transition-all duration-300 group flex items-start gap-4 hover:shadow-[0_0_30px_rgba(234,179,8,0.1)] hover:-translate-y-1"
-                                        >
-                                            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent-gold group-hover:border-accent-gold transition-colors duration-300 mt-0.5">
-                                                <span className="text-white/50 group-hover:text-black font-black text-sm">
-                                                    {String.fromCharCode(65 + index)}
+                                <div className={`space-y-3 ${isTransitioning ? 'pointer-events-none' : ''}`}>
+                                    {currentQuestion.options.map((option, index) => {
+                                        const isSelected = clickedIndex === index;
+                                        return (
+                                            <button
+                                                key={`${currentQuestion.id}-${index}`}
+                                                onClick={(e) => {
+                                                    e.currentTarget.blur();
+                                                    handleAnswer(option.points, index);
+                                                }}
+                                                className={`w-full text-left p-4 sm:p-5 rounded-none border-l-4 transition-all duration-300 group flex items-start gap-4 ${isSelected
+                                                        ? 'border-accent-gold bg-white/[0.05] shadow-[0_0_30px_rgba(234,179,8,0.1)] -translate-y-1'
+                                                        : 'border-white/5 bg-white/[0.02] lg:hover:bg-white/[0.05] lg:hover:border-accent-gold lg:hover:shadow-[0_0_30px_rgba(234,179,8,0.1)] lg:hover:-translate-y-1'
+                                                    }`}
+                                            >
+                                                <div className={`w-8 h-8 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors duration-300 mt-0.5 ${isSelected
+                                                        ? 'bg-accent-gold border-accent-gold'
+                                                        : 'border-white/10 lg:group-hover:bg-accent-gold lg:group-hover:border-accent-gold'
+                                                    }`}>
+                                                    <span className={`font-black text-sm ${isSelected ? 'text-black' : 'text-white/50 lg:group-hover:text-black'}`}>
+                                                        {String.fromCharCode(65 + index)}
+                                                    </span>
+                                                </div>
+                                                <span className={`text-sm sm:text-base font-medium pt-1 ${isSelected ? 'text-white' : 'text-white/70 lg:group-hover:text-white'}`}>
+                                                    {option.text}
                                                 </span>
-                                            </div>
-                                            <span className="text-sm sm:text-base font-medium text-white/70 group-hover:text-white pt-1">
-                                                {option.text}
-                                            </span>
-                                        </button>
-                                    ))}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
 
                                 {currentQuestionIndex > 0 && (
