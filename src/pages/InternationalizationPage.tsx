@@ -17,7 +17,7 @@ export default function InternationalizationPage() {
     return (
         <div className="bg-black text-white min-h-screen overflow-x-hidden selection:bg-accent-gold selection:text-black font-sans">
             {/* Header */}
-            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-xl py-4 border-b border-white/5' : 'bg-transparent py-8'}`}>
+            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-xl py-4' : 'bg-transparent py-8'}`}>
                 <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="flex flex-col leading-none select-none cursor-pointer group">

@@ -343,7 +343,7 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
         } else if (score <= 24) {
             return {
                 title: "Seu Nível: Explorador Consciente",
-                desc: "Você já entendeu que franquia não é atalho e que há riscos reais envolvidos. Isso já te coloca à frente da maioria.\n\nMas o seu diagnóstico mostra que ainda existem pontos cegos importantes — especialmente no campo financeiro — que pode custar caro na hora da decisão.\n\nA Imersão Franchise-se vai te dar as ferramentas práticas para transformar sua consciência em critério técnico de análise.",
+                desc: "Você já entendeu que franquia não é atalho e que há riscos reais envolvidos. Isso já te coloca à frente da maioria.\n\nMas o seu diagnóstico mostra que ainda existem pontos cegos importantes, que pode custar caro na hora da decisão.\n\nA Imersão Franchise-se vai te dar as ferramentas práticas para transformar sua consciência em critério técnico de análise.",
                 btnText: "Quero preencher meus pontos cegos"
             };
         } else if (score <= 30) {
@@ -431,13 +431,13 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                                                     handleAnswer(option.points, index);
                                                 }}
                                                 className={`w-full text-left p-4 sm:p-5 rounded-none border-l-4 transition-all duration-300 group flex items-start gap-4 ${isSelected
-                                                        ? 'border-accent-gold bg-white/[0.05] shadow-[0_0_30px_rgba(234,179,8,0.1)] -translate-y-1'
-                                                        : 'border-white/5 bg-white/[0.02] lg:hover:bg-white/[0.05] lg:hover:border-accent-gold lg:hover:shadow-[0_0_30px_rgba(234,179,8,0.1)] lg:hover:-translate-y-1'
+                                                    ? 'border-accent-gold bg-white/[0.05] shadow-[0_0_30px_rgba(234,179,8,0.1)] -translate-y-1'
+                                                    : 'border-white/5 bg-white/[0.02] lg:hover:bg-white/[0.05] lg:hover:border-accent-gold lg:hover:shadow-[0_0_30px_rgba(234,179,8,0.1)] lg:hover:-translate-y-1'
                                                     }`}
                                             >
                                                 <div className={`w-8 h-8 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors duration-300 mt-0.5 ${isSelected
-                                                        ? 'bg-accent-gold border-accent-gold'
-                                                        : 'border-white/10 lg:group-hover:bg-accent-gold lg:group-hover:border-accent-gold'
+                                                    ? 'bg-accent-gold border-accent-gold'
+                                                    : 'border-white/10 lg:group-hover:bg-accent-gold lg:group-hover:border-accent-gold'
                                                     }`}>
                                                     <span className={`font-black text-sm ${isSelected ? 'text-black' : 'text-white/50 lg:group-hover:text-black'}`}>
                                                         {String.fromCharCode(65 + index)}
