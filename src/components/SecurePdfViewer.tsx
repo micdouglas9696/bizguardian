@@ -20,11 +20,11 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
     const containerRef = useRef<HTMLDivElement>(null);
     const renderedRef = useRef(new Set<number>());
 
-    // Limpa URL (remove fragmentos #toolbar=...)
     const cleanUrl = url.split('#')[0];
 
     useEffect(() => {
         let cancelled = false;
+        renderedRef.current.clear();
 
         (async () => {
             try {
@@ -34,7 +34,7 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
                 pdfRef.current = pdf;
                 setNumPages(pdf.numPages);
                 setLoadingPdf(false);
-            } catch (err: any) {
+            } catch {
                 if (!cancelled) {
                     setLoadError('Não foi possível carregar o conteúdo.');
                     setLoadingPdf(false);
@@ -49,36 +49,58 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
         };
     }, [cleanUrl]);
 
-    // Renderiza páginas conforme aparecem no viewport (IntersectionObserver)
+    // Após as páginas estarem no DOM, configura observers para renderizar cada canvas
     useEffect(() => {
-        if (!numPages || !pdfRef.current) return;
+        if (!numPages || !pdfRef.current || !containerRef.current) return;
 
+        // Aguarda o próximo frame para garantir que o layout foi calculado
+        let frameId: number;
         const observers: IntersectionObserver[] = [];
-        const canvases = containerRef.current?.querySelectorAll<HTMLCanvasElement>('canvas[data-page]');
-        if (!canvases) return;
 
-        canvases.forEach((canvas) => {
-            const pageNum = Number(canvas.dataset.page);
-            const observer = new IntersectionObserver(
-                async (entries) => {
-                    if (entries[0].isIntersecting && !renderedRef.current.has(pageNum) && pdfRef.current) {
-                        renderedRef.current.add(pageNum);
-                        const page = await pdfRef.current.getPage(pageNum);
-                        const scale = Math.min(canvas.parentElement!.offsetWidth / page.getViewport({ scale: 1 }).width, 2.5);
-                        const viewport = page.getViewport({ scale });
-                        canvas.width = viewport.width;
-                        canvas.height = viewport.height;
-                        const ctx = canvas.getContext('2d')!;
-                        await page.render({ canvasContext: ctx, viewport, canvas }).promise;
-                    }
-                },
-                { rootMargin: '200px' },
-            );
-            observer.observe(canvas);
-            observers.push(observer);
+        frameId = requestAnimationFrame(() => {
+            const canvases = containerRef.current?.querySelectorAll<HTMLCanvasElement>('canvas[data-page]');
+            if (!canvases?.length) return;
+
+            canvases.forEach((canvas) => {
+                const pageNum = Number(canvas.dataset.page);
+
+                const renderPage = async () => {
+                    if (renderedRef.current.has(pageNum) || !pdfRef.current) return;
+                    renderedRef.current.add(pageNum);
+
+                    // Largura disponível: container - padding (px-4 = 32px)
+                    const containerW = containerRef.current?.clientWidth ?? window.innerWidth;
+                    const availableW = Math.max(containerW - 32, 100);
+                    const dpr = window.devicePixelRatio || 1;
+
+                    const page = await pdfRef.current.getPage(pageNum);
+                    const naturalW = page.getViewport({ scale: 1 }).width;
+                    const scale = (availableW / naturalW) * dpr;
+                    const viewport = page.getViewport({ scale });
+
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    // CSS: mantém largura natural sem esticar
+                    canvas.style.width = `${availableW}px`;
+                    canvas.style.height = `${availableW * (viewport.height / viewport.width)}px`;
+
+                    const ctx = canvas.getContext('2d')!;
+                    await page.render({ canvasContext: ctx, viewport, canvas }).promise;
+                };
+
+                const observer = new IntersectionObserver(
+                    (entries) => { if (entries[0].isIntersecting) renderPage(); },
+                    { root: containerRef.current, rootMargin: '300px' },
+                );
+                observer.observe(canvas);
+                observers.push(observer);
+            });
         });
 
-        return () => observers.forEach((o) => o.disconnect());
+        return () => {
+            cancelAnimationFrame(frameId);
+            observers.forEach((o) => o.disconnect());
+        };
     }, [numPages]);
 
     const blockContext = (e: React.MouseEvent) => {
@@ -91,7 +113,6 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
             className="fixed inset-0 z-[200] bg-black flex flex-col"
             onContextMenu={blockContext}
         >
-            {/* CSS: bloqueia print completamente */}
             <style dangerouslySetInnerHTML={{
                 __html: `@media print { body { display: none !important; } }`
             }} />
@@ -114,26 +135,26 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
             {/* Área de conteúdo */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111]" ref={containerRef}>
                 {loadingPdf && (
-                    <div className="flex flex-col items-center justify-center h-full py-20">
+                    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20">
                         <span className="material-symbols-outlined text-accent-gold text-5xl animate-spin mb-4">progress_activity</span>
                         <p className="text-[11px] uppercase tracking-[0.3em] text-white/35 font-bold">Carregando…</p>
                     </div>
                 )}
 
                 {loadError && (
-                    <div className="flex flex-col items-center justify-center h-full py-20">
+                    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20">
                         <span className="material-symbols-outlined text-red-400 text-4xl mb-4">error</span>
                         <p className="text-[13px] text-white/50">{loadError}</p>
                     </div>
                 )}
 
                 {!loadingPdf && !loadError && (
-                    <div className="max-w-4xl mx-auto py-6 px-4 space-y-3 select-none">
+                    <div className="py-4 px-4 space-y-2 select-none">
                         {Array.from({ length: numPages }, (_, i) => i + 1).map((pageNum) => (
-                            <div key={pageNum} className="w-full bg-white shadow-2xl">
+                            <div key={pageNum} className="bg-white shadow-xl overflow-hidden">
                                 <canvas
                                     data-page={pageNum}
-                                    className="w-full block pointer-events-none"
+                                    className="block pointer-events-none"
                                 />
                             </div>
                         ))}
