@@ -16,30 +16,26 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
     const [numPages, setNumPages] = useState(0);
     const [loadError, setLoadError] = useState<string | null>(null);
     const [loadingPdf, setLoadingPdf] = useState(true);
-    const [renderedPages, setRenderedPages] = useState(0);
-    const pdfRef = useRef<pdfjsLib.PDFDocumentProxy | null>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const [pageImages, setPageImages] = useState<(string | null)[]>([]);
+    const blobUrlsRef = useRef<string[]>([]);
 
     const cleanUrl = url.split('#')[0];
 
-    // Bloqueia scroll do body no iOS/mobile enquanto o viewer estiver aberto
+    // Trava scroll do body no iOS enquanto o viewer estiver aberto
     useEffect(() => {
         const scrollY = window.scrollY;
-        const prevOverflow = document.body.style.overflow;
-        const prevPosition = document.body.style.position;
-        const prevTop = document.body.style.top;
-        const prevWidth = document.body.style.width;
-
+        const prev = {
+            overflow: document.body.style.overflow,
+            position: document.body.style.position,
+            top: document.body.style.top,
+            width: document.body.style.width,
+        };
         document.body.style.overflow = 'hidden';
         document.body.style.position = 'fixed';
         document.body.style.top = `-${scrollY}px`;
         document.body.style.width = '100%';
-
         return () => {
-            document.body.style.overflow = prevOverflow;
-            document.body.style.position = prevPosition;
-            document.body.style.top = prevTop;
-            document.body.style.width = prevWidth;
+            Object.assign(document.body.style, prev);
             window.scrollTo(0, scrollY);
         };
     }, []);
@@ -47,18 +43,71 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
     useEffect(() => {
         let cancelled = false;
 
+        blobUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+        blobUrlsRef.current = [];
+
         (async () => {
             try {
                 setLoadingPdf(true);
                 setNumPages(0);
-                setRenderedPages(0);
+                setPageImages([]);
 
                 const pdf = await pdfjsLib.getDocument(cleanUrl).promise;
                 if (cancelled) return;
 
-                pdfRef.current = pdf;
-                setNumPages(pdf.numPages);
+                const n = pdf.numPages;
+                setNumPages(n);
+                setPageImages(new Array(n).fill(null));
                 setLoadingPdf(false);
+
+                // Largura disponível — usa window.innerWidth para não depender do DOM
+                const availableW = Math.min(window.innerWidth - 32, 900);
+                // Limita DPR a 2 para evitar estouro de memória no mobile
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                for (let i = 1; i <= n; i++) {
+                    if (cancelled) break;
+
+                    try {
+                        const page = await pdf.getPage(i);
+                        if (cancelled) break;
+
+                        const naturalW = page.getViewport({ scale: 1 }).width;
+                        const scale = (availableW / naturalW) * dpr;
+                        const viewport = page.getViewport({ scale });
+
+                        // Canvas offscreen — não vai para o DOM, sem limite de contextos
+                        const canvas = document.createElement('canvas');
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+
+                        const ctx = canvas.getContext('2d')!;
+                        await page.render({ canvasContext: ctx, viewport, canvas }).promise;
+                        if (cancelled) break;
+
+                        const blob = await new Promise<Blob>((resolve, reject) => {
+                            canvas.toBlob(
+                                (b) => (b ? resolve(b) : reject(new Error('toBlob failed'))),
+                                'image/jpeg',
+                                0.92,
+                            );
+                        });
+                        if (cancelled) break;
+
+                        const blobUrl = URL.createObjectURL(blob);
+                        blobUrlsRef.current.push(blobUrl);
+
+                        setPageImages((prev) => {
+                            const next = [...prev];
+                            next[i - 1] = blobUrl;
+                            return next;
+                        });
+                    } catch {
+                        // pula página com erro silenciosamente
+                    }
+                }
+
+                pdf.destroy();
             } catch {
                 if (!cancelled) {
                     setLoadError('Não foi possível carregar o conteúdo.');
@@ -69,74 +118,22 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
 
         return () => {
             cancelled = true;
-            pdfRef.current?.destroy();
-            pdfRef.current = null;
         };
     }, [cleanUrl]);
 
-    // Renderiza todas as páginas sequencialmente após o PDF estar carregado
     useEffect(() => {
-        if (!numPages || !pdfRef.current) return;
-
-        let cancelled = false;
-
-        const renderPages = async () => {
-            const pdf = pdfRef.current;
-            if (!pdf) return;
-
-            // Aguarda o DOM ter as divs das páginas
-            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-            if (cancelled) return;
-
-            const containerW = containerRef.current?.clientWidth ?? window.innerWidth;
-            const availableW = Math.max(containerW - 32, 100);
-            const dpr = window.devicePixelRatio || 1;
-
-            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-                if (cancelled) return;
-
-                const canvas = containerRef.current?.querySelector<HTMLCanvasElement>(
-                    `canvas[data-page="${pageNum}"]`,
-                );
-                if (!canvas) continue;
-
-                try {
-                    const page = await pdf.getPage(pageNum);
-                    if (cancelled) return;
-
-                    const naturalW = page.getViewport({ scale: 1 }).width;
-                    const scale = (availableW / naturalW) * dpr;
-                    const viewport = page.getViewport({ scale });
-
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-                    canvas.style.width = `${availableW}px`;
-                    canvas.style.height = `${availableW * (viewport.height / viewport.width)}px`;
-
-                    const ctx = canvas.getContext('2d')!;
-                    await page.render({ canvasContext: ctx, viewport, canvas }).promise;
-                    if (cancelled) return;
-
-                    setRenderedPages((n) => n + 1);
-                } catch {
-                    // ignora erro em página individual
-                }
-            }
-        };
-
-        renderPages();
-
         return () => {
-            cancelled = true;
+            blobUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
         };
-    }, [numPages]);
+    }, []);
 
     const blockContext = (e: React.MouseEvent) => {
         e.preventDefault();
         onPiracyAlert();
     };
 
-    const progress = numPages > 0 ? Math.round((renderedPages / numPages) * 100) : 0;
+    const renderedCount = pageImages.filter(Boolean).length;
+    const progress = numPages > 0 ? Math.round((renderedCount / numPages) * 100) : 0;
 
     return (
         <div
@@ -144,7 +141,7 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
             onContextMenu={blockContext}
         >
             <style dangerouslySetInnerHTML={{
-                __html: `@media print { body { display: none !important; } }`
+                __html: `@media print { body { display: none !important; } }`,
             }} />
 
             {/* Barra superior */}
@@ -163,8 +160,8 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
             </div>
 
             {/* Barra de progresso de renderização */}
-            {!loadingPdf && !loadError && numPages > 0 && renderedPages < numPages && (
-                <div className="flex-shrink-0 h-0.5 bg-white/5">
+            {!loadingPdf && !loadError && numPages > 0 && renderedCount < numPages && (
+                <div className="flex-shrink-0 h-1 bg-white/5">
                     <div
                         className="h-full bg-accent-gold transition-all duration-300"
                         style={{ width: `${progress}%` }}
@@ -172,15 +169,16 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
                 </div>
             )}
 
-            {/* Área de conteúdo */}
-            <div
-                className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111] overscroll-none"
-                ref={containerRef}
-            >
+            {/* Conteúdo */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111] overscroll-none">
                 {loadingPdf && (
                     <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20">
-                        <span className="material-symbols-outlined text-accent-gold text-5xl animate-spin mb-4">progress_activity</span>
-                        <p className="text-[11px] uppercase tracking-[0.3em] text-white/35 font-bold">Carregando…</p>
+                        <span className="material-symbols-outlined text-accent-gold text-5xl animate-spin mb-4">
+                            progress_activity
+                        </span>
+                        <p className="text-[11px] uppercase tracking-[0.3em] text-white/35 font-bold">
+                            Carregando…
+                        </p>
                     </div>
                 )}
 
@@ -193,12 +191,25 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
 
                 {!loadingPdf && !loadError && (
                     <div className="py-4 px-4 space-y-2 select-none">
-                        {Array.from({ length: numPages }, (_, i) => i + 1).map((pageNum) => (
-                            <div key={pageNum} className="bg-white shadow-xl overflow-hidden">
-                                <canvas
-                                    data-page={pageNum}
-                                    className="block pointer-events-none"
-                                />
+                        {pageImages.map((src, i) => (
+                            <div key={i} className="overflow-hidden shadow-xl bg-[#1a1a1a]">
+                                {src ? (
+                                    <img
+                                        src={src}
+                                        alt=""
+                                        className="block w-full pointer-events-none"
+                                        draggable={false}
+                                    />
+                                ) : (
+                                    <div
+                                        className="w-full flex items-center justify-center"
+                                        style={{ aspectRatio: '0.707' }}
+                                    >
+                                        <span className="material-symbols-outlined text-white/10 text-4xl animate-pulse">
+                                            description
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
