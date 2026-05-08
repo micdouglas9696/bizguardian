@@ -33,7 +33,7 @@ export default function MemberDashboardPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [opening, setOpening] = useState<string | null>(null);
-    const [viewerUrl, setViewerUrl] = useState<string | null>(null);
+    const [viewerData, setViewerData] = useState<{ pagesUrl: string; pageCount: number } | null>(null);
     const [piracyAlert, setPiracyAlert] = useState(false);
 
     useEffect(() => {
@@ -88,11 +88,22 @@ export default function MemberDashboardPage() {
         setOpening(slug);
         try {
             if (accessType === 'pdf') {
-                const link = await memberFetch<{ url: string }>(
+                const link = await memberFetch<{
+                    url: string;
+                    pages_url: string | null;
+                    page_count: number;
+                }>(
                     `/api/ebook/products/${slug}/access-link`,
                     { method: 'POST', body: JSON.stringify({}) },
                 );
-                setViewerUrl(`${API_URL}${link.url}#toolbar=0&navpanes=0&scrollbar=0`);
+                if (link.pages_url && link.page_count > 0) {
+                    setViewerData({
+                        pagesUrl: `${API_URL}${link.pages_url}`,
+                        pageCount: link.page_count,
+                    });
+                } else {
+                    setError('Conteúdo indisponível no momento.');
+                }
             } else {
                 setError('Este tipo de produto ainda não está implementado.');
             }
@@ -210,12 +221,13 @@ export default function MemberDashboardPage() {
                 </p>
             </footer>
 
-            {/* Ebook Viewer — canvas via PDF.js, sem iframe, sem "Salvar como PDF" */}
-            {viewerUrl && (
+            {/* Ebook Viewer — imagens pre-renderizadas, sem PDF.js, funciona em qualquer mobile */}
+            {viewerData && (
                 <>
                     <SecurePdfViewer
-                        url={viewerUrl}
-                        onClose={() => setViewerUrl(null)}
+                        pagesUrl={viewerData.pagesUrl}
+                        pageCount={viewerData.pageCount}
+                        onClose={() => setViewerData(null)}
                         onPiracyAlert={() => {
                             setPiracyAlert(true);
                             setTimeout(() => setPiracyAlert(false), 4500);

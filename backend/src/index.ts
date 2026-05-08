@@ -947,20 +947,37 @@ const PRIVATE_ASSETS_DIR = path.resolve(__dirname, '../private_assets');
 interface DownloadJwtPayload {
     customer_id: string;
     product_slug: string;
-    kind: 'download';
+    kind: 'download' | 'pages';
 }
 
 function signDownloadJwt(payload: DownloadJwtPayload): string {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '5m' });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: '30m' });
 }
 
-function verifyDownloadJwt(token: string): DownloadJwtPayload | null {
+function verifyDownloadJwt(token: string, expectedKind?: 'download' | 'pages'): DownloadJwtPayload | null {
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as any;
-        if (decoded?.kind !== 'download') return null;
+        const kind = decoded?.kind;
+        if (kind !== 'download' && kind !== 'pages') return null;
+        if (expectedKind && kind !== expectedKind) return null;
         return decoded as DownloadJwtPayload;
     } catch {
         return null;
+    }
+}
+
+// Diretório de páginas pre-renderizadas (JPEG): <basename>-pages/
+function getPagesDir(accessValue: string): string {
+    const basename = accessValue.replace(/\.pdf$/i, '');
+    return path.join(PRIVATE_ASSETS_DIR, `${basename}-pages`);
+}
+
+async function countPageImages(pagesDir: string): Promise<number> {
+    try {
+        const files = await fs.promises.readdir(pagesDir);
+        return files.filter((f) => /^page-\d+\.jpg$/i.test(f)).length;
+    } catch {
+        return 0;
     }
 }
 
@@ -1011,13 +1028,86 @@ app.post('/api/ebook/products/:slug/access-link', requireMember, async (req: Mem
             product_slug: slug,
             kind: 'download',
         });
+
+        // Verifica se existe um diretório de páginas pré-renderizadas (JPEG)
+        const pagesDir = getPagesDir(row.access_value);
+        const pageCount = await countPageImages(pagesDir);
+        let pagesUrl: string | null = null;
+        if (pageCount > 0) {
+            const pagesToken = signDownloadJwt({
+                customer_id: req.member!.customer_id,
+                product_slug: slug,
+                kind: 'pages',
+            });
+            pagesUrl = `/api/ebook/pages/${pagesToken}`;
+        }
+
         res.json({
             url: `/api/ebook/download/${downloadToken}`,
-            expires_in: 300,
+            pages_url: pagesUrl,
+            page_count: pageCount,
+            expires_in: 1800,
         });
     } catch (err) {
         console.error('access-link error:', err);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Serve página individual como JPEG (imagem renderizada do PDF)
+app.get('/api/ebook/pages/:token/:pageNum', async (req: Request, res: Response) => {
+    const token = String(req.params.token || '');
+    const pageNum = parseInt(String(req.params.pageNum || '0'), 10);
+    const payload = verifyDownloadJwt(token, 'pages');
+    if (!payload) {
+        return res.status(401).send('Token inválido');
+    }
+    if (!Number.isFinite(pageNum) || pageNum < 1 || pageNum > 9999) {
+        return res.status(400).send('Página inválida');
+    }
+    try {
+        const ownsCheck = await pool.query(
+            `SELECT p.access_type, p.access_value, pu.revoked_at
+             FROM purchases pu
+             JOIN products p ON p.id = pu.product_id
+             WHERE pu.customer_id = $1 AND p.slug = $2 AND p.is_published = true
+             LIMIT 1`,
+            [payload.customer_id, payload.product_slug]
+        );
+        if ((ownsCheck.rowCount ?? 0) === 0) {
+            return res.status(403).send('Acesso negado');
+        }
+        const row = ownsCheck.rows[0];
+        if (row.revoked_at) return res.status(403).send('Acesso revogado');
+        if (!row.access_value) return res.status(400).send('Produto sem arquivo');
+
+        const pagesDir = getPagesDir(row.access_value);
+        const padded = String(pageNum).padStart(2, '0');
+        const filePath = path.join(pagesDir, `page-${padded}.jpg`);
+        if (!filePath.startsWith(pagesDir)) {
+            return res.status(400).send('Caminho inválido');
+        }
+
+        let stat: fs.Stats;
+        try {
+            stat = await fs.promises.stat(filePath);
+        } catch {
+            return res.status(404).send('Página não encontrada');
+        }
+
+        res.setHeader('Content-Type', 'image/jpeg');
+        res.setHeader('Content-Length', String(stat.size));
+        res.setHeader('Cache-Control', 'private, max-age=3600');
+        res.setHeader('Accept-Ranges', 'none');
+        const stream = fs.createReadStream(filePath);
+        stream.on('error', (err) => {
+            console.error('page stream error:', err);
+            if (!res.headersSent) res.status(500).end();
+        });
+        stream.pipe(res);
+    } catch (err) {
+        console.error('page-image error:', err);
+        if (!res.headersSent) res.status(500).send('Internal Server Error');
     }
 });
 

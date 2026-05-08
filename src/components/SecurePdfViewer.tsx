@@ -1,24 +1,19 @@
 import { useEffect, useState } from 'react';
-import * as pdfjsLib from 'pdfjs-dist';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.mjs',
-    import.meta.url,
-).href;
 
 interface Props {
-    url: string;
+    pagesUrl: string;
+    pageCount: number;
     onClose: () => void;
     onPiracyAlert: () => void;
 }
 
-export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) {
-    const [numPages, setNumPages] = useState(0);
-    const [loadError, setLoadError] = useState<string | null>(null);
-    const [loadingPdf, setLoadingPdf] = useState(true);
-    const [pageImages, setPageImages] = useState<(string | null)[]>([]);
-
-    const cleanUrl = url.split('#')[0];
+export default function SecurePdfViewer({
+    pagesUrl,
+    pageCount,
+    onClose,
+    onPiracyAlert,
+}: Props) {
+    const [loadedCount, setLoadedCount] = useState(0);
 
     // Trava scroll do body no iOS enquanto o viewer estiver aberto
     useEffect(() => {
@@ -39,107 +34,13 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
         };
     }, []);
 
-    useEffect(() => {
-        let cancelled = false;
-
-        (async () => {
-            try {
-                setLoadingPdf(true);
-                setNumPages(0);
-                setPageImages([]);
-                setLoadError(null);
-
-                const pdf = await pdfjsLib.getDocument(cleanUrl).promise;
-                if (cancelled) return;
-
-                const n = pdf.numPages;
-                setNumPages(n);
-                setPageImages(new Array(n).fill(null));
-                setLoadingPdf(false);
-
-                // Detecta mobile para usar dimensões menores
-                const isMobile = window.innerWidth < 768;
-                const targetWidth = isMobile
-                    ? Math.min(window.innerWidth - 32, 480)
-                    : Math.min(window.innerWidth - 32, 900);
-                const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-
-                // Reusa um único canvas para todas as páginas
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d', { alpha: false });
-                if (!ctx) {
-                    setLoadError('Navegador não suporta canvas 2D.');
-                    return;
-                }
-
-                let firstError: string | null = null;
-
-                for (let i = 1; i <= n; i++) {
-                    if (cancelled) break;
-
-                    try {
-                        const page = await pdf.getPage(i);
-                        if (cancelled) break;
-
-                        const naturalW = page.getViewport({ scale: 1 }).width;
-                        const scale = (targetWidth / naturalW) * dpr;
-                        const viewport = page.getViewport({ scale });
-
-                        canvas.width = viewport.width;
-                        canvas.height = viewport.height;
-
-                        await page.render({ canvasContext: ctx, viewport, canvas }).promise;
-                        if (cancelled) break;
-
-                        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-                        if (cancelled) break;
-
-                        setPageImages((prev) => {
-                            const next = [...prev];
-                            next[i - 1] = dataUrl;
-                            return next;
-                        });
-
-                        // Cede tempo ao browser entre páginas
-                        await new Promise((resolve) => setTimeout(resolve, 0));
-                    } catch (err: any) {
-                        if (!firstError) {
-                            firstError = err?.message || 'falha ao renderizar';
-                        }
-                    }
-                }
-
-                if (!cancelled && firstError) {
-                    const rendered = pageImages.filter(Boolean).length;
-                    if (rendered === 0) {
-                        setLoadError(`Erro ao renderizar PDF: ${firstError}`);
-                    }
-                }
-
-                pdf.destroy();
-            } catch (err: any) {
-                if (!cancelled) {
-                    setLoadError(
-                        `Não foi possível carregar: ${err?.message || 'erro desconhecido'}`,
-                    );
-                    setLoadingPdf(false);
-                }
-            }
-        })();
-
-        return () => {
-            cancelled = true;
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cleanUrl]);
-
     const blockContext = (e: React.MouseEvent) => {
         e.preventDefault();
         onPiracyAlert();
     };
 
-    const renderedCount = pageImages.filter(Boolean).length;
-    const progress = numPages > 0 ? Math.round((renderedCount / numPages) * 100) : 0;
+    const progress = pageCount > 0 ? Math.round((loadedCount / pageCount) * 100) : 0;
+    const pages = Array.from({ length: pageCount }, (_, i) => i + 1);
 
     return (
         <div
@@ -165,8 +66,8 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
                 </button>
             </div>
 
-            {/* Barra de progresso de renderização */}
-            {!loadingPdf && !loadError && numPages > 0 && renderedCount < numPages && (
+            {/* Barra de progresso */}
+            {pageCount > 0 && loadedCount < pageCount && (
                 <div className="flex-shrink-0 h-1 bg-white/5">
                     <div
                         className="h-full bg-accent-gold transition-all duration-300"
@@ -177,45 +78,31 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
 
             {/* Conteúdo */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111] overscroll-none">
-                {loadingPdf && (
+                {pageCount === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20">
-                        <span className="material-symbols-outlined text-accent-gold text-5xl animate-spin mb-4">
-                            progress_activity
-                        </span>
-                        <p className="text-[11px] uppercase tracking-[0.3em] text-white/35 font-bold">
-                            Carregando…
+                        <span className="material-symbols-outlined text-red-400 text-4xl mb-4">error</span>
+                        <p className="text-[13px] text-white/70 text-center max-w-md px-6">
+                            Nenhuma página disponível.
                         </p>
                     </div>
-                )}
-
-                {loadError && (
-                    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20 px-6">
-                        <span className="material-symbols-outlined text-red-400 text-4xl mb-4">error</span>
-                        <p className="text-[13px] text-white/70 text-center max-w-md">{loadError}</p>
-                    </div>
-                )}
-
-                {!loadingPdf && !loadError && (
-                    <div className="py-4 px-4 space-y-2 select-none">
-                        {pageImages.map((src, i) => (
-                            <div key={i} className="overflow-hidden shadow-xl bg-[#1a1a1a]">
-                                {src ? (
-                                    <img
-                                        src={src}
-                                        alt=""
-                                        className="block w-full pointer-events-none"
-                                        draggable={false}
-                                    />
-                                ) : (
-                                    <div
-                                        className="w-full flex items-center justify-center"
-                                        style={{ aspectRatio: '0.707' }}
-                                    >
-                                        <span className="material-symbols-outlined text-white/10 text-4xl animate-pulse">
-                                            description
-                                        </span>
-                                    </div>
-                                )}
+                ) : (
+                    <div className="py-4 px-4 space-y-2 select-none max-w-3xl mx-auto">
+                        {pages.map((n) => (
+                            <div
+                                key={n}
+                                className="overflow-hidden shadow-xl bg-[#1a1a1a]"
+                                style={{ aspectRatio: '0.707' }}
+                            >
+                                <img
+                                    src={`${pagesUrl}/${n}`}
+                                    alt=""
+                                    loading={n <= 3 ? 'eager' : 'lazy'}
+                                    decoding="async"
+                                    draggable={false}
+                                    onLoad={() => setLoadedCount((c) => c + 1)}
+                                    onError={() => setLoadedCount((c) => c + 1)}
+                                    className="block w-full h-full object-contain pointer-events-none"
+                                />
                             </div>
                         ))}
                     </div>
