@@ -16,21 +16,24 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
     const [numPages, setNumPages] = useState(0);
     const [loadError, setLoadError] = useState<string | null>(null);
     const [loadingPdf, setLoadingPdf] = useState(true);
+    const [renderedPages, setRenderedPages] = useState(0);
     const pdfRef = useRef<pdfjsLib.PDFDocumentProxy | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const renderedRef = useRef(new Set<number>());
 
     const cleanUrl = url.split('#')[0];
 
     useEffect(() => {
         let cancelled = false;
-        renderedRef.current.clear();
 
         (async () => {
             try {
                 setLoadingPdf(true);
+                setNumPages(0);
+                setRenderedPages(0);
+
                 const pdf = await pdfjsLib.getDocument(cleanUrl).promise;
                 if (cancelled) return;
+
                 pdfRef.current = pdf;
                 setNumPages(pdf.numPages);
                 setLoadingPdf(false);
@@ -49,57 +52,60 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
         };
     }, [cleanUrl]);
 
-    // Após as páginas estarem no DOM, configura observers para renderizar cada canvas
+    // Renderiza todas as páginas sequencialmente após o PDF estar carregado
     useEffect(() => {
-        if (!numPages || !pdfRef.current || !containerRef.current) return;
+        if (!numPages || !pdfRef.current) return;
 
-        // Aguarda o próximo frame para garantir que o layout foi calculado
-        let frameId: number;
-        const observers: IntersectionObserver[] = [];
+        let cancelled = false;
 
-        frameId = requestAnimationFrame(() => {
-            const canvases = containerRef.current?.querySelectorAll<HTMLCanvasElement>('canvas[data-page]');
-            if (!canvases?.length) return;
+        const renderPages = async () => {
+            const pdf = pdfRef.current;
+            if (!pdf) return;
 
-            canvases.forEach((canvas) => {
-                const pageNum = Number(canvas.dataset.page);
+            // Aguarda o DOM ter as divs das páginas
+            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+            if (cancelled) return;
 
-                const renderPage = async () => {
-                    if (renderedRef.current.has(pageNum) || !pdfRef.current) return;
-                    renderedRef.current.add(pageNum);
+            const containerW = containerRef.current?.clientWidth ?? window.innerWidth;
+            const availableW = Math.max(containerW - 32, 100);
+            const dpr = window.devicePixelRatio || 1;
 
-                    // Largura disponível: container - padding (px-4 = 32px)
-                    const containerW = containerRef.current?.clientWidth ?? window.innerWidth;
-                    const availableW = Math.max(containerW - 32, 100);
-                    const dpr = window.devicePixelRatio || 1;
+            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                if (cancelled) return;
 
-                    const page = await pdfRef.current.getPage(pageNum);
+                const canvas = containerRef.current?.querySelector<HTMLCanvasElement>(
+                    `canvas[data-page="${pageNum}"]`,
+                );
+                if (!canvas) continue;
+
+                try {
+                    const page = await pdf.getPage(pageNum);
+                    if (cancelled) return;
+
                     const naturalW = page.getViewport({ scale: 1 }).width;
                     const scale = (availableW / naturalW) * dpr;
                     const viewport = page.getViewport({ scale });
 
                     canvas.width = viewport.width;
                     canvas.height = viewport.height;
-                    // CSS: mantém largura natural sem esticar
                     canvas.style.width = `${availableW}px`;
                     canvas.style.height = `${availableW * (viewport.height / viewport.width)}px`;
 
                     const ctx = canvas.getContext('2d')!;
                     await page.render({ canvasContext: ctx, viewport, canvas }).promise;
-                };
+                    if (cancelled) return;
 
-                const observer = new IntersectionObserver(
-                    (entries) => { if (entries[0].isIntersecting) renderPage(); },
-                    { root: containerRef.current, rootMargin: '300px' },
-                );
-                observer.observe(canvas);
-                observers.push(observer);
-            });
-        });
+                    setRenderedPages((n) => n + 1);
+                } catch {
+                    // ignora erro em página individual
+                }
+            }
+        };
+
+        renderPages();
 
         return () => {
-            cancelAnimationFrame(frameId);
-            observers.forEach((o) => o.disconnect());
+            cancelled = true;
         };
     }, [numPages]);
 
@@ -107,6 +113,8 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
         e.preventDefault();
         onPiracyAlert();
     };
+
+    const progress = numPages > 0 ? Math.round((renderedPages / numPages) * 100) : 0;
 
     return (
         <div
@@ -132,8 +140,21 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
                 </button>
             </div>
 
+            {/* Barra de progresso de renderização */}
+            {!loadingPdf && !loadError && numPages > 0 && renderedPages < numPages && (
+                <div className="flex-shrink-0 h-0.5 bg-white/5">
+                    <div
+                        className="h-full bg-accent-gold transition-all duration-300"
+                        style={{ width: `${progress}%` }}
+                    />
+                </div>
+            )}
+
             {/* Área de conteúdo */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111]" ref={containerRef}>
+            <div
+                className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111]"
+                ref={containerRef}
+            >
                 {loadingPdf && (
                     <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20">
                         <span className="material-symbols-outlined text-accent-gold text-5xl animate-spin mb-4">progress_activity</span>
