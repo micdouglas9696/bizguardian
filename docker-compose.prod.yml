@@ -35,6 +35,8 @@ services:
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
       - STRIPE_EBOOK_PRICE_ID=${STRIPE_EBOOK_PRICE_ID:-}
       - PUBLIC_URL=https://marinhoponci.com
+    volumes:
+      - /root/bizguardian/public_media:/usr/src/app/public_media
     networks:
       - bizguardian_internal
       - mycom
