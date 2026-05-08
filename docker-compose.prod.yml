@@ -37,6 +37,7 @@ services:
       - PUBLIC_URL=https://marinhoponci.com
     volumes:
       - /root/bizguardian/public_media:/usr/src/app/public_media
+      - /root/bizguardian/private_assets:/usr/src/app/private_assets
     networks:
       - bizguardian_internal
       - mycom
