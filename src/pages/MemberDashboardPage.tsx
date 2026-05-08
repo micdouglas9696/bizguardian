@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import SecurePdfViewer from '../components/SecurePdfViewer';
 import {
     API_URL,
     clearMemberToken,
@@ -209,41 +210,17 @@ export default function MemberDashboardPage() {
                 </p>
             </footer>
 
-            {/* Ebook Viewer — protegido, exibido 100% dentro da plataforma */}
+            {/* Ebook Viewer — canvas via PDF.js, sem iframe, sem "Salvar como PDF" */}
             {viewerUrl && (
-                <div
-                    className="fixed inset-0 z-[200] bg-black flex flex-col"
-                    onContextMenu={(e) => {
-                        e.preventDefault();
-                        setPiracyAlert(true);
-                        setTimeout(() => setPiracyAlert(false), 4500);
-                    }}
-                >
-                    <style dangerouslySetInnerHTML={{ __html: `@media print { body { display: none !important; } }` }} />
-
-                    {/* Barra superior */}
-                    <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 bg-[#0a0a0a] flex-shrink-0">
-                        <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-white/35">
-                            <span className="material-symbols-outlined text-accent-gold text-[15px]">lock</span>
-                            Conteúdo protegido · Uso pessoal exclusivo
-                        </span>
-                        <button
-                            onClick={() => setViewerUrl(null)}
-                            className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-white/45 hover:text-white transition-colors"
-                        >
-                            <span className="material-symbols-outlined text-base">close</span>
-                            Fechar
-                        </button>
-                    </div>
-
-                    {/* PDF inline */}
-                    <iframe
-                        src={viewerUrl}
-                        className="flex-1 w-full border-0"
-                        title="O Dossiê do Futuro Franqueado"
+                <>
+                    <SecurePdfViewer
+                        url={viewerUrl}
+                        onClose={() => setViewerUrl(null)}
+                        onPiracyAlert={() => {
+                            setPiracyAlert(true);
+                            setTimeout(() => setPiracyAlert(false), 4500);
+                        }}
                     />
-
-                    {/* Alerta de proteção */}
                     <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[210] transition-all duration-500 ${piracyAlert ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'}`}>
                         <div className="bg-[#111] border border-accent-gold/25 px-5 py-3 flex items-center gap-3 shadow-xl max-w-sm">
                             <span className="material-symbols-outlined text-accent-gold text-lg flex-shrink-0">shield</span>
@@ -252,7 +229,7 @@ export default function MemberDashboardPage() {
                             </p>
                         </div>
                     </div>
-                </div>
+                </>
             )}
         </div>
     );
