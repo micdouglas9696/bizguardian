@@ -31,8 +31,25 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+.env.prod.secrets
 *.key
 *.pem
+
+# Secrets & test files with credentials
+backend/test_smtp.cjs
+backend/test_smtp_587.cjs
+backend/test_smtp_passes.cjs
+backend/test_one_pass.cjs
+
+# Private assets (ebook PDF, etc.)
+backend/private_assets/
+
+# Local notes
+RETOMAR.md
+
+# OMC agent data
+.omc/
+backend/.omc/
 
 # Dependencies (AIOS)
 node_modules/

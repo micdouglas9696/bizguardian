@@ -104,11 +104,24 @@ export default function LandingPage() {
                                 <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
                             </a>
                         ))}
+                        <Link
+                            to="/ebook"
+                            className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
+                        >
+                            Dossiê
+                            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
+                        </Link>
                     </nav>
 
-                    <div className="flex items-center gap-3 sm:gap-6">
-                        {/* Smaller member button */}
-                        {/* Removed member area button as requested */}
+                    <div className="flex items-center gap-3 sm:gap-4">
+                        {/* Membro icon button */}
+                        <Link
+                            to="/membro/login"
+                            title="Área do Membro"
+                            className="flex items-center justify-center w-8 h-8 rounded-full border border-white/15 text-white/40 hover:border-accent-gold/50 hover:text-accent-gold transition-all duration-300"
+                        >
+                            <span className="material-symbols-outlined text-[16px]">person</span>
+                        </Link>
 
                         {/* Hamburger Menu — Mobile/Tablet only */}
                         <button
@@ -578,6 +591,9 @@ export default function LandingPage() {
                                             {item}
                                         </a>
                                     ))}
+                                    <a href="/ebook" className="text-[11px] font-bold uppercase tracking-widest text-white/40 hover:text-accent-gold transition-all">
+                                        Dossiê
+                                    </a>
                                 </div>
                             </div>
                             <div>
