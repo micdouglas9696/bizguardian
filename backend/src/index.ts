@@ -931,6 +931,12 @@ app.get('/api/ebook/me', requireMember, async (req: MemberRequest, res: Response
 });
 
 // =====================================================================
+// PUBLIC MEDIA  ·  vídeos e arquivos públicos (ex: boas-vindas)
+// =====================================================================
+const PUBLIC_MEDIA_DIR = path.resolve(__dirname, '../public_media');
+app.use('/api/media', express.static(PUBLIC_MEDIA_DIR));
+
+// =====================================================================
 // MEMBER LIBRARY  ·  vitrine multi-produto
 // =====================================================================
 const PRIVATE_ASSETS_DIR = path.resolve(__dirname, '../private_assets');

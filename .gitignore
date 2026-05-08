@@ -68,3 +68,8 @@ Thumbs.db
 .aios-core/local/
 .claude/settings.local.json
 .aios/install-log.txt
+
+# Vídeos grandes (servidos via VPS)
+public/BEM-VINDO.mp4
+backend/public_media/*
+!backend/public_media/.gitkeep

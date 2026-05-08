@@ -140,6 +140,19 @@ export default function EbookSuccessPage() {
 
                     {!loading && order && (
                         <>
+                            {/* Vídeo de boas-vindas */}
+                            {order.status === 'paid' && (
+                                <div className="mb-10 w-full aspect-video bg-[#0a0a0a] border border-white/10 overflow-hidden">
+                                    <video
+                                        src={`${API_URL}/api/media/BEM-VINDO.mp4`}
+                                        autoPlay
+                                        controls
+                                        playsInline
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            )}
+
                             {/* Ícone de sucesso */}
                             <div className="inline-flex items-center justify-center w-24 h-24 mb-8 hud-border bg-[#0a0a0a]">
                                 <span className="material-symbols-outlined text-accent-gold text-5xl">
