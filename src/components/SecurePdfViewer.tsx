@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
@@ -17,7 +17,6 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
     const [loadError, setLoadError] = useState<string | null>(null);
     const [loadingPdf, setLoadingPdf] = useState(true);
     const [pageImages, setPageImages] = useState<(string | null)[]>([]);
-    const blobUrlsRef = useRef<string[]>([]);
 
     const cleanUrl = url.split('#')[0];
 
@@ -43,14 +42,12 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
     useEffect(() => {
         let cancelled = false;
 
-        blobUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
-        blobUrlsRef.current = [];
-
         (async () => {
             try {
                 setLoadingPdf(true);
                 setNumPages(0);
                 setPageImages([]);
+                setLoadError(null);
 
                 const pdf = await pdfjsLib.getDocument(cleanUrl).promise;
                 if (cancelled) return;
@@ -60,10 +57,22 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
                 setPageImages(new Array(n).fill(null));
                 setLoadingPdf(false);
 
-                // Largura disponível — usa window.innerWidth para não depender do DOM
-                const availableW = Math.min(window.innerWidth - 32, 900);
-                // Limita DPR a 2 para evitar estouro de memória no mobile
-                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                // Detecta mobile para usar dimensões menores
+                const isMobile = window.innerWidth < 768;
+                const targetWidth = isMobile
+                    ? Math.min(window.innerWidth - 32, 480)
+                    : Math.min(window.innerWidth - 32, 900);
+                const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+
+                // Reusa um único canvas para todas as páginas
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d', { alpha: false });
+                if (!ctx) {
+                    setLoadError('Navegador não suporta canvas 2D.');
+                    return;
+                }
+
+                let firstError: string | null = null;
 
                 for (let i = 1; i <= n; i++) {
                     if (cancelled) break;
@@ -73,44 +82,46 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
                         if (cancelled) break;
 
                         const naturalW = page.getViewport({ scale: 1 }).width;
-                        const scale = (availableW / naturalW) * dpr;
+                        const scale = (targetWidth / naturalW) * dpr;
                         const viewport = page.getViewport({ scale });
 
-                        // Canvas offscreen — não vai para o DOM, sem limite de contextos
-                        const canvas = document.createElement('canvas');
                         canvas.width = viewport.width;
                         canvas.height = viewport.height;
 
-                        const ctx = canvas.getContext('2d')!;
                         await page.render({ canvasContext: ctx, viewport, canvas }).promise;
                         if (cancelled) break;
 
-                        const blob = await new Promise<Blob>((resolve, reject) => {
-                            canvas.toBlob(
-                                (b) => (b ? resolve(b) : reject(new Error('toBlob failed'))),
-                                'image/jpeg',
-                                0.92,
-                            );
-                        });
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
                         if (cancelled) break;
-
-                        const blobUrl = URL.createObjectURL(blob);
-                        blobUrlsRef.current.push(blobUrl);
 
                         setPageImages((prev) => {
                             const next = [...prev];
-                            next[i - 1] = blobUrl;
+                            next[i - 1] = dataUrl;
                             return next;
                         });
-                    } catch {
-                        // pula página com erro silenciosamente
+
+                        // Cede tempo ao browser entre páginas
+                        await new Promise((resolve) => setTimeout(resolve, 0));
+                    } catch (err: any) {
+                        if (!firstError) {
+                            firstError = err?.message || 'falha ao renderizar';
+                        }
+                    }
+                }
+
+                if (!cancelled && firstError) {
+                    const rendered = pageImages.filter(Boolean).length;
+                    if (rendered === 0) {
+                        setLoadError(`Erro ao renderizar PDF: ${firstError}`);
                     }
                 }
 
                 pdf.destroy();
-            } catch {
+            } catch (err: any) {
                 if (!cancelled) {
-                    setLoadError('Não foi possível carregar o conteúdo.');
+                    setLoadError(
+                        `Não foi possível carregar: ${err?.message || 'erro desconhecido'}`,
+                    );
                     setLoadingPdf(false);
                 }
             }
@@ -119,13 +130,8 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
         return () => {
             cancelled = true;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cleanUrl]);
-
-    useEffect(() => {
-        return () => {
-            blobUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
-        };
-    }, []);
 
     const blockContext = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -183,9 +189,9 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
                 )}
 
                 {loadError && (
-                    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20">
+                    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] py-20 px-6">
                         <span className="material-symbols-outlined text-red-400 text-4xl mb-4">error</span>
-                        <p className="text-[13px] text-white/50">{loadError}</p>
+                        <p className="text-[13px] text-white/70 text-center max-w-md">{loadError}</p>
                     </div>
                 )}
 
