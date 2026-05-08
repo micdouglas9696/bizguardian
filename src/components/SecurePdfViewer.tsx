@@ -22,6 +22,28 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
 
     const cleanUrl = url.split('#')[0];
 
+    // Bloqueia scroll do body no iOS/mobile enquanto o viewer estiver aberto
+    useEffect(() => {
+        const scrollY = window.scrollY;
+        const prevOverflow = document.body.style.overflow;
+        const prevPosition = document.body.style.position;
+        const prevTop = document.body.style.top;
+        const prevWidth = document.body.style.width;
+
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+
+        return () => {
+            document.body.style.overflow = prevOverflow;
+            document.body.style.position = prevPosition;
+            document.body.style.top = prevTop;
+            document.body.style.width = prevWidth;
+            window.scrollTo(0, scrollY);
+        };
+    }, []);
+
     useEffect(() => {
         let cancelled = false;
 
@@ -152,7 +174,7 @@ export default function SecurePdfViewer({ url, onClose, onPiracyAlert }: Props) 
 
             {/* Área de conteúdo */}
             <div
-                className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111]"
+                className="flex-1 overflow-y-auto overflow-x-hidden bg-[#111] overscroll-none"
                 ref={containerRef}
             >
                 {loadingPdf && (
