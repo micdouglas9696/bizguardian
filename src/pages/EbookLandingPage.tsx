@@ -695,7 +695,7 @@ export default function EbookLandingPage() {
                         {/* Bônus */}
                         <div className="text-center mb-10 reveal-on-scroll">
                             <span className="inline-block text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold border border-accent-gold/40 px-4 py-2">
-                                + 1 Bônus exclusivo
+                                Bônus exclusivo
                             </span>
                         </div>
 
@@ -864,71 +864,6 @@ export default function EbookLandingPage() {
                             </div>
                         </div>
 
-                        {/* Depoimentos */}
-                        <div className="text-center mb-10 reveal-on-scroll">
-                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-3 block">
-                                Quem já passou pelo método
-                            </span>
-                        </div>
-
-                        <div className="grid md:grid-cols-3 gap-4 reveal-on-scroll">
-                            {[
-                                {
-                                    quote:
-                                        'Cheguei achando que ia me convencer. Saí entendendo que não era a hora. O Marinho me poupou de R$ 180 mil e dois anos da minha vida.',
-                                    name: 'Carlos M.',
-                                    role: 'ex-executivo · SP',
-                                },
-                                {
-                                    quote:
-                                        'O Módulo 4 me mostrou um buraco de R$ 60 mil que ninguém tinha mencionado. Renegociei e entrei com proteção. Hoje estou 8 meses operando.',
-                                    name: 'Patrícia L.',
-                                    role: 'franqueada food service · MG',
-                                },
-                                {
-                                    quote:
-                                        'Não é motivacional. É cirúrgico. Cada exercício me forçou a uma resposta que eu vinha evitando. Decidi não entrar, e sou grato.',
-                                    name: 'Diego R.',
-                                    role: 'engenheiro · RJ',
-                                },
-                            ].map((t, i) => (
-                                <div
-                                    key={i}
-                                    className="bg-[#0a0a0a] border border-white/[0.07] p-7 md:p-8 relative hover:border-accent-gold/30 transition-colors"
-                                >
-                                    <span className="absolute top-2 right-5 text-[100px] font-black italic text-accent-gold/[0.08] leading-none select-none">
-                                        “
-                                    </span>
-                                    <div className="flex gap-1 mb-5">
-                                        {[1, 2, 3, 4, 5].map((s) => (
-                                            <span
-                                                key={s}
-                                                className="material-symbols-outlined text-accent-gold text-base"
-                                                style={{ fontVariationSettings: '"FILL" 1' }}
-                                            >
-                                                star
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <p className="relative text-white/75 text-[14.5px] leading-[1.75] mb-7 italic">
-                                        "{t.quote}"
-                                    </p>
-                                    <div className="flex items-center gap-3 pt-5 border-t border-white/[0.07]">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-gold/30 to-accent-gold/10 flex items-center justify-center font-black text-accent-gold">
-                                            {t.name.charAt(0)}
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-black text-white">
-                                                {t.name}
-                                            </div>
-                                            <div className="text-[11px] text-white/40 uppercase tracking-wider">
-                                                {t.role}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </section>
 
