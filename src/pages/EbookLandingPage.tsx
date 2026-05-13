@@ -380,9 +380,8 @@ export default function EbookLandingPage() {
                                     <span className="italic text-accent-gold drop-shadow-[0_0_30px_rgba(225,169,96,0.3)]">ninguém te conta.</span>
                                 </h1>
                                 <p className="text-sm md:text-base text-white/65 leading-[1.7] max-w-lg mb-6">
-                                    <strong className="text-white">O método interativo</strong>{' '}
-                                    que já protegeu milhares de futuros franqueados de tomarem a pior decisão da vida,{' '}
-                                    <span className="italic text-accent-gold/90">antes de assinar qualquer contrato</span>.
+                                    As perguntas que você deveria fazer, os números que ninguém menciona, a verdade sobre o que significa{' '}
+                                    <span className="italic text-accent-gold/90">ser dono de uma unidade franqueada</span>.
                                 </p>
                                 <div className="flex items-center gap-3 text-[11px] md:text-[12px] uppercase tracking-[0.2em] text-white/55 font-bold mb-7">
                                     <span className="material-symbols-outlined text-accent-gold text-base">verified</span>
@@ -428,9 +427,8 @@ export default function EbookLandingPage() {
                             </h1>
 
                             <p className="text-[13px] text-white/65 leading-[1.65] mb-4">
-                                <strong className="text-white">O método interativo</strong>{' '}
-                                que protege futuros franqueados de tomarem a pior decisão,{' '}
-                                <span className="italic text-accent-gold/90">antes de assinar qualquer contrato</span>.
+                                As perguntas que você deveria fazer, os números que ninguém menciona, a verdade sobre o que significa{' '}
+                                <span className="italic text-accent-gold/90">ser dono de uma unidade franqueada</span>.
                             </p>
 
                             <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/45 font-bold mb-6">
@@ -630,10 +628,10 @@ export default function EbookLandingPage() {
                                 Tudo que você recebe
                             </span>
                             <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                Seis módulos,
+                                Seis módulos
                                 <br />
                                 <span className="italic text-accent-gold">
-                                    três bônus.
+                                    + 1 bônus.
                                 </span>
                             </h2>
                             <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
@@ -697,29 +695,17 @@ export default function EbookLandingPage() {
                         {/* Bônus */}
                         <div className="text-center mb-10 reveal-on-scroll">
                             <span className="inline-block text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold border border-accent-gold/40 px-4 py-2">
-                                + 3 Bônus exclusivos
+                                + 1 Bônus exclusivo
                             </span>
                         </div>
 
-                        <div className="grid md:grid-cols-3 gap-4 mb-10 reveal-on-scroll">
+                        <div className="grid grid-cols-1 gap-4 mb-10 reveal-on-scroll">
                             {[
                                 {
-                                    label: 'BÔNUS 01',
+                                    label: 'BÔNUS',
                                     title: 'A Reunião com o Franqueador',
-                                    text: 'Guia completo para a reunião decisiva: o que perguntar, o que observar, o que significa quando ele hesita.',
+                                    text: 'Um guia completo para quando você entrar naquela reunião: o que perguntar, o que observar, o que significa quando ele hesita, o que significa quando ele fala rápido demais. Aqui você aprende a linguagem corporal do "não dito".',
                                     value: 'R$ 397',
-                                },
-                                {
-                                    label: 'BÔNUS 02',
-                                    title: 'Templates Editáveis',
-                                    text: 'Planilha de raio-X financeiro, checklist da reunião, mapa de afinidades. Prontos para preencher.',
-                                    value: 'R$ 197',
-                                },
-                                {
-                                    label: 'BÔNUS 03',
-                                    title: 'Encontros ao vivo',
-                                    text: 'Dois encontros mensais com Marinho ao vivo, em grupo fechado, para tirar dúvidas (90 dias).',
-                                    value: 'R$ 597',
                                 },
                             ].map((b) => (
                                 <div
@@ -859,8 +845,7 @@ export default function EbookLandingPage() {
                             <div className="order-1 lg:order-1">
                                 <div className="border-l-2 border-accent-gold pl-6 mb-8">
                                     <p className="text-xl md:text-3xl font-black italic text-white leading-[1.35]">
-                                        "Franquia pode ser o melhor ou o pior negócio da
-                                        sua vida. Depende de como você decide."
+                                        "Não sou coach e nem influencer e também não estou aqui para te motivar com frase bonita de meia-noite. Estou aqui porque, depois de 38 anos vendo a mesma história se repetir — os mesmos erros, as mesmas ilusões, as mesmas decisões precipitadas — decidi que precisava abrir o microfone de verdade."
                                     </p>
                                     <p className="text-[11px] uppercase tracking-[0.3em] text-accent-gold/80 font-bold mt-4">
                                         Marinho Ponci
@@ -868,20 +853,12 @@ export default function EbookLandingPage() {
                                 </div>
 
                                 <p className="text-[15px] text-white/60 leading-[1.85] mb-4">
-                                    Não é coach. Não é influencer. É um profissional
-                                    sênior que decidiu abrir o microfone para ajudar
-                                    quem está no início da jornada{' '}
-                                    <strong className="text-white">
-                                        a não cometer os erros que ele já viu milhares de
-                                        vezes.
-                                    </strong>
+                                    Decidi compartilhar o que aprendi nestes anos todos: o método, as perguntas que importam, a realidade que ninguém fala.
                                 </p>
                                 <p className="text-[15px] text-white/60 leading-[1.85]">
-                                    Ele não ensina fórmulas. Mostra a realidade. Não vende
-                                    sonho, testa se o sonho aguenta a realidade. E quando
-                                    a resposta é não,{' '}
+                                    Porque você merece entrar em franquia (se decidir entrar) com os olhos abertos.{' '}
                                     <span className="italic text-accent-gold">
-                                        ele diz não.
+                                        Não no susto, com pressão e sem clareza.
                                     </span>
                                 </p>
                             </div>
