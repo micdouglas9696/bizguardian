@@ -684,6 +684,214 @@ app.get('/api/leads/contact', requireAuth, async (req: Request, res: Response) =
     }
 });
 
+// =====================================================================
+// EBOOK PRE-CHECKOUT LEADS  ·  captura antes do Stripe
+// =====================================================================
+
+pool.query(`
+    CREATE TABLE IF NOT EXISTS ebook_checkout_leads (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        phone TEXT NOT NULL DEFAULT '',
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+`).catch(err => console.error('[db] ebook_checkout_leads create error:', err));
+
+app.post('/api/leads/ebook', async (req: Request, res: Response) => {
+    const { name, email, phone } = req.body;
+    if (!name || !email) return res.status(400).json({ error: 'Nome e email são obrigatórios' });
+    try {
+        await pool.query(
+            `INSERT INTO ebook_checkout_leads (name, email, phone) VALUES ($1, $2, $3)
+             ON CONFLICT DO NOTHING`,
+            [String(name).trim(), String(email).trim().toLowerCase(), String(phone || '').trim()]
+        );
+        res.status(201).json({ ok: true });
+    } catch (err) {
+        console.error('ebook lead insert error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/admin/ebook/leads', requireAuth, async (_req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM ebook_checkout_leads ORDER BY created_at DESC'
+        );
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: 'Error fetching ebook leads' });
+    }
+});
+
+// =====================================================================
+// ADMIN MEMBER MANAGEMENT
+// =====================================================================
+
+// Lista todos os membros
+app.get('/api/admin/members', requireAuth, async (_req: Request, res: Response) => {
+    try {
+        const result = await pool.query(`
+            SELECT c.id, c.name, c.email, c.whatsapp,
+                   c.access_granted_at, c.access_expires_at, c.last_login_at,
+                   c.password_hash IS NOT NULL AS activated,
+                   EXISTS(
+                       SELECT 1 FROM purchases pu
+                       WHERE pu.customer_id = c.id AND pu.revoked_at IS NULL
+                   ) AS has_access,
+                   c.created_at
+            FROM ebook_customers c
+            ORDER BY c.created_at DESC
+        `);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: 'Error fetching members' });
+    }
+});
+
+// Cria membro manualmente e envia email de ativação
+app.post('/api/admin/members', requireAuth, async (req: Request, res: Response) => {
+    const { name, email } = req.body || {};
+    if (!name || !email) return res.status(400).json({ error: 'Nome e email são obrigatórios' });
+
+    try {
+        const emailLower = String(email).trim().toLowerCase();
+
+        let customerId: string;
+        const existing = await pool.query(
+            'SELECT id FROM ebook_customers WHERE LOWER(email) = $1', [emailLower]
+        );
+
+        if ((existing.rowCount ?? 0) > 0) {
+            customerId = existing.rows[0].id;
+            await pool.query(
+                `UPDATE ebook_customers SET name = $1, updated_at = now(),
+                 access_granted_at = COALESCE(access_granted_at, now()) WHERE id = $2`,
+                [String(name).trim(), customerId]
+            );
+        } else {
+            const ins = await pool.query(
+                `INSERT INTO ebook_customers (email, name, access_granted_at)
+                 VALUES ($1, $2, now()) RETURNING id`,
+                [emailLower, String(name).trim()]
+            );
+            customerId = ins.rows[0].id;
+        }
+
+        // Garante acesso ao produto principal
+        const productResult = await pool.query(
+            `SELECT id FROM products WHERE is_published = true ORDER BY sort_order LIMIT 1`
+        );
+        if ((productResult.rowCount ?? 0) > 0) {
+            const productId = productResult.rows[0].id;
+            await pool.query(
+                `INSERT INTO purchases (customer_id, product_id, granted_at)
+                 VALUES ($1, $2, now())
+                 ON CONFLICT (customer_id, product_id) DO UPDATE SET revoked_at = NULL, granted_at = COALESCE(purchases.granted_at, now())`,
+                [customerId, productId]
+            );
+        }
+
+        // Gera token de ativação e envia email
+        const activationToken = generateAccessToken();
+        const expiresAt = new Date(Date.now() + ACCESS_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000);
+        await pool.query(
+            `INSERT INTO ebook_access_tokens (token, customer_id, purpose, expires_at)
+             VALUES ($1, $2, 'activate', $3)`,
+            [activationToken, customerId, expiresAt]
+        );
+        const activationUrl = `${PUBLIC_URL}/membro/ativar?token=${activationToken}`;
+
+        if (transporter) {
+            try {
+                const firstName = String(name).trim().split(' ')[0] || 'amigo(a)';
+                const fromAddr = ethrealAccount
+                    ? `"Marinho Ponci (sandbox)" <no-reply@ethereal.email>`
+                    : `"Marinho Ponci" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`;
+                const info = await transporter.sendMail({
+                    from: fromAddr,
+                    to: emailLower,
+                    subject: 'Seu acesso ao Dossiê do Futuro Franqueado',
+                    text: buildEbookWelcomeEmailText(firstName, 'manual', activationUrl),
+                    html: buildEbookWelcomeEmail(firstName, 'manual', activationUrl),
+                });
+                if (ethrealAccount) {
+                    console.log(`[admin] >>> PREVIEW: ${nodemailer.getTestMessageUrl(info)}`);
+                }
+            } catch (err) {
+                console.error('admin member email error:', err);
+            }
+        }
+
+        res.json({ ok: true, customer_id: customerId, activation_url: activationUrl });
+    } catch (err: any) {
+        console.error('create member error:', err);
+        res.status(500).json({ error: err.message || 'Internal Server Error' });
+    }
+});
+
+// Revoga ou restaura acesso de um membro
+app.patch('/api/admin/members/:id/access', requireAuth, async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { revoke } = req.body || {};
+    try {
+        if (revoke) {
+            await pool.query(`UPDATE purchases SET revoked_at = now() WHERE customer_id = $1`, [id]);
+        } else {
+            await pool.query(`UPDATE purchases SET revoked_at = NULL WHERE customer_id = $1`, [id]);
+        }
+        res.json({ ok: true });
+    } catch (err) {
+        res.status(500).json({ error: 'Error updating access' });
+    }
+});
+
+// Reenvia email de ativação para um membro
+app.post('/api/admin/members/:id/resend', requireAuth, async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const custResult = await pool.query(
+            'SELECT id, email, name FROM ebook_customers WHERE id = $1', [id]
+        );
+        if ((custResult.rowCount ?? 0) === 0) {
+            return res.status(404).json({ error: 'Membro não encontrado' });
+        }
+        const { email, name } = custResult.rows[0];
+
+        const activationToken = generateAccessToken();
+        const expiresAt = new Date(Date.now() + ACCESS_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000);
+        await pool.query(
+            `INSERT INTO ebook_access_tokens (token, customer_id, purpose, expires_at)
+             VALUES ($1, $2, 'activate', $3)`,
+            [activationToken, id, expiresAt]
+        );
+        const activationUrl = `${PUBLIC_URL}/membro/ativar?token=${activationToken}`;
+
+        if (transporter) {
+            const firstName = (name || '').split(' ')[0] || 'amigo(a)';
+            const fromAddr = ethrealAccount
+                ? `"Marinho Ponci (sandbox)" <no-reply@ethereal.email>`
+                : `"Marinho Ponci" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`;
+            const info = await transporter.sendMail({
+                from: fromAddr,
+                to: email,
+                subject: 'Seu acesso ao Dossiê do Futuro Franqueado',
+                text: buildEbookWelcomeEmailText(firstName, 'resend', activationUrl),
+                html: buildEbookWelcomeEmail(firstName, 'resend', activationUrl),
+            });
+            if (ethrealAccount) {
+                console.log(`[admin] resend >>> PREVIEW: ${nodemailer.getTestMessageUrl(info)}`);
+            }
+        }
+
+        res.json({ ok: true, activation_url: activationUrl });
+    } catch (err: any) {
+        console.error('resend activation error:', err);
+        res.status(500).json({ error: err.message || 'Internal Server Error' });
+    }
+});
+
 // Admin: lista sessões Stripe recentes (pra reconciliar manualmente o que webhook não processou)
 app.get('/api/admin/ebook/stripe-sessions', requireAuth, async (_req: Request, res: Response) => {
     try {

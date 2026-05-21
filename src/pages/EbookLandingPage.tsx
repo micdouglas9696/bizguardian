@@ -172,8 +172,38 @@ export default function EbookLandingPage() {
     const [checkoutError, setCheckoutError] = useState<string | null>(null);
     const mainRef = useRef<HTMLElement>(null);
 
-    const handleCheckout = useCallback(async () => {
+    // Lead capture modal state
+    const [showLeadModal, setShowLeadModal] = useState(false);
+    const [leadName, setLeadName] = useState('');
+    const [leadEmail, setLeadEmail] = useState('');
+    const [leadPhone, setLeadPhone] = useState('');
+    const [leadSubmitting, setLeadSubmitting] = useState(false);
+    const [leadError, setLeadError] = useState('');
+
+    const handleCheckout = useCallback(() => {
         if (checkoutLoading) return;
+        setLeadError('');
+        setShowLeadModal(true);
+    }, [checkoutLoading]);
+
+    const handleLeadSubmit = useCallback(async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!leadName.trim() || !leadEmail.trim() || !leadPhone.trim()) {
+            setLeadError('Por favor, preencha todos os campos.');
+            return;
+        }
+        setLeadSubmitting(true);
+        setLeadError('');
+        try {
+            await fetch(`${API_URL}/api/leads/ebook`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: leadName.trim(), email: leadEmail.trim(), phone: leadPhone.trim() }),
+            });
+        } catch {
+            // não bloqueia o checkout se falhar
+        }
+        setShowLeadModal(false);
         setCheckoutError(null);
         setCheckoutLoading(true);
         const result = await startCheckout();
@@ -181,8 +211,7 @@ export default function EbookLandingPage() {
             setCheckoutError(result.error || 'Erro ao iniciar checkout');
             setCheckoutLoading(false);
         }
-        // Se OK, navegação para Stripe substitui a página — não precisa resetar.
-    }, [checkoutLoading]);
+    }, [leadName, leadEmail, leadPhone]);
 
     // SEO meta tags
     useEffect(() => {
@@ -1098,6 +1127,73 @@ export default function EbookLandingPage() {
                     </p>
                 </div>
             </div>
+
+            {/* ============== MODAL CAPTURA DE LEAD PRÉ-CHECKOUT ============== */}
+            {showLeadModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in">
+                    <div className="bg-[#080808] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in slide-in-from-bottom-6">
+                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                            <div>
+                                <span className="inline-block px-3 py-1 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-3">
+                                    Quase lá
+                                </span>
+                                <h3 className="text-xl font-black text-white">Antes de continuar</h3>
+                                <p className="text-white/50 text-sm mt-1">Preencha para garantir seu acesso.</p>
+                            </div>
+                            <button onClick={() => setShowLeadModal(false)} className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors shrink-0 ml-4">
+                                <span className="material-symbols-outlined text-sm">close</span>
+                            </button>
+                        </div>
+                        <form onSubmit={handleLeadSubmit} className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">Nome completo</label>
+                                <input
+                                    type="text"
+                                    value={leadName}
+                                    onChange={e => setLeadName(e.target.value)}
+                                    placeholder="Seu nome"
+                                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
+                                    autoFocus
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">E-mail</label>
+                                <input
+                                    type="email"
+                                    value={leadEmail}
+                                    onChange={e => setLeadEmail(e.target.value)}
+                                    placeholder="seu@email.com"
+                                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">Telefone / WhatsApp</label>
+                                <input
+                                    type="tel"
+                                    value={leadPhone}
+                                    onChange={e => setLeadPhone(e.target.value)}
+                                    placeholder="(11) 99999-9999"
+                                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
+                                />
+                            </div>
+                            {leadError && (
+                                <p className="text-red-400 text-xs font-bold">{leadError}</p>
+                            )}
+                            <button
+                                type="submit"
+                                disabled={leadSubmitting}
+                                className="w-full py-4 bg-accent-gold text-black font-black text-[11px] uppercase tracking-[0.3em] rounded-lg hover:brightness-110 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                            >
+                                {leadSubmitting ? (
+                                    <><span className="material-symbols-outlined animate-spin text-base">autorenew</span> Aguarde...</>
+                                ) : (
+                                    'Ir para o pagamento'
+                                )}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             {/* ============== TOAST DE ERRO DE CHECKOUT ============== */}
             {checkoutError && (

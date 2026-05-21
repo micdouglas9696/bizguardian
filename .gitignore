@@ -73,3 +73,7 @@ Thumbs.db
 public/BEM-VINDO.mp4
 backend/public_media/*
 !backend/public_media/.gitkeep
+.vercel
+*.pdf
+paginavendas_Ebook*.html
+biz-guardian-blog/

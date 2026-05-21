@@ -101,6 +101,8 @@ export default function MemberDashboardPage() {
                         pagesUrl: `${API_URL}${link.pages_url}`,
                         pageCount: link.page_count,
                     });
+                } else if (link.url) {
+                    window.open(`${API_URL}${link.url}`, '_blank', 'noopener,noreferrer');
                 } else {
                     setError('Conteúdo indisponível no momento.');
                 }

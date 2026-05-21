@@ -1,0 +1,10 @@
+node_modules
+backend
+.aios-core
+.aios
+docs
+*.tar
+*.sql
+public/BEM-VINDO.mp4
+*.pdf
+dist

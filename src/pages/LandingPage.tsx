@@ -19,6 +19,17 @@ const NAV_ITEMS = [
     { name: 'Fale comigo', id: 'contato' }
 ];
 
+interface BlogPost {
+    _id: string;
+    title: string;
+    slug: string;
+    publishedAt: string;
+    excerpt: string;
+    readingTime: number;
+    featuredImage?: { asset: { _ref: string }; alt?: string };
+    categories?: { title: string; slug: string; color?: string }[];
+}
+
 export default function LandingPage() {
     const [scrolled, setScrolled] = useState(false);
     const [isManifestoOpen, setIsManifestoOpen] = useState(false);
@@ -27,6 +38,15 @@ export default function LandingPage() {
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
+    const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+
+    useEffect(() => {
+        const query = encodeURIComponent('*[_type=="post"] | order(publishedAt desc)[0...3]{_id,title,"slug":slug.current,publishedAt,excerpt,readingTime,featuredImage,"categories":categories[]->{title,"slug":slug.current,color}}');
+        fetch(`https://a8os5nxr.apicdn.sanity.io/v2024-01-01/data/query/production?query=${query}`)
+            .then(r => r.json())
+            .then(d => setBlogPosts(d.result || []))
+            .catch(() => {});
+    }, []);
 
     // Contact Form State
     const [contactName, setContactName] = useState('');
@@ -169,6 +189,23 @@ export default function LandingPage() {
                                 </button>
                             ))}
                         </nav>
+
+                        {/* Dossiê CTA */}
+                        <div className={`mt-6 transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: mobileMenuOpen ? '420ms' : '0ms' }}>
+                            <Link
+                                to="/ebook"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center justify-between w-full py-4 border border-accent-gold/30 px-5 rounded-lg bg-accent-gold/5 group hover:bg-accent-gold/10 transition-all duration-300"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <span className="text-[10px] font-mono text-accent-gold/50 font-bold">06</span>
+                                    <span className="text-sm font-black uppercase tracking-[0.2em] text-accent-gold group-hover:text-white transition-colors duration-300">
+                                        Dossiê Gratuito
+                                    </span>
+                                </div>
+                                <span className="material-symbols-outlined text-accent-gold/50 text-sm group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">download</span>
+                            </Link>
+                        </div>
 
                         {/* Bottom CTA */}
                         <div className={`mt-auto transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: mobileMenuOpen ? '500ms' : '0ms' }}>
@@ -444,6 +481,107 @@ export default function LandingPage() {
                     </section>
 
                     <PhotoMural />
+
+                    {/* Section :: Blog */}
+                    {blogPosts.length > 0 && (
+                        <section className="py-16 sm:py-20 md:py-24 px-3 sm:px-6 md:px-12 section-reveal" id="blog">
+                            <div className="max-w-[1700px] mx-auto">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 sm:mb-14 gap-4">
+                                    <div>
+                                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/70 block mb-3">Conteúdo Exclusivo</span>
+                                        <h2 className="font-black text-white tracking-tighter leading-tight text-[clamp(2rem,4vw,3rem)]">
+                                            Artigos do <span className="text-accent-gold italic">Blog</span>
+                                        </h2>
+                                    </div>
+                                    <Link
+                                        to="https://marinhoponci.com/blog"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-colors whitespace-nowrap group"
+                                    >
+                                        Ver todos
+                                        <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </Link>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                                    {blogPosts.map((post, index) => (
+                                        <a
+                                            key={post._id}
+                                            href={`https://marinhoponci.com/blog/${post.slug}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group bg-[#080808] border border-white/8 rounded-xl sm:rounded-2xl overflow-hidden hover:border-accent-gold/40 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(225,169,96,0.1)] transition-all duration-500 flex flex-col"
+                                        >
+                                            {/* Image / Placeholder */}
+                                            <div className="relative aspect-video bg-gradient-to-br from-[#111] to-[#0a0a0a] overflow-hidden flex-shrink-0">
+                                                {post.featuredImage?.asset ? (
+                                                    <img
+                                                        src={`https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace('image-', '').replace(/-svg$/, '.svg').replace(/-(\d+x\d+)-([a-z]+)$/, '-$1.$2')}`}
+                                                        alt={post.featuredImage.alt || post.title}
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                                    />
+                                                ) : (
+                                                    <div className="absolute inset-0 flex items-center justify-center">
+                                                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/20">BizGuardian</span>
+                                                    </div>
+                                                )}
+                                                <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 to-transparent"></div>
+                                                {index === 0 && (
+                                                    <div className="absolute top-3 left-3 px-3 py-1 bg-accent-gold text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-full">
+                                                        Destaque
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Content */}
+                                            <div className="p-5 sm:p-6 flex flex-col flex-1">
+                                                {post.categories && post.categories.length > 0 && (
+                                                    <div className="flex flex-wrap gap-1.5 mb-3">
+                                                        {post.categories.slice(0, 2).map((cat) => (
+                                                            <span
+                                                                key={cat.slug}
+                                                                className="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider"
+                                                                style={{ backgroundColor: `${cat.color || '#e1a960'}18`, color: cat.color || '#e1a960', border: `1px solid ${cat.color || '#e1a960'}30` }}
+                                                            >
+                                                                {cat.title}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                <h3 className="text-white font-black text-base sm:text-lg leading-snug mb-3 group-hover:text-accent-gold transition-colors line-clamp-2 flex-1">
+                                                    {post.title}
+                                                </h3>
+                                                {post.excerpt && (
+                                                    <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-4">{post.excerpt}</p>
+                                                )}
+                                                <div className="flex items-center justify-between mt-auto pt-3 border-t border-white/5">
+                                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/25">
+                                                        {post.readingTime ? `${post.readingTime} min` : ''}
+                                                        {post.readingTime && post.publishedAt ? ' · ' : ''}
+                                                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : ''}
+                                                    </span>
+                                                    <span className="material-symbols-outlined text-sm text-white/20 group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    ))}
+                                </div>
+
+                                <div className="mt-10 text-center">
+                                    <a
+                                        href="https://marinhoponci.com/blog"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-3 px-8 py-4 border border-white/10 text-white/50 text-[10px] font-black uppercase tracking-[0.25em] hover:border-accent-gold/50 hover:text-accent-gold transition-all duration-500 rounded-lg group"
+                                    >
+                                        Ver todos os artigos
+                                        <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </section>
+                    )}
 
                     {/* CTA Final :: Contact Form */}
                     <section className="pb-16 sm:pb-24 md:pb-32 px-3 sm:px-6 md:px-12 section-reveal" id="contato">

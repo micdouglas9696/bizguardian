@@ -96,7 +96,7 @@ export default function SecurePdfViewer({
                                 <img
                                     src={`${pagesUrl}/${n}`}
                                     alt=""
-                                    loading={n <= 3 ? 'eager' : 'lazy'}
+                                    loading="eager"
                                     decoding="async"
                                     draggable={false}
                                     onLoad={() => setLoadedCount((c) => c + 1)}
