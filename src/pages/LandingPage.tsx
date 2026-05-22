@@ -41,8 +41,8 @@ export default function LandingPage() {
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
 
     useEffect(() => {
-        const query = encodeURIComponent('*[_type=="post"] | order(publishedAt desc)[0...3]{_id,title,"slug":slug.current,publishedAt,excerpt,readingTime,featuredImage,"categories":categories[]->{title,"slug":slug.current,color}}');
-        fetch(`https://a8os5nxr.apicdn.sanity.io/v2024-01-01/data/query/production?query=${query}`)
+        const query = '*[_type=="post"] | order(publishedAt desc)[0...3]{_id,title,"slug":slug.current,publishedAt,excerpt,readingTime,featuredImage,"categories":categories[]->{title,"slug":slug.current,color}}';
+        fetch(`https://a8os5nxr.api.sanity.io/v2024-01-01/data/query/production?query=${encodeURIComponent(query)}`)
             .then(r => r.json())
             .then(d => setBlogPosts(d.result || []))
             .catch(() => {});
@@ -124,6 +124,15 @@ export default function LandingPage() {
                                 <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
                             </a>
                         ))}
+                        <a
+                            href="https://marinhoponci.com/blog"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
+                        >
+                            Blog
+                            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
+                        </a>
                         <Link
                             to="/ebook"
                             className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
@@ -200,7 +209,7 @@ export default function LandingPage() {
                                 <div className="flex items-center gap-4">
                                     <span className="text-[10px] font-mono text-accent-gold/50 font-bold">06</span>
                                     <span className="text-sm font-black uppercase tracking-[0.2em] text-accent-gold group-hover:text-white transition-colors duration-300">
-                                        Dossiê Gratuito
+                                        Dossiê
                                     </span>
                                 </div>
                                 <span className="material-symbols-outlined text-accent-gold/50 text-sm group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">download</span>
@@ -517,7 +526,7 @@ export default function LandingPage() {
                                             <div className="relative aspect-video bg-gradient-to-br from-[#111] to-[#0a0a0a] overflow-hidden flex-shrink-0">
                                                 {post.featuredImage?.asset ? (
                                                     <img
-                                                        src={`https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace('image-', '').replace(/-svg$/, '.svg').replace(/-(\d+x\d+)-([a-z]+)$/, '-$1.$2')}`}
+                                                        src={`https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace(/^image-/, '').replace(/-([a-z]+)$/, '.$1')}`}
                                                         alt={post.featuredImage.alt || post.title}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                                     />
