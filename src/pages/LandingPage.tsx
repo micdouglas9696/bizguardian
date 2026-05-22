@@ -39,13 +39,18 @@ export default function LandingPage() {
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+    const [blogLoaded, setBlogLoaded] = useState(false);
 
     useEffect(() => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => { controller.abort(); setBlogLoaded(true); }, 5000);
         const query = '*[_type=="post"] | order(publishedAt desc)[0...3]{_id,title,"slug":slug.current,publishedAt,excerpt,readingTime,featuredImage,"categories":categories[]->{title,"slug":slug.current,color}}';
-        fetch(`https://a8os5nxr.api.sanity.io/v2024-01-01/data/query/production?query=${encodeURIComponent(query)}`)
+        fetch(`https://a8os5nxr.api.sanity.io/v2024-01-01/data/query/production?query=${encodeURIComponent(query)}`, { signal: controller.signal })
             .then(r => r.json())
-            .then(d => setBlogPosts(d.result || []))
-            .catch(() => {});
+            .then(d => { setBlogPosts(d.result || []); setBlogLoaded(true); })
+            .catch(() => setBlogLoaded(true))
+            .finally(() => clearTimeout(timeout));
+        return () => { controller.abort(); clearTimeout(timeout); };
     }, []);
 
     // Contact Form State
@@ -567,7 +572,7 @@ export default function LandingPage() {
                                         </a>
                                     ))}
                                 </div>
-                            ) : (
+                            ) : !blogLoaded ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                                     {[1, 2, 3].map((i) => (
                                         <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden animate-pulse">
@@ -581,7 +586,7 @@ export default function LandingPage() {
                                         </div>
                                     ))}
                                 </div>
-                            )}
+                            ) : null}
 
                             {/* CTA */}
                             <div className="mt-10 text-center">
