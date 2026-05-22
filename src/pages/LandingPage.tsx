@@ -492,38 +492,32 @@ export default function LandingPage() {
                     <PhotoMural />
 
                     {/* Section :: Blog */}
-                    {blogPosts.length > 0 && (
-                        <section className="py-16 sm:py-20 md:py-24 px-3 sm:px-6 md:px-12 section-reveal" id="blog">
-                            <div className="max-w-[1700px] mx-auto">
-                                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 sm:mb-14 gap-4">
-                                    <div>
-                                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/70 block mb-3">Conteúdo Exclusivo</span>
-                                        <h2 className="font-black text-white tracking-tighter leading-tight text-[clamp(2rem,4vw,3rem)]">
-                                            Artigos do <span className="text-accent-gold italic">Blog</span>
-                                        </h2>
-                                    </div>
-                                    <Link
-                                        to="https://marinhoponci.com/blog"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-colors whitespace-nowrap group"
-                                    >
-                                        Ver todos
-                                        <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                                    </Link>
+                    <section className="py-16 sm:py-20 md:py-24 px-3 sm:px-6 md:px-12 section-reveal" id="blog">
+                        <div className="max-w-[1700px] mx-auto">
+                            {/* Header */}
+                            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 sm:mb-14 gap-4">
+                                <div>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/70 block mb-3">Conteúdo Exclusivo</span>
+                                    <h2 className="font-black text-white tracking-tighter leading-tight text-[clamp(2rem,4vw,3rem)]">
+                                        Artigos do <span className="text-accent-gold italic">Blog</span>
+                                    </h2>
                                 </div>
+                                <a href="https://marinhoponci.com/blog" target="_blank" rel="noopener noreferrer"
+                                    className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-colors whitespace-nowrap group">
+                                    Ver todos
+                                    <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </a>
+                            </div>
 
+                            {/* Posts grid */}
+                            {blogPosts.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                                     {blogPosts.map((post, index) => (
-                                        <a
-                                            key={post._id}
-                                            href={`https://marinhoponci.com/blog/${post.slug}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="group bg-[#080808] border border-white/8 rounded-xl sm:rounded-2xl overflow-hidden hover:border-accent-gold/40 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(225,169,96,0.1)] transition-all duration-500 flex flex-col"
-                                        >
-                                            {/* Image / Placeholder */}
-                                            <div className="relative aspect-video bg-gradient-to-br from-[#111] to-[#0a0a0a] overflow-hidden flex-shrink-0">
+                                        <a key={post._id} href={`https://marinhoponci.com/blog/${post.slug}`}
+                                            target="_blank" rel="noopener noreferrer"
+                                            className="group bg-[#0a0a0a] border border-white/10 rounded-xl sm:rounded-2xl overflow-hidden hover:border-accent-gold/40 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(225,169,96,0.1)] transition-all duration-500 flex flex-col">
+                                            {/* Image */}
+                                            <div className="relative aspect-video bg-[#111] overflow-hidden flex-shrink-0">
                                                 {post.featuredImage?.asset ? (
                                                     <img
                                                         src={`https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace(/^image-/, '').replace(/-([a-z]+)$/, '.$1')}`}
@@ -535,24 +529,21 @@ export default function LandingPage() {
                                                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold/20">BizGuardian</span>
                                                     </div>
                                                 )}
-                                                <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 to-transparent"></div>
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                                                 {index === 0 && (
                                                     <div className="absolute top-3 left-3 px-3 py-1 bg-accent-gold text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-full">
                                                         Destaque
                                                     </div>
                                                 )}
                                             </div>
-
                                             {/* Content */}
                                             <div className="p-5 sm:p-6 flex flex-col flex-1">
                                                 {post.categories && post.categories.length > 0 && (
                                                     <div className="flex flex-wrap gap-1.5 mb-3">
                                                         {post.categories.slice(0, 2).map((cat) => (
-                                                            <span
-                                                                key={cat.slug}
+                                                            <span key={cat.slug}
                                                                 className="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider"
-                                                                style={{ backgroundColor: `${cat.color || '#e1a960'}18`, color: cat.color || '#e1a960', border: `1px solid ${cat.color || '#e1a960'}30` }}
-                                                            >
+                                                                style={{ backgroundColor: `${cat.color || '#e1a960'}18`, color: cat.color || '#e1a960', border: `1px solid ${cat.color || '#e1a960'}30` }}>
                                                                 {cat.title}
                                                             </span>
                                                         ))}
@@ -576,21 +567,32 @@ export default function LandingPage() {
                                         </a>
                                     ))}
                                 </div>
-
-                                <div className="mt-10 text-center">
-                                    <a
-                                        href="https://marinhoponci.com/blog"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-3 px-8 py-4 border border-white/10 text-white/50 text-[10px] font-black uppercase tracking-[0.25em] hover:border-accent-gold/50 hover:text-accent-gold transition-all duration-500 rounded-lg group"
-                                    >
-                                        Ver todos os artigos
-                                        <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                                    </a>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                                    {[1, 2, 3].map((i) => (
+                                        <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden animate-pulse">
+                                            <div className="aspect-video bg-white/5" />
+                                            <div className="p-5 space-y-3">
+                                                <div className="h-3 bg-white/5 rounded w-1/4" />
+                                                <div className="h-5 bg-white/5 rounded w-3/4" />
+                                                <div className="h-3 bg-white/5 rounded w-full" />
+                                                <div className="h-3 bg-white/5 rounded w-2/3" />
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
+                            )}
+
+                            {/* CTA */}
+                            <div className="mt-10 text-center">
+                                <a href="https://marinhoponci.com/blog" target="_blank" rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-3 px-8 py-4 border border-white/10 text-white/50 text-[10px] font-black uppercase tracking-[0.25em] hover:border-accent-gold/50 hover:text-accent-gold transition-all duration-500 rounded-lg group">
+                                    Ver todos os artigos
+                                    <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </a>
                             </div>
-                        </section>
-                    )}
+                        </div>
+                    </section>
 
                     {/* CTA Final :: Contact Form */}
                     <section className="pb-16 sm:pb-24 md:pb-32 px-3 sm:px-6 md:px-12 section-reveal" id="contato">
