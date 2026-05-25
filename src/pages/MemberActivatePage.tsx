@@ -91,7 +91,7 @@ export default function MemberActivatePage() {
                 <div className="text-center mb-10">
                     <Link to="/" className="inline-block">
                         <img
-                            src="/marinho final.png"
+                            src="/marinho final.webp"
                             alt="Marinho Ponci"
                             className="h-14 mx-auto mb-6 opacity-90"
                         />

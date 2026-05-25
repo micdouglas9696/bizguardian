@@ -345,7 +345,7 @@ export default function EbookLandingPage() {
                         className="flex flex-col leading-none select-none cursor-pointer group"
                     >
                         <img
-                            src="/marinho final.png"
+                            src="/marinho final.webp"
                             alt="Marinho Ponci"
                             className="h-9 sm:h-12 md:h-16 lg:h-20 w-auto object-contain transition-transform group-hover:scale-105"
                         />
@@ -385,7 +385,7 @@ export default function EbookLandingPage() {
                     <div className="hidden sm:block relative min-h-[88vh]">
                         <div className="absolute inset-0 pointer-events-none">
                             <img
-                                src="/capaebookdesk_franqueado.png"
+                                src="/capaebookdesk_franqueado.webp"
                                 alt=""
                                 loading="eager"
                                 fetchPriority="high"
@@ -434,7 +434,7 @@ export default function EbookLandingPage() {
                         {/* Mockup — capa inteira, leve zoom para presença visual */}
                         <div className="relative w-full flex-none flex items-center justify-center overflow-hidden bg-black" style={{ height: '68vh', paddingTop: '4.5rem' }}>
                             <img
-                                src="/obile final ebook.png"
+                                src="/obile final ebook.webp"
                                 alt="O Dossiê do Futuro Franqueado"
                                 loading="eager"
                                 fetchPriority="high"
@@ -843,7 +843,7 @@ export default function EbookLandingPage() {
                                 <div className="absolute -inset-6 bg-accent-gold/8 blur-3xl rounded-full pointer-events-none"></div>
                                 <div className="relative aspect-[4/5] bg-[#0a0a0a] border border-white/10 hud-border overflow-hidden">
                                     <img
-                                        src="/marinho principal.png"
+                                        src="/marinho principal.webp"
                                         alt="Marinho Ponci, especialista em franchising há 38 anos"
                                         className="w-full h-full object-cover object-top opacity-90"
                                     />
@@ -1228,7 +1228,7 @@ export default function EbookLandingPage() {
                 <div className="max-w-[1700px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-5">
                     <Link to="/" className="flex items-center gap-3">
                         <img
-                            src="/marinho final.png"
+                            src="/marinho final.webp"
                             alt="Marinho Ponci"
                             className="h-10 w-auto opacity-70 hover:opacity-100 transition-opacity"
                         />

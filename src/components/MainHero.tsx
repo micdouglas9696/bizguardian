@@ -28,7 +28,9 @@ export default function MainHero() {
                     }}
                 >
                     <img
-                        src="/marinho principal.png"
+                        src="/marinho principal.webp"
+                        srcSet="/marinho-principal-800.webp 800w, /marinho principal.webp 1200w"
+                        sizes="(max-width: 1024px) 800px, 1200px"
                         alt="Marinho Ponci"
                         loading="eager"
                         fetchPriority="high"
@@ -98,7 +100,9 @@ export default function MainHero() {
             <div className="flex flex-col sm:hidden min-h-screen">
                 <div className="relative w-full h-[50vh] flex-shrink-0 overflow-hidden">
                     <img
-                        src="/marinho principal.png"
+                        src="/marinho principal.webp"
+                        srcSet="/marinho-principal-800.webp 800w, /marinho principal.webp 1200w"
+                        sizes="100vw"
                         alt="Marinho Ponci"
                         loading="eager"
                         fetchPriority="high"

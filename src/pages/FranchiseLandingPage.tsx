@@ -261,7 +261,7 @@ export default function FranchiseLandingPage() {
                         <div className="hero-el mb-6 sm:mb-8" style={{ transitionDelay: '0ms' }}>
                             <Link to="/" className="inline-block hover:-translate-y-1 transition-transform duration-300">
                                 <img
-                                    src="/LOGO FUNDO ESCURO.png"
+                                    src="/LOGO FUNDO ESCURO.webp"
                                     alt="Franchise-se"
                                     className="h-16 sm:h-20 md:h-28 lg:h-36 w-auto object-contain mx-auto drop-shadow-[0_0_40px_rgba(225,169,96,0.2)]"
                                 />
@@ -350,7 +350,7 @@ export default function FranchiseLandingPage() {
                         <div className="lg:col-span-5 relative h-full min-h-[300px] sm:min-h-[400px] lg:min-h-0 flex items-center justify-center">
                             <div className="absolute inset-x-0 -inset-y-16 lg:-inset-y-32">
                                 <div className="relative w-full h-full group overflow-hidden flex items-center justify-center">
-                                    <img src="/sobre.png" alt="Marinho Ponci" className="w-full h-full object-contain object-center opacity-80 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-[1.03]" />
+                                    <img src="/sobre.webp" alt="Marinho Ponci" className="w-full h-full object-contain object-center opacity-80 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-[1.03]" />
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-transparent z-10"></div>
                                     <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#050505] lg:hidden z-10"></div>
                                     <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] z-10"></div>
@@ -676,7 +676,7 @@ export default function FranchiseLandingPage() {
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                         <Link to="/">
-                            <img src="/marinho final.png" alt="Marinho Ponci Logo" className="h-10 sm:h-12 w-auto object-contain hover:opacity-80 transition-opacity" />
+                            <img src="/marinho final.webp" alt="Marinho Ponci Logo" className="h-10 sm:h-12 w-auto object-contain hover:opacity-80 transition-opacity" />
                         </Link>
                         <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-white/10 text-center">
                             © 2026 MARINHO PONCI. ALL RIGHTS RESERVED. BORN FOR GLOBAL.

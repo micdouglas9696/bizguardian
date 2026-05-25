@@ -129,7 +129,7 @@ export default function MemberDashboardPage() {
                 <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3">
                         <img
-                            src="/marinho final.png"
+                            src="/marinho final.webp"
                             alt="Marinho Ponci"
                             className="h-9 md:h-11 w-auto opacity-90"
                         />

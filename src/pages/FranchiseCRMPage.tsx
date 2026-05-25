@@ -143,7 +143,7 @@ export default function FranchiseCRMPage() {
                 <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Link to="/franquia" className="group">
-                            <img src="/LOGO FUNDO ESCURO.png" alt="Franchise-se" className="h-7 sm:h-8 w-auto object-contain" />
+                            <img src="/LOGO FUNDO ESCURO.webp" alt="Franchise-se" className="h-7 sm:h-8 w-auto object-contain" />
                         </Link>
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 hidden sm:inline">
                             / CRM Dashboard

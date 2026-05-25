@@ -72,7 +72,7 @@ export default function LaunchSection() {
                         <div className="w-full lg:w-1/2 order-1 lg:order-2">
                             <div className="relative aspect-[16/9] lg:aspect-square group overflow-hidden rounded-3xl border border-white/10">
                                 <img
-                                    src="/Marinho-185.jpg"
+                                    src="/Marinho-185.webp"
                                     alt="Franchise-se Immersion"
                                     className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 scale-105 group-hover:scale-110"
                                 />

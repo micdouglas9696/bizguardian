@@ -1,23 +1,26 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import InternationalizationPage from './pages/InternationalizationPage';
-import FranchiseLandingPage from './pages/FranchiseLandingPage';
-import FranchiseLessonsPage from './pages/FranchiseLessonsPage';
-import FranchiseCRMPage from './pages/FranchiseCRMPage';
-import EbookLandingPage from './pages/EbookLandingPage';
-import EbookSuccessPage from './pages/EbookSuccessPage';
-import MemberActivatePage from './pages/MemberActivatePage';
-import MemberLoginPage from './pages/MemberLoginPage';
-import MemberForgotPasswordPage from './pages/MemberForgotPasswordPage';
-import MemberDashboardPage from './pages/MemberDashboardPage';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
+import { Suspense, lazy } from 'react';
 import ScrollToTop from './components/ScrollToTop';
+
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const InternationalizationPage = lazy(() => import('./pages/InternationalizationPage'));
+const FranchiseLandingPage = lazy(() => import('./pages/FranchiseLandingPage'));
+const FranchiseLessonsPage = lazy(() => import('./pages/FranchiseLessonsPage'));
+const FranchiseCRMPage = lazy(() => import('./pages/FranchiseCRMPage'));
+const EbookLandingPage = lazy(() => import('./pages/EbookLandingPage'));
+const EbookSuccessPage = lazy(() => import('./pages/EbookSuccessPage'));
+const MemberActivatePage = lazy(() => import('./pages/MemberActivatePage'));
+const MemberLoginPage = lazy(() => import('./pages/MemberLoginPage'));
+const MemberForgotPasswordPage = lazy(() => import('./pages/MemberForgotPasswordPage'));
+const MemberDashboardPage = lazy(() => import('./pages/MemberDashboardPage'));
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <Suspense fallback={<div className="bg-black min-h-screen" />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/internationalization" element={<InternationalizationPage />} />
@@ -40,6 +43,7 @@ export default function App() {
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
+      </Suspense>
     </Router>
   );
 }

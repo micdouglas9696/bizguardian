@@ -37,7 +37,7 @@ export default function HeroBillboard() {
                     }}
                 >
                     <img
-                        src="/banner final 02.png"
+                        src="/banner final 02.webp"
                         alt="Marinho Ponci"
                         className="w-full h-full object-cover object-[center_20%] lg:object-right scale-110"
                     />
@@ -88,7 +88,7 @@ export default function HeroBillboard() {
                 {/* Photo Block */}
                 <div className="relative w-full h-[50vh] flex-shrink-0 overflow-hidden">
                     <img
-                        src="/banner final 02.png"
+                        src="/banner final 02.webp"
                         alt="Marinho Ponci"
                         className="w-full h-full object-cover object-[60%_25%] scale-105"
                     />

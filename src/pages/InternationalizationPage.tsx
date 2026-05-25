@@ -21,7 +21,7 @@ export default function InternationalizationPage() {
                 <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="flex flex-col leading-none select-none cursor-pointer group">
-                            <img src="/LOGO FUNDO BRANCO.png" alt="Biz Guardian Logo" className="h-14 md:h-20 w-auto object-contain transition-transform group-hover:scale-105" />
+                            <img src="/LOGO FUNDO BRANCO.webp" alt="Biz Guardian Logo" className="h-14 md:h-20 w-auto object-contain transition-transform group-hover:scale-105" />
                         </Link>
                     </div>
 
@@ -52,7 +52,7 @@ export default function InternationalizationPage() {
 
                     <div className="relative w-full max-w-5xl mb-12 group rounded-xl shadow-2xl overflow-hidden border border-white/5 aspect-video bg-black">
                         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-                        <img alt="Marinho Ponci Hero Banner" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000" src="/_DSC4559.jpg" />
+                        <img alt="Marinho Ponci Hero Banner" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000" src="/_DSC4559.webp" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
                         <div className="absolute bottom-10 left-10 text-left">
@@ -103,7 +103,7 @@ export default function InternationalizationPage() {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                         <div className="md:col-span-8 bg-[#111] rounded-2xl border border-white/5 relative overflow-hidden group min-h-[400px]">
                             <div className="absolute inset-0">
-                                <img src="/44.jpg" alt="Marinho Ponci Clone" className="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-1000" />
+                                <img src="/44.webp" alt="Marinho Ponci Clone" className="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-1000" />
                                 <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
                             </div>
                             <div className="relative z-10 p-12 h-full flex flex-col justify-center max-w-md">
@@ -112,7 +112,7 @@ export default function InternationalizationPage() {
                                 <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                                     Você será guiado a cada passo pela inteligência digital que carrega 38 anos de expertise do Marinho.
                                 </p>
-                                <img src="/marinho-signature.png" alt="Assinatura" className="h-14 w-auto object-contain filter invert opacity-40" />
+                                <img src="/marinho-signature.webp" alt="Assinatura" className="h-14 w-auto object-contain filter invert opacity-40" />
                             </div>
                         </div>
 
@@ -169,7 +169,7 @@ export default function InternationalizationPage() {
             {/* Footer */}
             <footer className="bg-black text-white pt-32 pb-16 border-t border-white/5">
                 <div className="max-w-[1400px] mx-auto px-6 md:px-12 text-center">
-                    <img src="/LOGO FUNDO BRANCO.png" alt="Biz Guardian Logo" className="h-12 w-auto object-contain mx-auto mb-10 opacity-30" />
+                    <img src="/LOGO FUNDO BRANCO.webp" alt="Biz Guardian Logo" className="h-12 w-auto object-contain mx-auto mb-10 opacity-30" />
                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">
                         © 2026 BIZGUARDIAN. BORN FOR GLOBAL.
                     </p>

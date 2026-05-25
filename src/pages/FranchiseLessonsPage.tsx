@@ -78,7 +78,7 @@ export default function FranchiseLessonsPage() {
             <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between">
                     <Link to="/franquia" className="flex items-center gap-3 group">
-                        <img src="/LOGO FUNDO ESCURO.png" alt="Franchise-se" className="h-7 sm:h-8 w-auto object-contain" />
+                        <img src="/LOGO FUNDO ESCURO.webp" alt="Franchise-se" className="h-7 sm:h-8 w-auto object-contain" />
                     </Link>
                     <div className="flex items-center gap-4">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 hidden sm:inline">
@@ -296,7 +296,7 @@ export default function FranchiseLessonsPage() {
             {/* Footer */}
             <footer className="bg-black text-white py-10 border-t border-white/5">
                 <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <img src="/marinho final.png" alt="Marinho Ponci Logo" className="h-8 w-auto object-contain" />
+                    <img src="/marinho final.webp" alt="Marinho Ponci Logo" className="h-8 w-auto object-contain" />
                     <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/10 text-center">
                         © 2026 MARINHO PONCI. FRANCHISE-SE. ALL RIGHTS RESERVED.
                     </p>

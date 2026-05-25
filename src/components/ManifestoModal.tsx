@@ -186,7 +186,7 @@ export default function ManifestoModal({ isOpen, onClose }: ManifestoModalProps)
 
                                 {/* Signature */}
                                 <div className="relative group">
-                                    <img src="/marinho-signature.png" alt="Assinatura Marinho Ponci" className="h-40 md:h-64 w-auto object-contain mb-12 filter brightness-100 transition-all duration-700 group-hover:scale-110" />
+                                    <img src="/marinho-signature.webp" alt="Assinatura Marinho Ponci" className="h-40 md:h-64 w-auto object-contain mb-12 filter brightness-100 transition-all duration-700 group-hover:scale-110" />
                                     <div className="absolute inset-0 bg-accent-gold/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10"></div>
                                 </div>
 

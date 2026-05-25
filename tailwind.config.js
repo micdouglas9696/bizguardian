@@ -95,8 +95,8 @@ export default {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'reveal-skew': {
-          '0%': { transform: 'translateY(40px) skewY(3deg)', opacity: '0', filter: 'blur(10px)' },
-          '100%': { transform: 'translateY(0) skewY(0)', opacity: '1', filter: 'blur(0)' },
+          '0%': { transform: 'translateY(40px) skewY(3deg)', opacity: '0' },
+          '100%': { transform: 'translateY(0) skewY(0)', opacity: '1' },
         },
         'pulse-data': {
           '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },

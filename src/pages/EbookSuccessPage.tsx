@@ -91,7 +91,7 @@ export default function EbookSuccessPage() {
                         className="flex flex-col leading-none select-none cursor-pointer group"
                     >
                         <img
-                            src="/marinho final.png"
+                            src="/marinho final.webp"
                             alt="Marinho Ponci"
                             className="h-10 sm:h-12 md:h-16 w-auto object-contain transition-transform group-hover:scale-105"
                         />

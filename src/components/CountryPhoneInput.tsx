@@ -102,11 +102,22 @@ export default function CountryPhoneInput({
                     <button
                         type="button"
                         onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="flex items-center gap-2 bg-black border border-white/10 border-r-0 px-3 py-4 rounded-l text-sm text-white hover:bg-white/5 transition-colors h-full min-w-[90px] justify-center"
+                        className="flex items-center gap-1.5 bg-black border border-white/10 border-r-0 px-3 py-4 rounded-l text-sm text-white hover:bg-white/5 transition-colors h-full min-w-[90px] justify-center"
                     >
-                        <span className="text-lg">{selectedCountry.flag}</span>
+                        <span className="text-base leading-none">{selectedCountry.flag}</span>
                         <span className="text-white/60 text-xs font-bold">{selectedCountry.code}</span>
-                        <span className="material-symbols-outlined text-white/30 text-sm">{dropdownOpen ? 'expand_less' : 'expand_more'}</span>
+                        <svg
+                            className={`w-3 h-3 text-white/30 flex-shrink-0 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                        >
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
                     </button>
 
                     {dropdownOpen && (
