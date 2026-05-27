@@ -1,0 +1,115 @@
+{
+  "name": "BizGuardian · Campaign Batch (Manual)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "automation/campaign-batch",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook · Campaign Start",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.marinhoponci.com/api/admin/automacoes/campaigns/{{$json.body.campaign_id}}/queued",
+        "method": "GET",
+        "options": { "timeout": 30000 }
+      },
+      "id": "fetch-runs",
+      "name": "Buscar destinatários",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "id": "split",
+      "name": "Itens individuais",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [620, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.mycom.dev.br/send/text",
+        "method": "POST",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{($json.recipient_phone || '').replace(/\\D/g,'')}}\",\n  \"text\": \"{{$json.template_body.replaceAll('{{name}}', $json.recipient_name || 'amigo(a)').replaceAll('{{email}}', $json.recipient_email || '').replaceAll('{{phone}}', $json.recipient_phone || '').replaceAll('{{link}}', 'https://marinhoponci.com/ebook').replaceAll('{{product}}', 'Dossiê do Futuro Franqueado')}}\"\n}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "send",
+      "name": "Envia WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [820, 300]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.marinhoponci.com/api/admin/automacoes/runs/{{$('Itens individuais').item.json.id}}/result",
+        "method": "POST",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"sent\",\n  \"provider_response\": {{JSON.stringify($json)}}\n}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "mark-sent",
+      "name": "Marca como enviado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1020, 300]
+    },
+    {
+      "parameters": { "amount": 3, "unit": "seconds" },
+      "id": "throttle",
+      "name": "Throttle 3s (anti-ban)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [1220, 300],
+      "webhookId": "throttle-batch"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.marinhoponci.com/api/admin/automacoes/campaigns/{{$('Webhook · Campaign Start').item.json.body.campaign_id}}/finalize",
+        "method": "POST",
+        "options": { "timeout": 15000 }
+      },
+      "id": "finalize",
+      "name": "Finaliza campanha",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1420, 300]
+    }
+  ],
+  "connections": {
+    "Webhook · Campaign Start": { "main": [[{ "node": "Buscar destinatários", "type": "main", "index": 0 }]] },
+    "Buscar destinatários": { "main": [[{ "node": "Itens individuais", "type": "main", "index": 0 }]] },
+    "Itens individuais": { "main": [[{ "node": "Envia WhatsApp", "type": "main", "index": 0 }]] },
+    "Envia WhatsApp": { "main": [[{ "node": "Marca como enviado", "type": "main", "index": 0 }]] },
+    "Marca como enviado": { "main": [[{ "node": "Throttle 3s (anti-ban)", "type": "main", "index": 0 }]] },
+    "Throttle 3s (anti-ban)": { "main": [[{ "node": "Finaliza campanha", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

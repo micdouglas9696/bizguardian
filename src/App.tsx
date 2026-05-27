@@ -15,6 +15,7 @@ const MemberForgotPasswordPage = lazy(() => import('./pages/MemberForgotPassword
 const MemberDashboardPage = lazy(() => import('./pages/MemberDashboardPage'));
 const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminAutomacoes = lazy(() => import('./pages/AdminAutomacoes'));
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
         {/* Admin CRM Routes */}
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/automacoes" element={<AdminAutomacoes />} />
       </Routes>
       </Suspense>
     </Router>

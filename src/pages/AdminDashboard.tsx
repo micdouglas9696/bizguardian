@@ -231,6 +231,10 @@ export default function AdminDashboard() {
                             </button>
                         </div>
                     )}
+                    <button onClick={() => navigate('/admin/automacoes')} className="text-white/60 hover:text-amber-400 transition-colors flex items-center gap-1 text-xs uppercase tracking-widest" title="Automações">
+                        <span className="material-symbols-outlined text-xl">smart_toy</span>
+                        <span className="hidden md:inline">Automações</span>
+                    </button>
                     <button onClick={handleLogout} className="text-white/40 hover:text-red-400 transition-colors flex items-center">
                         <span className="material-symbols-outlined text-xl">logout</span>
                     </button>

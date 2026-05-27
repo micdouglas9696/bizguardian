@@ -9,6 +9,7 @@ import nodemailer from 'nodemailer';
 import Stripe from 'stripe';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { createAutomationRouter, triggerN8nAsync } from './automation';
 
 // Carrega backend/.env primeiro; se não existir, cai para o .env da raiz do projeto.
 dotenv.config();
@@ -483,6 +484,17 @@ async function handleCheckoutCompleted(session: any) {
             console.error('Welcome email error:', err);
         }
     }
+
+    // 🔔 Dispara automação de pós-venda (notifica admin + WhatsApp boas-vindas)
+    triggerN8nAsync('postvenda', {
+        name,
+        email,
+        phone,
+        product: session.metadata?.product || 'Dossiê do Futuro Franqueado',
+        amount: (amount / 100).toFixed(2),
+        link: activationUrl,
+        session_id: session.id,
+    });
 }
 
 async function handleChargeRefunded(charge: any) {
@@ -702,11 +714,32 @@ app.post('/api/leads/ebook', async (req: Request, res: Response) => {
     const { name, email, phone } = req.body;
     if (!name || !email) return res.status(400).json({ error: 'Nome e email são obrigatórios' });
     try {
+        const cleanName = String(name).trim();
+        const cleanEmail = String(email).trim().toLowerCase();
+        const cleanPhone = String(phone || '').trim();
         await pool.query(
             `INSERT INTO ebook_checkout_leads (name, email, phone) VALUES ($1, $2, $3)
              ON CONFLICT DO NOTHING`,
-            [String(name).trim(), String(email).trim().toLowerCase(), String(phone || '').trim()]
+            [cleanName, cleanEmail, cleanPhone]
         );
+
+        // 🔔 Dispara automação: notifica admin + envia 1ª mensagem ao lead
+        triggerN8nAsync('lead-captured', {
+            name: cleanName,
+            email: cleanEmail,
+            phone: cleanPhone,
+            link: `${PUBLIC_URL}/ebook`,
+            product: 'Dossiê do Futuro Franqueado',
+        });
+        // Agenda recuperação (5min/24h/7d) — n8n controla os waits
+        triggerN8nAsync('recovery-start', {
+            name: cleanName,
+            email: cleanEmail,
+            phone: cleanPhone,
+            link: `${PUBLIC_URL}/ebook`,
+            product: 'Dossiê do Futuro Franqueado',
+        });
+
         res.status(201).json({ ok: true });
     } catch (err) {
         console.error('ebook lead insert error:', err);
@@ -1143,6 +1176,9 @@ app.get('/api/ebook/me', requireMember, async (req: MemberRequest, res: Response
 // =====================================================================
 const PUBLIC_MEDIA_DIR = path.resolve(__dirname, '../public_media');
 app.use('/api/media', express.static(PUBLIC_MEDIA_DIR));
+
+// 🤖 AUTOMATION ROUTER (templates, campaigns, runs, stats)
+app.use('/api/admin/automacoes', createAutomationRouter(pool, requireAuth));
 
 // =====================================================================
 // MEMBER LIBRARY  ·  vitrine multi-produto

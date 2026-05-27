@@ -1,0 +1,72 @@
+{
+  "name": "BizGuardian · Pós-Venda",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "automation/postvenda",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook · Pós-Venda",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.mycom.dev.br/send/text",
+        "method": "POST",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"351961862223\",\n  \"text\": \"💰 NOVA VENDA\\n\\nComprador: {{$json.body.name}}\\nE-mail: {{$json.body.email}}\\nTelefone: {{$json.body.phone}}\\nProduto: {{$json.body.product}}\\nValor: R$ {{$json.body.amount}}\"\n}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "notify-admin",
+      "name": "Notifica Marinho",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://api.mycom.dev.br/send/text",
+        "method": "POST",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{$json.body.phone.replace(/\\D/g,'')}}\",\n  \"text\": \"Bem-vindo {{$json.body.name}}! 🎉 Sua compra do {{$json.body.product}} foi confirmada.\\n\\nAcesse a área do membro: https://marinhoponci.com/membro/login\\nLogin: {{$json.body.email}}\\n\\nPara sua reunião bônus de 30 min, agende em: https://cal.com/marinhoponci\"\n}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "send-welcome",
+      "name": "Boas-vindas Cliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 400]
+    }
+  ],
+  "connections": {
+    "Webhook · Pós-Venda": {
+      "main": [[
+        { "node": "Notifica Marinho", "type": "main", "index": 0 },
+        { "node": "Boas-vindas Cliente", "type": "main", "index": 0 }
+      ]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}
