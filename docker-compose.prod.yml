@@ -35,7 +35,7 @@ services:
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
       - STRIPE_EBOOK_PRICE_ID=${STRIPE_EBOOK_PRICE_ID:-}
       - PUBLIC_URL=https://marinhoponci.com
-      - N8N_WEBHOOK_BASE=${N8N_WEBHOOK_BASE:-https://webhook.mycom.dev.br/automation}
+      - N8N_WEBHOOK_BASE=${N8N_WEBHOOK_BASE:-https://n8n.mycom.dev.br/webhook/automation}
       - N8N_SHARED_SECRET=${N8N_SHARED_SECRET:-}
     volumes:
       - /root/bizguardian/public_media:/usr/src/app/public_media
