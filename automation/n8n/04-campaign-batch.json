@@ -39,18 +39,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{($json.recipient_phone || '').replace(/\\D/g,'')}}\",\n  \"text\": \"{{$json.template_body.replaceAll('{{name}}', $json.recipient_name || 'amigo(a)').replaceAll('{{email}}', $json.recipient_email || '').replaceAll('{{phone}}', $json.recipient_phone || '').replaceAll('{{link}}', 'https://marinhoponci.com/ebook').replaceAll('{{product}}', 'Dossiê do Futuro Franqueado')}}\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"{{($json.recipient_phone || '').replace(/\\D/g,'')}}\",\n  \"Body\": \"{{$json.template_body.replaceAll('{{name}}', $json.recipient_name || 'amigo(a)').replaceAll('{{email}}', $json.recipient_email || '').replaceAll('{{phone}}', $json.recipient_phone || '').replaceAll('{{link}}', 'https://marinhoponci.com/ebook').replaceAll('{{product}}', 'Dossiê do Futuro Franqueado')}}\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "send",

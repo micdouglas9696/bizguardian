@@ -25,18 +25,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"text\": \"Oi {{$('Webhook · Recovery Start').item.json.body.name}}, notei que você não finalizou sua compra. Aqui está seu link: {{$('Webhook · Recovery Start').item.json.body.link}} — qualquer dúvida me chama!\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Oi {{$('Webhook · Recovery Start').item.json.body.name}}, notei que você não finalizou sua compra. Aqui está seu link: {{$('Webhook · Recovery Start').item.json.body.link}} — qualquer dúvida me chama!\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "send5",
@@ -56,18 +56,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"text\": \"Olá {{$('Webhook · Recovery Start').item.json.body.name}}! Já são mais de 327 pessoas usando o Dossiê para tomar a decisão certa antes de investir em uma franquia. Você ainda pode garantir o seu: {{$('Webhook · Recovery Start').item.json.body.link}}\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Olá {{$('Webhook · Recovery Start').item.json.body.name}}! Já são mais de 327 pessoas usando o Dossiê para tomar a decisão certa antes de investir em uma franquia. Você ainda pode garantir o seu: {{$('Webhook · Recovery Start').item.json.body.link}}\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "send24",
@@ -87,18 +87,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"text\": \"Oi {{$('Webhook · Recovery Start').item.json.body.name}}! Liberei um cupom de 5% OFF só para você: BIZGUARDIAN5. Use no checkout: {{$('Webhook · Recovery Start').item.json.body.link}} — válido até amanhã.\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Oi {{$('Webhook · Recovery Start').item.json.body.name}}! Liberei um cupom de 5% OFF só para você: BIZGUARDIAN5. Use no checkout: {{$('Webhook · Recovery Start').item.json.body.link}} — válido até amanhã.\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "send7",

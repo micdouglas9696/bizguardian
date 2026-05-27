@@ -17,18 +17,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"351961862223\",\n  \"text\": \"🟢 NOVO LEAD\\n\\nNome: {{$json.body.name}}\\nE-mail: {{$json.body.email}}\\nTelefone: {{$json.body.phone}}\\n\\nProduto: {{$json.body.product}}\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"558196696184\",\n  \"Body\": \"🟢 NOVO LEAD\\n\\nNome: {{$json.body.name}}\\nE-mail: {{$json.body.email}}\\nTelefone: {{$json.body.phone}}\\n\\nProduto: {{$json.body.product}}\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "notify-admin",
@@ -39,18 +39,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{$json.body.phone.replace(/\\D/g,'')}}\",\n  \"text\": \"Olá {{$json.body.name}}! 👋 Vi que você se interessou pelo {{$json.body.product}}. Seu link para finalizar: {{$json.body.link}}\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"{{$json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Olá {{$json.body.name}}! 👋 Vi que você se interessou pelo {{$json.body.product}}. Seu link para finalizar: {{$json.body.link}}\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "send-welcome",

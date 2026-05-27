@@ -16,18 +16,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"351961862223\",\n  \"text\": \"💰 NOVA VENDA\\n\\nComprador: {{$json.body.name}}\\nE-mail: {{$json.body.email}}\\nTelefone: {{$json.body.phone}}\\nProduto: {{$json.body.product}}\\nValor: R$ {{$json.body.amount}}\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"558196696184\",\n  \"Body\": \"💰 NOVA VENDA\\n\\nComprador: {{$json.body.name}}\\nE-mail: {{$json.body.email}}\\nTelefone: {{$json.body.phone}}\\nProduto: {{$json.body.product}}\\nValor: R$ {{$json.body.amount}}\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "notify-admin",
@@ -38,18 +38,18 @@
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/send/text",
+        "url": "https://api.mycom.dev.br/chat/send/text",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9" },
+            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{$json.body.phone.replace(/\\D/g,'')}}\",\n  \"text\": \"Bem-vindo {{$json.body.name}}! 🎉 Sua compra do {{$json.body.product}} foi confirmada.\\n\\nAcesse a área do membro: https://marinhoponci.com/membro/login\\nLogin: {{$json.body.email}}\\n\\nPara sua reunião bônus de 30 min, agende em: https://cal.com/marinhoponci\"\n}",
+        "jsonBody": "={\n  \"Phone\": \"{{$json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Bem-vindo {{$json.body.name}}! 🎉 Sua compra do {{$json.body.product}} foi confirmada.\\n\\nAcesse a área do membro: https://marinhoponci.com/membro/login\\nLogin: {{$json.body.email}}\\n\\nPara sua reunião bônus de 30 min, agende em: https://cal.com/marinhoponci\"\n}",
         "options": { "timeout": 15000 }
       },
       "id": "send-welcome",
