@@ -255,6 +255,29 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
     });
 
     // ---- STATS dashboard ----
+    router.post('/seed-email-templates', requireAuth, async (_req: Request, res: Response) => {
+        try {
+            await pool.query(`
+                INSERT INTO automation_templates (slug,channel,subject,body,description,is_active) VALUES
+                ('recovery_5min_email','email','Você esqueceu algo por aqui... 👀',
+                 'Olá {{name}}!\n\nNotei que você se interessou pelo Dossiê do Futuro Franqueado mas não finalizou.\n\nSe ficou com alguma dúvida, é só responder este email.\n\nAcesse: {{link}}\n\nAbraço,\nMarinho Ponci',
+                 'Email recovery 5 minutos',true),
+                ('recovery_24h_email','email','327 pessoas já tomaram a decisão certa 🏆',
+                 'Olá {{name}}!\n\nJá são mais de 327 pessoas que usaram o Dossiê para tomar a decisão certa antes de investir em franquia.\n\nAcesse: {{link}}\n\nAbraço,\nMarinho Ponci',
+                 'Email recovery 24 horas',true),
+                ('recovery_7d_email','email','5% OFF só para você — cupom BIZGUARDIAN5 🎁',
+                 'Olá {{name}}!\n\nLiberei um cupom exclusivo de 5% OFF: BIZGUARDIAN5.\nVálido até amanhã.\n\nAcesse: {{link}}\n\nAbraço,\nMarinho Ponci',
+                 'Email recovery 7 dias (cupom)',true)
+                ON CONFLICT (slug) DO UPDATE SET
+                    subject=EXCLUDED.subject, body=EXCLUDED.body,
+                    description=EXCLUDED.description, is_active=EXCLUDED.is_active;
+            `);
+            return res.json({ ok: true, inserted: 3 });
+        } catch (err: any) {
+            return res.status(500).json({ error: err.message });
+        }
+    });
+
     router.get('/stats', requireAuth, async (_req: Request, res: Response) => {
         try {
             const r = await pool.query(`
