@@ -721,10 +721,17 @@ async function scheduleRecoveryEmails(name: string, email: string, link: string)
     const from = `"Marinho Ponci" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'info@marinhoponci.com'}>`;
     const vars = { name, email, link };
 
+    const settingsR = await pool.query(
+        `SELECT key, value FROM automation_settings WHERE key IN ('recovery_5min_delay_ms','recovery_24h_delay_ms','recovery_7d_delay_ms','email_recovery_enabled') LIMIT 10`
+    ).catch(() => ({ rows: [] as any[] }));
+    const cfg: Record<string, string> = {};
+    for (const row of settingsR.rows) cfg[row.key] = row.value;
+    if (cfg['email_recovery_enabled'] === 'false') return;
+
     const slugs: Array<{ slug: string; delayMs: number }> = [
-        { slug: 'recovery_5min_email',  delayMs: 5 * 60 * 1000 },
-        { slug: 'recovery_24h_email',   delayMs: 24 * 60 * 60 * 1000 },
-        { slug: 'recovery_7d_email',    delayMs: 7 * 24 * 60 * 60 * 1000 },
+        { slug: 'recovery_5min_email',  delayMs: Number(cfg['recovery_5min_delay_ms']  || 5 * 60 * 1000) },
+        { slug: 'recovery_24h_email',   delayMs: Number(cfg['recovery_24h_delay_ms']   || 24 * 60 * 60 * 1000) },
+        { slug: 'recovery_7d_email',    delayMs: Number(cfg['recovery_7d_delay_ms']    || 7 * 24 * 60 * 60 * 1000) },
     ];
 
     for (const { slug, delayMs } of slugs) {

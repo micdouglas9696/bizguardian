@@ -255,6 +255,32 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
     });
 
     // ---- STATS dashboard ----
+    // ---- SETTINGS ----
+    router.get('/settings', requireAuth, async (_req: Request, res: Response) => {
+        try {
+            const r = await pool.query(`SELECT key, value, description FROM automation_settings ORDER BY key`);
+            return res.json(r.rows);
+        } catch (err: any) {
+            return res.status(500).json({ error: err.message });
+        }
+    });
+
+    router.put('/settings/:key', requireAuth, async (req: Request, res: Response) => {
+        try {
+            const { key } = req.params;
+            const { value } = req.body;
+            if (value === undefined) return res.status(400).json({ error: 'value required' });
+            await pool.query(
+                `INSERT INTO automation_settings (key, value, updated_at) VALUES ($1,$2,now())
+                 ON CONFLICT (key) DO UPDATE SET value=EXCLUDED.value, updated_at=now()`,
+                [key, String(value)]
+            );
+            return res.json({ ok: true });
+        } catch (err: any) {
+            return res.status(500).json({ error: err.message });
+        }
+    });
+
     router.post('/seed-email-templates', requireAuth, async (_req: Request, res: Response) => {
         try {
             await pool.query(`

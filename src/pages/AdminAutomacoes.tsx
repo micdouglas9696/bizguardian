@@ -26,6 +26,12 @@ interface Campaign {
     created_at: string;
 }
 
+interface Setting {
+    key: string;
+    value: string;
+    description: string | null;
+}
+
 interface Stats {
     total_campaigns: number;
     total_sent: number;
@@ -35,12 +41,14 @@ interface Stats {
 
 export default function AdminAutomacoes() {
     const navigate = useNavigate();
-    const [tab, setTab] = useState<'campaigns' | 'templates' | 'new'>('campaigns');
+    const [tab, setTab] = useState<'campaigns' | 'templates' | 'new' | 'settings'>('campaigns');
     const [templates, setTemplates] = useState<Template[]>([]);
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [stats, setStats] = useState<Stats | null>(null);
     const [loading, setLoading] = useState(true);
     const [editingTemplate, setEditingTemplate] = useState<Template | null>(null);
+    const [settings, setSettings] = useState<Setting[]>([]);
+    const [savingKey, setSavingKey] = useState<string | null>(null);
 
     // New campaign form
     const [campaignName, setCampaignName] = useState('');
@@ -72,9 +80,11 @@ export default function AdminAutomacoes() {
                 navigate('/admin');
                 return;
             }
+            const setR = await fetch(`${API_URL}/api/admin/automacoes/settings`, { headers: authHeaders() });
             setTemplates(await tplR.json());
             setCampaigns(await campR.json());
             setStats(await statR.json());
+            setSettings(await setR.json());
         } catch (err) {
             console.error(err);
         } finally {
@@ -83,6 +93,24 @@ export default function AdminAutomacoes() {
     };
 
     useEffect(() => { loadAll(); }, []);
+
+    const saveSetting = async (key: string, value: string) => {
+        setSavingKey(key);
+        await fetch(`${API_URL}/api/admin/automacoes/settings/${key}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', ...authHeaders() },
+            body: JSON.stringify({ value }),
+        });
+        setSavingKey(null);
+        loadAll();
+    };
+
+    const msToHuman = (ms: number): string => {
+        if (ms < 60000) return `${Math.round(ms / 1000)}s`;
+        if (ms < 3600000) return `${Math.round(ms / 60000)} min`;
+        if (ms < 86400000) return `${Math.round(ms / 3600000)}h`;
+        return `${Math.round(ms / 86400000)} dias`;
+    };
 
     const saveTemplate = async () => {
         if (!editingTemplate) return;
@@ -178,6 +206,7 @@ export default function AdminAutomacoes() {
                     <TabBtn active={tab === 'campaigns'} onClick={() => setTab('campaigns')}>Campanhas</TabBtn>
                     <TabBtn active={tab === 'new'} onClick={() => setTab('new')}>＋ Nova campanha</TabBtn>
                     <TabBtn active={tab === 'templates'} onClick={() => setTab('templates')}>Templates</TabBtn>
+                    <TabBtn active={tab === 'settings'} onClick={() => setTab('settings')}>⚙️ Configurações</TabBtn>
                 </div>
 
                 {/* CAMPAIGNS TAB */}
@@ -282,6 +311,90 @@ export default function AdminAutomacoes() {
                                 {t.audio_url && <p className="text-xs text-amber-300 mt-2">🎤 Áudio: {t.audio_url}</p>}
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {/* SETTINGS TAB */}
+                {tab === 'settings' && (
+                    <div className="space-y-6 max-w-2xl">
+                        {/* Delays de recovery */}
+                        <div className="bg-white/5 border border-white/10 p-6">
+                            <h2 className="text-sm font-bold uppercase tracking-widest text-amber-300 mb-4">⏱ Delays de Recuperação</h2>
+                            <p className="text-xs text-white/40 mb-4">Tempo de espera antes de enviar cada mensagem (WhatsApp + email)</p>
+                            {[
+                                { key: 'recovery_5min_delay_ms', label: '1ª mensagem', hint: 'ex: 300000 = 5 min' },
+                                { key: 'recovery_24h_delay_ms',  label: '2ª mensagem', hint: 'ex: 86400000 = 24h' },
+                                { key: 'recovery_7d_delay_ms',   label: '3ª mensagem (cupom)', hint: 'ex: 604800000 = 7 dias' },
+                            ].map(({ key, label, hint }) => {
+                                const s = settings.find(x => x.key === key);
+                                const ms = Number(s?.value || 0);
+                                return (
+                                    <div key={key} className="mb-4">
+                                        <label className="block text-xs uppercase tracking-widest text-white/50 mb-1">{label}</label>
+                                        <div className="flex gap-2 items-center">
+                                            <input
+                                                type="number"
+                                                defaultValue={s?.value || ''}
+                                                onBlur={e => saveSetting(key, e.target.value)}
+                                                className="bg-black border border-white/20 px-3 py-2 text-sm w-40"
+                                                placeholder={hint}
+                                            />
+                                            <span className="text-amber-300 text-sm font-bold">{ms > 0 ? `= ${msToHuman(ms)}` : ''}</span>
+                                            {savingKey === key && <span className="text-white/40 text-xs">salvando...</span>}
+                                        </div>
+                                        <p className="text-xs text-white/30 mt-1">{hint}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Canais ativos */}
+                        <div className="bg-white/5 border border-white/10 p-6">
+                            <h2 className="text-sm font-bold uppercase tracking-widest text-amber-300 mb-4">📡 Canais Ativos</h2>
+                            {[
+                                { key: 'n8n_recovery_enabled',   label: 'Recovery via WhatsApp (n8n)' },
+                                { key: 'email_recovery_enabled', label: 'Recovery via Email' },
+                            ].map(({ key, label }) => {
+                                const s = settings.find(x => x.key === key);
+                                const active = s?.value !== 'false';
+                                return (
+                                    <label key={key} className="flex items-center gap-3 mb-3 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={active}
+                                            onChange={e => saveSetting(key, e.target.checked ? 'true' : 'false')}
+                                            className="w-4 h-4"
+                                        />
+                                        <span className="text-sm">{label}</span>
+                                        <span className={`text-xs uppercase tracking-wider ${active ? 'text-emerald-400' : 'text-red-400'}`}>
+                                            {active ? 'ativo' : 'inativo'}
+                                        </span>
+                                    </label>
+                                );
+                            })}
+                        </div>
+
+                        {/* Admin WhatsApp */}
+                        <div className="bg-white/5 border border-white/10 p-6">
+                            <h2 className="text-sm font-bold uppercase tracking-widest text-amber-300 mb-4">📱 WhatsApp do Admin</h2>
+                            <p className="text-xs text-white/40 mb-3">Número que recebe notificações de novo lead e nova venda</p>
+                            {(() => {
+                                const s = settings.find(x => x.key === 'admin_whatsapp');
+                                return (
+                                    <div className="flex gap-2 items-center">
+                                        <input
+                                            type="text"
+                                            defaultValue={s?.value || ''}
+                                            onBlur={e => saveSetting('admin_whatsapp', e.target.value)}
+                                            className="bg-black border border-white/20 px-3 py-2 text-sm w-56"
+                                            placeholder="558196696184"
+                                        />
+                                        {savingKey === 'admin_whatsapp' && <span className="text-white/40 text-xs">salvando...</span>}
+                                    </div>
+                                );
+                            })()}
+                            <p className="text-xs text-white/30 mt-2">Formato: código país + DDD + número sem + (ex: 558196696184)</p>
+                        </div>
                     </div>
                 )}
 
