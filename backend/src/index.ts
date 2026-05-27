@@ -734,7 +734,23 @@ async function scheduleRecoveryEmails(name: string, email: string, link: string)
         { slug: 'recovery_7d_email',    delayMs: Number(cfg['recovery_7d_delay_ms']    || 7 * 24 * 60 * 60 * 1000) },
     ];
 
+    // Cria campanha de recovery para tracking de stats
+    const campR = await pool.query(
+        `INSERT INTO automation_campaigns (name, kind, template_slug, status, total_recipients, started_at)
+         VALUES ($1, 'recovery_email', 'recovery_email', 'running', $2, now()) RETURNING id`,
+        [`Recovery Email — ${email}`, slugs.length]
+    ).catch(() => ({ rows: [{ id: null }] }));
+    const campaignId = campR.rows[0]?.id;
+
     for (const { slug, delayMs } of slugs) {
+        // Cria run como queued
+        const runR = await pool.query(
+            `INSERT INTO automation_runs (campaign_id, template_slug, recipient_name, recipient_email, recipient_phone, status)
+             VALUES ($1,$2,$3,$4,$5,'queued') RETURNING id`,
+            [campaignId, slug, name, email, '']
+        ).catch(() => ({ rows: [{ id: null }] }));
+        const runId = runR.rows[0]?.id;
+
         pool.query(
             `SELECT subject, body FROM automation_templates WHERE slug=$1 AND is_active=true`,
             [slug]
@@ -742,13 +758,21 @@ async function scheduleRecoveryEmails(name: string, email: string, link: string)
             if (!r.rows[0]) return;
             const { subject, body } = r.rows[0];
             const rendered = renderTpl(body, vars);
-            setTimeout(() => {
-                transporter.sendMail({
-                    from, to: email,
-                    subject: renderTpl(subject || '', vars),
-                    text: rendered,
-                    html: bodyToHtml(rendered, link),
-                }).catch(err => console.error(`[recovery-email] ${slug}:`, err));
+            setTimeout(async () => {
+                try {
+                    await transporter.sendMail({
+                        from, to: email,
+                        subject: renderTpl(subject || '', vars),
+                        text: rendered,
+                        html: bodyToHtml(rendered, link),
+                    });
+                    if (runId) pool.query(`UPDATE automation_runs SET status='sent', sent_at=now() WHERE id=$1`, [runId]).catch(() => {});
+                    pool.query(`UPDATE automation_campaigns SET sent_count=sent_count+1 WHERE id=$1`, [campaignId]).catch(() => {});
+                } catch (err) {
+                    console.error(`[recovery-email] ${slug}:`, err);
+                    if (runId) pool.query(`UPDATE automation_runs SET status='failed' WHERE id=$1`, [runId]).catch(() => {});
+                    pool.query(`UPDATE automation_campaigns SET fail_count=fail_count+1 WHERE id=$1`, [campaignId]).catch(() => {});
+                }
             }, delayMs);
         }).catch(err => console.error(`[recovery-email] load template ${slug}:`, err));
     }

@@ -49,6 +49,8 @@ export default function AdminAutomacoes() {
     const [editingTemplate, setEditingTemplate] = useState<Template | null>(null);
     const [settings, setSettings] = useState<Setting[]>([]);
     const [savingKey, setSavingKey] = useState<string | null>(null);
+    const [newTpl, setNewTpl] = useState<{ slug: string; channel: string; subject: string; body: string; description: string } | null>(null);
+    const [savingTpl, setSavingTpl] = useState(false);
 
     // New campaign form
     const [campaignName, setCampaignName] = useState('');
@@ -93,6 +95,19 @@ export default function AdminAutomacoes() {
     };
 
     useEffect(() => { loadAll(); }, []);
+
+    const createTemplate = async () => {
+        if (!newTpl?.slug || !newTpl.channel || !newTpl.body) return;
+        setSavingTpl(true);
+        const res = await fetch(`${API_URL}/api/admin/automacoes/templates`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...authHeaders() },
+            body: JSON.stringify(newTpl),
+        });
+        setSavingTpl(false);
+        if (res.ok) { setNewTpl(null); loadAll(); }
+        else { const d = await res.json(); alert(d.error || 'Erro ao criar template'); }
+    };
 
     const saveSetting = async (key: string, value: string) => {
         setSavingKey(key);
@@ -295,6 +310,12 @@ export default function AdminAutomacoes() {
                 {/* TEMPLATES TAB */}
                 {tab === 'templates' && (
                     <div className="space-y-2">
+                        <div className="flex justify-end mb-4">
+                            <button
+                                onClick={() => setNewTpl({ slug: '', channel: 'whatsapp', subject: '', body: '', description: '' })}
+                                className="bg-amber-400 text-black px-4 py-2 text-xs uppercase font-black tracking-wider"
+                            >＋ Novo Template</button>
+                        </div>
                         {templates.map(t => (
                             <div key={t.slug} className="bg-white/5 border border-white/10 p-4">
                                 <div className="flex items-center justify-between mb-2">
@@ -394,6 +415,53 @@ export default function AdminAutomacoes() {
                                 );
                             })()}
                             <p className="text-xs text-white/30 mt-2">Formato: código país + DDD + número sem + (ex: 558196696184)</p>
+                        </div>
+                    </div>
+                )}
+
+                {/* NEW TEMPLATE MODAL */}
+                {newTpl && (
+                    <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" onClick={() => setNewTpl(null)}>
+                        <div className="bg-zinc-900 border border-white/20 p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                            <h2 className="text-lg font-bold mb-4">Novo Template</h2>
+                            <p className="text-xs text-white/50 mb-4">Use <code>{'{{name}}'}</code>, <code>{'{{email}}'}</code>, <code>{'{{phone}}'}</code>, <code>{'{{link}}'}</code>, <code>{'{{product}}'}</code></p>
+                            <Field label="Slug (identificador único)">
+                                <input type="text" value={newTpl.slug}
+                                    onChange={e => setNewTpl({ ...newTpl, slug: e.target.value.toLowerCase().replace(/\s/g, '_') })}
+                                    placeholder="ex: recovery_black_friday_wa"
+                                    className="w-full bg-black border border-white/20 px-3 py-2 text-sm font-mono" />
+                            </Field>
+                            <Field label="Canal">
+                                <select value={newTpl.channel} onChange={e => setNewTpl({ ...newTpl, channel: e.target.value })}
+                                    className="w-full bg-black border border-white/20 px-3 py-2 text-sm">
+                                    <option value="whatsapp">WhatsApp</option>
+                                    <option value="email">Email</option>
+                                </select>
+                            </Field>
+                            {newTpl.channel === 'email' && (
+                                <Field label="Assunto">
+                                    <input type="text" value={newTpl.subject}
+                                        onChange={e => setNewTpl({ ...newTpl, subject: e.target.value })}
+                                        className="w-full bg-black border border-white/20 px-3 py-2 text-sm" />
+                                </Field>
+                            )}
+                            <Field label="Mensagem">
+                                <textarea value={newTpl.body} rows={6}
+                                    onChange={e => setNewTpl({ ...newTpl, body: e.target.value })}
+                                    className="w-full bg-black border border-white/20 px-3 py-2 text-sm font-mono" />
+                            </Field>
+                            <Field label="Descrição (opcional)">
+                                <input type="text" value={newTpl.description}
+                                    onChange={e => setNewTpl({ ...newTpl, description: e.target.value })}
+                                    className="w-full bg-black border border-white/20 px-3 py-2 text-sm" />
+                            </Field>
+                            <div className="flex gap-2">
+                                <button onClick={createTemplate} disabled={savingTpl}
+                                    className="bg-amber-400 text-black px-4 py-2 text-sm font-bold uppercase disabled:opacity-50">
+                                    {savingTpl ? 'Salvando...' : 'Criar Template'}
+                                </button>
+                                <button onClick={() => setNewTpl(null)} className="border border-white/20 px-4 py-2 text-sm">Cancelar</button>
+                            </div>
                         </div>
                     </div>
                 )}

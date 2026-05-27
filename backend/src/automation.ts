@@ -74,6 +74,22 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
         }
     });
 
+    router.post('/templates', requireAuth, async (req: Request, res: Response) => {
+        try {
+            const { slug, channel, subject, body, description, audio_url } = req.body || {};
+            if (!slug || !channel || !body) return res.status(400).json({ error: 'slug, channel e body são obrigatórios' });
+            const r = await pool.query(
+                `INSERT INTO automation_templates (slug, channel, subject, body, audio_url, description, is_active)
+                 VALUES ($1,$2,$3,$4,$5,$6,true) RETURNING *`,
+                [slug, channel, subject || null, body, audio_url || null, description || null]
+            );
+            return res.status(201).json(r.rows[0]);
+        } catch (err: any) {
+            if (err.code === '23505') return res.status(409).json({ error: 'Slug já existe' });
+            return res.status(500).json({ error: err.message });
+        }
+    });
+
     router.put('/templates/:slug', requireAuth, async (req: Request, res: Response) => {
         try {
             const { slug } = req.params;
