@@ -700,49 +700,51 @@ app.get('/api/leads/contact', requireAuth, async (req: Request, res: Response) =
 // REMARKETING POR EMAIL — recovery 5min / 24h / 7d
 // =====================================================================
 
-function scheduleRecoveryEmails(name: string, email: string, link: string): void {
+function renderTpl(body: string, vars: Record<string, string>): string {
+    return body.replace(/\{\{(\w+)\}\}/g, (_, k) => vars[k] ?? '');
+}
+
+function bodyToHtml(text: string, link: string): string {
+    const escaped = text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br>');
+    return `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a2e">
+        ${escaped}
+        <br><br>
+        <a href="${link}" style="background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block">
+            Acessar agora →
+        </a>
+    </div>`;
+}
+
+async function scheduleRecoveryEmails(name: string, email: string, link: string): Promise<void> {
     const from = `"Marinho Ponci" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'info@marinhoponci.com'}>`;
+    const vars = { name, email, link };
 
-    const send = (delayMs: number, subject: string, html: string, text: string) => {
-        setTimeout(() => {
-            transporter.sendMail({ from, to: email, subject, html, text })
-                .catch(err => console.error(`[recovery-email] ${subject}:`, err));
-        }, delayMs);
-    };
+    const slugs: Array<{ slug: string; delayMs: number }> = [
+        { slug: 'recovery_5min_email',  delayMs: 5 * 60 * 1000 },
+        { slug: 'recovery_24h_email',   delayMs: 24 * 60 * 60 * 1000 },
+        { slug: 'recovery_7d_email',    delayMs: 7 * 24 * 60 * 60 * 1000 },
+    ];
 
-    // 5 minutos
-    send(5 * 60 * 1000,
-        'Você esqueceu algo por aqui... 👀',
-        `<p>Olá ${name}!</p>
-        <p>Notei que você se interessou pelo <strong>Dossiê do Futuro Franqueado</strong> mas não finalizou.</p>
-        <p>Se ficou com alguma dúvida, é só responder este email — estou aqui para ajudar.</p>
-        <p><a href="${link}" style="background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:8px">Garantir meu Dossiê →</a></p>
-        <p>Abraço,<br>Marinho Ponci</p>`,
-        `Olá ${name}!\n\nNotei que você se interessou pelo Dossiê do Futuro Franqueado mas não finalizou.\n\nAcesse: ${link}\n\nAbraço,\nMarinho Ponci`
-    );
-
-    // 24 horas
-    send(24 * 60 * 60 * 1000,
-        '327 pessoas já tomaram a decisão certa 🏆',
-        `<p>Olá ${name}!</p>
-        <p>Já são mais de <strong>327 pessoas</strong> que usaram o Dossiê do Futuro Franqueado para tomar a decisão certa antes de investir em uma franquia.</p>
-        <p>Você ainda pode garantir o seu antes que o preço suba.</p>
-        <p><a href="${link}" style="background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:8px">Quero o Dossiê →</a></p>
-        <p>Abraço,<br>Marinho Ponci</p>`,
-        `Olá ${name}!\n\nJá são mais de 327 pessoas usando o Dossiê para tomar a decisão certa.\n\nAcesse: ${link}\n\nAbraço,\nMarinho Ponci`
-    );
-
-    // 7 dias
-    send(7 * 24 * 60 * 60 * 1000,
-        '5% OFF só para você — cupom BIZGUARDIAN5 🎁',
-        `<p>Olá ${name}!</p>
-        <p>Liberei um cupom exclusivo de <strong>5% de desconto</strong> para você finalizar sua compra do Dossiê do Futuro Franqueado.</p>
-        <p>Use o cupom <strong>BIZGUARDIAN5</strong> no checkout.</p>
-        <p><strong>⚠️ Válido apenas até amanhã.</strong></p>
-        <p><a href="${link}" style="background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:8px">Usar cupom agora →</a></p>
-        <p>Abraço,<br>Marinho Ponci</p>`,
-        `Olá ${name}!\n\nCupom BIZGUARDIAN5 — 5% OFF no Dossiê do Futuro Franqueado.\nVálido até amanhã.\n\nAcesse: ${link}\n\nAbraço,\nMarinho Ponci`
-    );
+    for (const { slug, delayMs } of slugs) {
+        pool.query(
+            `SELECT subject, body FROM automation_templates WHERE slug=$1 AND is_active=true`,
+            [slug]
+        ).then(r => {
+            if (!r.rows[0]) return;
+            const { subject, body } = r.rows[0];
+            const rendered = renderTpl(body, vars);
+            setTimeout(() => {
+                transporter.sendMail({
+                    from, to: email,
+                    subject: renderTpl(subject || '', vars),
+                    text: rendered,
+                    html: bodyToHtml(rendered, link),
+                }).catch(err => console.error(`[recovery-email] ${slug}:`, err));
+            }, delayMs);
+        }).catch(err => console.error(`[recovery-email] load template ${slug}:`, err));
+    }
 }
 
 // =====================================================================
