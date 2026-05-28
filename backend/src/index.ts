@@ -1028,6 +1028,59 @@ app.post('/api/admin/members/:id/resend', requireAuth, async (req: Request, res:
     }
 });
 
+// =====================================================================
+// DELETE DE LEADS — rotas admin protegidas
+// =====================================================================
+
+app.delete('/api/leads/quiz/:id', requireAuth, async (req: Request, res: Response) => {
+    try {
+        await pool.query('DELETE FROM leads_quiz WHERE id = $1', [req.params.id]);
+        res.json({ ok: true });
+    } catch { res.status(500).json({ error: 'Erro ao excluir lead' }); }
+});
+
+app.delete('/api/leads/priority/:id', requireAuth, async (req: Request, res: Response) => {
+    try {
+        await pool.query('DELETE FROM leads_priority WHERE id = $1', [req.params.id]);
+        res.json({ ok: true });
+    } catch { res.status(500).json({ error: 'Erro ao excluir lead' }); }
+});
+
+app.delete('/api/leads/contact/:id', requireAuth, async (req: Request, res: Response) => {
+    try {
+        await pool.query('DELETE FROM leads_contact WHERE id = $1', [req.params.id]);
+        res.json({ ok: true });
+    } catch { res.status(500).json({ error: 'Erro ao excluir lead' }); }
+});
+
+app.delete('/api/admin/ebook/leads/:id', requireAuth, async (req: Request, res: Response) => {
+    try {
+        await pool.query('DELETE FROM ebook_checkout_leads WHERE id = $1', [req.params.id]);
+        res.json({ ok: true });
+    } catch { res.status(500).json({ error: 'Erro ao excluir lead' }); }
+});
+
+app.delete('/api/admin/members/:id', requireAuth, async (req: Request, res: Response) => {
+    try {
+        await pool.query('DELETE FROM purchases WHERE customer_id = $1', [req.params.id]);
+        await pool.query('DELETE FROM ebook_access_tokens WHERE customer_id = $1', [req.params.id]);
+        await pool.query('DELETE FROM ebook_customers WHERE id = $1', [req.params.id]);
+        res.json({ ok: true });
+    } catch { res.status(500).json({ error: 'Erro ao excluir membro' }); }
+});
+
+// Detalhe dos runs de uma campanha
+app.get('/api/admin/automacoes/campaigns/:id/runs', requireAuth, async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, template_slug, recipient_name, recipient_email, status, sent_at, created_at
+             FROM automation_runs WHERE campaign_id = $1 ORDER BY created_at ASC`,
+            [req.params.id]
+        );
+        res.json(result.rows);
+    } catch { res.status(500).json({ error: 'Erro ao buscar runs' }); }
+});
+
 // Admin: lista sessões Stripe recentes (pra reconciliar manualmente o que webhook não processou)
 app.get('/api/admin/ebook/stripe-sessions', requireAuth, async (_req: Request, res: Response) => {
     try {

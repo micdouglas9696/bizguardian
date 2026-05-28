@@ -83,6 +83,9 @@ export default function AdminDashboard() {
     // Reenvio
     const [resendLoadingId, setResendLoadingId] = useState<string | null>(null);
     const [resendMsg, setResendMsg] = useState('');
+    // Exclusão
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [confirmDelete, setConfirmDelete] = useState<{ id: string; type: TabType; name: string } | null>(null);
 
     const authHeader = () => {
         const token = localStorage.getItem('crm_admin_token') || '';
@@ -163,6 +166,24 @@ export default function AdminDashboard() {
         } finally {
             setToggleLoadingId(null);
         }
+    };
+
+    const handleDeleteLead = async () => {
+        if (!confirmDelete) return;
+        setDeletingId(confirmDelete.id);
+        const urlMap: Record<TabType, string> = {
+            quiz: `${API_URL}/api/leads/quiz/${confirmDelete.id}`,
+            priority: `${API_URL}/api/leads/priority/${confirmDelete.id}`,
+            contact: `${API_URL}/api/leads/contact/${confirmDelete.id}`,
+            'ebook-leads': `${API_URL}/api/admin/ebook/leads/${confirmDelete.id}`,
+            members: `${API_URL}/api/admin/members/${confirmDelete.id}`,
+        };
+        try {
+            await fetch(urlMap[confirmDelete.type], { method: 'DELETE', headers: authHeader() });
+            setConfirmDelete(null);
+            fetchAll();
+        } catch { /* silently fail */ }
+        finally { setDeletingId(null); }
     };
 
     const handleResend = async (member: Member) => {
@@ -285,6 +306,7 @@ export default function AdminDashboard() {
                                     <th className="p-5">Nome</th>
                                     <th className="p-5">E-mail</th>
                                     <th className="p-5">Telefone</th>
+                                    <th className="p-5"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -303,6 +325,11 @@ export default function AdminDashboard() {
                                             <a href={`https://wa.me/${lead.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-accent-gold text-sm hover:underline">
                                                 {lead.phone || '—'}
                                             </a>
+                                        </td>
+                                        <td className="p-5">
+                                            <button onClick={() => setConfirmDelete({ id: lead.id, type: 'ebook-leads', name: lead.name })} className="p-1.5 rounded hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors" title="Excluir lead">
+                                                <span className="material-symbols-outlined text-base">delete</span>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -440,6 +467,13 @@ export default function AdminDashboard() {
                                                         )}
                                                         {member.has_access ? 'Revogar' : 'Restaurar'}
                                                     </button>
+                                                    <button
+                                                        onClick={() => setConfirmDelete({ id: member.id, type: 'members', name: member.name || member.email })}
+                                                        title="Excluir membro permanentemente"
+                                                        className="p-1.5 rounded hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors"
+                                                    >
+                                                        <span className="material-symbols-outlined text-base">delete</span>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -461,6 +495,7 @@ export default function AdminDashboard() {
                                     <th className="p-5">Contato</th>
                                     <th className="p-5">Serviço</th>
                                     <th className="p-5">Mensagem</th>
+                                    <th className="p-5"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -484,6 +519,11 @@ export default function AdminDashboard() {
                                             </span>
                                         </td>
                                         <td className="p-5 text-sm text-white/60 max-w-xs truncate">{lead.message || '—'}</td>
+                                        <td className="p-5">
+                                            <button onClick={() => setConfirmDelete({ id: lead.id, type: 'contact', name: lead.name })} className="p-1.5 rounded hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors" title="Excluir lead">
+                                                <span className="material-symbols-outlined text-base">delete</span>
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -501,6 +541,7 @@ export default function AdminDashboard() {
                                     <th className="p-5">Nome</th>
                                     <th className="p-5">E-mail</th>
                                     <th className="p-5 text-right">Status</th>
+                                    <th className="p-5"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -523,6 +564,11 @@ export default function AdminDashboard() {
                                                 Aguardando
                                             </span>
                                         </td>
+                                        <td className="p-5">
+                                            <button onClick={() => setConfirmDelete({ id: lead.id, type: 'priority', name: lead.name })} className="p-1.5 rounded hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors" title="Excluir lead">
+                                                <span className="material-symbols-outlined text-base">delete</span>
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -542,6 +588,7 @@ export default function AdminDashboard() {
                                         <th className="p-5">Contato</th>
                                         <th className="p-5 shrink-0">Score</th>
                                         <th className="p-5 text-right">Ação</th>
+                                        <th className="p-5"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -570,6 +617,11 @@ export default function AdminDashboard() {
                                                     className="px-4 py-2 bg-white/5 hover:bg-accent-gold border border-white/10 hover:border-accent-gold text-white hover:text-black text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded"
                                                 >
                                                     Respostas
+                                                </button>
+                                            </td>
+                                            <td className="p-5">
+                                                <button onClick={() => setConfirmDelete({ id: lead.id, type: 'quiz', name: lead.name })} className="p-1.5 rounded hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors" title="Excluir lead">
+                                                    <span className="material-symbols-outlined text-base">delete</span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -616,6 +668,37 @@ export default function AdminDashboard() {
                     )
                 )}
             </main>
+
+            {/* Modal de confirmação de exclusão */}
+            {confirmDelete && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in">
+                    <div className="bg-[#050505] border border-red-500/20 rounded-2xl p-8 max-w-md w-full shadow-2xl animate-in slide-in-from-bottom-4">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="material-symbols-outlined text-red-400 text-2xl">warning</span>
+                            <h3 className="text-lg font-black uppercase tracking-tight">Confirmar exclusão</h3>
+                        </div>
+                        <p className="text-white/60 text-sm mb-6">
+                            Tem certeza que deseja excluir <span className="text-white font-bold">{confirmDelete.name}</span>? Esta ação não pode ser desfeita.
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={handleDeleteLead}
+                                disabled={!!deletingId}
+                                className="flex-1 py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                            >
+                                {deletingId ? <span className="material-symbols-outlined animate-spin text-sm">autorenew</span> : <span className="material-symbols-outlined text-sm">delete</span>}
+                                {deletingId ? 'Excluindo...' : 'Excluir'}
+                            </button>
+                            <button
+                                onClick={() => setConfirmDelete(null)}
+                                className="flex-1 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg transition-all"
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Lead Details Modal */}
             {selectedLead && (
