@@ -9,11 +9,16 @@
  *
  * Cada um recebe um JSON com { name, email, phone, product, amount, link, custom }.
  */
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, RequestHandler } from 'express';
 import { Pool } from 'pg';
 
 const N8N_WEBHOOK_BASE = process.env.N8N_WEBHOOK_BASE || 'https://webhook.mycom.dev.br/automation';
 const N8N_SHARED_SECRET = process.env.N8N_SHARED_SECRET || '';
+const WHATSAPP_SEND_TEXT_URL = process.env.WHATSAPP_SEND_TEXT_URL || 'https://api.mycom.dev.br/chat/send/text';
+const WHATSAPP_API_TOKEN = process.env.WHATSAPP_API_TOKEN || process.env.ZUCKZAPGO_TOKEN || '0CB09B5379B4-442C-9BAB-C19AB6E0F9D2';
+const ADMIN_WHATSAPP_PHONE = process.env.ADMIN_WHATSAPP_PHONE || '558196696184';
+const DEFAULT_AUTOMATION_LINK = `${process.env.PUBLIC_URL || 'https://marinhoponci.com'}/ebook`;
+const DEFAULT_AUTOMATION_PRODUCT = process.env.DEFAULT_AUTOMATION_PRODUCT || 'Dossiê do Futuro Franqueado';
 
 export interface AutomationPayload {
     name?: string;
@@ -22,7 +27,164 @@ export interface AutomationPayload {
     product?: string;
     amount?: number | string;
     link?: string;
-    [k: string]: any;
+    [k: string]: unknown;
+}
+
+interface AutomationHttpError extends Error {
+    statusCode?: number;
+    provider_response?: unknown;
+}
+
+export interface SendAutomationTemplatePayload {
+    template?: string;
+    template_slug?: string;
+    phone?: string;
+    variables?: Record<string, unknown>;
+    run_id?: string;
+}
+
+export function renderAutomationTemplate(body: string, variables: Record<string, unknown> = {}): string {
+    const missing = new Set<string>();
+    const rendered = String(body || '').replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, key: string) => {
+        const value = variables[key];
+        if (value === undefined || value === null) {
+            missing.add(key);
+            return '';
+        }
+        return String(value);
+    });
+
+    if (missing.size > 0) {
+        console.warn(`[automation] template variables missing: ${Array.from(missing).join(', ')}`);
+    }
+
+    return rendered;
+}
+
+function errorMessage(err: unknown): string {
+    return err instanceof Error ? err.message : String(err);
+}
+
+function errorCode(err: unknown): string | undefined {
+    return typeof err === 'object' && err !== null && 'code' in err ? String((err as { code?: unknown }).code) : undefined;
+}
+
+function createAutomationError(message: string, statusCode: number, provider_response?: unknown): AutomationHttpError {
+    const err = new Error(message) as AutomationHttpError;
+    err.statusCode = statusCode;
+    err.provider_response = provider_response;
+    return err;
+}
+
+function normalizePhone(phone: unknown): string {
+    return String(phone || '').replace(/\D/g, '');
+}
+
+function buildTemplateCandidates(slug: string): string[] {
+    const candidates = [slug];
+    const legacyMap: Record<string, string> = {
+        lead_imediato: 'lead_welcome_wa',
+        recovery_5min: 'recovery_5min_wa',
+        recovery_24h: 'recovery_24h_wa',
+        recovery_7dias: 'recovery_7d_wa',
+        pos_venda: 'postvenda_wa',
+    };
+    if (legacyMap[slug]) candidates.push(legacyMap[slug]);
+    if (!slug.endsWith('_wa')) candidates.push(`${slug}_wa`);
+    return Array.from(new Set(candidates));
+}
+
+async function loadAutomationTemplate(pool: Pool, slug: string) {
+    const candidates = buildTemplateCandidates(slug);
+    const r = await pool.query(
+        `SELECT slug, channel, body, audio_url
+         FROM automation_templates
+         WHERE slug = ANY($1::varchar[]) AND is_active = true
+         ORDER BY array_position($1::varchar[], slug)
+         LIMIT 1`,
+        [candidates]
+    );
+    return r.rows[0] || null;
+}
+
+export async function sendAutomationByTemplate(pool: Pool, payload: SendAutomationTemplatePayload) {
+    const requestedSlug = String(payload.template || payload.template_slug || '').trim();
+    const rawPhone = String(payload.phone || '').trim();
+    let phone = normalizePhone(rawPhone);
+    const variables = {
+        link: DEFAULT_AUTOMATION_LINK,
+        product: DEFAULT_AUTOMATION_PRODUCT,
+        ...(payload.variables && typeof payload.variables === 'object' ? payload.variables : {}),
+    };
+
+    if (!requestedSlug) {
+        throw createAutomationError('template é obrigatório', 400);
+    }
+    if (rawPhone === 'admin') {
+        const setting = await pool.query(
+            `SELECT value FROM automation_settings WHERE key='admin_whatsapp' LIMIT 1`
+        ).catch(() => ({ rows: [] as Array<{ value?: string }> }));
+        phone = normalizePhone(setting.rows[0]?.value || ADMIN_WHATSAPP_PHONE);
+    }
+    if (!phone) {
+        throw createAutomationError('phone é obrigatório', 400);
+    }
+
+    const template = await loadAutomationTemplate(pool, requestedSlug);
+    if (!template) {
+        throw createAutomationError(`Template ativo não encontrado: ${requestedSlug}`, 404);
+    }
+    if (template.channel !== 'whatsapp') {
+        throw createAutomationError(`Template ${template.slug} não é WhatsApp`, 400);
+    }
+
+    const body = renderAutomationTemplate(template.body, variables);
+    console.log(`[automation] sending template=${template.slug} requested=${requestedSlug} phone=${phone}`);
+
+    const providerRes = await fetch(WHATSAPP_SEND_TEXT_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(WHATSAPP_API_TOKEN ? { token: WHATSAPP_API_TOKEN } : {}),
+        },
+        body: JSON.stringify({ Phone: phone, Body: body }),
+    });
+
+    const providerText = await providerRes.text();
+    let providerBody: unknown = providerText;
+    try {
+        providerBody = providerText ? JSON.parse(providerText) : null;
+    } catch {
+        // Provider can answer plain text on errors.
+    }
+
+    if (!providerRes.ok) {
+        const message = `Provider WhatsApp retornou ${providerRes.status}`;
+        console.error(`[automation] ${message} template=${template.slug} phone=${phone}`, providerBody);
+        if (payload.run_id) {
+            await pool.query(
+                `UPDATE automation_runs SET status='failed', provider_response=$1, error=$2 WHERE id=$3`,
+                [JSON.stringify(providerBody), message, payload.run_id]
+            ).catch((err) => console.error('[automation] failed to mark run failed:', err));
+        }
+        throw createAutomationError(message, 502, providerBody);
+    }
+
+    if (payload.run_id) {
+        await pool.query(
+            `UPDATE automation_runs SET status='sent', provider_response=$1, sent_at=now() WHERE id=$2`,
+            [JSON.stringify(providerBody), payload.run_id]
+        ).catch((err) => console.error('[automation] failed to mark run sent:', err));
+    }
+
+    console.log(`[automation] sent template=${template.slug} phone=${phone}`);
+    return {
+        ok: true,
+        template: template.slug,
+        requested_template: requestedSlug,
+        phone,
+        provider_response: providerBody,
+    };
 }
 
 /**
@@ -43,8 +205,8 @@ export async function triggerN8n(workflow: string, payload: AutomationPayload): 
         if (!res.ok) {
             console.warn(`[automation] n8n ${workflow} returned ${res.status}`);
         }
-    } catch (err: any) {
-        console.error(`[automation] failed to trigger ${workflow}:`, err?.message || err);
+    } catch (err: unknown) {
+        console.error(`[automation] failed to trigger ${workflow}:`, errorMessage(err));
     }
 }
 
@@ -55,11 +217,48 @@ export function triggerN8nAsync(workflow: string, payload: AutomationPayload): v
     triggerN8n(workflow, payload).catch(() => { /* swallow */ });
 }
 
+export function createAutomationSendRouter(pool: Pool) {
+    const router = Router();
+
+    router.post('/send', async (req: Request, res: Response) => {
+        if (N8N_SHARED_SECRET && req.headers['x-automation-secret'] !== N8N_SHARED_SECRET) {
+            return res.status(401).json({ error: 'invalid secret' });
+        }
+
+        try {
+            const result = await sendAutomationByTemplate(pool, req.body || {});
+            return res.json(result);
+        } catch (err: unknown) {
+            const automationErr = err as AutomationHttpError;
+            const statusCode = automationErr.statusCode || 500;
+            console.error('[automation] send by template error:', errorMessage(err));
+            return res.status(statusCode).json({
+                error: errorMessage(err) || 'Erro ao enviar automação',
+                provider_response: automationErr.provider_response,
+            });
+        }
+    });
+
+    router.get('/admin-phone', async (req: Request, res: Response) => {
+        if (N8N_SHARED_SECRET && req.headers['x-automation-secret'] !== N8N_SHARED_SECRET && req.query.secret !== N8N_SHARED_SECRET) {
+            return res.status(401).json({ error: 'invalid secret' });
+        }
+
+        const setting = await pool.query(
+            `SELECT value FROM automation_settings WHERE key='admin_whatsapp' LIMIT 1`
+        ).catch(() => ({ rows: [] as Array<{ value?: string }> }));
+
+        return res.json({ phone: normalizePhone(setting.rows[0]?.value || ADMIN_WHATSAPP_PHONE) });
+    });
+
+    return router;
+}
+
 // =====================================================================
 // ADMIN ROUTER  ·  /api/admin/automacoes/*
 // =====================================================================
 
-export function createAutomationRouter(pool: Pool, requireAuth: any) {
+export function createAutomationRouter(pool: Pool, requireAuth: RequestHandler) {
     const router = Router();
 
     // ---- TEMPLATES ----
@@ -69,8 +268,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 `SELECT * FROM automation_templates ORDER BY channel, slug`
             );
             return res.json(r.rows);
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -84,9 +283,9 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 [slug, channel, subject || null, body, audio_url || null, description || null]
             );
             return res.status(201).json(r.rows[0]);
-        } catch (err: any) {
-            if (err.code === '23505') return res.status(409).json({ error: 'Slug já existe' });
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            if (errorCode(err) === '23505') return res.status(409).json({ error: 'Slug já existe' });
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -103,8 +302,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
             );
             if (r.rowCount === 0) return res.status(404).json({ error: 'Template não encontrado' });
             return res.json(r.rows[0]);
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -115,8 +314,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 `SELECT * FROM automation_campaigns ORDER BY created_at DESC LIMIT 100`
             );
             return res.json(r.rows);
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -127,8 +326,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 [req.params.id]
             );
             return res.json(r.rows);
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -197,9 +396,9 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
             });
 
             return res.json({ campaign: campaign.rows[0], queued: list.length });
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('[automation] create campaign error:', err);
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -213,7 +412,7 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
         }
         try {
             const r = await pool.query(
-                `SELECT r.id, r.recipient_name, r.recipient_email, r.recipient_phone,
+                `SELECT r.id, r.template_slug, r.recipient_name, r.recipient_email, r.recipient_phone,
                         t.body AS template_body, t.audio_url, t.subject, t.channel
                  FROM automation_runs r
                  JOIN automation_templates t ON t.slug = r.template_slug
@@ -222,8 +421,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 [req.params.id]
             );
             return res.json(r.rows);
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -243,8 +442,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 [req.params.id]
             );
             return res.json({ ok: true });
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -265,8 +464,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 [status || 'sent', provider_response ? JSON.stringify(provider_response) : null, error || null, req.params.id]
             );
             return res.json({ ok: true });
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -276,8 +475,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
         try {
             const r = await pool.query(`SELECT key, value, description FROM automation_settings ORDER BY key`);
             return res.json(r.rows);
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -292,8 +491,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                 [key, String(value)]
             );
             return res.json({ ok: true });
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -315,8 +514,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                     description=EXCLUDED.description, is_active=EXCLUDED.is_active;
             `);
             return res.json({ ok: true, inserted: 3 });
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 
@@ -330,8 +529,8 @@ export function createAutomationRouter(pool: Pool, requireAuth: any) {
                     (SELECT COUNT(*) FROM automation_runs WHERE status = 'queued') AS total_queued
             `);
             return res.json(r.rows[0]);
-        } catch (err: any) {
-            return res.status(500).json({ error: err.message });
+        } catch (err: unknown) {
+            return res.status(500).json({ error: errorMessage(err) });
         }
     });
 

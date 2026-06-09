@@ -9,7 +9,7 @@ import nodemailer from 'nodemailer';
 import Stripe from 'stripe';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { createAutomationRouter, triggerN8nAsync } from './automation';
+import { createAutomationRouter, createAutomationSendRouter, renderAutomationTemplate, triggerN8nAsync } from './automation';
 
 // Carrega backend/.env primeiro; se não existir, cai para o .env da raiz do projeto.
 dotenv.config();
@@ -700,10 +700,6 @@ app.get('/api/leads/contact', requireAuth, async (req: Request, res: Response) =
 // REMARKETING POR EMAIL — recovery 5min / 24h / 7d
 // =====================================================================
 
-function renderTpl(body: string, vars: Record<string, string>): string {
-    return body.replace(/\{\{(\w+)\}\}/g, (_, k) => vars[k] ?? '');
-}
-
 function bodyToHtml(text: string, link: string): string {
     const escaped = text
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -757,12 +753,12 @@ async function scheduleRecoveryEmails(name: string, email: string, link: string)
         ).then(r => {
             if (!r.rows[0]) return;
             const { subject, body } = r.rows[0];
-            const rendered = renderTpl(body, vars);
+            const rendered = renderAutomationTemplate(body, vars);
             setTimeout(async () => {
                 try {
                     await transporter.sendMail({
                         from, to: email,
-                        subject: renderTpl(subject || '', vars),
+                        subject: renderAutomationTemplate(subject || '', vars),
                         text: rendered,
                         html: bodyToHtml(rendered, link),
                     });
@@ -1335,6 +1331,7 @@ app.use('/api/media', express.static(PUBLIC_MEDIA_DIR));
 
 // 🤖 AUTOMATION ROUTER (templates, campaigns, runs, stats)
 app.use('/api/admin/automacoes', createAutomationRouter(pool, requireAuth));
+app.use('/automation', createAutomationSendRouter(pool));
 
 // =====================================================================
 // MEMBER LIBRARY  ·  vitrine multi-produto

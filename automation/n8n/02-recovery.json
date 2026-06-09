@@ -12,110 +12,226 @@
       "name": "Webhook · Recovery Start",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [200, 300]
+      "position": [
+        200,
+        300
+      ]
     },
     {
-      "parameters": { "amount": 5, "unit": "minutes" },
+      "parameters": {
+        "amount": 5,
+        "unit": "minutes"
+      },
       "id": "wait5",
       "name": "Aguarda 5 min",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
-      "position": [400, 300],
+      "position": [
+        400,
+        300
+      ],
       "webhookId": "wait-5min"
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/chat/send/text",
+        "url": "https://api.marinhoponci.com/automation/send",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Automation-Secret",
+              "value": "={{$env.N8N_SHARED_SECRET || ''}}"
+            }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"Phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Oi {{$('Webhook · Recovery Start').item.json.body.name}}, notei que você não finalizou sua compra. Aqui está seu link: {{$('Webhook · Recovery Start').item.json.body.link}} — qualquer dúvida me chama!\"\n}",
-        "options": { "timeout": 15000 }
+        "jsonBody": "={\n  \"template\": \"recovery_5min\",\n  \"phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone}}\",\n  \"variables\": {\n    \"name\": \"{{$('Webhook · Recovery Start').item.json.body.name}}\",\n    \"email\": \"{{$('Webhook · Recovery Start').item.json.body.email}}\",\n    \"phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone}}\",\n    \"link\": \"{{$('Webhook · Recovery Start').item.json.body.link}}\",\n    \"product\": \"{{$('Webhook · Recovery Start').item.json.body.product}}\"\n  }\n}",
+        "options": {
+          "timeout": 15000
+        }
       },
       "id": "send5",
       "name": "Mensagem 5 min",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [600, 300]
+      "position": [
+        600,
+        300
+      ]
     },
     {
-      "parameters": { "amount": 24, "unit": "hours" },
+      "parameters": {
+        "amount": 24,
+        "unit": "hours"
+      },
       "id": "wait24",
       "name": "Aguarda 24 h",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
-      "position": [800, 300],
+      "position": [
+        800,
+        300
+      ],
       "webhookId": "wait-24h"
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/chat/send/text",
+        "url": "https://api.marinhoponci.com/automation/send",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Automation-Secret",
+              "value": "={{$env.N8N_SHARED_SECRET || ''}}"
+            }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"Phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Olá {{$('Webhook · Recovery Start').item.json.body.name}}! Já são mais de 327 pessoas usando o Dossiê para tomar a decisão certa antes de investir em uma franquia. Você ainda pode garantir o seu: {{$('Webhook · Recovery Start').item.json.body.link}}\"\n}",
-        "options": { "timeout": 15000 }
+        "jsonBody": "={\n  \"template\": \"recovery_24h\",\n  \"phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone}}\",\n  \"variables\": {\n    \"name\": \"{{$('Webhook · Recovery Start').item.json.body.name}}\",\n    \"email\": \"{{$('Webhook · Recovery Start').item.json.body.email}}\",\n    \"phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone}}\",\n    \"link\": \"{{$('Webhook · Recovery Start').item.json.body.link}}\",\n    \"product\": \"{{$('Webhook · Recovery Start').item.json.body.product}}\"\n  }\n}",
+        "options": {
+          "timeout": 15000
+        }
       },
       "id": "send24",
       "name": "Mensagem 24 h",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1000, 300]
+      "position": [
+        1000,
+        300
+      ]
     },
     {
-      "parameters": { "amount": 6, "unit": "days" },
+      "parameters": {
+        "amount": 6,
+        "unit": "days"
+      },
       "id": "wait7",
       "name": "Aguarda +6 dias (7d total)",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
-      "position": [1200, 300],
+      "position": [
+        1200,
+        300
+      ],
       "webhookId": "wait-7d"
     },
     {
       "parameters": {
-        "url": "https://api.mycom.dev.br/chat/send/text",
+        "url": "https://api.marinhoponci.com/automation/send",
         "method": "POST",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "token", "value": "0CB09B5379B4-442C-9BAB-C19AB6E0F9D2" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Automation-Secret",
+              "value": "={{$env.N8N_SHARED_SECRET || ''}}"
+            }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"Phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone.replace(/\\D/g,'')}}\",\n  \"Body\": \"Oi {{$('Webhook · Recovery Start').item.json.body.name}}! Liberei um cupom de 5% OFF só para você: BIZGUARDIAN5. Use no checkout: {{$('Webhook · Recovery Start').item.json.body.link}} — válido até amanhã.\"\n}",
-        "options": { "timeout": 15000 }
+        "jsonBody": "={\n  \"template\": \"recovery_7dias\",\n  \"phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone}}\",\n  \"variables\": {\n    \"name\": \"{{$('Webhook · Recovery Start').item.json.body.name}}\",\n    \"email\": \"{{$('Webhook · Recovery Start').item.json.body.email}}\",\n    \"phone\": \"{{$('Webhook · Recovery Start').item.json.body.phone}}\",\n    \"link\": \"{{$('Webhook · Recovery Start').item.json.body.link}}\",\n    \"product\": \"{{$('Webhook · Recovery Start').item.json.body.product}}\"\n  }\n}",
+        "options": {
+          "timeout": 15000
+        }
       },
       "id": "send7",
       "name": "Mensagem 7 dias (cupom)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1400, 300]
+      "position": [
+        1400,
+        300
+      ]
     }
   ],
   "connections": {
-    "Webhook · Recovery Start": { "main": [[{ "node": "Aguarda 5 min", "type": "main", "index": 0 }]] },
-    "Aguarda 5 min": { "main": [[{ "node": "Mensagem 5 min", "type": "main", "index": 0 }]] },
-    "Mensagem 5 min": { "main": [[{ "node": "Aguarda 24 h", "type": "main", "index": 0 }]] },
-    "Aguarda 24 h": { "main": [[{ "node": "Mensagem 24 h", "type": "main", "index": 0 }]] },
-    "Mensagem 24 h": { "main": [[{ "node": "Aguarda +6 dias (7d total)", "type": "main", "index": 0 }]] },
-    "Aguarda +6 dias (7d total)": { "main": [[{ "node": "Mensagem 7 dias (cupom)", "type": "main", "index": 0 }]] }
+    "Webhook · Recovery Start": {
+      "main": [
+        [
+          {
+            "node": "Aguarda 5 min",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguarda 5 min": {
+      "main": [
+        [
+          {
+            "node": "Mensagem 5 min",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem 5 min": {
+      "main": [
+        [
+          {
+            "node": "Aguarda 24 h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguarda 24 h": {
+      "main": [
+        [
+          {
+            "node": "Mensagem 24 h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem 24 h": {
+      "main": [
+        [
+          {
+            "node": "Aguarda +6 dias (7d total)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguarda +6 dias (7d total)": {
+      "main": [
+        [
+          {
+            "node": "Mensagem 7 dias (cupom)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
   "active": false,
-  "settings": { "executionOrder": "v1" }
+  "settings": {
+    "executionOrder": "v1"
+  }
 }

@@ -5,6 +5,10 @@
             "destination": "https://biz-guardian-blog.vercel.app/blog"
         },
         {
+            "source": "/blog/",
+            "destination": "https://biz-guardian-blog.vercel.app/blog/"
+        },
+        {
             "source": "/blog/:path*",
             "destination": "https://biz-guardian-blog.vercel.app/blog/:path*"
         },

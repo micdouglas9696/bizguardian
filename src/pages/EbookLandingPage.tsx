@@ -775,7 +775,7 @@ export default function EbookLandingPage() {
                                             R$
                                         </span>
                                         <span className="text-5xl md:text-6xl font-black text-white/40 line-through tabular-nums tracking-tighter">
-                                            2.573
+                                            1.779
                                         </span>
                                     </div>
                                 </div>
@@ -948,11 +948,11 @@ export default function EbookLandingPage() {
                                 <ul className="space-y-4">
                                     {[
                                         'Decisão guiada pelo entusiasmo do consultor',
-                                        'Capital de giro subestimado em 30-50%',
+                                        'Capital de giro informado subestimado',
                                         'Avaliação superficial de perfil pessoal',
                                         'Pergunta errada: "qual marca?"',
                                         'Reunião com franqueador às cegas',
-                                        'Risco de payback 2-3× maior que o prometido',
+                                        'Risco de payback prometido 2 a 3× maior que o real',
                                     ].map((item, i) => (
                                         <li
                                             key={i}
