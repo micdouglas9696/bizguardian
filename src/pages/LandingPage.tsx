@@ -214,10 +214,10 @@ export default function LandingPage() {
                                 <div className="flex items-center gap-4">
                                     <span className="text-[10px] font-mono text-accent-gold/50 font-bold">06</span>
                                     <span className="text-sm font-black uppercase tracking-[0.2em] text-accent-gold group-hover:text-white transition-colors duration-300">
-                                        Dossiê
+                                        Adquira o Dossiê
                                     </span>
                                 </div>
-                                <span className="material-symbols-outlined text-accent-gold/50 text-sm group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">download</span>
+                                <span className="material-symbols-outlined text-accent-gold/50 text-sm group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>
                             </Link>
                         </div>
 
