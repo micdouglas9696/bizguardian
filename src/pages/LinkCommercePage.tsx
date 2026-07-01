@@ -142,7 +142,7 @@ export default function LinkCommercePage() {
             <LinkConcierge 
                 onTrack={(elementId) => trackEvent('click', elementId)}
                 onOpenSchedule={() => {
-                    const el = document.querySelector('.bg-[#0a0a0a].border.border-white\\/10.rounded-2xl');
+                    const el = document.getElementById('bio-scheduler');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
                 onOpenDiagnostic={() => setIsDiagnosticOpen(true)}
@@ -154,7 +154,7 @@ export default function LinkCommercePage() {
                 onClose={() => setIsDiagnosticOpen(false)}
                 onSchedule={() => {
                     setIsDiagnosticOpen(false);
-                    const el = document.querySelector('.bg-[#0a0a0a].border.border-white\\/10.rounded-2xl');
+                    const el = document.getElementById('bio-scheduler');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
                 onTrack={(elementId) => trackEvent('click', elementId)}

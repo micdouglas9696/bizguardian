@@ -136,6 +136,7 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
 
     return (
         <div 
+            id="bio-scheduler"
             className="w-full bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden animate-fade-in-up"
             style={{ animationDelay: '240ms' }}
         >
