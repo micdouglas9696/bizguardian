@@ -90,6 +90,7 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState('');
 
     const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -105,6 +106,17 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
             ]);
             onTrack?.('concierge_open');
         }
+    }, [isOpen]);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
     }, [isOpen]);
 
     useEffect(() => {
@@ -150,11 +162,12 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
     const handleLeadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
+        setSubmitError('');
         onTrack?.(`concierge_lead_submit_${leadActionType}`);
 
         try {
-            const API = import.meta.env.VITE_API_URL || '';
-            await fetch(`${API}/api/link/leads`, {
+            const API = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const res = await fetch(`${API}/api/link/leads`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -166,23 +179,31 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
                     concierge_path: messages.map(m => ({ sender: m.sender, text: m.text }))
                 })
             });
-        } catch {
-            // fallback
+
+            const data = await res.json();
+            if (res.ok && data.success) {
+                setSubmitting(false);
+                setShowLeadForm(false);
+
+                // Success reply
+                const successMsg: Message = {
+                    id: `msg_success_${Date.now()}`,
+                    sender: 'bot',
+                    text: 'Excelente! Registrei seus dados de contato. Agora clique no botão abaixo para concluir sua ação:'
+                };
+                setMessages(prev => [...prev, successMsg]);
+
+                // Action routing helper
+                executeAction(leadActionType);
+            } else {
+                throw new Error(data.error || 'Não foi possível registrar seu contato.');
+            }
+        } catch (error: any) {
+            console.error('Concierge lead submission failed:', error);
+            setSubmitError(error.message || 'Erro de conexão. Verifique sua conexão e tente novamente.');
+        } finally {
+            setSubmitting(false);
         }
-
-        setSubmitting(false);
-        setShowLeadForm(false);
-
-        // Success reply
-        const successMsg: Message = {
-            id: `msg_success_${Date.now()}`,
-            sender: 'bot',
-            text: 'Excelente! Registrei seus dados de contato. Agora clique no botão abaixo para concluir sua ação:'
-        };
-        setMessages(prev => [...prev, successMsg]);
-
-        // Action routing helper
-        executeAction(leadActionType);
     };
 
     const executeAction = (action: string) => {
@@ -221,9 +242,9 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
                     <div className="absolute inset-0 bg-black/80 backdrop-blur-xs" onClick={() => setIsOpen(false)} />
 
                     {/* Chat Window */}
-                    <div className="relative w-full max-w-[420px] h-[85vh] sm:h-[600px] bg-[#0a0a0a] border border-white/10 sm:rounded-3xl rounded-t-3xl overflow-hidden flex flex-col shadow-2xl animate-slide-up-spring">
+                    <div className="relative w-full max-w-[420px] h-[100dvh] sm:h-[600px] bg-[#0a0a0a] border border-white/10 rounded-none sm:rounded-3xl overflow-hidden flex flex-col shadow-2xl animate-slide-up-spring">
                         {/* Header */}
-                        <div className="p-4 border-b border-white/10 bg-black flex items-center justify-between">
+                        <div className="p-4 pt-[calc(env(safe-area-inset-top)+1rem)] sm:pt-4 border-b border-white/10 bg-black flex items-center justify-between">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-8 h-8 rounded-full bg-accent-gold/15 flex items-center justify-center text-accent-gold">
                                     🤖
@@ -311,6 +332,11 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
                                             required
                                             label=""
                                         />
+                                        {submitError && (
+                                            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-2.5 rounded-xl text-[10px] text-center font-semibold leading-relaxed">
+                                                {submitError}
+                                            </div>
+                                        )}
                                         <button
                                             type="submit"
                                             disabled={submitting}
@@ -322,7 +348,7 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
                                 </div>
                             )}
 
-                            <div ref={chatEndRef} />
+                            <div ref={chatEndRef} className="h-[calc(env(safe-area-inset-bottom)+1rem)] sm:h-4" />
                         </div>
                     </div>
                 </div>

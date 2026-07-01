@@ -117,6 +117,7 @@ export default function LinkDiagnosticModal({
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState('');
 
     const onCloseRef = useRef(onClose);
     useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
@@ -182,11 +183,12 @@ export default function LinkDiagnosticModal({
     const handleSubmitLead = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
+        setSubmitError('');
         onTrack?.('diagnostic_lead_submit');
 
         try {
-            const API = import.meta.env.VITE_API_URL || '';
-            await fetch(`${API}/api/link/leads`, {
+            const API = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const res = await fetch(`${API}/api/link/leads`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -199,13 +201,20 @@ export default function LinkDiagnosticModal({
                     quiz_answers: answers,
                 }),
             });
-            onLeadCapture?.({ name, email, whatsapp: phone, quiz_score: totalScore, quiz_answers: answers });
-        } catch {
-            // silently continue to result
+            
+            const data = await res.json();
+            if (res.ok && data.success) {
+                onLeadCapture?.({ name, email, whatsapp: phone, quiz_score: totalScore, quiz_answers: answers });
+                setPhase('result');
+            } else {
+                throw new Error(data.error || 'Não foi possível salvar seus dados de contato.');
+            }
+        } catch (error: any) {
+            console.error('Diagnostic lead submission failed:', error);
+            setSubmitError(error.message || 'Erro de conexão. Verifique sua conexão e tente novamente.');
+        } finally {
+            setSubmitting(false);
         }
-
-        setPhase('result');
-        setSubmitting(false);
     };
 
     const tier = getResultTier(totalScore);
@@ -337,6 +346,12 @@ export default function LinkDiagnosticModal({
                                 </div>
                                 <CountryPhoneInput value={phone} onChange={setPhone} required label="WhatsApp" />
                             </div>
+                            {submitError && (
+                                <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-xs text-center font-semibold leading-relaxed">
+                                    {submitError}
+                                </div>
+                            )}
+
                             <button
                                 type="submit"
                                 disabled={submitting}

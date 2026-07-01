@@ -28,6 +28,7 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
     const [phone, setPhone] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [submitError, setSubmitError] = useState('');
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
     // Obter dias do mês atual para o calendário
@@ -88,13 +89,14 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
         if (!selectedDate || !selectedTime || !selectedService) return;
         
         setLoading(true);
+        setSubmitError('');
         onTrack?.('scheduler_submit_start');
         
         const formattedDate = selectedDate.toISOString().split('T')[0];
         const serviceName = SERVICES.find(s => s.id === selectedService)?.name || selectedService;
 
         try {
-            const API = import.meta.env.VITE_API_URL || '';
+            const API = import.meta.env.VITE_API_URL || 'http://localhost:3001';
             const res = await fetch(`${API}/api/link/schedule`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -110,17 +112,17 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
                 })
             });
 
-            if (res.ok) {
+            const data = await res.json();
+            if (res.ok && data.success) {
                 onTrack?.('scheduler_submit_success');
                 setStep('success');
                 onSuccess?.();
             } else {
-                throw new Error('Failed to submit schedule');
+                throw new Error(data.error || 'Não foi possível confirmar o agendamento.');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Schedule submission failed:', error);
-            // Fallback para sucesso se for apenas falha na rede de produção/dev local
-            setStep('success');
+            setSubmitError(error.message || 'Erro de conexão. Verifique sua conexão e tente novamente.');
         } finally {
             setLoading(false);
         }
@@ -372,6 +374,12 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
                             />
                         </div>
 
+                        {submitError && (
+                            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-xs text-center font-semibold leading-relaxed">
+                                {submitError}
+                            </div>
+                        )}
+
                         <button
                             type="submit"
                             disabled={loading}
@@ -405,6 +413,7 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
                                 setEmail('');
                                 setPhone('');
                                 setMessage('');
+                                setSubmitError('');
                                 setStep('date');
                             }}
                             className="px-6 py-2.5 bg-white/5 border border-white/10 hover:border-white/25 rounded-xl text-[10px] font-black uppercase tracking-widest text-white/60 hover:text-white transition-all"

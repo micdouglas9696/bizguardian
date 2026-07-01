@@ -1685,7 +1685,7 @@ app.get('/api/link/stats', requireAuth, async (req: Request, res: Response) => {
             leadsBySourceResult,
             leadsByJourneyResult
         ] = await Promise.all([
-            pool.query(`SELECT COUNT(*) AS total_views FROM link_events WHERE event_type='page_view' AND ${dateFilter}`),
+            pool.query(`SELECT COUNT(DISTINCT visitor_id) AS total_views FROM link_events WHERE event_type='page_view' AND ${dateFilter}`),
             pool.query(`SELECT COUNT(*) AS total_leads FROM link_leads WHERE ${dateFilter}`),
             pool.query(`SELECT COUNT(*) AS total_schedules FROM link_leads WHERE source='scheduler' AND ${dateFilter}`),
             pool.query(`SELECT element_id, COUNT(*)::int AS clicks FROM link_events WHERE event_type='click' AND ${dateFilter} GROUP BY element_id ORDER BY clicks DESC LIMIT 10`),

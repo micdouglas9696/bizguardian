@@ -26,7 +26,7 @@ export default function LinkCommercePage() {
 
     const trackEvent = async (eventType: string, elementId: string, metadata: Record<string, any> = {}) => {
         try {
-            const API = import.meta.env.VITE_API_URL || '';
+            const API = import.meta.env.VITE_API_URL || 'http://localhost:3001';
             const searchParams = new URLSearchParams(window.location.search);
             
             await fetch(`${API}/api/link/track`, {
