@@ -16,6 +16,7 @@ const MemberDashboardPage = lazy(() => import('./pages/MemberDashboardPage'));
 const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const AdminAutomacoes = lazy(() => import('./pages/AdminAutomacoes'));
+const LinkCommercePage = lazy(() => import('./pages/LinkCommercePage'));
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
       <Suspense fallback={<div className="bg-black min-h-screen" />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/link" element={<LinkCommercePage />} />
         <Route path="/internationalization" element={<InternationalizationPage />} />
         <Route path="/franquia" element={<FranchiseLandingPage />} />
         <Route path="/franquia/aulas" element={<FranchiseLessonsPage />} />

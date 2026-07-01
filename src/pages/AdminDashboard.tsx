@@ -55,7 +55,7 @@ interface Member {
     has_access: boolean;
 }
 
-type TabType = 'quiz' | 'priority' | 'contact' | 'ebook-leads' | 'members';
+type TabType = 'quiz' | 'priority' | 'contact' | 'ebook-leads' | 'members' | 'link-commerce';
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -66,9 +66,13 @@ export default function AdminDashboard() {
     const [contactLeads, setContactLeads] = useState<ContactLead[]>([]);
     const [ebookLeads, setEbookLeads] = useState<EbookLead[]>([]);
     const [members, setMembers] = useState<Member[]>([]);
+    const [linkLeads, setLinkLeads] = useState<any[]>([]);
+    const [linkStats, setLinkStats] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [selectedLead, setSelectedLead] = useState<QuizLead | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [selectedLinkLead, setSelectedLinkLead] = useState<any>(null);
 
     // Novo membro
     const [showNewMember, setShowNewMember] = useState(false);
@@ -96,12 +100,14 @@ export default function AdminDashboard() {
         const token = localStorage.getItem('crm_admin_token');
         if (!token) { navigate('/admin'); return; }
         try {
-            const [quizRes, priorityRes, contactRes, ebookLeadsRes, membersRes] = await Promise.all([
+            const [quizRes, priorityRes, contactRes, ebookLeadsRes, membersRes, linkLeadsRes, linkStatsRes] = await Promise.all([
                 fetch(`${API_URL}/api/leads/quiz`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/leads/priority`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/leads/contact`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/admin/ebook/leads`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/admin/members`, { headers: { 'Authorization': `Basic ${token}` } }),
+                fetch(`${API_URL}/api/admin/link/leads`, { headers: { 'Authorization': `Basic ${token}` } }),
+                fetch(`${API_URL}/api/link/stats`, { headers: { 'Authorization': `Basic ${token}` } }),
             ]);
             if (!quizRes.ok || !priorityRes.ok || !contactRes.ok) throw new Error('Falha ao carregar dados');
             setQuizLeads(await quizRes.json());
@@ -109,6 +115,8 @@ export default function AdminDashboard() {
             setContactLeads(await contactRes.json());
             if (ebookLeadsRes.ok) setEbookLeads(await ebookLeadsRes.json());
             if (membersRes.ok) setMembers(await membersRes.json());
+            if (linkLeadsRes.ok) setLinkLeads(await linkLeadsRes.json());
+            if (linkStatsRes.ok) setLinkStats(await linkStatsRes.json());
         } catch (err: any) {
             setError(err.message);
             if (err.message.includes('401') || err.message.includes('403')) {
@@ -177,6 +185,7 @@ export default function AdminDashboard() {
             contact: `${API_URL}/api/leads/contact/${confirmDelete.id}`,
             'ebook-leads': `${API_URL}/api/admin/ebook/leads/${confirmDelete.id}`,
             members: `${API_URL}/api/admin/members/${confirmDelete.id}`,
+            'link-commerce': `${API_URL}/api/admin/link/leads/${confirmDelete.id}`,
         };
         try {
             await fetch(urlMap[confirmDelete.type], { method: 'DELETE', headers: authHeader() });
@@ -218,6 +227,7 @@ export default function AdminDashboard() {
         contact: 'Leads: Contato Direto',
         'ebook-leads': 'Leads: Ebook',
         members: 'Gerenciar Membros',
+        'link-commerce': 'Link na Bio (Link Commerce)',
     };
 
     const tabSub: Record<TabType, string> = {
@@ -226,6 +236,7 @@ export default function AdminDashboard() {
         contact: 'Mensagens recebidas pelo formulário de contato',
         'ebook-leads': 'Interessados capturados antes do checkout',
         members: 'Acesso e criação manual de membros',
+        'link-commerce': 'Analytics e Leads capturados no Link na Bio do Instagram',
     };
 
     return (
@@ -284,6 +295,7 @@ export default function AdminDashboard() {
                             ['contact', `Contato (${contactLeads.length})`],
                             ['ebook-leads', `Leads Ebook (${ebookLeads.length})`],
                             ['members', `Membros (${members.length})`],
+                            ['link-commerce', `Link na Bio (${linkLeads.length})`],
                         ] as [TabType, string][]).map(([type, label]) => (
                             <button
                                 key={type}
@@ -471,6 +483,154 @@ export default function AdminDashboard() {
                                                         onClick={() => setConfirmDelete({ id: member.id, type: 'members', name: member.name || member.email })}
                                                         title="Excluir membro permanentemente"
                                                         className="p-1.5 rounded hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors"
+                                                    >
+                                                        <span className="material-symbols-outlined text-base">delete</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+
+                {/* ====== TAB: LINK COMMERCE ====== */}
+                {leadType === 'link-commerce' && (
+                    <div className="space-y-8 animate-in fade-in">
+                        {/* Cards de Métricas */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="bg-[#050505] border border-white/5 p-6 rounded-2xl shadow-lg">
+                                <span className="material-symbols-outlined text-accent-gold text-2xl mb-2">visibility</span>
+                                <div className="text-white/40 text-[10px] font-black uppercase tracking-wider">Visualizações Únicas</div>
+                                <div className="text-2xl font-black mt-1 text-white">{linkStats?.total_views || 0}</div>
+                            </div>
+                            <div className="bg-[#050505] border border-white/5 p-6 rounded-2xl shadow-lg">
+                                <span className="material-symbols-outlined text-accent-gold text-2xl mb-2">contacts</span>
+                                <div className="text-white/40 text-[10px] font-black uppercase tracking-wider">Leads Gerados</div>
+                                <div className="text-2xl font-black mt-1 text-white">{linkStats?.total_leads || 0}</div>
+                            </div>
+                            <div className="bg-[#050505] border border-white/5 p-6 rounded-2xl shadow-lg">
+                                <span className="material-symbols-outlined text-accent-gold text-2xl mb-2">calendar_today</span>
+                                <div className="text-white/40 text-[10px] font-black uppercase tracking-wider">Agendamentos</div>
+                                <div className="text-2xl font-black mt-1 text-white">{linkStats?.total_schedules || 0}</div>
+                            </div>
+                            <div className="bg-[#050505] border border-white/5 p-6 rounded-2xl shadow-lg">
+                                <span className="material-symbols-outlined text-accent-gold text-2xl mb-2">insights</span>
+                                <div className="text-white/40 text-[10px] font-black uppercase tracking-wider">Conversão de Cliques</div>
+                                <div className="text-2xl font-black mt-1 text-accent-gold">{linkStats?.conversion_rate || 0}%</div>
+                            </div>
+                        </div>
+
+                        {/* Top Cliques e Jornadas */}
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {/* Cliques em Botões */}
+                            <div className="bg-[#050505] border border-white/5 p-6 rounded-2xl">
+                                <h3 className="font-black uppercase tracking-[0.15em] text-xs text-white mb-4">Cliques em Botões (Top 10)</h3>
+                                <div className="space-y-3">
+                                    {(!linkStats?.top_clicks || linkStats.top_clicks.length === 0) ? (
+                                        <p className="text-xs text-white/40 py-2">Nenhum clique registrado ainda.</p>
+                                    ) : linkStats.top_clicks.map((item: any, i: number) => (
+                                        <div key={i} className="flex items-center justify-between text-xs py-2 border-b border-white/5 last:border-0">
+                                            <span className="font-bold text-white/70">{item.element_id}</span>
+                                            <span className="bg-white/5 px-2.5 py-0.5 rounded text-[10px] text-white/50">{item.clicks} cliques</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Leads por Origem/Jornada */}
+                            <div className="bg-[#050505] border border-white/5 p-6 rounded-2xl">
+                                <h3 className="font-black uppercase tracking-[0.15em] text-xs text-white mb-4">Origem dos Leads / Jornadas</h3>
+                                <div className="space-y-3">
+                                    {(!linkStats?.leads_by_journey || linkStats.leads_by_journey.length === 0) ? (
+                                        <p className="text-xs text-white/40 py-2">Nenhum lead gerado para análise.</p>
+                                    ) : linkStats.leads_by_journey.map((item: any, i: number) => (
+                                        <div key={i} className="flex items-center justify-between text-xs py-2 border-b border-white/5 last:border-0">
+                                            <span className="font-bold text-white/70 uppercase tracking-wider">{item.journey_type}</span>
+                                            <span className="bg-accent-gold/10 text-accent-gold border border-accent-gold/10 px-2.5 py-0.5 rounded text-[10px] font-bold">{item.count} leads</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Tabela de Leads */}
+                        <div className="overflow-x-auto bg-[#050505] border border-white/5 rounded-2xl shadow-2xl">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b border-white/10 text-[10px] font-black uppercase tracking-[0.3em] text-white/40 bg-white/[0.02]">
+                                        <th className="p-5">Data</th>
+                                        <th className="p-5">Nome</th>
+                                        <th className="p-5">Contato</th>
+                                        <th className="p-5">Origem / Jornada</th>
+                                        <th className="p-5">Detalhes</th>
+                                        <th className="p-5 text-right">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {linkLeads.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={6} className="p-8 text-center text-white/40 text-sm">Nenhum lead capturado no Link na Bio ainda.</td>
+                                        </tr>
+                                    ) : linkLeads.map((lead: any) => (
+                                        <tr key={lead.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                                            <td className="p-5 text-xs text-white/60">
+                                                {new Date(lead.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                            </td>
+                                            <td className="p-5 font-bold">{lead.name || '—'}</td>
+                                            <td className="p-5">
+                                                <div className="text-sm text-white/80">{lead.email || '—'}</div>
+                                                <div className="text-[10px] text-accent-gold mt-1">
+                                                    {lead.whatsapp ? (
+                                                        <a href={`https://wa.me/${lead.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                                            {lead.whatsapp}
+                                                        </a>
+                                                    ) : '—'}
+                                                </div>
+                                            </td>
+                                            <td className="p-5">
+                                                <div className="flex flex-col gap-1">
+                                                    <span className="px-2 py-0.5 rounded text-[9px] font-black bg-white/5 text-white/60 border border-white/10 uppercase tracking-[0.15em] w-fit">
+                                                        Origem: {lead.source || 'direto'}
+                                                    </span>
+                                                    {lead.journey_type && (
+                                                        <span className="px-2 py-0.5 rounded text-[9px] font-black bg-accent-gold/10 text-accent-gold border border-accent-gold/10 uppercase tracking-[0.15em] w-fit">
+                                                            Jornada: {lead.journey_type}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="p-5 text-xs">
+                                                {lead.schedule_date ? (
+                                                    <span className="text-white/60 font-medium flex items-center gap-1">
+                                                        <span className="material-symbols-outlined text-sm text-accent-gold">calendar_today</span>
+                                                        {new Date(lead.schedule_date).toLocaleDateString('pt-BR')} às {lead.schedule_time}
+                                                    </span>
+                                                ) : lead.quiz_score ? (
+                                                    <span className="text-white/60 font-medium flex items-center gap-1">
+                                                        <span className="material-symbols-outlined text-sm text-accent-gold">fact_check</span>
+                                                        Quiz Score: {lead.quiz_score}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-white/30">Nenhum dado extra</span>
+                                                )}
+                                            </td>
+                                            <td className="p-5">
+                                                <div className="flex items-center justify-end gap-2">
+                                                    {(lead.quiz_answers || lead.concierge_path || lead.schedule_message) && (
+                                                        <button 
+                                                            onClick={() => setSelectedLinkLead(lead)}
+                                                            className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.1em] rounded transition-all"
+                                                        >
+                                                            Ver Detalhes
+                                                        </button>
+                                                    )}
+                                                    <button 
+                                                        onClick={() => setConfirmDelete({ id: lead.id, type: 'link-commerce', name: lead.name || lead.email })} 
+                                                        className="p-1.5 rounded hover:bg-red-500/10 text-white/20 hover:text-red-400 transition-colors" 
+                                                        title="Excluir lead"
                                                     >
                                                         <span className="material-symbols-outlined text-base">delete</span>
                                                     </button>
@@ -757,6 +917,86 @@ export default function AdminDashboard() {
                                     })}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* Lead Details Modal Link Commerce */}
+            {selectedLinkLead && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-sm animate-in fade-in">
+                    <div className="bg-[#050505] w-full max-w-2xl max-h-[90vh] border border-white/10 rounded-2xl md:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8">
+                        <div className="p-6 md:p-8 border-b border-white/10 flex justify-between items-start bg-white/[0.02]">
+                            <div>
+                                <span className="inline-block px-3 py-1 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-4">
+                                    Detalhes do Lead · Link Commerce
+                                </span>
+                                <h3 className="text-2xl md:text-3xl font-black">{selectedLinkLead.name || 'Sem Nome'}</h3>
+                                <div className="flex gap-4 mt-2 text-sm text-white/60">
+                                    <span className="flex items-center gap-1"><span className="material-symbols-outlined text-sm">mail</span> {selectedLinkLead.email || '—'}</span>
+                                    <span className="flex items-center gap-1"><span className="material-symbols-outlined text-sm">call</span> {selectedLinkLead.whatsapp || '—'}</span>
+                                </div>
+                            </div>
+                            <button onClick={() => setSelectedLinkLead(null)} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="p-6 md:p-8 overflow-y-auto space-y-6">
+                            {/* Agendamento */}
+                            {selectedLinkLead.schedule_date && (
+                                <div className="bg-white/5 border border-white/10 p-5 rounded-xl space-y-3">
+                                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-gold">Dados do Agendamento</div>
+                                    <div className="grid grid-cols-2 gap-4 text-xs">
+                                        <div>
+                                            <div className="text-white/40 mb-1">Serviço Solicitado</div>
+                                            <div className="font-bold text-white text-sm">{selectedLinkLead.schedule_service}</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-white/40 mb-1">Data e Hora</div>
+                                            <div className="font-bold text-white text-sm">
+                                                {new Date(selectedLinkLead.schedule_date).toLocaleDateString('pt-BR')} às {selectedLinkLead.schedule_time}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {selectedLinkLead.schedule_message && (
+                                        <div className="border-t border-white/5 pt-3">
+                                            <div className="text-white/40 text-xs mb-1">Mensagem enviada:</div>
+                                            <p className="text-white/80 text-xs bg-black/40 p-3 rounded leading-relaxed">{selectedLinkLead.schedule_message}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Respostas do Concierge */}
+                            {selectedLinkLead.concierge_path && selectedLinkLead.concierge_path.length > 0 && (
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 border-b border-white/10 pb-2">Jornada no Concierge</h4>
+                                    <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                        {selectedLinkLead.concierge_path.map((step: any, idx: number) => (
+                                            <div key={idx} className={`p-3 rounded-lg text-xs leading-relaxed ${step.sender === 'user' ? 'bg-accent-gold/10 border border-accent-gold/20 text-accent-gold ml-8' : 'bg-white/5 border border-white/5 text-white/80 mr-8'}`}>
+                                                <div className="text-[9px] font-black uppercase tracking-wider opacity-40 mb-1">{step.sender === 'user' ? 'Visitante' : 'Concierge'}</div>
+                                                <div>{step.text}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Respostas do Quiz */}
+                            {selectedLinkLead.quiz_answers && Object.keys(selectedLinkLead.quiz_answers).length > 0 && (
+                                <div>
+                                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 border-b border-white/10 pb-2">Respostas do Diagnóstico Rápido (Score: {selectedLinkLead.quiz_score})</h4>
+                                    <div className="space-y-2 mt-3">
+                                        {Object.entries(selectedLinkLead.quiz_answers).map(([qId, points]: any, i: number) => {
+                                            return (
+                                                <div key={qId} className="p-3 border border-white/5 rounded-lg bg-black/20 text-xs">
+                                                    <span className="font-bold text-white/80">Questão {i + 1} (Score: {points})</span>
+                                                    <p className="text-white/40 mt-1">ID da questão respondida: {qId}</p>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -1572,6 +1572,170 @@ app.get('/api/ebook/download/:token', async (req: Request, res: Response) => {
     }
 });
 
+// =====================================================================
+// LINK COMMERCE ENDPOINTS
+// =====================================================================
+
+app.post('/api/link/leads', async (req: Request, res: Response) => {
+    const {
+        name, email, whatsapp, journey_type, source,
+        quiz_score, quiz_answers, concierge_path,
+        utm_source, utm_medium, utm_campaign, visitor_id
+    } = req.body;
+    try {
+        const query = `
+            INSERT INTO link_leads (name, email, whatsapp, journey_type, source,
+                quiz_score, quiz_answers, concierge_path,
+                utm_source, utm_medium, utm_campaign, visitor_id)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+            RETURNING *;
+        `;
+        const result = await pool.query(query, [
+            name || null, email || null, whatsapp || null,
+            journey_type || null, source || null,
+            quiz_score || null,
+            quiz_answers ? JSON.stringify(quiz_answers) : null,
+            concierge_path ? JSON.stringify(concierge_path) : null,
+            utm_source || null, utm_medium || null, utm_campaign || null,
+            visitor_id || null
+        ]);
+        res.status(201).json({ success: true, lead: result.rows[0] });
+    } catch (error) {
+        console.error('Error inserting link lead:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.post('/api/link/track', async (req: Request, res: Response) => {
+    const { event_type, element_id, visitor_id, metadata, referrer, user_agent } = req.body;
+    try {
+        await pool.query(
+            `INSERT INTO link_events (event_type, element_id, visitor_id, metadata, referrer, user_agent)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+                event_type || 'unknown',
+                element_id || null,
+                visitor_id || null,
+                metadata ? JSON.stringify(metadata) : null,
+                referrer || null,
+                user_agent || null
+            ]
+        );
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error tracking link event:', error);
+        // Fire-and-forget: still return 200
+        res.json({ success: true });
+    }
+});
+
+app.post('/api/link/schedule', async (req: Request, res: Response) => {
+    const {
+        name, email, whatsapp, date, time, service, message,
+        visitor_id, utm_source, utm_medium, utm_campaign
+    } = req.body;
+    try {
+        const query = `
+            INSERT INTO link_leads (name, email, whatsapp, source,
+                schedule_date, schedule_time, schedule_service, schedule_message,
+                utm_source, utm_medium, utm_campaign, visitor_id)
+            VALUES ($1, $2, $3, 'scheduler', $4, $5, $6, $7, $8, $9, $10, $11)
+            RETURNING *;
+        `;
+        const result = await pool.query(query, [
+            name || null, email || null, whatsapp || null,
+            date || null, time || null, service || null, message || null,
+            utm_source || null, utm_medium || null, utm_campaign || null,
+            visitor_id || null
+        ]);
+        const lead = result.rows[0];
+        res.status(201).json({ success: true, lead });
+
+        // Notify admin via WhatsApp (non-blocking, fire-and-forget)
+        const adminPhone = process.env.ADMIN_WHATSAPP_PHONE || '558196696184';
+        const waUrl = process.env.WHATSAPP_SEND_TEXT_URL || 'https://api.mycom.dev.br/chat/send/text';
+        const waToken = process.env.WHATSAPP_API_TOKEN || process.env.ZUCKZAPGO_TOKEN || '';
+        const notifBody = `📅 Novo agendamento Link Commerce!\n\nNome: ${name || '—'}\nEmail: ${email || '—'}\nWhatsApp: ${whatsapp || '—'}\nServiço: ${service || '—'}\nData: ${date || '—'} às ${time || '—'}\nMensagem: ${message || '—'}`;
+
+        fetch(waUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(waToken ? { token: waToken } : {}),
+            },
+            body: JSON.stringify({ Phone: adminPhone, Body: notifBody }),
+        }).catch(err => console.error('WhatsApp schedule notification error:', err));
+    } catch (error) {
+        console.error('Error inserting link schedule:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/link/stats', requireAuth, async (req: Request, res: Response) => {
+    try {
+        const days = parseInt(String(req.query.days)) || 30;
+        const dateFilter = `created_at >= NOW() - INTERVAL '${days} days'`;
+
+        const [
+            viewsResult,
+            leadsResult,
+            schedulesResult,
+            topClicksResult,
+            dailyViewsResult,
+            leadsBySourceResult,
+            leadsByJourneyResult
+        ] = await Promise.all([
+            pool.query(`SELECT COUNT(*) AS total_views FROM link_events WHERE event_type='page_view' AND ${dateFilter}`),
+            pool.query(`SELECT COUNT(*) AS total_leads FROM link_leads WHERE ${dateFilter}`),
+            pool.query(`SELECT COUNT(*) AS total_schedules FROM link_leads WHERE source='scheduler' AND ${dateFilter}`),
+            pool.query(`SELECT element_id, COUNT(*)::int AS clicks FROM link_events WHERE event_type='click' AND ${dateFilter} GROUP BY element_id ORDER BY clicks DESC LIMIT 10`),
+            pool.query(`SELECT DATE(created_at) AS day, COUNT(*)::int AS views FROM link_events WHERE event_type='page_view' AND ${dateFilter} GROUP BY DATE(created_at) ORDER BY day`),
+            pool.query(`SELECT COALESCE(source, 'direct') AS source, COUNT(*)::int AS count FROM link_leads WHERE ${dateFilter} GROUP BY source ORDER BY count DESC`),
+            pool.query(`SELECT COALESCE(journey_type, 'unknown') AS journey_type, COUNT(*)::int AS count FROM link_leads WHERE ${dateFilter} GROUP BY journey_type ORDER BY count DESC`)
+        ]);
+
+        const totalViews = parseInt(viewsResult.rows[0].total_views) || 0;
+        const totalLeads = parseInt(leadsResult.rows[0].total_leads) || 0;
+        const conversionRate = totalViews > 0 ? parseFloat(((totalLeads / totalViews) * 100).toFixed(2)) : 0;
+
+        res.json({
+            total_views: totalViews,
+            total_leads: totalLeads,
+            total_schedules: parseInt(schedulesResult.rows[0].total_schedules) || 0,
+            conversion_rate: conversionRate,
+            top_clicks: topClicksResult.rows,
+            daily_views: dailyViewsResult.rows,
+            leads_by_source: leadsBySourceResult.rows,
+            leads_by_journey: leadsByJourneyResult.rows,
+            days
+        });
+    } catch (error) {
+        console.error('Error fetching link stats:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/admin/link/leads', requireAuth, async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query('SELECT * FROM link_leads ORDER BY created_at DESC');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching admin link leads:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.delete('/api/admin/link/leads/:id', requireAuth, async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        await pool.query('DELETE FROM link_leads WHERE id = $1', [id]);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting link lead:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`BizGuardian CRM API running on port ${port}`);
     console.log(`Stripe mode: ${(process.env.STRIPE_SECRET_KEY || '').startsWith('sk_live') ? 'LIVE' : 'TEST'}`);
