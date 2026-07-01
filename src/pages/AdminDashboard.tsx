@@ -4,6 +4,70 @@ import { QUESTIONS } from '../components/FranchiseQuizModal';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
+const translateJourneyType = (type: string) => {
+    if (!type) return 'Origem Direta / Outros';
+    const mapping: Record<string, string> = {
+        'diagnostico': 'Diagnóstico de Perfil',
+        'concierge': 'IA Concierge',
+        'scheduler': 'Agendamento Direto',
+        'agendamento': 'Agendamento Direto',
+        'unknown': 'Origem Direta / Outros',
+    };
+    return mapping[type.toLowerCase()] || type;
+};
+
+const translateSource = (source: string) => {
+    if (!source) return 'Direto / Outros';
+    const mapping: Record<string, string> = {
+        'scheduler': 'Agendamento',
+        'concierge': 'IA Concierge',
+        'diagnostico': 'Diagnóstico',
+        'cta_diagnostico': 'Diagnóstico',
+        'concierge_scheduler': 'Concierge (Agenda)',
+        'concierge_franchise_page': 'Concierge (Franquia)',
+        'concierge_whatsapp': 'Concierge (WhatsApp)',
+        'unknown': 'Direto / Outros',
+    };
+    return mapping[source.toLowerCase()] || source;
+};
+
+const translateElementId = (id: string) => {
+    if (!id) return 'Outro';
+    const mapping: Record<string, string> = {
+        'scheduler_submit_start': 'Iniciou Agendamento',
+        'scheduler_submit_success': 'Agendamento Concluído',
+        'concierge_open': 'Abriu Concierge de IA',
+        'concierge_close': 'Fechou Concierge de IA',
+        'concierge_lead_submit_scheduler': 'Envio Lead Concierge (Agenda)',
+        'concierge_lead_submit_franchise_page': 'Envio Lead Concierge (Franquias)',
+        'concierge_lead_submit_whatsapp': 'Envio Lead Concierge (WhatsApp)',
+        'concierge_action_scheduler': 'Clicou Agendar (no Chat)',
+        'concierge_action_franchise_page': 'Ir para Franquias (no Chat)',
+        'concierge_action_whatsapp': 'Falar no WhatsApp (no Chat)',
+        'diagnostic_open': 'Abriu Diagnóstico de Perfil',
+        'diagnostic_submit_lead': 'Lead do Diagnóstico Capturado',
+        'diagnostic_close': 'Fechou Diagnóstico',
+        'instagram_click': 'Link Instagram',
+        'youtube_click': 'Link YouTube',
+        'linkedin_click': 'Link LinkedIn',
+        'whatsapp_main_click': 'WhatsApp Principal',
+        'ebook_click': 'Link Ebook',
+        'franchise_landing_click': 'Link Franquias',
+        'diagnostico_open_click': 'Clicou Descobrir Perfil',
+        'concierge_open_click': 'Clicou Concierge de IA',
+        'whatsapp_direct': 'WhatsApp Direto',
+        'linkedin_direct': 'LinkedIn Direto',
+        'instagram_direct': 'Instagram Direto',
+        'youtube_direct': 'YouTube Direto',
+        'ebook_direct': 'Ebook Direto',
+        'site_direct': 'Site Principal Direto',
+        'cta_agendar': 'Clicou Agendar (Menu)',
+        'cta_diagnostico': 'Clicou Diagnóstico (Menu)',
+        'cta_concierge': 'Clicou Concierge (Floating)',
+    };
+    return mapping[id.toLowerCase()] || id;
+};
+
 interface QuizLead {
     id: string;
     created_at: string;
@@ -533,7 +597,7 @@ export default function AdminDashboard() {
                                         <p className="text-xs text-white/40 py-2">Nenhum clique registrado ainda.</p>
                                     ) : linkStats.top_clicks.map((item: any, i: number) => (
                                         <div key={i} className="flex items-center justify-between text-xs py-2 border-b border-white/5 last:border-0">
-                                            <span className="font-bold text-white/70">{item.element_id}</span>
+                                            <span className="font-bold text-white/70">{translateElementId(item.element_id)}</span>
                                             <span className="bg-white/5 px-2.5 py-0.5 rounded text-[10px] text-white/50">{item.clicks} cliques</span>
                                         </div>
                                     ))}
@@ -548,7 +612,7 @@ export default function AdminDashboard() {
                                         <p className="text-xs text-white/40 py-2">Nenhum lead gerado para análise.</p>
                                     ) : linkStats.leads_by_journey.map((item: any, i: number) => (
                                         <div key={i} className="flex items-center justify-between text-xs py-2 border-b border-white/5 last:border-0">
-                                            <span className="font-bold text-white/70 uppercase tracking-wider">{item.journey_type}</span>
+                                            <span className="font-bold text-white/70 uppercase tracking-wider">{translateJourneyType(item.journey_type)}</span>
                                             <span className="bg-accent-gold/10 text-accent-gold border border-accent-gold/10 px-2.5 py-0.5 rounded text-[10px] font-bold">{item.count} leads</span>
                                         </div>
                                     ))}
@@ -593,11 +657,11 @@ export default function AdminDashboard() {
                                             <td className="p-5">
                                                 <div className="flex flex-col gap-1">
                                                     <span className="px-2 py-0.5 rounded text-[9px] font-black bg-white/5 text-white/60 border border-white/10 uppercase tracking-[0.15em] w-fit">
-                                                        Origem: {lead.source || 'direto'}
+                                                        Origem: {translateSource(lead.source)}
                                                     </span>
                                                     {lead.journey_type && (
                                                         <span className="px-2 py-0.5 rounded text-[9px] font-black bg-accent-gold/10 text-accent-gold border border-accent-gold/10 uppercase tracking-[0.15em] w-fit">
-                                                            Jornada: {lead.journey_type}
+                                                            Jornada: {translateJourneyType(lead.journey_type)}
                                                         </span>
                                                     )}
                                                 </div>
