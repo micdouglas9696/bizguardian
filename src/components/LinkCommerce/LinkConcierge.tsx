@@ -180,23 +180,32 @@ export default function LinkConcierge({ onTrack, onOpenSchedule, onOpenDiagnosti
                 })
             });
 
-            const data = await res.json();
-            if (res.ok && data.success) {
-                setSubmitting(false);
-                setShowLeadForm(false);
+            if (!res.ok) {
+                throw new Error(`Erro no servidor (HTTP ${res.status}). Por favor, aguarde o deploy ou tente novamente.`);
+            }
 
-                // Success reply
-                const successMsg: Message = {
-                    id: `msg_success_${Date.now()}`,
-                    sender: 'bot',
-                    text: 'Excelente! Registrei seus dados de contato. Agora clique no botão abaixo para concluir sua ação:'
-                };
-                setMessages(prev => [...prev, successMsg]);
+            const contentType = res.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await res.json();
+                if (data.success) {
+                    setSubmitting(false);
+                    setShowLeadForm(false);
 
-                // Action routing helper
-                executeAction(leadActionType);
+                    // Success reply
+                    const successMsg: Message = {
+                        id: `msg_success_${Date.now()}`,
+                        sender: 'bot',
+                        text: 'Excelente! Registrei seus dados de contato. Agora clique no botão abaixo para concluir sua ação:'
+                    };
+                    setMessages(prev => [...prev, successMsg]);
+
+                    // Action routing helper
+                    executeAction(leadActionType);
+                } else {
+                    throw new Error(data.error || 'Não foi possível registrar seu contato.');
+                }
             } else {
-                throw new Error(data.error || 'Não foi possível registrar seu contato.');
+                throw new Error('Resposta inesperada do servidor. O backend pode estar desatualizado.');
             }
         } catch (error: any) {
             console.error('Concierge lead submission failed:', error);

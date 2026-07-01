@@ -202,12 +202,21 @@ export default function LinkDiagnosticModal({
                 }),
             });
             
-            const data = await res.json();
-            if (res.ok && data.success) {
-                onLeadCapture?.({ name, email, whatsapp: phone, quiz_score: totalScore, quiz_answers: answers });
-                setPhase('result');
+            if (!res.ok) {
+                throw new Error(`Erro no servidor (HTTP ${res.status}). Por favor, aguarde o deploy ou tente novamente.`);
+            }
+
+            const contentType = res.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await res.json();
+                if (data.success) {
+                    onLeadCapture?.({ name, email, whatsapp: phone, quiz_score: totalScore, quiz_answers: answers });
+                    setPhase('result');
+                } else {
+                    throw new Error(data.error || 'Não foi possível salvar seus dados de contato.');
+                }
             } else {
-                throw new Error(data.error || 'Não foi possível salvar seus dados de contato.');
+                throw new Error('Resposta inesperada do servidor. O backend pode estar desatualizado.');
             }
         } catch (error: any) {
             console.error('Diagnostic lead submission failed:', error);

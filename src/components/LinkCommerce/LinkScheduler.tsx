@@ -112,13 +112,22 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
                 })
             });
 
-            const data = await res.json();
-            if (res.ok && data.success) {
-                onTrack?.('scheduler_submit_success');
-                setStep('success');
-                onSuccess?.();
+            if (!res.ok) {
+                throw new Error(`Erro no servidor (HTTP ${res.status}). Por favor, aguarde o deploy ou tente novamente.`);
+            }
+
+            const contentType = res.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await res.json();
+                if (data.success) {
+                    onTrack?.('scheduler_submit_success');
+                    setStep('success');
+                    onSuccess?.();
+                } else {
+                    throw new Error(data.error || 'Não foi possível confirmar o agendamento.');
+                }
             } else {
-                throw new Error(data.error || 'Não foi possível confirmar o agendamento.');
+                throw new Error('Resposta inesperada do servidor. O backend pode estar desatualizado.');
             }
         } catch (error: any) {
             console.error('Schedule submission failed:', error);
