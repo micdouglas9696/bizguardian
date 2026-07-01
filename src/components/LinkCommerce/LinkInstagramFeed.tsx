@@ -15,31 +15,31 @@ interface LinkInstagramFeedProps {
 const INSTAGRAM_POSTS: IGPost[] = [
     {
         id: 'post_1',
-        imageUrl: '/1.png',
-        likes: 142,
-        comments: 28,
-        url: 'https://instagram.com/marinhoponci'
+        imageUrl: '/Marinho-185.webp',
+        likes: 412,
+        comments: 32,
+        url: 'https://www.instagram.com/marinhoponci/'
     },
     {
         id: 'post_2',
-        imageUrl: '/2.jpg',
-        likes: 289,
-        comments: 42,
-        url: 'https://instagram.com/marinhoponci'
+        imageUrl: '/_DSC4559.webp',
+        likes: 389,
+        comments: 48,
+        url: 'https://www.instagram.com/marinhoponci/'
     },
     {
         id: 'post_3',
-        imageUrl: '/3.jpg',
-        likes: 195,
-        comments: 17,
-        url: 'https://instagram.com/marinhoponci'
+        imageUrl: '/_DSC4243PB.jpg',
+        likes: 524,
+        comments: 61,
+        url: 'https://www.instagram.com/marinhoponci/'
     },
     {
         id: 'post_4',
-        imageUrl: '/44.jpg',
+        imageUrl: '/_DSC4297PB.jpg',
         likes: 310,
-        comments: 53,
-        url: 'https://instagram.com/marinhoponci'
+        comments: 29,
+        url: 'https://www.instagram.com/marinhoponci/'
     }
 ];
 

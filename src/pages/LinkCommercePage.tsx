@@ -81,8 +81,8 @@ export default function LinkCommercePage() {
                                 <path d="m9 12 2 2 4-4" />
                             </svg>
                         }
-                        title="Diagnóstico Completo"
-                        description="Descubra o seu perfil e agende uma conversa estratégica."
+                        title="Descubra se você está pronto"
+                        description="Responda 5 perguntas rápidas e inicie o Concierge de IA."
                         onClick={() => setIsDiagnosticOpen(true)}
                         highlight={true}
                         delay={100}
