@@ -353,6 +353,22 @@ export default function EbookLandingPage() {
 
                     <div className="flex items-center gap-2">
                         <Link
+                            to="/franqueador"
+                            className="text-[10px] font-black uppercase tracking-[0.18em] border border-white/25 text-white/60 hover:text-accent-gold hover:border-accent-gold px-3 py-2 transition-all mr-1 flex items-center gap-1"
+                            title="Dossiê para Franqueadores"
+                        >
+                            Sou Franqueador <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        </Link>
+
+                        <Link
+                            to="/ebook-ingles"
+                            className="text-[10px] font-black uppercase tracking-[0.18em] border border-white/25 text-white/60 hover:text-accent-gold hover:border-accent-gold px-3 py-2 transition-all mr-1 flex items-center gap-1"
+                            title="English Version"
+                        >
+                            <span className="material-symbols-outlined text-[14px]">language</span> EN
+                        </Link>
+
+                        <Link
                             to="/membro/login"
                             className="group relative px-4 py-2 bg-accent-gold text-black text-[10px] font-black uppercase tracking-[0.18em] hover:bg-white transition-all duration-300 whitespace-nowrap"
                         >
@@ -396,7 +412,7 @@ export default function EbookLandingPage() {
                             <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/35"></div>
                         </div>
 
-                        <div className="relative z-10 w-full max-w-[1500px] mx-auto px-6 md:px-12 flex items-center min-h-[88vh] pt-24 pb-12">
+                        <div className="relative z-10 w-full max-w-[1700px] mx-auto px-6 md:px-12 lg:px-24 flex items-center min-h-[88vh] pt-24 pb-12">
                             <div className="max-w-xl reveal-on-scroll">
                                 <div className="inline-flex items-center gap-3 mb-5 px-3 py-2 border border-accent-gold/40 bg-accent-gold/5">
                                     <span className="w-2 h-2 bg-accent-gold rounded-full pulse-ring"></span>

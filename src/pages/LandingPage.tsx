@@ -11,6 +11,39 @@ import VideoModal from '../components/VideoModal';
 import PriorityListModal from '../components/PriorityListModal';
 import CountryPhoneInput from '../components/CountryPhoneInput';
 
+const FALLBACK_POSTS: BlogPost[] = [
+    {
+        _id: 'fallback-1',
+        title: 'Melhores franquias para investir em 2026',
+        slug: 'melhores-franquias-para-investir-em-2026',
+        publishedAt: '2026-06-18T12:00:00Z',
+        excerpt: 'Não vou te dar uma lista de nomes. Vou te dar o que de fato importa: como pensar sobre franquias em 2026 se o dinheiro em jogo fosse o meu.',
+        readingTime: 16,
+        featuredImage: { asset: { _ref: '/banner final 02.webp' } },
+        categories: [{ title: 'Franquias', slug: 'franquias', color: '#e1a960' }]
+    },
+    {
+        _id: 'fallback-2',
+        title: 'Como avaliar uma franquia antes de investir',
+        slug: 'como-avaliar-uma-franquia-antes-de-investir',
+        publishedAt: '2026-06-18T12:00:00Z',
+        excerpt: 'A indústria do franchising prospera com gente que decide rápido e analisa devagar. Aprenda a inverter essa ordem para proteger o seu dinheiro.',
+        readingTime: 18,
+        featuredImage: { asset: { _ref: '/capaebookdesk_franqueado.webp' } },
+        categories: [{ title: 'Franquias', slug: 'franquias', color: '#e1a960' }]
+    },
+    {
+        _id: 'fallback-3',
+        title: 'Quando o fracasso é culpa do franqueado e quando é culpa do franqueador',
+        slug: 'franquia-culpa-franqueado-ou-franqueador',
+        publishedAt: '2026-05-29T12:00:00Z',
+        excerpt: 'Quando uma franquia quebra, cada lado culpa o outro. Mas os padrões se repetem. Veja quando o fracasso é responsabilidade do franqueado e quando é do franqueador.',
+        readingTime: 8,
+        featuredImage: { asset: { _ref: '/sobre.webp' } },
+        categories: [{ title: 'Franquias', slug: 'franquias', color: '#e1a960' }]
+    }
+];
+
 const NAV_ITEMS = [
     { name: 'Quem sou', id: 'sobre' },
     { name: 'Ecossistema', id: 'ecossistema' },
@@ -99,6 +132,16 @@ export default function LandingPage() {
         return () => { document.body.style.overflow = ''; };
     }, [mobileMenuOpen]);
 
+    const [dossieDropdownOpen, setDossieDropdownOpen] = useState(false);
+
+    useEffect(() => {
+        const handleOutsideClick = () => {
+            if (dossieDropdownOpen) setDossieDropdownOpen(false);
+        };
+        window.addEventListener('click', handleOutsideClick);
+        return () => window.removeEventListener('click', handleOutsideClick);
+    }, [dossieDropdownOpen]);
+
     const handleMobileNavClick = useCallback((id: string) => {
         setMobileMenuOpen(false);
         setTimeout(() => {
@@ -123,7 +166,7 @@ export default function LandingPage() {
                             <a
                                 key={item.name}
                                 href={`#${item.id}`}
-                                className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
+                                className="text-[10px] font-black uppercase tracking-[0.2em] text-white/45 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
                             >
                                 {item.name}
                                 <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
@@ -133,18 +176,37 @@ export default function LandingPage() {
                             href="https://marinhoponci.com/blog"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
+                            className="text-[10px] font-black uppercase tracking-[0.2em] text-white/45 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
                         >
                             Blog
                             <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
                         </a>
-                        <Link
-                            to="/ebook"
-                            className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-accent-gold transition-all duration-300 relative group/nav whitespace-nowrap"
-                        >
-                            Dossiê
-                            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
-                        </Link>
+                        <div className="relative group/nav">
+                            <button
+                                onClick={(e) => { e.stopPropagation(); setDossieDropdownOpen(!dossieDropdownOpen); }}
+                                className="text-[10px] font-black uppercase tracking-[0.2em] text-white/45 hover:text-accent-gold transition-all duration-300 flex items-center gap-1 select-none"
+                            >
+                                Dossiê <span className={`material-symbols-outlined text-[12px] transition-transform duration-300 ${dossieDropdownOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                            </button>
+                            
+                            {/* Dropdown Menu */}
+                            {dossieDropdownOpen && (
+                                <div className="absolute top-full right-0 mt-3 w-48 bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/10 p-2 rounded shadow-2xl flex flex-col z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                                    <Link
+                                        to="/ebook"
+                                        className="text-[10px] font-black uppercase tracking-[0.18em] text-white/60 hover:text-accent-gold hover:bg-white/5 px-4 py-3 transition-all"
+                                    >
+                                        Para o Franqueado
+                                    </Link>
+                                    <Link
+                                        to="/franqueador"
+                                        className="text-[10px] font-black uppercase tracking-[0.18em] text-white/60 hover:text-accent-gold hover:bg-white/5 px-4 py-3 transition-all border-t border-white/5"
+                                    >
+                                        Para o Franqueador
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
                     </nav>
 
                     <div className="flex items-center gap-3 sm:gap-4">
@@ -204,17 +266,30 @@ export default function LandingPage() {
                             ))}
                         </nav>
 
-                        {/* Dossiê CTA */}
-                        <div className={`mt-6 transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: mobileMenuOpen ? '420ms' : '0ms' }}>
+                        {/* Dossiê CTAs */}
+                        <div className="mt-6 flex flex-col gap-3">
                             <Link
                                 to="/ebook"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center justify-between w-full py-4 border border-accent-gold/30 px-5 rounded-lg bg-accent-gold/5 group hover:bg-accent-gold/10 transition-all duration-300"
+                                className="flex items-center justify-between w-full py-3.5 border border-accent-gold/20 px-5 rounded-lg bg-accent-gold/5 group hover:bg-accent-gold/10 transition-all duration-300"
                             >
                                 <div className="flex items-center gap-4">
                                     <span className="text-[10px] font-mono text-accent-gold/50 font-bold">06</span>
                                     <span className="text-sm font-black uppercase tracking-[0.2em] text-accent-gold group-hover:text-white transition-colors duration-300">
-                                        Adquira o Dossiê
+                                        Dossiê Franqueado
+                                    </span>
+                                </div>
+                                <span className="material-symbols-outlined text-accent-gold/50 text-sm group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>
+                            </Link>
+                            <Link
+                                to="/franqueador"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center justify-between w-full py-3.5 border border-accent-gold/20 px-5 rounded-lg bg-accent-gold/5 group hover:bg-accent-gold/10 transition-all duration-300"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <span className="text-[10px] font-mono text-accent-gold/50 font-bold">07</span>
+                                    <span className="text-sm font-black uppercase tracking-[0.2em] text-accent-gold group-hover:text-white transition-colors duration-300">
+                                        Dossiê Franqueador
                                     </span>
                                 </div>
                                 <span className="material-symbols-outlined text-accent-gold/50 text-sm group-hover:text-accent-gold group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>
@@ -520,10 +595,9 @@ export default function LandingPage() {
                                 </a>
                             </div>
 
-                            {/* Posts grid */}
-                            {blogPosts.length > 0 ? (
+                            {(blogPosts.length > 0 ? blogPosts : (blogLoaded ? FALLBACK_POSTS : [])).length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-                                    {blogPosts.map((post, index) => (
+                                    {(blogPosts.length > 0 ? blogPosts : FALLBACK_POSTS).map((post, index) => (
                                         <a key={post._id} href={`https://marinhoponci.com/blog/${post.slug}`}
                                             target="_blank" rel="noopener noreferrer"
                                             className="group bg-[#0a0a0a] border border-white/10 rounded-xl sm:rounded-2xl overflow-hidden hover:border-accent-gold/40 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(225,169,96,0.1)] transition-all duration-500 flex flex-col">
@@ -531,7 +605,11 @@ export default function LandingPage() {
                                             <div className="relative aspect-video bg-[#111] overflow-hidden flex-shrink-0">
                                                 {post.featuredImage?.asset ? (
                                                     <img
-                                                        src={`https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace(/^image-/, '').replace(/-([a-z]+)$/, '.$1')}`}
+                                                        src={
+                                                            post.featuredImage.asset._ref.startsWith('/')
+                                                                ? post.featuredImage.asset._ref
+                                                                : `https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace(/^image-/, '').replace(/-([a-z]+)$/, '.$1')}`
+                                                        }
                                                         alt={post.featuredImage.alt || post.title}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                                     />
@@ -752,9 +830,12 @@ export default function LandingPage() {
                                             {item}
                                         </a>
                                     ))}
-                                    <a href="/ebook" className="text-[11px] font-bold uppercase tracking-widest text-white/60 hover:text-accent-gold transition-all">
-                                        Dossiê
-                                    </a>
+                                    <Link to="/ebook" className="text-[11px] font-bold uppercase tracking-widest text-white/60 hover:text-accent-gold transition-all">
+                                        Dossiê Franqueado
+                                    </Link>
+                                    <Link to="/franqueador" className="text-[11px] font-bold uppercase tracking-widest text-white/60 hover:text-accent-gold transition-all">
+                                        Dossiê Franqueador
+                                    </Link>
                                 </div>
                             </div>
                             <div>

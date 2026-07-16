@@ -544,7 +544,7 @@ const requireAuth = (req: Request, res: Response, next: () => void) => {
 // =====================================================================
 app.post('/api/checkout/create-session', async (req: Request, res: Response) => {
     try {
-        const { email } = req.body || {};
+        const { email, productKey, cancelUrl } = req.body || {};
         const priceId = process.env.STRIPE_EBOOK_PRICE_ID;
 
         if (!priceId) {
@@ -558,9 +558,9 @@ app.post('/api/checkout/create-session', async (req: Request, res: Response) => 
             customer_email: email || undefined,
             allow_promotion_codes: true,
             success_url: `${PUBLIC_URL}/ebook/sucesso?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${PUBLIC_URL}/ebook?canceled=1`,
+            cancel_url: cancelUrl || `${PUBLIC_URL}/ebook?canceled=1`,
             metadata: {
-                product: 'dossie_futuro_franqueado',
+                product: productKey || 'dossie_futuro_franqueado',
             },
         });
 

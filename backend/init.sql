@@ -150,7 +150,23 @@ VALUES
      'pdf',
      'dossie-futuro-franqueado.pdf',
      'dossie_futuro_franqueado',
-     1)
+     1),
+    ('dossie-futuro-franqueado-en',
+     'The Future Franchisee Dossier',
+     'Interactive program · 6 modules + 3 bonuses',
+     'Marinho Ponci''s method for those about to invest in a franchise, now in English.',
+     'pdf',
+     'dossie-futuro-franqueado-en.pdf',
+     'dossie_futuro_franqueado_en',
+     2),
+    ('dossie-futuro-franqueador',
+     'O Dossiê do Futuro Franqueador',
+     'O guia definitivo para formatar sua marca',
+     'O método completo para quem deseja transformar seu negócio de sucesso em uma rede de franquias.',
+     'pdf',
+     'dossie-futuro-franqueador.pdf',
+     'dossie_futuro_franqueador',
+     3)
 ON CONFLICT (slug) DO NOTHING;
 
 -- Módulos (6 principais + 3 bônus + recursos)

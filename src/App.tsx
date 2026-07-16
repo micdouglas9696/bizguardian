@@ -8,6 +8,8 @@ const FranchiseLandingPage = lazy(() => import('./pages/FranchiseLandingPage'));
 const FranchiseLessonsPage = lazy(() => import('./pages/FranchiseLessonsPage'));
 const FranchiseCRMPage = lazy(() => import('./pages/FranchiseCRMPage'));
 const EbookLandingPage = lazy(() => import('./pages/EbookLandingPage'));
+const EbookLandingPageEn = lazy(() => import('./pages/EbookLandingPageEn'));
+const FranqueadorLandingPage = lazy(() => import('./pages/FranqueadorLandingPage'));
 const EbookSuccessPage = lazy(() => import('./pages/EbookSuccessPage'));
 const MemberActivatePage = lazy(() => import('./pages/MemberActivatePage'));
 const MemberLoginPage = lazy(() => import('./pages/MemberLoginPage'));
@@ -33,6 +35,8 @@ export default function App() {
 
         {/* Ebook Sales Funnel */}
         <Route path="/ebook" element={<EbookLandingPage />} />
+        <Route path="/ebook-ingles" element={<EbookLandingPageEn />} />
+        <Route path="/franqueador" element={<FranqueadorLandingPage />} />
         <Route path="/ebook/sucesso" element={<EbookSuccessPage />} />
 
         {/* Member Area · Biblioteca multi-produto */}
