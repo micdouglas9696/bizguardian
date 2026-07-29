@@ -4,11 +4,11 @@ import CountryPhoneInput from '../CountryPhoneInput';
 const DIAGNOSTIC_QUESTIONS = [
     {
         id: 1,
-        title: 'O que está te movendo a considerar uma franquia agora?',
+        title: 'Qual é o seu objetivo principal ao procurar o Marinho hoje?',
         options: [
-            { text: 'Estou cansado do meu trabalho atual e quero mais liberdade.', points: 1 },
-            { text: 'Quero construir um negócio próprio com um modelo mais seguro.', points: 2 },
-            { text: 'Tenho capital disponível e quero entrar com clareza sobre os riscos.', points: 3 },
+            { text: 'Sou empresário em Portugal e busco Consultoria Estratégica.', points: 3 },
+            { text: 'Quero investir em uma franquia com segurança.', points: 2 },
+            { text: 'Quero formatar e expandir minha marca (Dossiê Franqueador).', points: 3 },
         ],
     },
     {
@@ -392,19 +392,31 @@ export default function LinkDiagnosticModal({
                             </div>
                             <div className="space-y-3">
                                 <button
-                                    onClick={() => { onClose(); onSchedule(); }}
+                                    onClick={() => { onClose(); window.location.href = '/empresarial'; }}
                                     className="w-full py-4 bg-accent-gold text-black font-black uppercase text-xs tracking-[0.2em] rounded-xl hover:bg-white transition-colors"
                                 >
-                                    Agendar Conversa com Marinho
+                                    Conhecer Consultoria em Portugal
                                 </button>
-                                {totalScore <= 10 && (
+                                <button
+                                    onClick={() => { onClose(); onSchedule(); }}
+                                    className="w-full py-3.5 bg-transparent border border-accent-gold/40 text-accent-gold text-xs font-bold uppercase tracking-[0.15em] rounded-xl hover:bg-accent-gold hover:text-black transition-all"
+                                >
+                                    Agendar Reunião no WhatsApp
+                                </button>
+                                <div className="grid grid-cols-2 gap-2 pt-2">
                                     <button
                                         onClick={() => { onClose(); window.open('/ebook', '_blank'); }}
-                                        className="w-full py-3.5 bg-transparent border border-white/10 text-white/60 text-xs font-bold uppercase tracking-[0.15em] rounded-xl hover:border-white/25 hover:text-white transition-all"
+                                        className="py-2.5 bg-white/[0.03] border border-white/10 text-white/60 text-[10px] font-bold uppercase tracking-wider rounded-lg hover:border-white/25 hover:text-white transition-all text-center"
                                     >
-                                        Conhecer o Dossiê do Franqueado
+                                        Dossiê Franqueado
                                     </button>
-                                )}
+                                    <button
+                                        onClick={() => { onClose(); window.open('/franqueador', '_blank'); }}
+                                        className="py-2.5 bg-white/[0.03] border border-white/10 text-white/60 text-[10px] font-bold uppercase tracking-wider rounded-lg hover:border-white/25 hover:text-white transition-all text-center"
+                                    >
+                                        Dossiê Franqueador
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

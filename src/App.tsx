@@ -19,6 +19,7 @@ const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const AdminAutomacoes = lazy(() => import('./pages/AdminAutomacoes'));
 const LinkCommercePage = lazy(() => import('./pages/LinkCommercePage'));
+const EmpresarialPage = lazy(() => import('./pages/EmpresarialPage'));
 
 export default function App() {
   return (
@@ -27,6 +28,9 @@ export default function App() {
       <Suspense fallback={<div className="bg-black min-h-screen" />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/empresarial" element={<EmpresarialPage />} />
+        <Route path="/consultoria-estrategica" element={<EmpresarialPage />} />
+        <Route path="/mentoria-estrategica" element={<EmpresarialPage />} />
         <Route path="/link" element={<LinkCommercePage />} />
         <Route path="/internationalization" element={<InternationalizationPage />} />
         <Route path="/franquia" element={<FranchiseLandingPage />} />

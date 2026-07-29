@@ -181,6 +181,14 @@ export default function LandingPage() {
                             Blog
                             <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent-gold transition-all duration-300 group-hover/nav:w-full"></span>
                         </a>
+                        <Link
+                            to="/empresarial"
+                            className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-gold hover:text-white transition-all duration-300 relative group/nav whitespace-nowrap flex items-center gap-1.5"
+                        >
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse"></span>
+                            Consultoria em Portugal
+                            <span className="absolute -bottom-2 left-0 w-full h-[1px] bg-accent-gold transition-all duration-300"></span>
+                        </Link>
                         <div className="relative group/nav">
                             <button
                                 onClick={(e) => { e.stopPropagation(); setDossieDropdownOpen(!dossieDropdownOpen); }}
@@ -266,8 +274,21 @@ export default function LandingPage() {
                             ))}
                         </nav>
 
-                        {/* Dossiê CTAs */}
+                        {/* Mentoria & Dossiê CTAs */}
                         <div className="mt-6 flex flex-col gap-3">
+                            <Link
+                                to="/empresarial"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center justify-between w-full py-3.5 border border-accent-gold/40 px-5 rounded-lg bg-accent-gold/15 group hover:bg-accent-gold/20 transition-all duration-300"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <span className="w-2 h-2 rounded-full bg-accent-gold animate-pulse"></span>
+                                    <span className="text-sm font-black uppercase tracking-[0.2em] text-accent-gold group-hover:text-white transition-colors duration-300">
+                                        Consultoria em Portugal
+                                    </span>
+                                </div>
+                                <span className="material-symbols-outlined text-accent-gold text-sm group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>
+                            </Link>
                             <Link
                                 to="/ebook"
                                 onClick={() => setMobileMenuOpen(false)}

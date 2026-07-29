@@ -8,7 +8,7 @@ interface LinkHeroCardProps {
 
 export default function LinkHeroCard({
     name = 'Marinho Ponci',
-    tagline = 'Especialista em Franquias · 38 anos de experiência',
+    tagline = 'Conselheiro Estratégico & Consultoria · 38 anos de experiência',
     photoUrl = '/marinho principal.webp',
 }: LinkHeroCardProps) {
     const glowRef = useRef<HTMLDivElement>(null);

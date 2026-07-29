@@ -73,7 +73,26 @@ export default function LinkCommercePage() {
 
                 {/* 3. CTA Buttons Stack */}
                 <div className="flex flex-col gap-3.5">
-                    {/* CTA 1: Diagnóstico Completo (Highlight) */}
+                    {/* CTA 0: Consultoria Estratégica em Portugal (Destaque Principal) */}
+                    <LinkCTAButton
+                        icon={
+                            <svg className="w-5 h-5 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        }
+                        title="Consultoria Estratégica em Portugal"
+                        description="Para pequenos e médios empresários. Clique para conhecer ou agendar no WhatsApp."
+                        href="/empresarial"
+                        highlight={true}
+                        delay={80}
+                        trackId="click_consultoria_empresarial"
+                        onTrack={(elementId) => trackEvent('click', elementId)}
+                    />
+
+                    {/* CTA 1: Diagnóstico Completo */}
                     <LinkCTAButton
                         icon={
                             <svg className="w-5 h-5 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -84,7 +103,7 @@ export default function LinkCommercePage() {
                         title="Descubra se você está pronto"
                         description="Responda 5 perguntas rápidas e inicie o Concierge de IA."
                         onClick={() => setIsDiagnosticOpen(true)}
-                        highlight={true}
+                        highlight={false}
                         delay={100}
                         trackId="click_diagnostico"
                         onTrack={(elementId) => trackEvent('click', elementId)}
@@ -101,12 +120,30 @@ export default function LinkCommercePage() {
                         title="Dossiê do Futuro Franqueado"
                         description="O método definitivo para avaliar marcas e assinar com clareza."
                         href="/ebook"
-                        delay={130}
-                        trackId="click_dossie"
+                        delay={120}
+                        trackId="click_dossie_franqueado"
                         onTrack={(elementId) => trackEvent('click', elementId)}
                     />
 
-                    {/* CTA 3: O que penso sobre franquias (Blog) */}
+                    {/* CTA 3: O Dossiê do Futuro Franqueador */}
+                    <LinkCTAButton
+                        icon={
+                            <svg className="w-5 h-5 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                            </svg>
+                        }
+                        title="Dossiê do Futuro Franqueador"
+                        description="Como formatar, proteger e expandir a sua marca no franchising."
+                        href="/franqueador"
+                        delay={140}
+                        trackId="click_dossie_franqueador"
+                        onTrack={(elementId) => trackEvent('click', elementId)}
+                    />
+
+                    {/* CTA 4: Blog */}
                     <LinkCTAButton
                         icon={
                             <svg className="w-5 h-5 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
