@@ -1,54 +1,36 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
+import VideoModal from '../VideoModal';
 
-interface IGPost {
-    id: string;
-    imageUrl: string;
-    likes: number;
-    comments: number;
-    url: string;
+interface TestimonialItem {
+    id: number;
+    name: string;
+    role: string;
+    company: string;
+    videoId: string;
+    image: string;
 }
 
 interface LinkInstagramFeedProps {
     onTrack?: (elementId: string) => void;
 }
 
-const INSTAGRAM_POSTS: IGPost[] = [
-    {
-        id: 'post_1',
-        imageUrl: '/Marinho-185.webp',
-        likes: 412,
-        comments: 32,
-        url: 'https://www.instagram.com/marinhoponci/'
-    },
-    {
-        id: 'post_2',
-        imageUrl: '/_DSC4559.webp',
-        likes: 389,
-        comments: 48,
-        url: 'https://www.instagram.com/marinhoponci/'
-    },
-    {
-        id: 'post_3',
-        imageUrl: '/_DSC4243PB.jpg',
-        likes: 524,
-        comments: 61,
-        url: 'https://www.instagram.com/marinhoponci/'
-    },
-    {
-        id: 'post_4',
-        imageUrl: '/_DSC4297PB.jpg',
-        likes: 310,
-        comments: 29,
-        url: 'https://www.instagram.com/marinhoponci/'
-    }
+const TESTIMONIALS: TestimonialItem[] = [
+    { id: 1, name: 'Diego Bim', role: 'Franqueado', company: 'Influx Escola de Inglês', videoId: '/videos/diego.mp4', image: '/diego.webp' },
+    { id: 2, name: 'Marcelo Zacarias', role: 'CEO & Founder', company: 'Tio Fafá Hamburgueria', videoId: '/videos/marcelo.mp4', image: '/marcelo.webp' },
+    { id: 3, name: 'João Ferrari', role: 'CEO', company: 'Nutrafit', videoId: '/videos/joao.mp4', image: '/joao ferrai.webp' },
+    { id: 4, name: 'Adriana Auriemo', role: 'CEO e Founder', company: 'Nutty Bavarian', videoId: '/videos/adriana.webp', image: '/adriana .webp' },
+    { id: 5, name: 'Leandro Otávio', role: 'Founder', company: "D'avila Finance", videoId: '/videos/leandro.mp4', image: '/leandro.webp' }
 ];
 
 export default function LinkInstagramFeed({ onTrack }: LinkInstagramFeedProps) {
     const scrollRef = useRef<HTMLDivElement>(null);
+    const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+    const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
 
-    const handlePostClick = (post: IGPost) => {
-        onTrack?.(`click_ig_${post.id}`);
-        window.open(post.url, '_blank', 'noopener,noreferrer');
+    const handleCardClick = (item: TestimonialItem) => {
+        onTrack?.(`click_testimonial_video_${item.id}`);
+        setSelectedVideoId(item.videoId);
+        setIsVideoModalOpen(true);
     };
 
     return (
@@ -56,16 +38,19 @@ export default function LinkInstagramFeed({ onTrack }: LinkInstagramFeedProps) {
             className="w-full animate-fade-in-up"
             style={{ animationDelay: '180ms' }}
         >
-            <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-accent-gold mb-3 flex items-center gap-1.5 px-1">
-                <svg className="w-3.5 h-3.5 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                </svg>
-                @marinhoponci
-            </h4>
+            <div className="flex items-center justify-between mb-3 px-1">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-accent-gold flex items-center gap-1.5">
+                    <svg className="w-3.5 h-3.5 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    Depoimentos de Alto Padrão
+                </h4>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-white/30">
+                    Deslize para ver mais
+                </span>
+            </div>
 
-            {/* Horizontal scroll */}
+            {/* Horizontal scroll carousel */}
             <div 
                 ref={scrollRef}
                 className="flex gap-3 overflow-x-auto pb-4 scroll-smooth hide-scrollbar snap-x snap-mandatory cursor-grab active:cursor-grabbing"
@@ -75,40 +60,44 @@ export default function LinkInstagramFeed({ onTrack }: LinkInstagramFeedProps) {
                     WebkitOverflowScrolling: 'touch'
                 }}
             >
-                {INSTAGRAM_POSTS.map((post) => (
+                {TESTIMONIALS.map((item) => (
                     <button
-                        key={post.id}
-                        onClick={() => handlePostClick(post)}
-                        className="flex-shrink-0 w-[150px] aspect-[4/5] rounded-2xl overflow-hidden bg-white/5 border border-white/10 group relative snap-start text-left focus:outline-none"
+                        key={item.id}
+                        onClick={() => handleCardClick(item)}
+                        className="flex-shrink-0 w-[150px] aspect-[9/15] rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/15 group relative snap-start text-left focus:outline-none hover:border-accent-gold/60 transition-all duration-300 shadow-lg"
                     >
-                        {/* Post image */}
+                        {/* Thumbnail image */}
                         <img 
-                            src={post.imageUrl} 
-                            alt="Instagram Post" 
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            src={item.image} 
+                            alt={`Depoimento ${item.name}`} 
+                            className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-90 group-hover:scale-105 transition-all duration-500"
                             loading="lazy"
                         />
 
-                        {/* Hover Overlay with metrics */}
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                            <span className="flex items-center gap-1 text-[11px] font-bold text-white">
-                                ❤️ {post.likes}
-                            </span>
-                            <span className="flex items-center gap-1 text-[11px] font-bold text-white">
-                                💬 {post.comments}
-                            </span>
-                        </div>
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-75 transition-opacity duration-300" />
 
-                        {/* Minimal IG indicator icon bottom-left */}
-                        <div className="absolute bottom-2.5 left-2.5 w-6 h-6 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/80">
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                                <circle cx="12" cy="12" r="4" />
-                            </svg>
+                        {/* Card Content & Play Button */}
+                        <div className="absolute inset-0 p-3.5 flex flex-col justify-end z-10">
+                            <div className="w-8 h-8 rounded-full bg-accent-gold flex items-center justify-center mb-2.5 shadow-[0_0_15px_rgba(225,169,96,0.4)] group-hover:scale-110 transition-transform duration-300">
+                                <svg className="w-4 h-4 text-black ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="5 3 19 12 5 21 5 3" />
+                                </svg>
+                            </div>
+                            <h5 className="text-white font-black text-xs uppercase tracking-tight leading-tight mb-1">{item.name}</h5>
+                            <p className="text-accent-gold text-[9px] font-bold uppercase tracking-wider leading-none">{item.role}</p>
+                            <p className="text-white/40 text-[8px] font-medium uppercase tracking-wider truncate mt-0.5">{item.company}</p>
                         </div>
                     </button>
                 ))}
             </div>
+
+            {/* Video Modal Player */}
+            <VideoModal
+                isOpen={isVideoModalOpen}
+                videoId={selectedVideoId}
+                onClose={() => setIsVideoModalOpen(false)}
+            />
         </div>
     );
 }
