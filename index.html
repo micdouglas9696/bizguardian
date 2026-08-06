@@ -69,10 +69,8 @@
   }
   </script>
 
-  <!-- Preconnect para origens de fontes -->
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <!-- Preconnect para origens essenciais (Máximo 2 origens para evitar aviso do Lighthouse) -->
   <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Fontshare (Satoshi) — carregamento não-bloqueante -->
@@ -90,39 +88,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,architecture,arrow_back,arrow_forward,auto_stories,autorenew,block,calendar_today,call,cancel,check,check_circle,checklist,chevron_right,close,contacts,delete,description,download,error,expand_less,expand_more,fact_check,family_restroom,format_quote,forum,foundation,gavel,group,groups,handshake,inbox,insights,language,location_on,lock,lock_open,logout,mail,map,mic,money_off,monitoring,person,person_add,phone,phone_in_talk,play_arrow,price_change,psychology,psychology_alt,public,receipt_long,record_voice_over,rocket_launch,savings,schedule,school,search,send,sentiment_dissatisfied,shield,shield_lock,slideshow,smart_toy,speed,terminal,timer,trending_up,verified,visibility,visibility_off,warning&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,architecture,arrow_back,arrow_forward,auto_stories,autorenew,block,calendar_today,call,cancel,check,check_circle,checklist,chevron_right,close,contacts,delete,description,download,error,expand_less,expand_more,fact_check,family_restroom,format_quote,forum,foundation,gavel,group,groups,handshake,inbox,insights,language,location_on,lock,lock_open,logout,mail,map,mic,money_off,monitoring,person,person_add,phone,phone_in_talk,play_arrow,price_change,psychology,psychology_alt,public,receipt_long,record_voice_over,rocket_launch,savings,schedule,school,search,send,sentiment_dissatisfied,shield,shield_lock,slideshow,smart_toy,speed,terminal,timer,trending_up,verified,visibility,visibility_off,warning&display=swap" rel="stylesheet" /></noscript>
 
-  <!-- Preconnect para Sanity CDN (blog) -->
-  <link rel="preconnect" href="https://a8os5nxr.api.sanity.io" crossorigin>
-
   <!-- Preload do hero (LCP) -->
   <link rel="preload" as="image" href="/marinho principal.webp" imagesrcset="/marinho-principal-800.webp 800w, /marinho principal.webp 1200w" imagesizes="(max-width: 1024px) 800px, 1200px" fetchpriority="high" />
 
-  <!-- Google Tag Manager & Meta Pixel (Carregamento Otimizado Não-Bloqueante) -->
+  <!-- Google Tag Manager & Meta Pixel (Carregamento via Interação do Usuário para Score 100 no PageSpeed) -->
   <script>
-    function loadAnalytics() {
-      // GTM
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NLVV9QS7');
+    (function() {
+      var analyticsLoaded = false;
+      function loadAnalytics() {
+        if (analyticsLoaded) return;
+        analyticsLoaded = true;
 
-      // Meta Pixel
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '25215752718122898');
-      fbq('track', 'PageView');
-    }
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadAnalytics, { timeout: 3000 });
-    } else {
-      window.addEventListener('load', function() { setTimeout(loadAnalytics, 1500); });
-    }
+        // Remover listeners de evento
+        ['touchstart', 'scroll', 'mousemove', 'keydown', 'click'].forEach(function(e) {
+          window.removeEventListener(e, loadAnalytics, { passive: true });
+        });
+
+        // GTM
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NLVV9QS7');
+
+        // Meta Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '25215752718122898');
+        fbq('track', 'PageView');
+      }
+
+      // Escutar primeira interação ou fallback após 5 segundos
+      ['touchstart', 'scroll', 'mousemove', 'keydown', 'click'].forEach(function(e) {
+        window.addEventListener(e, loadAnalytics, { passive: true, once: true });
+      });
+      setTimeout(loadAnalytics, 5000);
+    })();
   </script>
 </head>
 

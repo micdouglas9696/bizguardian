@@ -156,7 +156,7 @@ export default function LandingPage() {
                 <div className="max-w-[1700px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="flex flex-col leading-none select-none cursor-pointer group">
-                            <img src="/marinho final.webp" alt="Marinho Signature Logo" width="400" height="144" className="h-10 sm:h-14 md:h-20 lg:h-24 w-auto object-contain transition-transform group-hover:scale-105" />
+                            <img src="/marinho final.webp" alt="Marinho Signature Logo" width="200" height="72" className="h-10 sm:h-14 md:h-20 lg:h-24 w-auto object-contain transition-transform group-hover:scale-105" />
                         </Link>
                     </div>
 
@@ -360,7 +360,7 @@ export default function LandingPage() {
                         <div className="lg:col-span-5 relative h-full min-h-[400px] lg:min-h-0 flex items-center justify-center">
                             <div className="absolute inset-x-0 -inset-y-32 lg:-inset-y-32">
                                 <div className="relative w-full h-full group overflow-hidden flex items-center justify-center">
-                                    <img src="/sobre.webp" alt="Marinho Ponci" loading="lazy" width="900" height="1152" className="w-full h-full object-contain object-center opacity-90 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-105" />
+                                    <img src="/sobre.webp" alt="Marinho Ponci" loading="lazy" width="720" height="922" className="w-full h-full object-contain object-center opacity-90 group-hover:opacity-100 transition-all duration-1000 scale-100 group-hover:scale-105" />
 
                                     {/* Soft Transparency Masks */}
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-transparent z-10"></div>
