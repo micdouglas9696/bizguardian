@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.marinhoponci.com/sitemap.xml
+LLMSTxt: https://www.marinhoponci.com/llms.txt

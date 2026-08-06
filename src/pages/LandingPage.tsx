@@ -629,9 +629,13 @@ export default function LandingPage() {
                                                         src={
                                                             post.featuredImage.asset._ref.startsWith('/')
                                                                 ? post.featuredImage.asset._ref
-                                                                : `https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace(/^image-/, '').replace(/-([a-z]+)$/, '.$1')}`
+                                                                : `https://cdn.sanity.io/images/a8os5nxr/production/${post.featuredImage.asset._ref.replace(/^image-/, '').replace(/-([a-z]+)$/, '.$1')}?w=800&auto=format&q=80`
                                                         }
                                                         alt={post.featuredImage.alt || post.title}
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        width="800"
+                                                        height="450"
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                                     />
                                                 ) : (

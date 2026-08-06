@@ -150,7 +150,7 @@ export default function LinkCommercePage() {
                                 <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
                             </svg>
                         }
-                        title="O que penso sobre franquias"
+                        title="O que penso sobre franquias e negócios em PT"
                         description="Nossos artigos mais recentes, cases e análise de mercado."
                         href="/blog"
                         delay={160}
