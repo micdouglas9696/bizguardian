@@ -6,7 +6,7 @@ const DIAGNOSTIC_QUESTIONS = [
         id: 1,
         title: 'Qual é o seu objetivo principal ao procurar o Marinho hoje?',
         options: [
-            { text: 'Sou empresário em Portugal e busco Consultoria Estratégica.', points: 3 },
+            { text: 'Sou empresário e busco Consultoria Estratégica.', points: 3 },
             { text: 'Quero investir em uma franquia com segurança.', points: 2 },
             { text: 'Quero formatar e expandir minha marca (Dossiê Franqueador).', points: 3 },
         ],
@@ -395,7 +395,7 @@ export default function LinkDiagnosticModal({
                                     onClick={() => { onClose(); window.location.href = '/empresarial'; }}
                                     className="w-full py-4 bg-accent-gold text-black font-black uppercase text-xs tracking-[0.2em] rounded-xl hover:bg-white transition-colors"
                                 >
-                                    Conhecer Consultoria em Portugal
+                                    Conhecer Consultoria Empresarial
                                 </button>
                                 <button
                                     onClick={() => { onClose(); onSchedule(); }}

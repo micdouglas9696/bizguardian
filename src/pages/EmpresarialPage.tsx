@@ -71,7 +71,7 @@ export default function EmpresarialPage() {
             companyName,
             location,
             mainChallenge,
-            type: 'consultoria_empresarial_portugal',
+            type: 'consultoria_empresarial',
             created_at: new Date().toISOString()
         };
 
@@ -90,12 +90,12 @@ export default function EmpresarialPage() {
         setSubmitSuccess(true);
 
         const waText = encodeURIComponent(
-            `*Agendamento de Consultoria Estratégica (Portugal)*\n\n` +
+            `*Agendamento de Consultoria Empresarial*\n\n` +
             `*Nome:* ${name}\n` +
             `*E-mail:* ${email}\n` +
             `*Telefone:* ${phone}\n` +
             `*Empresa:* ${companyName || 'N/A'}\n` +
-            `*Localização:* ${location || 'Portugal'}\n` +
+            `*Localização:* ${location || 'Não informada'}\n` +
             `*Desafio Principal:* ${mainChallenge || 'Não informado'}\n\n` +
             `Gostaria de agendar uma conversa inicial com o Marinho Ponci.`
         );
@@ -260,7 +260,7 @@ export default function EmpresarialPage() {
                             {/* Subtitle */}
                             <div className="relative pl-5 border-l-2 border-accent-gold/60 mb-8 lg:mb-10 max-w-xl">
                                 <p className="text-sm md:text-base text-white/70 font-semibold leading-relaxed tracking-tight">
-                                    Com quase 40 anos de experiência na criação, gestão e expansão de empresas, ajudo empresários a organizar os seus negócios, tomar melhores decisões e construir empresas mais sólidas, sustentáveis e preparadas para crescer.
+                                    Com quase 40 anos de experiência na criação, gestão, expansão e internacionalização de empresas em diferentes países, ajudo empresários a organizar seus negócios, tomar melhores decisões e construir empresas mais sólidas, sustentáveis e preparadas para crescer.
                                 </p>
                             </div>
 
@@ -290,8 +290,8 @@ export default function EmpresarialPage() {
                                 </div>
                                 <div className="w-px h-8 bg-white/10"></div>
                                 <div>
-                                    <span className="block text-2xl lg:text-3xl font-black text-white">PORTUGAL</span>
-                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent-gold/70">Foco em Pequenos & Médios Empresários</span>
+                                    <span className="block text-2xl lg:text-3xl font-black text-white">5 PAÍSES</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent-gold/70">Empresas Construídas & Acompanhadas</span>
                                 </div>
                             </div>
                         </div>
@@ -318,7 +318,7 @@ export default function EmpresarialPage() {
 
                             <div className="pl-4 border-l-2 border-accent-gold/50 mb-6">
                                 <p className="text-xs text-white/70 font-medium leading-relaxed">
-                                    Com quase 40 anos de experiência na criação, gestão e expansão de empresas, ajudo empresários a organizar os seus negócios, tomar melhores decisões e construir empresas mais sólidas.
+                                    Com quase 40 anos de experiência na criação, gestão e expansão de empresas em diferentes países, ajudo empresários a organizar seus negócios, tomar melhores decisões e construir empresas mais sólidas.
                                 </p>
                             </div>
 
@@ -340,7 +340,7 @@ export default function EmpresarialPage() {
                     <div className="max-w-[1350px] mx-auto px-6 md:px-12 relative z-10">
                         <div className="text-center max-w-3xl mx-auto mb-16">
                             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-white cinematic-text-shadow">
-                                Esta consultoria é para si se...
+                                Esta consultoria é para você se...
                             </h2>
                             <div className="w-16 h-1 bg-gradient-to-r from-transparent via-accent-gold to-transparent mx-auto mt-4 rounded-full"></div>
                         </div>
@@ -350,32 +350,32 @@ export default function EmpresarialPage() {
                                 {
                                     num: '01',
                                     title: 'Início com Base Sólida',
-                                    desc: 'Está a iniciar um negócio e quer construir uma base sólida desde o primeiro dia.'
+                                    desc: 'Está iniciando um negócio e quer construir uma base sólida desde o primeiro dia.'
                                 },
                                 {
                                     num: '02',
                                     title: 'Organização e Direção',
-                                    desc: 'Tem uma empresa, mas sente falta de organização, clareza e direção estratégica.'
+                                    desc: 'Já tem uma empresa, mas sente falta de organização, clareza e direção estratégica.'
                                 },
                                 {
                                     num: '03',
-                                    title: 'Crescimento com Controlo',
-                                    desc: 'Quer crescer o seu volume de negócios sem perder o controlo da gestão operacional.'
+                                    title: 'Crescimento com Controle',
+                                    desc: 'Quer crescer o faturamento sem perder o controle da gestão operacional.'
                                 },
                                 {
                                     num: '04',
                                     title: 'Visão Estratégica em Decisões',
-                                    desc: 'Tem muitas decisões complexas para tomar e precisa de uma visão experiente e isenta.'
+                                    desc: 'Tem decisões complexas para tomar e precisa de uma visão experiente, externa e isenta.'
                                 },
                                 {
                                     num: '05',
-                                    title: 'Processos, Equipa e Resultados',
-                                    desc: 'Quer melhorar o desempenho dos seus processos internos, alinhar a equipa e alavancar resultados.'
+                                    title: 'Processos, Time e Resultados',
+                                    desc: 'Quer melhorar o desempenho dos processos internos, alinhar o time e alavancar resultados.'
                                 },
                                 {
                                     num: '06',
                                     title: 'Experiência Prática',
-                                    desc: 'Procura alguém com experiência prática comprovada para o ajudar a evitar erros dispendiosos e acelerar o caminho.'
+                                    desc: 'Procura alguém com experiência prática comprovada para ajudar a evitar erros caros e encurtar o caminho.'
                                 }
                             ].map((item, idx) => (
                                 <div
@@ -402,7 +402,7 @@ export default function EmpresarialPage() {
                             ))}
                         </div>
 
-                        {/* CTA Button in "Esta consultoria é para si se..." */}
+                        {/* CTA Button in "Esta consultoria é para você se..." */}
                         <div className="mt-16 text-center">
                             <button
                                 onClick={scrollToForm}
@@ -450,13 +450,13 @@ export default function EmpresarialPage() {
 
                                 <div className="space-y-5 text-base text-white/70 leading-relaxed font-normal">
                                     <p>
-                                        Durante quase quatro décadas participei da construção, expansão e desenvolvimento de empresas em diferentes setores, acompanhando empresários em momentos decisivos das suas jornadas.
+                                        Durante quase quatro décadas participei da construção, expansão e desenvolvimento de empresas em diferentes setores, em diferentes países, acompanhando empresários em momentos decisivos de suas jornadas.
                                     </p>
                                     <p className="border-l-2 border-accent-gold pl-4 text-white font-medium italic bg-white/[0.02] py-2">
-                                        Ao longo dessa trajetória percebi que o verdadeiro crescimento de uma empresa começa muito antes dos números. Começa nas decisões, na organização e na capacidade do empresário de liderar o seu negócio com clareza.
+                                        Ao longo dessa trajetória percebi que o verdadeiro crescimento de uma empresa começa muito antes dos números. Começa nas decisões, na organização e na capacidade do empresário de liderar o próprio negócio com clareza.
                                     </p>
                                     <p>
-                                        Hoje coloco toda essa experiência ao serviço de pequenos e médios empresários em Portugal que querem construir empresas mais fortes e preparar-se para o futuro.
+                                        Hoje coloco toda essa experiência a serviço de pequenos e médios empresários — em qualquer país ou mercado — que querem construir empresas mais fortes e se preparar para o futuro.
                                     </p>
                                 </div>
 
@@ -464,7 +464,7 @@ export default function EmpresarialPage() {
                                 <div className="mt-8 p-6 rounded-xl bg-gradient-to-r from-[#121212] via-[#0c0c0c] to-black border-l-4 border-accent-gold border-y border-r border-white/10">
                                     <div className="text-xs font-black uppercase tracking-[0.2em] text-accent-gold mb-2">O Meu Compromisso</div>
                                     <p className="text-sm text-white/80 leading-relaxed italic">
-                                        "Não encontrará fórmulas mágicas. Cada empresa tem a sua história e cada empresário enfrenta desafios diferentes. O meu trabalho consiste em compreender a realidade do seu negócio e ajudá-lo a encontrar soluções práticas, sustentadas por quase 40 anos de experiência."
+                                        "Você não vai encontrar fórmulas mágicas aqui. Cada empresa tem a sua história e cada empresário enfrenta desafios diferentes. Meu trabalho é entender a realidade concreta do seu negócio e ajudar você a encontrar soluções práticas, sustentadas por quase 40 anos de experiência."
                                     </p>
                                 </div>
 
@@ -487,7 +487,7 @@ export default function EmpresarialPage() {
                                 Como Posso Ajudar
                             </h2>
                             <p className="text-sm text-white/60 mt-3 max-w-xl mx-auto">
-                                Um acompanhamento personalizado nos pilares essenciais para a sustentabilidade e crescimento da sua empresa.
+                                Um acompanhamento personalizado nos pilares essenciais para a sustentabilidade e o crescimento da sua empresa — independentemente do país onde ela opera.
                             </p>
                         </div>
 
@@ -536,7 +536,7 @@ export default function EmpresarialPage() {
                                 },
                                 {
                                     title: 'Desenvolver a liderança',
-                                    desc: 'Fortalecer o papel do empresário como líder do negócio.',
+                                    desc: 'Fortalecer o papel do empresário como líder do negócio e do time.',
                                     icon: (
                                         <svg className="w-6 h-6 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -647,7 +647,7 @@ export default function EmpresarialPage() {
                                 {
                                     step: '01',
                                     title: 'Conversa Inicial',
-                                    desc: 'Conhecemos o seu negócio, os desafios e os objetivos reais.',
+                                    desc: 'Entendemos o seu negócio, os desafios e os objetivos reais.',
                                     icon: (
                                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -667,7 +667,7 @@ export default function EmpresarialPage() {
                                 {
                                     step: '03',
                                     title: 'Plano de Ação',
-                                    desc: 'Definimos prioridades e metas com ações práticas aplicáveis.',
+                                    desc: 'Definimos prioridades e metas com ações práticas e aplicáveis.',
                                     icon: (
                                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -677,7 +677,7 @@ export default function EmpresarialPage() {
                                 {
                                     step: '04',
                                     title: 'Acompanhamento',
-                                    desc: 'Implementamos melhorias lado a lado e acompanhamos a evolução.',
+                                    desc: 'Implementamos as melhorias lado a lado e acompanhamos a evolução.',
                                     icon: (
                                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                             <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
@@ -770,7 +770,7 @@ export default function EmpresarialPage() {
                                     Vamos conversar sobre o futuro do seu negócio?
                                 </h2>
                                 <p className="text-base text-white/70 leading-relaxed font-normal mb-8">
-                                    Se procura mais organização, clareza e estratégia para construir uma empresa mais forte, será um prazer conhecer a sua realidade.
+                                    Se você procura mais organização, clareza e estratégia para construir uma empresa mais forte, será um prazer conhecer a sua realidade. Atendo empresários em português e inglês, presencialmente ou por videochamada, em qualquer fuso horário.
                                 </p>
 
                                 <div className="space-y-4">
@@ -784,13 +784,13 @@ export default function EmpresarialPage() {
                                         <svg className="w-5 h-5 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                             <polyline points="20 6 9 17 4 12" />
                                         </svg>
-                                        <span>Atendimento exclusivo com Marinho Ponci</span>
+                                        <span>Atendimento direto e exclusivo com Marinho Ponci</span>
                                     </div>
                                     <div className="flex items-center gap-3 text-sm text-white/80">
                                         <svg className="w-5 h-5 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                             <polyline points="20 6 9 17 4 12" />
                                         </svg>
-                                        <span>Foco prático em empresas em Portugal (+351 967 284 661)</span>
+                                        <span>Atendimento global · Português e inglês (+351 967 284 661)</span>
                                     </div>
                                 </div>
                             </div>
@@ -799,7 +799,7 @@ export default function EmpresarialPage() {
                             <div className="lg:col-span-7">
                                 <div className="p-8 sm:p-10 rounded-2xl bg-[#0c0c0c] border border-white/15 shadow-2xl">
                                     <h3 className="text-xl font-bold uppercase tracking-tight text-white mb-2">Agendar Reunião Estratégica</h3>
-                                    <p className="text-xs text-white/50 mb-6">Preencha os dados abaixo para alinharmos o melhor horário na agenda do Marinho.</p>
+                                    <p className="text-xs text-white/50 mb-6">Preencha os dados abaixo para alinharmos o melhor horário na agenda do Marinho, no seu fuso horário.</p>
 
                                     {submitSuccess ? (
                                         <div className="p-6 rounded-xl bg-accent-gold/10 border border-accent-gold/30 text-center animate-in fade-in">
@@ -842,7 +842,7 @@ export default function EmpresarialPage() {
                                                         required
                                                         value={email}
                                                         onChange={(e) => setEmail(e.target.value)}
-                                                        placeholder="seu.email@empresa.pt"
+                                                        placeholder="seu.email@empresa.com"
                                                         className="w-full bg-black border border-white/15 rounded px-4 py-3.5 text-sm text-white focus:outline-none focus:border-accent-gold transition-all"
                                                     />
                                                 </div>
@@ -871,13 +871,13 @@ export default function EmpresarialPage() {
 
                                                 <div>
                                                     <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/60 mb-1">
-                                                        Cidade / Região (Portugal)
+                                                        Cidade / País
                                                     </label>
                                                     <input
                                                         type="text"
                                                         value={location}
                                                         onChange={(e) => setLocation(e.target.value)}
-                                                        placeholder="Ex: Lisboa, Porto, Braga"
+                                                        placeholder="Ex: Lisboa, São Paulo, Madrid, Miami"
                                                         className="w-full bg-black border border-white/15 rounded px-4 py-3.5 text-sm text-white focus:outline-none focus:border-accent-gold transition-all"
                                                     />
                                                 </div>
@@ -901,7 +901,7 @@ export default function EmpresarialPage() {
                                                 disabled={submitting}
                                                 className="w-full py-4 bg-accent-gold text-black font-black uppercase text-xs tracking-[0.25em] rounded hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(225,169,96,0.2)] disabled:opacity-50"
                                             >
-                                                {submitting ? 'A Enviar...' : 'Agendar uma Conversa'}
+                                                {submitting ? 'Enviando...' : 'Agendar uma Conversa'}
                                             </button>
                                         </form>
                                     )}

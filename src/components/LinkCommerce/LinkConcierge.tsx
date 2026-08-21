@@ -18,7 +18,7 @@ const FLOW: Record<string, { text: string; options?: { text: string; nextStep: s
     start: {
         text: 'Olá! Sou o Concierge de IA do Marinho. Meu objetivo é entender seu momento para te indicar o direcionamento ideal. Qual é o seu principal foco hoje?',
         options: [
-            { text: 'Sou empresário em Portugal e busco Consultoria/Conselho', nextStep: 'consultoria_empresarial' },
+            { text: 'Sou empresário e busco Consultoria/Conselho', nextStep: 'consultoria_empresarial' },
             { text: 'Quero investir em uma franquia com segurança', nextStep: 'investir' },
             { text: 'Quero expandir ou estruturar minha marca', nextStep: 'expandir' },
             { text: 'Quero internacionalizar meu negócio', nextStep: 'internacionalizar' },
@@ -26,7 +26,7 @@ const FLOW: Record<string, { text: string; options?: { text: string; nextStep: s
         ]
     },
     consultoria_empresarial: {
-        text: 'Com quase 40 anos de experiência empresarial, Marinho ajuda empresários em Portugal através de Consultoria Estratégica a organizar os seus negócios, melhorar a gestão e aplicar métodos práticos para crescer com sustentabilidade.',
+        text: 'Com quase 40 anos de experiência empresarial, Marinho ajuda empresários através de Consultoria Estratégica a organizar os seus negócios, melhorar a gestão e aplicar métodos práticos para crescer com sustentabilidade.',
         options: [
             { text: 'Conhecer a Consultoria Estratégica', nextStep: 'action_consultoria' },
             { text: 'Agendar conversa direta com Marinho', nextStep: 'action_schedule' }

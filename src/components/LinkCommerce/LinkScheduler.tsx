@@ -9,7 +9,7 @@ interface LinkSchedulerProps {
 type Step = 'date' | 'time' | 'service' | 'form' | 'success';
 
 const SERVICES = [
-    { id: 'consultoria_portugal', name: 'Consultoria Estratégica em Portugal', desc: 'Para pequenos e médios empresários em Portugal que buscam organização, clareza e gestão sustentável.' },
+    { id: 'consultoria_empresarial', name: 'Consultoria Estratégica em Negócios', desc: 'Para pequenos e médios empresários que buscam organização, clareza e gestão sustentável.' },
     { id: 'diagnostico', name: 'Diagnóstico de Perfil de Franqueado', desc: 'Avaliação do seu perfil de investidor e alinhamento de expectativas.' },
     { id: 'consultoria', name: 'Consultoria Estratégica 1:1', desc: 'Reunião para avaliar marcas, circular de oferta (COF) ou modelo de negócios.' },
     { id: 'internacionalizacao', name: 'Internacionalização de Marcas', desc: 'Para marcas que buscam expandir sua operação para o mercado americano/europeu.' }

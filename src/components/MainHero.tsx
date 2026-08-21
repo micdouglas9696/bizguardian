@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MainHero() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -92,6 +93,14 @@ export default function MainHero() {
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent-gold/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span className="relative block text-xs md:text-sm tracking-[0.15em] lg:tracking-[0.2em] whitespace-nowrap">TENHO/QUERO CRIAR UMA MARCA</span>
                         </button>
+
+                        <Link
+                            to="/empresarial"
+                            className="group relative px-8 md:px-10 py-4 md:py-5 bg-accent-gold text-black font-black uppercase hover:bg-white transition-all duration-500 shadow-[0_0_25px_rgba(225,169,96,0.3)] overflow-hidden"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                            <span className="relative block text-xs md:text-sm tracking-[0.15em] lg:tracking-[0.2em] whitespace-nowrap">CONSULTORIA EMPRESARIAL</span>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -147,6 +156,14 @@ export default function MainHero() {
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent-gold/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span className="relative block text-[11px] tracking-[0.2em]">TENHO/QUERO CRIAR UMA MARCA</span>
                         </button>
+
+                        <Link
+                            to="/empresarial"
+                            className="group relative w-full px-6 py-4 bg-accent-gold text-black font-black uppercase hover:bg-white transition-all duration-500 shadow-[0_0_20px_rgba(225,169,96,0.25)] overflow-hidden text-center"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                            <span className="relative block text-[11px] tracking-[0.2em]">CONSULTORIA EMPRESARIAL</span>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -321,9 +321,9 @@ export default function EbookLandingPageEn() {
 
                         <div className="flex items-center gap-2">
                             <Link
-                                to="/franqueador"
+                                to="/franqueador-ingles"
                                 className="text-[10px] font-black uppercase tracking-[0.18em] border border-white/25 text-white/60 hover:text-accent-gold hover:border-accent-gold px-3 py-2 transition-all mr-1 flex items-center gap-1"
-                                title="Dossiê para Franqueadores"
+                                title="Dossier for Franchisors"
                             >
                                 For Franchisors <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                             </Link>

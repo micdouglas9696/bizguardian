@@ -73,7 +73,7 @@ export default function LinkCommercePage() {
 
                 {/* 3. CTA Buttons Stack */}
                 <div className="flex flex-col gap-3.5">
-                    {/* CTA 0: Consultoria Estratégica em Portugal (Destaque Principal) */}
+                    {/* CTA 0: Consultoria Estratégica em Negócios (Destaque Principal) */}
                     <LinkCTAButton
                         icon={
                             <svg className="w-5 h-5 text-accent-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -83,8 +83,8 @@ export default function LinkCommercePage() {
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                             </svg>
                         }
-                        title="Consultoria Estratégica em Portugal"
-                        description="Para pequenos e médios empresários. Clique para conhecer ou agendar no WhatsApp."
+                        title="Consultoria Estratégica em Negócios"
+                        description="Para pequenos e médios empresários em qualquer mercado. Clique para conhecer ou agendar no WhatsApp."
                         href="/empresarial"
                         highlight={true}
                         delay={80}
@@ -150,7 +150,7 @@ export default function LinkCommercePage() {
                                 <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
                             </svg>
                         }
-                        title="O que penso sobre franquias e negócios em PT"
+                        title="O que penso sobre franquias e negócios"
                         description="Nossos artigos mais recentes, cases e análise de mercado."
                         href="/blog"
                         delay={160}

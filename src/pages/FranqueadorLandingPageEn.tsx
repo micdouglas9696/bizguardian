@@ -4,55 +4,55 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 
 // =====================================================================
-// EBOOK LANDING PAGE — /franqueador
-// "O Dossiê do Futuro Franqueador" — Marinho Ponci
+// EBOOK LANDING PAGE — /franqueador-ingles
+// "The Future Franchisor Dossier" — Marinho Ponci
 // =====================================================================
 
-const PRICE_PARCELA = '3× de R$ 89,00 sem juros';
-const PRICE_PIX = 'R$ 222,30 via Pix (10% off) ou Cartão';
+const PRICE_PARCELA = '3× of R$ 89.00 interest-free';
+const PRICE_PIX = 'R$ 222.30 via Pix (10% off) or Credit Card';
 
-// 6 módulos do Dossiê do Futuro Franqueador
+// 6 modules of the Future Franchisor Dossier
 const MODULES = [
     {
         n: 'MOD 01',
-        title: 'Franqueabilidade do seu Negócio',
-        text: 'Como avaliar de forma fria e realista se a sua empresa de sucesso está realmente pronta para ser replicada (Maturidade, Margem e Diferenciais de mercado).',
-        pills: ['Vídeo', 'Checklist de Franqueabilidade'],
+        title: 'Is your business franchisable?',
+        text: 'How to assess, coldly and realistically, whether your successful company is truly ready to be replicated (maturity, margin and real market differentiators).',
+        pills: ['Video', 'Franchisability Checklist'],
         value: 'R$ 197',
     },
     {
         n: 'MOD 02',
-        title: 'Formatação Jurídica e Operacional',
-        text: 'A verdade sobre a COF (Circular de Oferta de Franquia), Contratos e os Manuais de Operações. Como estruturar os pilares que protegem a sua marca de passivos.',
-        pills: ['Vídeo', 'Guia da COF'],
+        title: 'Legal and Operational Structuring',
+        text: 'The truth about the FDD (Franchise Disclosure Document), contracts and operations manuals. How to build the pillars that protect your brand from liabilities.',
+        pills: ['Video', 'Disclosure Document Guide'],
         value: 'R$ 297',
     },
     {
         n: 'MOD 03',
-        title: 'Economia da Rede e Royalties',
-        text: 'Como calcular e precificar de forma sustentável a Taxa de Franquia, os Royalties e o Fundo de Propaganda. A equação financeira que garante o lucro do Franqueador.',
-        pills: ['Vídeo', 'Calculadora de Royalties'],
+        title: 'Network Economics and Royalties',
+        text: 'How to calculate and price the franchise fee, royalties and the advertising fund sustainably. The financial equation that secures the franchisor\'s profit.',
+        pills: ['Video', 'Royalty Calculator'],
         value: 'R$ 297',
     },
     {
         n: 'MOD 04',
-        title: 'Estrutura de Suporte e Treinamento',
-        text: 'Como estruturar o suporte sem inchar a sua operação. Do onboarding do franqueado ao acompanhamento e treinamento contínuo da rede.',
-        pills: ['Vídeo', 'Matriz de Suporte'],
+        title: 'Support and Training Structure',
+        text: 'How to structure support without bloating your operation. From franchisee onboarding to continuous coaching and training across the network.',
+        pills: ['Video', 'Support Matrix'],
         value: 'R$ 197',
     },
     {
         n: 'MOD 05',
-        title: 'Seleção de Franqueados Parceiros',
-        text: 'Como desenhar o perfil ideal e selecionar os primeiros franqueados. O perigo de vender para qualquer um pelo caixa rápido da taxa de franquia.',
-        pills: ['Vídeo', 'Roteiro de Entrevista'],
+        title: 'Selecting Partner Franchisees',
+        text: 'How to design the ideal profile and select your first franchisees. The danger of selling to anyone just for the quick cash of the franchise fee.',
+        pills: ['Video', 'Interview Script'],
         value: 'R$ 197',
     },
     {
         n: 'MOD 06',
-        title: 'Expansão e Gestão de Conflitos',
-        text: 'Como planejar a expansão regional ou nacional de forma orgânica e estruturada. Estratégias práticas para lidar com conflitos e manter a rede engajada.',
-        pills: ['Vídeo', 'Manual de Gestão de Crise'],
+        title: 'Expansion and Conflict Management',
+        text: 'How to plan regional or national expansion organically and with structure. Practical strategies to handle conflict and keep the network engaged.',
+        pills: ['Video', 'Crisis Management Playbook'],
         value: 'R$ 297',
     },
 ];
@@ -69,7 +69,7 @@ async function startCheckout(productKey?: string): Promise<{ ok: boolean; error?
             body: JSON.stringify({ productKey }),
         });
         if (!resp.ok) {
-            const err = await resp.json().catch(() => ({ error: 'Erro' }));
+            const err = await resp.json().catch(() => ({ error: 'Error' }));
             return { ok: false, error: err.error || `HTTP ${resp.status}` };
         }
         const data = await resp.json();
@@ -77,32 +77,32 @@ async function startCheckout(productKey?: string): Promise<{ ok: boolean; error?
             window.location.href = data.url;
             return { ok: true };
         }
-        return { ok: false, error: 'Resposta do servidor sem URL de checkout' };
+        return { ok: false, error: 'Server response is missing the checkout URL' };
     } catch (err: any) {
-        return { ok: false, error: err.message || 'Falha ao iniciar checkout' };
+        return { ok: false, error: err.message || 'Failed to start checkout' };
     }
 }
 
 const FAQ_ITEMS = [
     {
-        q: 'O Dossiê é apenas um e-book?',
-        a: 'Não. É um programa decisório com 6 módulos em vídeo gravados pelo Marinho, roteiros e checklists práticos aplicados para que você possa entender o processo real de formatação da sua marca e expansão, incluindo o bônus "A Primeira Reunião de Venda". Todo o material fica em uma área de membros segura.',
+        q: 'Is the Dossier just an e-book?',
+        a: 'No. It is a decision-making program with 6 video modules recorded by Marinho, plus scripts and practical checklists so you can understand the real process of structuring and expanding your brand — including the bonus "The First Franchise Sales Meeting". All content lives in a secure members area.',
     },
     {
-        q: 'Em quanto tempo recebo o acesso?',
-        a: 'Acesso imediato. Pagamentos via cartão de crédito e Pix liberam as credenciais de acesso no seu e-mail em segundos.',
+        q: 'How fast do I get access?',
+        a: 'Immediate access. Credit card and Pix payments release your access credentials by e-mail within seconds.',
     },
     {
-        q: 'Tenho garantia se eu não gostar?',
-        a: 'Sim. Você tem 7 dias de garantia incondicional. Se você acessar o material e achar que ele não serve para o momento do seu negócio, basta solicitar o reembolso por e-mail e devolvemos 100% do seu dinheiro.',
+        q: 'Is there a guarantee if I do not like it?',
+        a: 'Yes. You have a 7-day unconditional guarantee. If you access the material and feel it does not fit your current business moment, simply request a refund by e-mail and we return 100% of your money.',
     },
     {
-        q: 'Este dossiê substitui uma consultoria jurídica?',
-        a: 'Não. O dossiê fornece o método conceitual e o direcionamento estratégico baseado em 38 anos de experiência do Marinho para que você saiba auditar o seu negócio e dialogar com advogados e consultores, mas não substitui a assessoria jurídica especializada para confeccionar sua COF e Manuais.',
+        q: 'Does this dossier replace legal counsel?',
+        a: 'No. The dossier provides the conceptual method and strategic direction based on Marinho\'s 38 years of experience, so you can audit your own business and speak on equal terms with lawyers and consultants. It does not replace specialised legal advice to draft your disclosure document and manuals.',
     },
     {
-        q: 'O material serve para quem ainda tem apenas uma ideia?',
-        a: 'O dossiê é ideal para quem já tem uma empresa operando e faturando com sucesso, e quer entender o caminho estratégico para transformá-la em franquia. Se você tem apenas uma ideia no papel, recomendo primeiro validar a sua operação piloto.',
+        q: 'Is it useful if I only have an idea so far?',
+        a: 'The dossier is ideal for those who already run a profitable, operating company and want to understand the strategic path to turn it into a franchise. If you only have an idea on paper, I recommend validating your pilot operation first.',
     },
 ];
 
@@ -119,9 +119,9 @@ const FAQ_SCHEMA = {
 const PRODUCT_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: 'O Dossiê do Futuro Franqueador',
+    name: 'The Future Franchisor Dossier',
     description:
-        'Método completo e checklists de franqueabilidade para empresários de sucesso que querem formatar e expandir seu negócio através do franchising. Por Marinho Ponci.',
+        'A complete method and franchisability checklists for successful business owners who want to structure and expand their business through franchising. By Marinho Ponci.',
     image: 'https://marinhoponci.com/og-dossie-franqueador.jpg',
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
     offers: {
@@ -129,11 +129,11 @@ const PRODUCT_SCHEMA = {
         price: '247.00',
         priceCurrency: 'BRL',
         availability: 'https://schema.org/InStock',
-        url: 'https://marinhoponci.com/franqueador',
+        url: 'https://marinhoponci.com/franqueador-ingles',
     },
 };
 
-export default function FranqueadorLandingPage() {
+export default function FranqueadorLandingPageEn() {
     const [scrolled, setScrolled] = useState(false);
     const [pastHero, setPastHero] = useState(false);
     const [openFAQ, setOpenFAQ] = useState<number | null>(0);
@@ -186,7 +186,7 @@ export default function FranqueadorLandingPage() {
     const handleLeadSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
         if (!leadName.trim() || !leadEmail.trim() || !leadPhone.trim()) {
-            setLeadError('Por favor, preencha todos os campos.');
+            setLeadError('Please fill in all fields.');
             return;
         }
         setLeadSubmitting(true);
@@ -199,7 +199,7 @@ export default function FranqueadorLandingPage() {
                     name: leadName,
                     email: leadEmail,
                     phone: leadPhone,
-                    source: 'franqueador',
+                    source: 'franqueador_en',
                 }),
             });
         } catch (err) {
@@ -211,7 +211,7 @@ export default function FranqueadorLandingPage() {
         setCheckoutLoading(true);
         const result = await startCheckout('dossie_futuro_franqueador');
         if (!result.ok) {
-            setCheckoutError(result.error || 'Erro ao iniciar checkout');
+            setCheckoutError(result.error || 'Error starting checkout');
             setCheckoutLoading(false);
         }
     }, [leadName, leadEmail, leadPhone]);
@@ -235,7 +235,7 @@ export default function FranqueadorLandingPage() {
     // SEO & GEO metadata
     useEffect(() => {
         const previousTitle = document.title;
-        document.title = 'O Dossiê do Futuro Franqueador | Marinho Ponci — 38 anos de franchising';
+        document.title = 'The Future Franchisor Dossier | Marinho Ponci — 38 years in franchising';
 
         const setMeta = (name: string, content: string, isProperty = false) => {
             const attr = isProperty ? 'property' : 'name';
@@ -248,18 +248,18 @@ export default function FranqueadorLandingPage() {
             tag.setAttribute('content', content);
         };
 
-        const description = 'Descubra como formatar seu negócio e criar uma rede de franquias de sucesso. Circular de Oferta (COF), royalties, matriz de franqueabilidade e blindagem jurídica com Marinho Ponci.';
+        const description = 'Learn how to structure your business and build a successful franchise network. Disclosure document, royalties, franchisability matrix and legal protection with Marinho Ponci.';
         
         setMeta('description', description);
         setMeta('robots', 'index,follow,max-image-preview:large');
-        setMeta('og:title', 'O Dossiê do Futuro Franqueador | Marinho Ponci', true);
+        setMeta('og:title', 'The Future Franchisor Dossier | Marinho Ponci', true);
         setMeta('og:description', description, true);
         setMeta('og:type', 'product', true);
-        setMeta('og:url', 'https://marinhoponci.com/franqueador', true);
+        setMeta('og:url', 'https://marinhoponci.com/franqueador-ingles', true);
         setMeta('og:image', 'https://marinhoponci.com/og-dossie-franqueador.jpg', true);
-        setMeta('og:locale', 'pt_BR', true);
+        setMeta('og:locale', 'en_US', true);
         setMeta('twitter:card', 'summary_large_image');
-        setMeta('twitter:title', 'O Dossiê do Futuro Franqueador');
+        setMeta('twitter:title', 'The Future Franchisor Dossier');
         setMeta('twitter:description', description);
 
         let canonical = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
@@ -268,7 +268,7 @@ export default function FranqueadorLandingPage() {
             canonical.setAttribute('rel', 'canonical');
             document.head.appendChild(canonical);
         }
-        canonical.setAttribute('href', 'https://marinhoponci.com/franqueador');
+        canonical.setAttribute('href', 'https://marinhoponci.com/franqueador-ingles');
 
         return () => {
             document.title = previousTitle;
@@ -309,26 +309,26 @@ export default function FranqueadorLandingPage() {
 
                         <div className="flex items-center gap-2">
                             <Link
-                                to="/ebook"
+                                to="/ebook-ingles"
                                 className="text-[10px] font-black uppercase tracking-[0.18em] border border-white/25 text-white/60 hover:text-accent-gold hover:border-accent-gold px-3 py-2 transition-all mr-1 flex items-center gap-1"
-                                title="Dossiê para Franqueados"
+                                title="Dossier for Franchisees"
                             >
-                                Sou Franqueado <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                For Franchisees <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                             </Link>
 
                             <Link
-                                to="/franqueador-ingles"
+                                to="/franqueador"
                                 className="text-[10px] font-black uppercase tracking-[0.18em] border border-white/25 text-white/60 hover:text-accent-gold hover:border-accent-gold px-3 py-2 transition-all mr-1 flex items-center gap-1"
-                                title="English Version"
+                                title="Versão em Português"
                             >
-                                <span className="material-symbols-outlined text-[14px]">language</span> EN
+                                <span className="material-symbols-outlined text-[14px]">language</span> PT
                             </Link>
 
                             <Link
                                 to="/membro/login"
                                 className="group relative px-4 py-2 bg-accent-gold text-black text-[10px] font-black uppercase tracking-[0.18em] hover:bg-white transition-all duration-300 whitespace-nowrap"
                             >
-                                Membro
+                                Member
                             </Link>
 
                             <button
@@ -338,7 +338,7 @@ export default function FranqueadorLandingPage() {
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                                 <span className="relative flex items-center gap-2">
-                                    Quero o Dossiê <span className="material-symbols-outlined text-base">arrow_forward</span>
+                                    I want the Dossier <span className="material-symbols-outlined text-base">arrow_forward</span>
                                 </span>
                             </button>
                         </div>
@@ -347,7 +347,7 @@ export default function FranqueadorLandingPage() {
 
                 <main ref={mainRef}>
                     {/* ===========================================================
-                        1. ATENÇÃO  ·  Hook
+                        1. ATTENTION  ·  Hook
                     =========================================================== */}
                     <section id="hero" className="relative overflow-hidden">
 
@@ -363,19 +363,19 @@ export default function FranqueadorLandingPage() {
                                     <div className="inline-flex items-center gap-3 mb-5 px-3 py-2 border border-accent-gold/40 bg-accent-gold/5">
                                         <span className="w-2 h-2 bg-accent-gold rounded-full pulse-ring"></span>
                                         <span className="text-[11px] md:text-[12px] font-black uppercase tracking-[0.22em] text-accent-gold">
-                                            Para quem quer transformar seu negócio em franquia
+                                            For those turning their business into a franchise
                                         </span>
                                     </div>
                                     <h1 className="font-black text-white leading-[0.92] tracking-tighter uppercase cinematic-text-shadow text-[clamp(2.1rem,4.4vw,4.2rem)] mb-5">
-                                        A verdade sobre<br />
-                                        <span className="italic text-accent-gold drop-shadow-[0_0_30px_rgba(225,169,96,0.3)]">franquear sua marca.</span>
+                                        The truth about<br />
+                                        <span className="italic text-accent-gold drop-shadow-[0_0_30px_rgba(225,169,96,0.3)]">franchising your brand.</span>
                                     </h1>
                                     <p className="text-sm md:text-base text-white/65 leading-[1.7] max-w-lg mb-6">
-                                        Os passos reais para formatar, os erros cruciais que quebram marcas iniciantes e as verdades que as consultorias padrão não te revelam sobre o mercado de expansão.
+                                        The real steps to structure your model, the critical mistakes that break early-stage brands, and the truths standard consultancies never tell you about the expansion market.
                                     </p>
                                     <div className="flex items-center gap-3 text-[11px] md:text-[12px] uppercase tracking-[0.2em] text-white/55 font-bold mb-7">
                                         <span className="material-symbols-outlined text-accent-gold text-base">verified</span>
-                                        Por Marinho Ponci <span className="text-white/20">·</span> 38 anos de franchising
+                                        By Marinho Ponci <span className="text-white/20">·</span> 38 years in franchising
                                     </div>
                                     <button
                                         onClick={handleCheckout} disabled={checkoutLoading}
@@ -383,12 +383,12 @@ export default function FranqueadorLandingPage() {
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                                         <span className="relative flex items-center gap-2">
-                                            Quero o Dossiê <span className="material-symbols-outlined text-base">arrow_forward</span>
+                                            I want the Dossier <span className="material-symbols-outlined text-base">arrow_forward</span>
                                         </span>
                                     </button>
                                 </div>
 
-                                {/* Mockup do livro enquadrado à direita com relevo 3D */}
+                                {/* 3D-tilted book mockup on the right */}
                                 <div 
                                     onMouseMove={handleMouseMove}
                                     onMouseLeave={handleMouseLeave}
@@ -398,12 +398,12 @@ export default function FranqueadorLandingPage() {
                                     <div className="absolute -inset-10 bg-accent-gold/[0.08] blur-3xl rounded-full pointer-events-none"></div>
                                     <img
                                         src="/capa_franqueador.png"
-                                        alt="O Dossiê do Futuro Franqueador"
+                                        alt="The Future Franchisor Dossier"
                                         className="h-full w-auto object-contain shadow-[25px_35px_60px_rgba(0,0,0,0.9)] border border-white/10"
                                     />
-                                    {/* Efeito Lombo 3D */}
+                                    {/* 3D spine effect */}
                                     <div className="absolute inset-y-0 left-0 w-[10px] bg-gradient-to-r from-black/70 via-black/20 to-transparent pointer-events-none" />
-                                    {/* Efeito Brilho Glossy */}
+                                    {/* Glossy highlight effect */}
                                     <div className="absolute inset-y-0 left-[10px] right-0 bg-gradient-to-r from-white/10 via-transparent to-white/5 pointer-events-none mix-blend-overlay" />
                                 </div>
                             </div>
@@ -422,7 +422,7 @@ export default function FranqueadorLandingPage() {
                                 >
                                     <img
                                         src="/capa_franqueador.png"
-                                        alt="O Dossiê do Futuro Franqueador"
+                                        alt="The Future Franchisor Dossier"
                                         loading="eager"
                                         fetchPriority="high"
                                         className="h-full w-auto object-contain shadow-[15px_25px_40px_rgba(0,0,0,0.9)] border border-white/5"
@@ -436,21 +436,21 @@ export default function FranqueadorLandingPage() {
                             <div className="flex flex-col px-5 pt-2 pb-10">
                                 <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 border border-accent-gold/40 bg-accent-gold/5 self-start">
                                     <span className="w-1.5 h-1.5 bg-accent-gold rounded-full pulse-ring"></span>
-                                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent-gold">Para quem vai formatar uma franquia</span>
+                                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent-gold">For those structuring a franchise</span>
                                 </div>
 
                                 <h1 className="font-black text-white leading-[0.9] tracking-tighter uppercase cinematic-text-shadow text-[clamp(1.85rem,6.2vw,2.3rem)] mb-3">
-                                    A verdade sobre<br />
-                                    <span className="italic text-accent-gold drop-shadow-[0_0_20px_rgba(225,169,96,0.3)]">franquear sua marca.</span>
+                                    The truth about<br />
+                                    <span className="italic text-accent-gold drop-shadow-[0_0_20px_rgba(225,169,96,0.3)]">franchising your brand.</span>
                                 </h1>
 
                                 <p className="text-[13px] text-white/70 leading-[1.7] mb-7">
-                                    Os passos reais para formatar, os erros cruciais que quebram marcas iniciantes e as verdades que as consultorias padrão não te revelam sobre o mercado de expansão.
+                                    The real steps to structure your model, the critical mistakes that break early-stage brands, and the truths standard consultancies never tell you about the expansion market.
                                 </p>
 
                                 <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/45 font-bold mb-6">
                                     <span className="material-symbols-outlined text-accent-gold text-sm">verified</span>
-                                    Marinho Ponci · 38 anos de franchising
+                                    Marinho Ponci · 38 years in franchising
                                 </div>
 
                                 <button
@@ -459,7 +459,7 @@ export default function FranqueadorLandingPage() {
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                                     <span className="relative flex items-center justify-center gap-2">
-                                        Quero o Dossiê <span className="material-symbols-outlined text-base">arrow_forward</span>
+                                        I want the Dossier <span className="material-symbols-outlined text-base">arrow_forward</span>
                                     </span>
                                 </button>
                             </div>
@@ -467,7 +467,7 @@ export default function FranqueadorLandingPage() {
                     </section>
 
                     {/* ===========================================================
-                        2. IDENTIFICAÇÃO  ·  Espelho da dor
+                        2. IDENTIFICATION  ·  Pain mirror
                     =========================================================== */}
                     <section className="py-14 md:py-20 relative overflow-hidden bg-[#050505]">
                         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/[0.04] blur-[120px] rounded-full pointer-events-none"></div>
@@ -475,17 +475,17 @@ export default function FranqueadorLandingPage() {
                         <div className="max-w-[1300px] mx-auto px-6 md:px-12">
                             <div className="text-center max-w-3xl mx-auto mb-12 reveal-on-scroll">
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-4 block">
-                                    Identifica estes desafios?
+                                    Do these challenges sound familiar?
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                    Franquear é o passo certo
+                                    Is franchising the right move
                                     <br />
                                     <span className="italic text-accent-gold">
-                                        para o seu negócio agora?
+                                        for your business right now?
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Transformar uma operação de sucesso em uma rede replicável exige clareza absoluta sobre riscos e estrutura.
+                                    Turning a successful operation into a replicable network demands absolute clarity about risk and structure.
                                 </p>
                             </div>
 
@@ -493,33 +493,33 @@ export default function FranqueadorLandingPage() {
                                 {[
                                     {
                                         icon: 'timer',
-                                        headline: 'Você quer crescer, mas falta braço',
-                                        text: 'A operação do dia a dia consome seu tempo. Você vê o potencial de expandir geograficamente, mas não sabe como delegar o controle e o padrão.',
+                                        headline: 'You want to grow, but lack the manpower',
+                                        text: 'Day-to-day operations eat your time. You can see the potential to expand geographically, but you do not know how to delegate control and keep the standard.',
                                     },
                                     {
                                         icon: 'price_change',
-                                        headline: 'As taxas parecem confusas',
-                                        text: 'Como definir a taxa de franquia ideal? De quanto cobrar de royalties para ter lucro sem sufocar a saúde financeira da unidade do franqueado?',
+                                        headline: 'The fees look confusing',
+                                        text: 'How do you set the ideal franchise fee? How much should you charge in royalties to stay profitable without choking the financial health of the franchisee unit?',
                                     },
                                     {
                                         icon: 'gavel',
-                                        headline: 'Medo de passivo jurídico',
-                                        text: 'O receio de que um franqueado problemático possa processar a marca ou gerar processos trabalhistas que respinguem na sua matriz.',
+                                        headline: 'Fear of legal liability',
+                                        text: 'The fear that a problematic franchisee could sue the brand or trigger labour claims that splash back onto your head office.',
                                     },
                                     {
                                         icon: 'description',
-                                        headline: 'Como blindar seus segredos comerciais',
-                                        text: 'Como colocar seus manuais de processos em papel sem risco de ex-funcionários ou franqueados copiarem seu modelo de negócio e virarem concorrentes diretos.',
+                                        headline: 'How to protect your trade secrets',
+                                        text: 'How to put your process manuals on paper without former employees or franchisees copying your business model and becoming direct competitors.',
                                     },
                                     {
                                         icon: 'groups',
-                                        headline: 'Pressão por vender unidades rápido',
-                                        text: 'Consultorias de expansão prometendo vender 10 franquias no primeiro mês. Você teme não ter estrutura de suporte para atender a essa demanda repentina.',
+                                        headline: 'Pressure to sell units fast',
+                                        text: 'Expansion consultancies promising to sell 10 franchises in the first month. You fear you will not have the support structure to serve that sudden demand.',
                                     },
                                     {
                                         icon: 'trending_up',
-                                        headline: 'Investimento de formatar é alto',
-                                        text: 'Consultorias cobram R$ 50 mil a R$ 100 mil para formatar. Você quer o caminho das pedras para entender o processo antes de investir esse valor.',
+                                        headline: 'Structuring costs are high',
+                                        text: 'Consultancies charge R$ 50,000 to R$ 100,000 to structure a franchise. You want to understand the process step by step before committing that kind of money.',
                                     },
                                 ].map((item) => (
                                     <div
@@ -547,15 +547,15 @@ export default function FranqueadorLandingPage() {
 
                             <div className="text-center mt-10 reveal-on-scroll">
                                 <p className="text-lg md:text-xl font-black italic text-white/80 max-w-xl mx-auto leading-[1.45]">
-                                    Se você quer franquear com clareza,{' '}
-                                    <span className="text-accent-gold">este Dossiê é para você.</span>
+                                    If you want to franchise with clarity,{' '}
+                                    <span className="text-accent-gold">this Dossier is for you.</span>
                                 </p>
                             </div>
                         </div>
                     </section>
 
                     {/* ===========================================================
-                        3. DESEJO  ·  Future pacing
+                        3. DESIRE  ·  Future pacing
                     =========================================================== */}
                     <section className="py-14 md:py-20 relative overflow-hidden bg-black">
                         <div className="absolute inset-0 pointer-events-none">
@@ -565,16 +565,16 @@ export default function FranqueadorLandingPage() {
                         <div className="max-w-[1300px] mx-auto px-6 md:px-12 relative">
                             <div className="text-center max-w-3xl mx-auto mb-12 reveal-on-scroll">
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-4 block">
-                                    O que muda na sua expansão
+                                    What changes in your expansion
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                    Expandir com{' '}
-                                    <span className="italic text-accent-gold">controle</span>
+                                    Expand with{' '}
+                                    <span className="italic text-accent-gold">control</span>
                                     ,<br />
-                                    evitando as armadilhas comuns.
+                                    avoiding the usual traps.
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Três pilares fundamentais que você dominará ao concluir este guia.
+                                    Three fundamental pillars you will master by the end of this guide.
                                 </p>
                             </div>
 
@@ -583,20 +583,20 @@ export default function FranqueadorLandingPage() {
                                     {
                                         big: '01',
                                         icon: 'check_circle',
-                                        title: 'Saber se dá para franquear',
-                                        text: 'Aplicar a matriz real de franqueabilidade no seu negócio piloto. Entender se suas margens e diferenciais resistem a uma operação franqueada.',
+                                        title: 'Know if franchising is viable',
+                                        text: 'Apply the real franchisability matrix to your pilot business. Understand whether your margins and differentiators survive a franchised operation.',
                                     },
                                     {
                                         big: '02',
                                         icon: 'fact_check',
-                                        title: 'Blindagem Jurídica e COF',
-                                        text: 'Saber o que deve constar e como auditar seus manuais e Circular de Oferta para não cair em litígios trabalhistas ou societários.',
+                                        title: 'Legal protection and disclosure',
+                                        text: 'Know what must be included and how to audit your manuals and disclosure document so you avoid labour and corporate litigation.',
                                     },
                                     {
                                         big: '03',
                                         icon: 'price_change',
-                                        title: 'Sustentabilidade dos Royalties',
-                                        text: 'Calcular a matemática exata de royalties, taxa de franquia e fundo nacional de propaganda para financiar o suporte e garantir sua margem.',
+                                        title: 'Sustainable royalties',
+                                        text: 'Run the exact maths behind royalties, franchise fee and the national advertising fund to finance support and protect your margin.',
                                     },
                                 ].map((item) => (
                                     <div
@@ -624,7 +624,7 @@ export default function FranqueadorLandingPage() {
                     </section>
 
                     {/* ===========================================================
-                        4. VALOR  ·  Stack Slide
+                        4. VALUE  ·  Stack Slide
                     =========================================================== */}
                     <section className="py-14 md:py-20 relative overflow-hidden bg-[#050505]">
                         <div className="absolute inset-0 bg-grid-pattern opacity-[0.04]"></div>
@@ -632,17 +632,17 @@ export default function FranqueadorLandingPage() {
                         <div className="max-w-[1300px] mx-auto px-6 md:px-12 relative">
                             <div className="text-center max-w-3xl mx-auto mb-12 reveal-on-scroll">
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-4 block">
-                                    Estrutura Completa
+                                    Complete Structure
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                    Seis módulos estratégicos
+                                    Six strategic modules
                                     <br />
                                     <span className="italic text-accent-gold">
-                                        + 1 bônus exclusivo.
+                                        + 1 exclusive bonus.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Acesso permanente ao método conceitual do Marinho Ponci de formatação e franquias.
+                                    Lifetime access to Marinho Ponci's conceptual method for franchise structuring and expansion.
                                 </p>
                             </div>
 
@@ -684,7 +684,7 @@ export default function FranqueadorLandingPage() {
 
                                             <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
                                                 <span className="text-[10px] uppercase tracking-[0.22em] text-white/40 font-bold">
-                                                    Valor avulso
+                                                    Standalone value
                                                 </span>
                                                 <span className="text-sm font-black text-accent-gold/80 line-through tabular-nums">
                                                     {m.value}
@@ -697,16 +697,16 @@ export default function FranqueadorLandingPage() {
 
                             <div className="text-center mb-10 reveal-on-scroll">
                                 <span className="inline-block text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold border border-accent-gold/40 px-4 py-2">
-                                    Bônus exclusivo
+                                    Exclusive bonus
                                 </span>
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 mb-10 reveal-on-scroll">
                                 {[
                                     {
-                                        label: 'BÔNUS',
-                                        title: 'A Primeira Reunião de Venda de Franquia',
-                                        text: 'Como apresentar a sua oportunidade de franquia para candidatos qualificados: o que expor, o que ocultar na triagem inicial, e como estruturar a proposta comercial da marca de forma profissional.',
+                                        label: 'BONUS',
+                                        title: 'The First Franchise Sales Meeting',
+                                        text: 'How to present your franchise opportunity to qualified candidates: what to reveal, what to hold back during initial screening, and how to structure the brand\'s commercial proposal professionally.',
                                         value: 'R$ 397',
                                     },
                                 ].map((b) => (
@@ -726,7 +726,7 @@ export default function FranqueadorLandingPage() {
                                         </p>
                                         <div className="flex items-center justify-between pt-4 border-t border-white/5">
                                             <span className="text-[10px] uppercase tracking-[0.22em] text-white/40 font-bold">
-                                                Valor avulso
+                                                Standalone value
                                             </span>
                                             <span className="text-sm font-black text-accent-gold/75 line-through tabular-nums">
                                                 {b.value}
@@ -740,7 +740,7 @@ export default function FranqueadorLandingPage() {
                                 <div className="bg-black border border-accent-gold/30 p-8 md:p-10 hud-border">
                                     <div className="text-center mb-7">
                                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-4">
-                                            Soma de tudo que você recebe
+                                            Everything you get, added up
                                         </div>
                                         <div className="flex items-baseline justify-center gap-2">
                                             <span className="text-2xl text-white/40 line-through tabular-nums">
@@ -754,7 +754,7 @@ export default function FranqueadorLandingPage() {
 
                                     <div className="text-center mb-2">
                                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold">
-                                            Hoje, você não paga isso
+                                            Today, you do not pay that
                                         </span>
                                     </div>
                                     <div className="flex items-baseline justify-center gap-1 mb-2">
@@ -778,14 +778,14 @@ export default function FranqueadorLandingPage() {
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                                         <span className="relative flex items-center justify-center gap-2">
-                                            Quero garantir meu acesso
+                                            I want to secure my access
                                             <span className="material-symbols-outlined">
                                                 arrow_forward
                                             </span>
                                         </span>
                                     </button>
                                     <p className="text-center text-[10px] text-white/30 mt-3 font-bold uppercase tracking-[0.2em]">
-                                        🔒 Pagamento seguro Stripe · Acesso imediato
+                                        🔒 Secure Stripe payment · Instant access
                                     </p>
                                 </div>
                             </div>
@@ -793,18 +793,18 @@ export default function FranqueadorLandingPage() {
                     </section>
 
                     {/* ===========================================================
-                        5. AUTORIDADE  ·  Marinho Ponci
+                        5. AUTHORITY  ·  Marinho Ponci
                     =========================================================== */}
                     <section className="py-14 md:py-20 relative overflow-hidden bg-black">
                         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
                             <div className="text-center max-w-3xl mx-auto mb-12 reveal-on-scroll">
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-4 block">
-                                    Quem assina este material
+                                    Who signs this material
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)]">
                                     Marinho Ponci,{' '}
                                     <span className="italic text-accent-gold">
-                                        38 anos de mercado.
+                                        38 years in the market.
                                     </span>
                                 </h2>
                             </div>
@@ -815,7 +815,7 @@ export default function FranqueadorLandingPage() {
                                     <div className="relative aspect-[4/5] bg-[#0a0a0a] border border-white/10 hud-border overflow-hidden">
                                         <img
                                             src="/marinho principal.webp"
-                                            alt="Marinho Ponci, especialista em franchising"
+                                            alt="Marinho Ponci, franchising specialist"
                                             className="w-full h-full object-cover object-top opacity-90"
                                         />
                                         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
@@ -823,9 +823,9 @@ export default function FranqueadorLandingPage() {
                                         <div className="absolute bottom-7 left-7 right-7">
                                             <div className="grid grid-cols-3 gap-4 pt-5 border-t border-white/15">
                                                 {[
-                                                    { n: '38', l: 'Anos de\nfranchising' },
-                                                    { n: '850+', l: 'Pontos\ninaugurados' },
-                                                    { n: '3K+', l: 'Candidatos\nentrevistados' },
+                                                    { n: '38', l: 'Years in\nfranchising' },
+                                                    { n: '850+', l: 'Locations\nopened' },
+                                                    { n: '3K+', l: 'Candidates\ninterviewed' },
                                                 ].map((s) => (
                                                     <div key={s.n} className="text-center">
                                                         <div className="text-2xl md:text-3xl font-black text-white tracking-tighter leading-none mb-1">
@@ -844,7 +844,7 @@ export default function FranqueadorLandingPage() {
                                 <div className="order-1 lg:order-1">
                                     <div className="border-l-2 border-accent-gold pl-6 mb-8">
                                         <p className="text-xl md:text-3xl font-black italic text-white leading-[1.35]">
-                                            "Não sou coach e nem influencer e também não estou aqui para te motivar com frase bonita de meia-noite. Estou aqui porque, depois de 38 anos vendo a mesma história se repetir os mesmos erros, as mesmas ilusões, as mesmas decisões precipitadas decidi que precisava abrir o microfone de verdade."
+                                            "I am not a coach or an influencer, and I am not here to motivate you with a pretty midnight quote. I am here because after 38 years watching the same story repeat itself — the same mistakes, the same illusions, the same rushed decisions — I decided it was time to open the microphone for real."
                                         </p>
                                         <p className="text-[11px] uppercase tracking-[0.3em] text-accent-gold/80 font-bold mt-4">
                                             Marinho Ponci
@@ -852,10 +852,10 @@ export default function FranqueadorLandingPage() {
                                     </div>
 
                                     <p className="text-[15px] text-white/60 leading-[1.85] mb-4">
-                                        Decidi reunir o conhecimento estratégico de formatação que poupa marcas iniciantes de gastarem fortunas em consultorias padrão sem o devido preparo de base.
+                                        I decided to gather the strategic structuring knowledge that saves early-stage brands from spending fortunes on off-the-shelf consultancies before they have the proper groundwork.
                                     </p>
                                     <p className="text-[15px] text-white/60 leading-[1.85]">
-                                        Franquear é excelente, desde que você saiba exatamente onde está pisando e como blindar sua rede.{' '}
+                                        Franchising is excellent — as long as you know exactly where you are stepping and how to protect your network.{' '}
                                     </p>
                                 </div>
                             </div>
@@ -863,11 +863,11 @@ export default function FranqueadorLandingPage() {
                     </section>
 
                     {/* ===========================================================
-                        6. REDUÇÃO DE OBJEÇÃO  ·  Garantia + FAQ
+                        6. OBJECTION HANDLING  ·  Guarantee + FAQ
                     =========================================================== */}
                     <section className="py-14 md:py-20 relative overflow-hidden bg-[#050505]">
                         <div className="max-w-[1300px] mx-auto px-6 md:px-12">
-                            {/* GARANTIA */}
+                            {/* GUARANTEE */}
                             <div className="text-center max-w-2xl mx-auto mb-10 reveal-on-scroll">
                                 <div className="inline-flex items-center justify-center w-20 h-20 mb-6 hud-border bg-black float-y">
                                     <span className="material-symbols-outlined text-accent-gold text-4xl">
@@ -876,28 +876,28 @@ export default function FranqueadorLandingPage() {
                                 </div>
 
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-3 block">
-                                    Garantia incondicional
+                                    Unconditional guarantee
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.8rem,4vw,2.8rem)] mb-5">
-                                    7 dias.{' '}
+                                    7 days.{' '}
                                     <span className="italic text-accent-gold">
-                                        Risco zero.
+                                        Zero risk.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Acesse o material, utilize as tabelas e assista às aulas estratégicas. Se não fizer sentido para a sua marca em 7 dias, devolvemos 100% do seu valor.
+                                    Access the material, use the worksheets and watch the strategic lessons. If it does not make sense for your brand within 7 days, we refund 100% of your money.
                                 </p>
                             </div>
 
                             {/* FAQ */}
                             <div className="text-center mb-10 reveal-on-scroll">
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-3 block">
-                                    Perguntas frequentes
+                                    Frequently asked questions
                                 </span>
                                 <h3 className="font-black text-white leading-[1] tracking-tighter uppercase text-[clamp(1.5rem,3.2vw,2.3rem)]">
-                                    Tira-dúvidas{' '}
+                                    Straight answers,{' '}
                                     <span className="italic text-accent-gold">
-                                        sem rodeio.
+                                        no spin.
                                     </span>
                                 </h3>
                             </div>
@@ -945,7 +945,7 @@ export default function FranqueadorLandingPage() {
                     </section>
 
                     {/* ===========================================================
-                        7. CTA  ·  Close enxuto
+                        7. CTA  ·  Lean close
                     =========================================================== */}
                     <section
                         id="cta-final"
@@ -958,10 +958,10 @@ export default function FranqueadorLandingPage() {
 
                         <div className="relative max-w-[820px] mx-auto px-6 md:px-12 text-center reveal-on-scroll">
                             <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(2rem,4.5vw,3.4rem)] mb-6">
-                                O Dossiê do Futuro Franqueador
+                                The Future Franchisor Dossier
                             </h2>
                             <p className="text-base md:text-lg text-white/55 leading-[1.75] max-w-xl mx-auto mb-10">
-                                R$ 247 é o custo para entender o caminho estratégico real de expansão do seu negócio antes de gastar fortunas com assessoria jurídica ou consultorias sem preparo.
+                                R$ 247 is what it costs to understand the real strategic path to expanding your business — before you spend a fortune on legal advice or unprepared consultancies.
                             </p>
 
                             <button
@@ -970,7 +970,7 @@ export default function FranqueadorLandingPage() {
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                                 <span className="relative flex items-center justify-center gap-2">
-                                    Quero o Dossiê agora
+                                    I want the Dossier now
                                     <span className="material-symbols-outlined">
                                         arrow_forward
                                     </span>
@@ -979,9 +979,9 @@ export default function FranqueadorLandingPage() {
 
                             <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mt-8">
                                 {[
-                                    { i: 'verified', l: 'Pagamento Stripe' },
-                                    { i: 'lock', l: 'Acesso imediato' },
-                                    { i: 'autorenew', l: '7 dias de garantia' },
+                                    { i: 'verified', l: 'Stripe payment' },
+                                    { i: 'lock', l: 'Instant access' },
+                                    { i: 'autorenew', l: '7-day guarantee' },
                                 ].map((b) => (
                                     <div
                                         key={b.l}
@@ -998,7 +998,7 @@ export default function FranqueadorLandingPage() {
                     </section>
                 </main>
 
-                {/* ============== CTA FLUTUANTE MOBILE ============== */}
+                {/* ============== FLOATING MOBILE CTA ============== */}
                 <div className={`fixed bottom-0 left-0 right-0 z-40 sm:hidden transition-all duration-500 ease-out ${pastHero ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'}`}>
                     <div className="bg-black/95 backdrop-blur-xl border-t border-accent-gold/20 px-4 py-3">
                         <button
@@ -1008,27 +1008,27 @@ export default function FranqueadorLandingPage() {
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span className="relative flex items-center justify-center gap-2">
-                                Quero o Dossiê
+                                I want the Dossier
                                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
                             </span>
                         </button>
                         <p className="text-center text-[9px] text-white/30 mt-2 font-bold uppercase tracking-[0.15em]">
-                            3× R$ 89 sem juros · Pix R$ 222
+                            3× R$ 89 interest-free · Pix R$ 222
                         </p>
                     </div>
                 </div>
 
-                {/* ============== MODAL CAPTURA DE LEAD PRÉ-CHECKOUT ============== */}
+                {/* ============== PRE-CHECKOUT LEAD CAPTURE MODAL ============== */}
                 {showLeadModal && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in">
                         <div className="bg-[#080808] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in slide-in-from-bottom-6">
                             <div className="p-6 border-b border-white/10 flex items-center justify-between">
                                 <div>
                                     <span className="inline-block px-3 py-1 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-3">
-                                        Quase lá
+                                        Almost there
                                     </span>
-                                    <h3 className="text-xl font-black text-white">Antes de continuar</h3>
-                                    <p className="text-white/50 text-sm mt-1">Preencha para garantir seu acesso.</p>
+                                    <h3 className="text-xl font-black text-white">Before you continue</h3>
+                                    <p className="text-white/50 text-sm mt-1">Fill this in to secure your access.</p>
                                 </div>
                                 <button onClick={() => setShowLeadModal(false)} className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors shrink-0 ml-4">
                                     <span className="material-symbols-outlined text-sm">close</span>
@@ -1036,12 +1036,12 @@ export default function FranqueadorLandingPage() {
                             </div>
                             <form onSubmit={handleLeadSubmit} className="p-6 space-y-4">
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">Nome completo</label>
+                                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">Full name</label>
                                     <input
                                         type="text"
                                         value={leadName}
                                         onChange={e => setLeadName(e.target.value)}
-                                        placeholder="Seu nome"
+                                        placeholder="Your name"
                                         className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
                                         autoFocus
                                     />
@@ -1057,12 +1057,12 @@ export default function FranqueadorLandingPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">Telefone / WhatsApp</label>
+                                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">Phone / WhatsApp</label>
                                     <input
                                         type="tel"
                                         value={leadPhone}
                                         onChange={e => setLeadPhone(e.target.value)}
-                                        placeholder="(11) 99999-9999"
+                                        placeholder="+1 555 000 0000"
                                         className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
                                     />
                                 </div>
@@ -1075,9 +1075,9 @@ export default function FranqueadorLandingPage() {
                                     className="w-full py-4 bg-accent-gold text-black font-black text-[11px] uppercase tracking-[0.3em] rounded-lg hover:brightness-110 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
                                 >
                                     {leadSubmitting ? (
-                                        <><span className="material-symbols-outlined animate-spin text-base">autorenew</span> Aguarde...</>
+                                        <><span className="material-symbols-outlined animate-spin text-base">autorenew</span> Please wait...</>
                                     ) : (
-                                        'Ir para o pagamento'
+                                        'Go to payment'
                                     )}
                                 </button>
                             </form>
@@ -1085,16 +1085,16 @@ export default function FranqueadorLandingPage() {
                     </div>
                 )}
 
-                {/* ============== TOAST DE ERRO DE CHECKOUT ============== */}
+                {/* ============== CHECKOUT ERROR TOAST ============== */}
                 {checkoutError && (
                     <div className="fixed bottom-6 right-6 z-50 max-w-sm bg-[#0a0a0a] border border-red-500/40 p-4 shadow-[0_0_30px_rgba(239,68,68,0.25)] animate-fadeIn">
                         <div className="flex items-start gap-3">
                             <span className="material-symbols-outlined text-red-400 text-xl shrink-0">
-                                erro
+                                error
                             </span>
                             <div className="flex-1">
                                 <div className="text-[11px] font-black uppercase tracking-[0.25em] text-red-400 mb-1">
-                                    Falha no checkout
+                                    Checkout failed
                                 </div>
                                 <p className="text-[13px] text-white/70 leading-snug">
                                     {checkoutError}
@@ -1103,7 +1103,7 @@ export default function FranqueadorLandingPage() {
                             <button
                                 onClick={() => setCheckoutError(null)}
                                 className="text-white/40 hover:text-white transition-colors"
-                                aria-label="Fechar"
+                                aria-label="Close"
                             >
                                 <span className="material-symbols-outlined text-base">
                                     close
@@ -1124,7 +1124,7 @@ export default function FranqueadorLandingPage() {
                             />
                         </Link>
                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/25 text-center">
-                            © {new Date().getFullYear()} Marinho Ponci · Todos os direitos reservados
+                            © {new Date().getFullYear()} Marinho Ponci · All rights reserved
                         </div>
                     </div>
                 </footer>

@@ -186,7 +186,7 @@ export default function LandingPage() {
                             className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-gold hover:text-white transition-all duration-300 relative group/nav whitespace-nowrap flex items-center gap-1.5"
                         >
                             <span className="w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse"></span>
-                            Consultoria em Portugal
+                            Consultoria Empresarial
                             <span className="absolute -bottom-2 left-0 w-full h-[1px] bg-accent-gold transition-all duration-300"></span>
                         </Link>
                         <div className="relative group/nav">
@@ -284,7 +284,7 @@ export default function LandingPage() {
                                 <div className="flex items-center gap-4">
                                     <span className="w-2 h-2 rounded-full bg-accent-gold animate-pulse"></span>
                                     <span className="text-sm font-black uppercase tracking-[0.2em] text-accent-gold group-hover:text-white transition-colors duration-300">
-                                        Consultoria em Portugal
+                                        Consultoria Empresarial
                                     </span>
                                 </div>
                                 <span className="material-symbols-outlined text-accent-gold text-sm group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>

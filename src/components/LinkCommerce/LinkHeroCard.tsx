@@ -3,12 +3,14 @@ import { useEffect, useRef } from 'react';
 interface LinkHeroCardProps {
     name?: string;
     tagline?: string;
+    years?: string;
     photoUrl?: string;
 }
 
 export default function LinkHeroCard({
     name = 'Marinho Ponci',
-    tagline = 'Conselheiro Estratégico & Consultoria · 38 anos de experiência',
+    tagline = 'Conselheiro Estratégico & Consultoria Empresarial',
+    years = '38 anos de experiência',
     photoUrl = '/marinho principal.webp',
 }: LinkHeroCardProps) {
     const glowRef = useRef<HTMLDivElement>(null);
@@ -62,16 +64,21 @@ export default function LinkHeroCard({
             </div>
 
             {/* Name + Tagline */}
-            <div className="text-center mt-1 px-4">
+            <div className="w-full text-center mt-1 px-4">
                 <h1
                     className="text-2xl font-black tracking-tight text-accent-gold"
                     style={{ fontFamily: "'Satoshi', 'Inter', sans-serif" }}
                 >
                     {name}
                 </h1>
-                <p className="text-sm mt-1.5 text-white/55 font-medium leading-snug max-w-[280px]">
+                <p className="text-sm mt-1.5 mx-auto max-w-[320px] text-white/55 font-medium leading-snug break-words">
                     {tagline}
                 </p>
+                {years && (
+                    <p className="text-[11px] mt-1 text-white/40 font-bold uppercase tracking-[0.18em] whitespace-nowrap">
+                        {years}
+                    </p>
+                )}
             </div>
         </div>
     );
