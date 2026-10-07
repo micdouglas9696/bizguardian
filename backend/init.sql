@@ -141,7 +141,7 @@ CREATE INDEX IF NOT EXISTS idx_purchases_customer ON purchases(customer_id);
 CREATE INDEX IF NOT EXISTS idx_purchases_product ON purchases(product_id);
 
 INSERT INTO products
-    (slug, title, subtitle, description, access_type, access_value, stripe_metadata_key, sort_order)
+    (slug, title, subtitle, description, access_type, access_value, stripe_price_id, stripe_metadata_key, sort_order)
 VALUES
     ('dossie-futuro-franqueado',
      'O Dossiê do Futuro Franqueado',
@@ -149,6 +149,7 @@ VALUES
      'O método de Marinho Ponci para quem está prestes a investir em uma franquia. 38 anos de experiência transformados em um guia decisório.',
      'pdf',
      'dossie-futuro-franqueado.pdf',
+     'price_1TWIOl0l9XbFWgZqEh2Y9i0P',
      'dossie_futuro_franqueado',
      1),
     ('dossie-futuro-franqueado-en',
@@ -157,6 +158,7 @@ VALUES
      'Marinho Ponci''s method for those about to invest in a franchise, now in English.',
      'pdf',
      'dossie-futuro-franqueado-en.pdf',
+     'price_1UO0Ja0l9XbFWgZqFBdeTxz8',
      'dossie_futuro_franqueado_en',
      2),
     ('dossie-futuro-franqueador',
@@ -165,9 +167,13 @@ VALUES
      'O método completo para quem deseja transformar seu negócio de sucesso em uma rede de franquias.',
      'pdf',
      'dossie-futuro-franqueador.pdf',
+     'price_1UO0JZ0l9XbFWgZq4hXIpJiq',
      'dossie_futuro_franqueador',
      3)
-ON CONFLICT (slug) DO NOTHING;
+ON CONFLICT (slug) DO UPDATE SET
+    stripe_price_id = EXCLUDED.stripe_price_id,
+    stripe_metadata_key = EXCLUDED.stripe_metadata_key,
+    access_value = EXCLUDED.access_value;
 
 -- Módulos (6 principais + 3 bônus + recursos)
 CREATE TABLE IF NOT EXISTS ebook_modules (

@@ -22,15 +22,25 @@ const formatCents = (cents: number, currency = 'brl') => {
 export default function EbookSuccessPage() {
     const [searchParams] = useSearchParams();
     const sessionId = searchParams.get('session_id');
+    const productParam = searchParams.get('product');
+
+    const productTitle = 
+        productParam === 'dossie_futuro_franqueador' ? 'O Dossiê do Futuro Franqueador' :
+        productParam === 'dossie_futuro_franqueado_en' ? 'The Future Franchisee Dossier' :
+        'O Dossiê do Futuro Franqueado';
+    const isEn = productParam === 'dossie_futuro_franqueado_en';
+
     const [order, setOrder] = useState<OrderData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        document.title = 'Pagamento confirmado | O Dossiê do Futuro Franqueado';
+        document.title = isEn 
+            ? 'Payment confirmed | The Future Franchisee Dossier'
+            : `Pagamento confirmado | ${productTitle}`;
 
         if (!sessionId) {
-            setError('Sessão não encontrada na URL.');
+            setError(isEn ? 'Session not found in URL.' : 'Sessão não encontrada na URL.');
             setLoading(false);
             return;
         }
@@ -162,33 +172,53 @@ export default function EbookSuccessPage() {
 
                             <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent-gold mb-5 block">
                                 {order.status === 'paid'
-                                    ? 'Pagamento confirmado'
-                                    : 'Pagamento em processamento'}
+                                    ? (isEn ? 'Payment Confirmed' : 'Pagamento confirmado')
+                                    : (isEn ? 'Processing Payment' : 'Pagamento em processamento')}
                             </span>
 
                             <h1 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(2rem,4.8vw,3.4rem)] mb-6">
-                                Bem-vindo
+                                {isEn ? 'Welcome' : 'Bem-vindo'}
                                 <br />
-                                <span className="italic text-accent-gold">ao Dossiê.</span>
+                                <span className="italic text-accent-gold">{isEn ? 'to The Dossier.' : 'ao Dossiê.'}</span>
                             </h1>
 
                             <p className="text-[15px] md:text-base text-white/65 leading-[1.8] mb-10 max-w-xl mx-auto">
                                 {order.status === 'paid' ? (
-                                    <>
-                                        Sua compra de{' '}
-                                        <strong className="text-white">
-                                            O Dossiê do Futuro Franqueado
-                                        </strong>{' '}
-                                        foi confirmada. Em instantes, você vai receber um
-                                        email com a confirmação e os próximos passos para
-                                        acessar o material.
-                                    </>
+                                    isEn ? (
+                                        <>
+                                            Your purchase of{' '}
+                                            <strong className="text-white">
+                                                {productTitle}
+                                            </strong>{' '}
+                                            has been confirmed. In a few moments, you will receive an
+                                            email with your activation link and instructions to
+                                            access your dossier.
+                                        </>
+                                    ) : (
+                                        <>
+                                            Sua compra de{' '}
+                                            <strong className="text-white">
+                                                {productTitle}
+                                            </strong>{' '}
+                                            foi confirmada. Em instantes, você vai receber um
+                                            email com a confirmação e os próximos passos para
+                                            acessar o material.
+                                        </>
+                                    )
                                 ) : (
-                                    <>
-                                        Estamos confirmando seu pagamento. Isso costuma
-                                        levar alguns segundos. Você vai receber um email
-                                        assim que estiver tudo certo.
-                                    </>
+                                    isEn ? (
+                                        <>
+                                            We are confirming your payment. This usually takes
+                                            a few seconds. You will receive an email as soon
+                                            as everything is ready.
+                                        </>
+                                    ) : (
+                                        <>
+                                            Estamos confirmando seu pagamento. Isso costuma
+                                            levar alguns segundos. Você vai receber um email
+                                            assim que estiver tudo certo.
+                                        </>
+                                    )
                                 )}
                             </p>
 

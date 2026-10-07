@@ -245,9 +245,53 @@ const buildEmailHtml = (name: string, score: number) => {
     </html>`;
 };
 
-// Email pós-compra do Dossiê — agora com link de ativação da área do membro
-const buildEbookWelcomeEmail = (name: string, sessionId: string, activationUrl: string) => `
-<!DOCTYPE html>
+// Email pós-compra do Dossiê — agora com link de ativação da área do membro e suporte a multi-produtos/idiomas
+const buildEbookWelcomeEmail = (name: string, sessionId: string, activationUrl: string, productTitle: string = 'O Dossiê do Futuro Franqueado', isEn: boolean = false) => {
+    if (isEn) {
+        return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;">
+    <div style="max-width:600px;margin:0 auto;background:#0a0a0a;">
+        <div style="padding:40px 30px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);">
+            ${PUBLIC_URL.includes('localhost') ? '<p style="color:#e1a960;font-size:18px;font-weight:900;margin:0;letter-spacing:2px;">MARINHO PONCI</p>' : `<img src="${PUBLIC_URL}/marinho%20final.png" alt="Marinho Ponci" style="height:60px;" />`}
+        </div>
+        <div style="padding:40px 30px;">
+            <p style="color:#e1a960;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:900;margin-bottom:20px;">Payment Confirmed</p>
+            <h1 style="color:#fff;font-size:30px;font-weight:900;margin:0 0 16px;line-height:1.15;text-transform:uppercase;">
+                Welcome to<br><span style="color:#e1a960;font-style:italic;">The Dossier.</span>
+            </h1>
+            <p style="color:rgba(255,255,255,0.6);font-size:15px;line-height:1.75;margin:24px 0;">
+                Hello <strong style="color:white;">${name}</strong>,
+            </p>
+            <p style="color:rgba(255,255,255,0.6);font-size:15px;line-height:1.75;margin:0 0 24px;">
+                Your purchase of <strong style="color:#e1a960;">${productTitle}</strong> has been confirmed.
+                Click the button below to set your password and access the member area to view your dossier.
+            </p>
+            <div style="text-align:center;margin:36px 0;">
+                <a href="${activationUrl}" style="display:inline-block;padding:18px 36px;background:#e1a960;color:#000;text-decoration:none;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:3px;">
+                    Activate Dossier Access
+                </a>
+            </div>
+            <p style="color:rgba(255,255,255,0.45);font-size:12px;line-height:1.7;margin:30px 0 0;text-align:center;">
+                This link expires in ${ACCESS_TOKEN_TTL_DAYS} days. If you need a new one, simply reply to this email.
+            </p>
+            <p style="color:rgba(255,255,255,0.45);font-size:13px;line-height:1.7;margin:30px 0 0;">
+                7-day unconditional guarantee: if at any time the Dossier does not meet your expectations, just reply to this email to request a full refund.
+            </p>
+            <p style="color:rgba(255,255,255,0.25);font-size:11px;margin:24px 0 0;">
+                Order reference: <code style="color:rgba(255,255,255,0.4);">${sessionId}</code>
+            </p>
+        </div>
+        <div style="padding:24px 30px;border-top:1px solid rgba(255,255,255,0.05);text-align:center;">
+            <p style="color:rgba(255,255,255,0.15);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:4px;margin:0;">© 2026 Marinho Ponci · All rights reserved</p>
+        </div>
+    </div>
+</body>
+</html>`;
+    }
+
+    return `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
 <body style="margin:0;padding:0;background:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;">
@@ -264,8 +308,8 @@ const buildEbookWelcomeEmail = (name: string, sessionId: string, activationUrl: 
                 Olá <strong style="color:white;">${name}</strong>,
             </p>
             <p style="color:rgba(255,255,255,0.6);font-size:15px;line-height:1.75;margin:0 0 24px;">
-                Sua compra de <strong style="color:#e1a960;">O Dossiê do Futuro Franqueado</strong> foi confirmada.
-                Clique no botão abaixo para definir sua senha e acessar a área do membro com os 6 módulos em vídeo, exercícios e bônus.
+                Sua compra de <strong style="color:#e1a960;">${productTitle}</strong> foi confirmada.
+                Clique no botão abaixo para definir sua senha e acessar a área do membro com seu material exclusivo.
             </p>
             <div style="text-align:center;margin:36px 0;">
                 <a href="${activationUrl}" style="display:inline-block;padding:18px 36px;background:#e1a960;color:#000;text-decoration:none;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:3px;">
@@ -288,11 +332,30 @@ const buildEbookWelcomeEmail = (name: string, sessionId: string, activationUrl: 
     </div>
 </body>
 </html>`;
+};
 
-const buildEbookWelcomeEmailText = (name: string, sessionId: string, activationUrl: string) =>
-`Olá ${name},
+const buildEbookWelcomeEmailText = (name: string, sessionId: string, activationUrl: string, productTitle: string = 'O Dossiê do Futuro Franqueado', isEn: boolean = false) => {
+    if (isEn) {
+        return `Hello ${name},
 
-Sua compra de O Dossiê do Futuro Franqueado foi confirmada!
+Your purchase of ${productTitle} has been confirmed!
+
+Access the link below to set your password and access the member area:
+
+${activationUrl}
+
+This link expires in ${ACCESS_TOKEN_TTL_DAYS} days. If you need a new one, reply to this email.
+
+7-day unconditional guarantee: if the Dossier does not meet your expectations, simply reply to this email requesting a refund.
+
+Order reference: ${sessionId}
+
+© 2026 Marinho Ponci · All rights reserved`;
+    }
+
+    return `Olá ${name},
+
+Sua compra de ${productTitle} foi confirmada!
 
 Acesse o link abaixo para definir sua senha e entrar na área do membro:
 
@@ -305,6 +368,7 @@ Garantia de 7 dias incondicional: se o Dossiê não fizer sentido pra você, bas
 Referência da compra: ${sessionId}
 
 © 2026 Marinho Ponci · Todos os direitos reservados`;
+};
 
 // Email de reset de senha
 const buildResetEmail = (name: string, resetUrl: string) => `
@@ -428,17 +492,26 @@ async function handleCheckoutCompleted(session: any) {
     );
     const orderId = orderResult.rows[0].id;
 
-    // Vincula a compra ao produto (matching por stripe_metadata_key OU stripe_price_id)
+    // Vincula a compra ao produto (matching por stripe_metadata_key, slug OU stripe_price_id)
     const productKey = session.metadata?.product || null;
+    const lineItemPriceId = session.line_items?.data?.[0]?.price?.id || null;
     const productResult = await pool.query(
-        `SELECT id FROM products
-         WHERE (stripe_metadata_key = $1 OR stripe_price_id = $2)
+        `SELECT id, title, slug FROM products
+         WHERE (stripe_metadata_key = $1 OR slug = $1 OR stripe_price_id = $2 OR ($2 IS NOT NULL AND stripe_price_id = $2))
            AND is_published = true
          LIMIT 1`,
-        [productKey, process.env.STRIPE_EBOOK_PRICE_ID || null]
+        [productKey, lineItemPriceId || process.env.STRIPE_EBOOK_PRICE_ID || null]
     );
+
+    let purchasedProductTitle = 'O Dossiê do Futuro Franqueado';
+    let isEnProduct = false;
+
     if ((productResult.rowCount ?? 0) > 0) {
-        const productId = productResult.rows[0].id;
+        const prod = productResult.rows[0];
+        const productId = prod.id;
+        purchasedProductTitle = prod.title;
+        isEnProduct = (prod.slug && prod.slug.includes('-en')) || (productKey && productKey.includes('_en')) || false;
+
         await pool.query(
             `INSERT INTO purchases (customer_id, product_id, order_id, granted_at)
              VALUES ($1, $2, $3, now())
@@ -449,7 +522,7 @@ async function handleCheckoutCompleted(session: any) {
             [customerId, productId, orderId]
         );
     } else {
-        console.warn(`[stripe] checkout completed but no product matched (key=${productKey})`);
+        console.warn(`[stripe] checkout completed but no product matched (key=${productKey}, price=${lineItemPriceId})`);
     }
 
     // Gera token de ativação (1 por compra) e link para o frontend
@@ -468,14 +541,19 @@ async function handleCheckoutCompleted(session: any) {
             const fromAddr = ethrealAccount
                 ? `"Marinho Ponci (sandbox)" <no-reply@ethereal.email>`
                 : `"Marinho Ponci" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`;
+            const emailSubject = isEnProduct
+                ? `Welcome to ${purchasedProductTitle}`
+                : `Bem-vindo ao ${purchasedProductTitle}`;
+            const recipientGreeting = name.split(' ')[0] || (isEnProduct ? 'friend' : 'amigo(a)');
+
             const info = await transporter.sendMail({
                 from: fromAddr,
                 to: email,
-                subject: 'Bem-vindo ao Dossiê do Futuro Franqueado',
-                text: buildEbookWelcomeEmailText(name.split(' ')[0] || 'amigo(a)', session.id, activationUrl),
-                html: buildEbookWelcomeEmail(name.split(' ')[0] || 'amigo(a)', session.id, activationUrl)
+                subject: emailSubject,
+                text: buildEbookWelcomeEmailText(recipientGreeting, session.id, activationUrl, purchasedProductTitle, isEnProduct),
+                html: buildEbookWelcomeEmail(recipientGreeting, session.id, activationUrl, purchasedProductTitle, isEnProduct)
             });
-            console.log(`[ebook] welcome email sent to ${email}`);
+            console.log(`[ebook] welcome email sent to ${email} for product "${purchasedProductTitle}"`);
             if (ethrealAccount) {
                 const previewUrl = nodemailer.getTestMessageUrl(info);
                 console.log(`[ebook] >>> PREVIEW: ${previewUrl}`);
@@ -545,10 +623,27 @@ const requireAuth = (req: Request, res: Response, next: () => void) => {
 app.post('/api/checkout/create-session', async (req: Request, res: Response) => {
     try {
         const { email, productKey, cancelUrl } = req.body || {};
-        const priceId = process.env.STRIPE_EBOOK_PRICE_ID;
+
+        let priceId: string | undefined;
+        let cancelFallback = `${PUBLIC_URL}/ebook?canceled=1`;
+        let successProductParam = '';
+
+        if (productKey === 'dossie_futuro_franqueador' || productKey === 'dossie-futuro-franqueador') {
+            priceId = process.env.STRIPE_FRANQUEADOR_PRICE_ID || process.env.STRIPE_EBOOK_PRICE_ID;
+            cancelFallback = `${PUBLIC_URL}/franqueador?canceled=1`;
+            successProductParam = '&product=dossie_futuro_franqueador';
+        } else if (productKey === 'dossie_futuro_franqueado_en' || productKey === 'dossie-futuro-franqueado-en') {
+            priceId = process.env.STRIPE_FRANQUEADO_EN_PRICE_ID;
+            cancelFallback = `${PUBLIC_URL}/ebook-ingles?canceled=1`;
+            successProductParam = '&product=dossie_futuro_franqueado_en';
+        } else {
+            priceId = process.env.STRIPE_PRICE_FRANQUEADO || process.env.STRIPE_EBOOK_PRICE_ID;
+            cancelFallback = `${PUBLIC_URL}/ebook?canceled=1`;
+            successProductParam = '&product=dossie_futuro_franqueado';
+        }
 
         if (!priceId) {
-            return res.status(500).json({ error: 'STRIPE_EBOOK_PRICE_ID not configured' });
+            return res.status(500).json({ error: `Preço não configurado para o produto (${productKey || 'padrão'})` });
         }
 
         const session = await stripeClient.checkout.sessions.create({
@@ -557,8 +652,8 @@ app.post('/api/checkout/create-session', async (req: Request, res: Response) => 
             line_items: [{ price: priceId, quantity: 1 }],
             customer_email: email || undefined,
             allow_promotion_codes: true,
-            success_url: `${PUBLIC_URL}/ebook/sucesso?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: cancelUrl || `${PUBLIC_URL}/ebook?canceled=1`,
+            success_url: `${PUBLIC_URL}/ebook/sucesso?session_id={CHECKOUT_SESSION_ID}${successProductParam}`,
+            cancel_url: cancelUrl || cancelFallback,
             metadata: {
                 product: productKey || 'dossie_futuro_franqueado',
             },
