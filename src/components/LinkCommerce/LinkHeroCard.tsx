@@ -9,7 +9,7 @@ interface LinkHeroCardProps {
 
 export default function LinkHeroCard({
     name = 'Marinho Ponci',
-    tagline = 'Conselheiro Estratégico & Consultoria Empresarial',
+    tagline = 'Conselheiro Estratégico & Business Architect',
     years = '38 anos de experiência',
     photoUrl = '/marinho principal.webp',
 }: LinkHeroCardProps) {

@@ -6,7 +6,7 @@ const DIAGNOSTIC_QUESTIONS = [
         id: 1,
         title: 'Qual é o seu objetivo principal ao procurar o Marinho hoje?',
         options: [
-            { text: 'Sou empresário e busco Consultoria Estratégica.', points: 3 },
+            { text: 'Sou empresário e busco Business Architect.', points: 3 },
             { text: 'Quero investir em uma franquia com segurança.', points: 2 },
             { text: 'Quero formatar e expandir minha marca (Dossiê Franqueador).', points: 3 },
         ],
@@ -218,9 +218,10 @@ export default function LinkDiagnosticModal({
             } else {
                 throw new Error('Resposta inesperada do servidor. O backend pode estar desatualizado.');
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Diagnostic lead submission failed:', error);
-            setSubmitError(error.message || 'Erro de conexão. Verifique sua conexão e tente novamente.');
+            const message = error instanceof Error ? error.message : 'Erro de conexão. Verifique sua conexão e tente novamente.';
+            setSubmitError(message);
         } finally {
             setSubmitting(false);
         }
@@ -395,7 +396,7 @@ export default function LinkDiagnosticModal({
                                     onClick={() => { onClose(); window.location.href = '/empresarial'; }}
                                     className="w-full py-4 bg-accent-gold text-black font-black uppercase text-xs tracking-[0.2em] rounded-xl hover:bg-white transition-colors"
                                 >
-                                    Conhecer Consultoria Empresarial
+                                    Conhecer Business Architect
                                 </button>
                                 <button
                                     onClick={() => { onClose(); onSchedule(); }}

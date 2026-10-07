@@ -9,9 +9,9 @@ interface LinkSchedulerProps {
 type Step = 'date' | 'time' | 'service' | 'form' | 'success';
 
 const SERVICES = [
-    { id: 'consultoria_empresarial', name: 'Consultoria Estratégica em Negócios', desc: 'Para pequenos e médios empresários que buscam organização, clareza e gestão sustentável.' },
+    { id: 'consultoria_empresarial', name: 'Business Architect', desc: 'Para pequenos e médios empresários que buscam organização, clareza e gestão sustentável.' },
     { id: 'diagnostico', name: 'Diagnóstico de Perfil de Franqueado', desc: 'Avaliação do seu perfil de investidor e alinhamento de expectativas.' },
-    { id: 'consultoria', name: 'Consultoria Estratégica 1:1', desc: 'Reunião para avaliar marcas, circular de oferta (COF) ou modelo de negócios.' },
+    { id: 'consultoria', name: 'Business Architect 1:1', desc: 'Reunião para avaliar marcas, circular de oferta (COF) ou modelo de negócios.' },
     { id: 'internacionalizacao', name: 'Internacionalização de Marcas', desc: 'Para marcas que buscam expandir sua operação para o mercado americano/europeu.' }
 ];
 
@@ -130,9 +130,10 @@ export default function LinkScheduler({ onTrack, onSuccess }: LinkSchedulerProps
             } else {
                 throw new Error('Resposta inesperada do servidor. O backend pode estar desatualizado.');
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Schedule submission failed:', error);
-            setSubmitError(error.message || 'Erro de conexão. Verifique sua conexão e tente novamente.');
+            const errMessage = error instanceof Error ? error.message : 'Erro de conexão. Verifique sua conexão e tente novamente.';
+            setSubmitError(errMessage);
         } finally {
             setLoading(false);
         }
