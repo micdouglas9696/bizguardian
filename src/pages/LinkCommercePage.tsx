@@ -1,30 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import LinkHeroCard from '../components/LinkCommerce/LinkHeroCard';
 import LinkSocialIcons from '../components/LinkCommerce/LinkSocialIcons';
 import LinkCTAButton from '../components/LinkCommerce/LinkCTAButton';
 import LinkInstagramFeed from '../components/LinkCommerce/LinkInstagramFeed';
 import LinkScheduler from '../components/LinkCommerce/LinkScheduler';
-import LinkConcierge from '../components/LinkCommerce/LinkConcierge';
+import LinkWhatsAppFloat from '../components/LinkCommerce/LinkWhatsAppFloat';
 import LinkDiagnosticModal from '../components/LinkCommerce/LinkDiagnosticModal';
 
 export default function LinkCommercePage() {
     const [isDiagnosticOpen, setIsDiagnosticOpen] = useState(false);
-    const [visitorId, setVisitorId] = useState('');
-
-    useEffect(() => {
-        // Obter ou gerar ID do visitante único e persistente no localStorage
+    const [visitorId] = useState(() => {
+        if (typeof window === 'undefined') return '';
         let storedId = localStorage.getItem('lc_visitor_id');
         if (!storedId) {
-            storedId = 'vis_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+            storedId = 'vis_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
             localStorage.setItem('lc_visitor_id', storedId);
         }
-        setVisitorId(storedId);
+        return storedId;
+    });
 
-        // Track page view
-        trackEvent('page_view', 'link_page');
-    }, []);
-
-    const trackEvent = async (eventType: string, elementId: string, metadata: Record<string, any> = {}) => {
+    const trackEvent = useCallback(async (eventType: string, elementId: string, metadata: Record<string, unknown> = {}) => {
         try {
             const API = import.meta.env.VITE_API_URL || 'http://localhost:3001';
             const searchParams = new URLSearchParams(window.location.search);
@@ -35,7 +30,7 @@ export default function LinkCommercePage() {
                 body: JSON.stringify({
                     event_type: eventType,
                     element_id: elementId,
-                    visitor_id: visitorId || localStorage.getItem('lc_visitor_id') || 'anonymous',
+                    visitor_id: visitorId || 'anonymous',
                     metadata: {
                         ...metadata,
                         utm_source: searchParams.get('utm_source'),
@@ -49,7 +44,12 @@ export default function LinkCommercePage() {
         } catch {
             // silent track error
         }
-    };
+    }, [visitorId]);
+
+    useEffect(() => {
+        // Track page view
+        trackEvent('page_view', 'link_page');
+    }, [trackEvent]);
 
     const handleScheduleSuccess = () => {
         trackEvent('schedule_success', 'scheduler');
@@ -101,7 +101,7 @@ export default function LinkCommercePage() {
                             </svg>
                         }
                         title="Descubra se você está pronto"
-                        description="Responda 5 perguntas rápidas e inicie o Concierge de IA."
+                        description="Responda 5 perguntas rápidas e receba uma recomendação personalizada."
                         onClick={() => setIsDiagnosticOpen(true)}
                         highlight={false}
                         delay={100}
@@ -175,14 +175,9 @@ export default function LinkCommercePage() {
                 </div>
             </div>
 
-            {/* Float Concierge FAB (drawer inside) */}
-            <LinkConcierge 
+            {/* Floating WhatsApp Button */}
+            <LinkWhatsAppFloat
                 onTrack={(elementId) => trackEvent('click', elementId)}
-                onOpenSchedule={() => {
-                    const el = document.getElementById('bio-scheduler');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                onOpenDiagnostic={() => setIsDiagnosticOpen(true)}
             />
 
             {/* Diagnostic Modal */}
