@@ -8,8 +8,8 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 // "The Future Franchisor Dossier" — Marinho Ponci
 // =====================================================================
 
-const PRICE_PARCELA = '3× of R$ 89.00 interest-free';
-const PRICE_PIX = 'R$ 222.30 via Pix (10% off) or Credit Card';
+const PRICE_PARCELA = 'Instant digital access';
+const PRICE_PIX = 'Single payment via Credit Card';
 
 // 6 modules of the Future Franchisor Dossier
 const MODULES = [
@@ -126,8 +126,8 @@ const PRODUCT_SCHEMA = {
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
     offers: {
         '@type': 'Offer',
-        price: '247.00',
-        priceCurrency: 'BRL',
+        price: '47.00',
+        priceCurrency: 'USD',
         availability: 'https://schema.org/InStock',
         url: 'https://marinhoponci.com/franqueador-ingles',
     },
@@ -209,7 +209,7 @@ export default function FranqueadorLandingPageEn() {
         setShowLeadModal(false);
         setCheckoutError(null);
         setCheckoutLoading(true);
-        const result = await startCheckout('dossie_futuro_franqueador');
+        const result = await startCheckout('dossie_futuro_franqueador_en');
         if (!result.ok) {
             setCheckoutError(result.error || 'Error starting checkout');
             setCheckoutLoading(false);
@@ -397,7 +397,7 @@ export default function FranqueadorLandingPageEn() {
                                 >
                                     <div className="absolute -inset-10 bg-accent-gold/[0.08] blur-3xl rounded-full pointer-events-none"></div>
                                     <img
-                                        src="/capa_franqueador.png"
+                                        src="/capa_franqueador_en.png"
                                         alt="The Future Franchisor Dossier"
                                         className="h-full w-auto object-contain shadow-[25px_35px_60px_rgba(0,0,0,0.9)] border border-white/10"
                                     />
@@ -421,7 +421,7 @@ export default function FranqueadorLandingPageEn() {
                                     }}
                                 >
                                     <img
-                                        src="/capa_franqueador.png"
+                                        src="/capa_franqueador_en.png"
                                         alt="The Future Franchisor Dossier"
                                         loading="eager"
                                         fetchPriority="high"
@@ -759,10 +759,10 @@ export default function FranqueadorLandingPageEn() {
                                     </div>
                                     <div className="flex items-baseline justify-center gap-1 mb-2">
                                         <span className="text-3xl font-black text-white/80 align-super">
-                                            R$
+                                            $
                                         </span>
                                         <span className="text-7xl md:text-8xl font-black shimmer-text leading-none tracking-tighter">
-                                            247
+                                            47
                                         </span>
                                     </div>
                                     <div className="text-center text-sm text-white/55 mb-1">
@@ -961,7 +961,7 @@ export default function FranqueadorLandingPageEn() {
                                 The Future Franchisor Dossier
                             </h2>
                             <p className="text-base md:text-lg text-white/55 leading-[1.75] max-w-xl mx-auto mb-10">
-                                R$ 247 is what it costs to understand the real strategic path to expanding your business — before you spend a fortune on legal advice or unprepared consultancies.
+                                $47 is what it costs to understand the real strategic path to expanding your business — before you spend a fortune on legal advice or unprepared consultancies.
                             </p>
 
                             <button

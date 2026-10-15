@@ -76,7 +76,29 @@ async function main() {
                 stripe_metadata_key = EXCLUDED.stripe_metadata_key
         `);
 
-        console.log('Products inserted / updated successfully with Stripe Price IDs!');
+        console.log('Inserting / updating dossie-futuro-franqueador-en (EN)...');
+        await pool.query(`
+            INSERT INTO products
+                (slug, title, subtitle, description, access_type, access_value, stripe_price_id, stripe_metadata_key, sort_order)
+            VALUES
+                ('dossie-futuro-franqueador-en',
+                 'The Future Franchisor Dossier',
+                 'The complete roadmap to format and scale your brand',
+                 'The complete method for anyone looking to scale their proven business into a franchise network.',
+                 'pdf',
+                 'dossie-futuro-franqueador-en.pdf',
+                 '${process.env.STRIPE_FRANQUEADOR_EN_PRICE_ID || 'price_1UQsir0l9XbFWgZqcb1J42Xn'}',
+                 'dossie_futuro_franqueador_en',
+                 4)
+            ON CONFLICT (slug) DO UPDATE SET
+                title = EXCLUDED.title,
+                subtitle = EXCLUDED.subtitle,
+                access_value = EXCLUDED.access_value,
+                stripe_price_id = EXCLUDED.stripe_price_id,
+                stripe_metadata_key = EXCLUDED.stripe_metadata_key
+        `);
+
+        console.log('All 4 products inserted / updated successfully with Stripe Price IDs!');
     } catch (err) {
         console.error('Error inserting products:', err);
     } finally {

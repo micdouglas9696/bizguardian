@@ -26,9 +26,10 @@ export default function EbookSuccessPage() {
 
     const productTitle = 
         productParam === 'dossie_futuro_franqueador' ? 'O Dossiê do Futuro Franqueador' :
+        productParam === 'dossie_futuro_franqueador_en' ? 'The Future Franchisor Dossier' :
         productParam === 'dossie_futuro_franqueado_en' ? 'The Future Franchisee Dossier' :
         'O Dossiê do Futuro Franqueado';
-    const isEn = productParam === 'dossie_futuro_franqueado_en';
+    const isEn = productParam === 'dossie_futuro_franqueado_en' || productParam === 'dossie_futuro_franqueador_en';
 
     const [order, setOrder] = useState<OrderData | null>(null);
     const [loading, setLoading] = useState(true);

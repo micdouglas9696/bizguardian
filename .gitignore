@@ -77,3 +77,4 @@ backend/public_media/*
 *.pdf
 paginavendas_Ebook*.html
 biz-guardian-blog/
+ebook/

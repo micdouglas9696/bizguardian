@@ -169,7 +169,16 @@ VALUES
      'dossie-futuro-franqueador.pdf',
      'price_1UO0JZ0l9XbFWgZq4hXIpJiq',
      'dossie_futuro_franqueador',
-     3)
+     3),
+    ('dossie-futuro-franqueador-en',
+     'The Future Franchisor Dossier',
+     'The complete roadmap to format and scale your brand',
+     'The complete method for anyone looking to scale their proven business into a franchise network.',
+     'pdf',
+     'dossie-futuro-franqueador-en.pdf',
+     'price_1UQsir0l9XbFWgZqcb1J42Xn',
+     'dossie_futuro_franqueador_en',
+     4)
 ON CONFLICT (slug) DO UPDATE SET
     stripe_price_id = EXCLUDED.stripe_price_id,
     stripe_metadata_key = EXCLUDED.stripe_metadata_key,

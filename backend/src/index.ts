@@ -632,6 +632,10 @@ app.post('/api/checkout/create-session', async (req: Request, res: Response) => 
             priceId = process.env.STRIPE_FRANQUEADOR_PRICE_ID || process.env.STRIPE_EBOOK_PRICE_ID;
             cancelFallback = `${PUBLIC_URL}/franqueador?canceled=1`;
             successProductParam = '&product=dossie_futuro_franqueador';
+        } else if (productKey === 'dossie_futuro_franqueador_en' || productKey === 'dossie-futuro-franqueador-en') {
+            priceId = process.env.STRIPE_FRANQUEADOR_EN_PRICE_ID;
+            cancelFallback = `${PUBLIC_URL}/franqueador-ingles?canceled=1`;
+            successProductParam = '&product=dossie_futuro_franqueador_en';
         } else if (productKey === 'dossie_futuro_franqueado_en' || productKey === 'dossie-futuro-franqueado-en') {
             priceId = process.env.STRIPE_FRANQUEADO_EN_PRICE_ID;
             cancelFallback = `${PUBLIC_URL}/ebook-ingles?canceled=1`;
