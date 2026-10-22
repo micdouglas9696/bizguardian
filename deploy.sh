@@ -26,7 +26,7 @@ ssh ${SSH_OPTS} ${VPS_USER}@${VPS_IP} "echo '✅ Conexão estabelecida!'"
 echo ""
 echo "🌐 Step 0: Build do frontend..."
 VITE_API_URL=https://api.marinhoponci.com \
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_51TURraRmzidCCndcwwYgXaod7tQugPiLlaYyrp8k1pIhbicXi2HQMa897nCwqO5vyEkpui9RkxzDgyMOqeuwFx1000CKZFOYjo \
+VITE_STRIPE_PUBLISHABLE_KEY=pk_live_51TVvQW0l9XbFWgZq9Fd9CsD6F8JcK6wS4ziKpWURvP8537sdLU0OzOGvx7RsliCpSCz2bk3DeRFM6RHWrf4pTVse00cHtGybZC \
 npm run build
 
 echo "📤 Enviando frontend para VPS..."
@@ -43,6 +43,7 @@ scp ${SSH_OPTS} /tmp/${IMAGE_NAME}.tar ${VPS_USER}@${VPS_IP}:/tmp/${IMAGE_NAME}.
 
 echo "📄 Step 4: Enviando arquivos de stack e migrations..."
 scp ${SSH_OPTS} docker-compose.prod.yml ${VPS_USER}@${VPS_IP}:/root/${STACK_NAME}.yaml
+scp ${SSH_OPTS} .env.prod.secrets ${VPS_USER}@${VPS_IP}:/root/.env.bizguardian
 scp ${SSH_OPTS} backend/init.sql ${VPS_USER}@${VPS_IP}:/root/bizguardian/init.sql
 scp ${SSH_OPTS} -r backend/migrations ${VPS_USER}@${VPS_IP}:/root/bizguardian/migrations
 

@@ -492,16 +492,30 @@ async function handleCheckoutCompleted(session: any) {
     );
     const orderId = orderResult.rows[0].id;
 
-    // Vincula a compra ao produto (matching por stripe_metadata_key, slug OU stripe_price_id)
+    // Vincula a compra ao produto (matching prioritário por metadata.product / slug, depois por stripe_price_id)
     const productKey = session.metadata?.product || null;
     const lineItemPriceId = session.line_items?.data?.[0]?.price?.id || null;
-    const productResult = await pool.query(
-        `SELECT id, title, slug FROM products
-         WHERE (stripe_metadata_key = $1 OR slug = $1 OR stripe_price_id = $2 OR ($2 IS NOT NULL AND stripe_price_id = $2))
-           AND is_published = true
-         LIMIT 1`,
-        [productKey, lineItemPriceId || process.env.STRIPE_EBOOK_PRICE_ID || null]
-    );
+    let productResult: any = null;
+
+    if (productKey) {
+        productResult = await pool.query(
+            `SELECT id, title, slug FROM products
+             WHERE (stripe_metadata_key = $1 OR slug = $1)
+               AND is_published = true
+             LIMIT 1`,
+            [productKey]
+        );
+    }
+
+    if (!productResult || (productResult.rowCount ?? 0) === 0) {
+        productResult = await pool.query(
+            `SELECT id, title, slug FROM products
+             WHERE stripe_price_id = $1
+               AND is_published = true
+             LIMIT 1`,
+            [lineItemPriceId || process.env.STRIPE_EBOOK_PRICE_ID || null]
+        );
+    }
 
     let purchasedProductTitle = 'O Dossiê do Futuro Franqueado';
     let isEnProduct = false;
