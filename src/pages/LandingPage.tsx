@@ -13,6 +13,26 @@ import CountryPhoneInput from '../components/CountryPhoneInput';
 
 const FALLBACK_POSTS: BlogPost[] = [
     {
+        _id: 'post-como-sair-do-operacional-estruturar-empresa',
+        title: 'Da Operação à Liderança Estratégica: Como Deixar de Ser o Bombeiro da Sua Própria Empresa',
+        slug: 'como-sair-do-operacional-estruturar-empresa',
+        publishedAt: '2026-10-28T20:30:00Z',
+        excerpt: 'Se a sua empresa depende 100% de você para funcionar, você não construiu um patrimônio: construiu um emprego de alto risco. Saiba como estruturar processos e conquistar autonomia.',
+        readingTime: 11,
+        featuredImage: { asset: { _ref: '/banner final 02.webp' } },
+        categories: [{ title: 'Consultoria Empresarial', slug: 'consultoria-empresarial', color: '#D4AF37' }]
+    },
+    {
+        _id: 'post-direcao-antes-de-velocidade-na-gestao-empresarial',
+        title: 'Por que Toda Empresa Precisa de Direção Antes de Precisar de Velocidade',
+        slug: 'direcao-antes-de-velocidade-na-gestao-empresarial',
+        publishedAt: '2026-10-28T20:29:00Z',
+        excerpt: 'No mundo dos negócios, acelerar sem direção apenas faz você chegar ao abismo mais rápido. Descubra por que estrutura, processos e margem devem vir antes da obsessão pelo crescimento.',
+        readingTime: 10,
+        featuredImage: { asset: { _ref: '/sobre.webp' } },
+        categories: [{ title: 'Consultoria Empresarial', slug: 'consultoria-empresarial', color: '#D4AF37' }]
+    },
+    {
         _id: 'fallback-1',
         title: 'Melhores franquias para investir em 2026',
         slug: 'melhores-franquias-para-investir-em-2026',
@@ -20,26 +40,6 @@ const FALLBACK_POSTS: BlogPost[] = [
         excerpt: 'Não vou te dar uma lista de nomes. Vou te dar o que de fato importa: como pensar sobre franquias em 2026 se o dinheiro em jogo fosse o meu.',
         readingTime: 16,
         featuredImage: { asset: { _ref: '/banner final 02.webp' } },
-        categories: [{ title: 'Franquias', slug: 'franquias', color: '#e1a960' }]
-    },
-    {
-        _id: 'fallback-2',
-        title: 'Como avaliar uma franquia antes de investir',
-        slug: 'como-avaliar-uma-franquia-antes-de-investir',
-        publishedAt: '2026-06-18T12:00:00Z',
-        excerpt: 'A indústria do franchising prospera com gente que decide rápido e analisa devagar. Aprenda a inverter essa ordem para proteger o seu dinheiro.',
-        readingTime: 18,
-        featuredImage: { asset: { _ref: '/capaebookdesk_franqueado.webp' } },
-        categories: [{ title: 'Franquias', slug: 'franquias', color: '#e1a960' }]
-    },
-    {
-        _id: 'fallback-3',
-        title: 'Quando o fracasso é culpa do franqueado e quando é culpa do franqueador',
-        slug: 'franquia-culpa-franqueado-ou-franqueador',
-        publishedAt: '2026-05-29T12:00:00Z',
-        excerpt: 'Quando uma franquia quebra, cada lado culpa o outro. Mas os padrões se repetem. Veja quando o fracasso é responsabilidade do franqueado e quando é do franqueador.',
-        readingTime: 8,
-        featuredImage: { asset: { _ref: '/sobre.webp' } },
         categories: [{ title: 'Franquias', slug: 'franquias', color: '#e1a960' }]
     }
 ];
