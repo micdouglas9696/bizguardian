@@ -676,7 +676,7 @@ export default function FranchiseLandingPage() {
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                         <Link to="/">
-                            <img src="/marinho final.webp" alt="Marinho Ponci Logo" className="h-10 sm:h-12 w-auto object-contain hover:opacity-80 transition-opacity" />
+                            <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci Logo" className="h-10 sm:h-12 w-auto object-contain hover:opacity-80 transition-opacity" />
                         </Link>
                         <p className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-white/10 text-center">
                             © 2026 MARINHO PONCI. ALL RIGHTS RESERVED. BORN FOR GLOBAL.

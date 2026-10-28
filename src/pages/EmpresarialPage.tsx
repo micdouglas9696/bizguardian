@@ -116,7 +116,7 @@ export default function EmpresarialPage() {
                 <div className="max-w-[1700px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="flex flex-col leading-none select-none cursor-pointer group">
-                            <img src="/marinho final.webp" alt="Marinho Ponci" width="400" height="144" className="h-10 sm:h-14 md:h-18 w-auto object-contain transition-transform group-hover:scale-105" />
+                            <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci" width="400" height="144" className="h-10 sm:h-14 md:h-18 w-auto object-contain transition-transform group-hover:scale-105" />
                         </Link>
                     </div>
 
@@ -470,7 +470,7 @@ export default function EmpresarialPage() {
 
                                 {/* Clean signature image */}
                                 <div className="mt-8 pt-4 flex items-center">
-                                    <img src="/marinho final.webp" alt="Assinatura Marinho Ponci" className="h-12 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+                                    <img src="/marinho-ponci-logo.webp" alt="Assinatura Marinho Ponci" className="h-12 w-auto opacity-80 hover:opacity-100 transition-opacity" />
                                 </div>
                             </div>
 
@@ -917,7 +917,7 @@ export default function EmpresarialPage() {
             <footer className="bg-black border-t border-white/10 py-12 text-center text-xs text-white/40">
                 <div className="max-w-[1200px] mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-4">
-                        <img src="/marinho final.webp" alt="Marinho Ponci" className="h-8 w-auto opacity-70" />
+                        <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci" className="h-8 w-auto opacity-70" />
                         <span className="text-[10px] uppercase tracking-widest text-white/30">Biz Guardian World Connections</span>
                     </div>
                     <div className="text-[10px] uppercase tracking-widest">

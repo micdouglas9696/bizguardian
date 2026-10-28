@@ -42,7 +42,7 @@ export default function MemberForgotPasswordPage() {
                 <div className="text-center mb-10">
                     <Link to="/" className="inline-block">
                         <img
-                            src="/marinho final.webp"
+                            src="/marinho-ponci-logo.webp"
                             alt="Marinho Ponci"
                             className="h-14 mx-auto mb-6 opacity-90"
                         />

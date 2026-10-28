@@ -156,7 +156,7 @@ export default function LandingPage() {
                 <div className="max-w-[1700px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="flex flex-col leading-none select-none cursor-pointer group">
-                            <img src="/marinho final.webp" alt="Marinho Signature Logo" width="200" height="72" className="h-10 sm:h-14 md:h-20 lg:h-24 w-auto object-contain transition-transform group-hover:scale-105" />
+                            <img src="/marinho-ponci-logo.webp" alt="Marinho Signature Logo" width="200" height="72" className="h-10 sm:h-14 md:h-20 lg:h-24 w-auto object-contain transition-transform group-hover:scale-105" />
                         </Link>
                     </div>
 
@@ -822,7 +822,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
                         {/* Column 1: Brand & Social */}
                         <div className="flex flex-col items-start">
-                            <img src="/marinho final.webp" alt="Marinho Ponci Logo" width="400" height="144" className="h-12 w-auto object-contain mb-8" />
+                            <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci Logo" width="400" height="144" className="h-12 w-auto object-contain mb-8" />
                             <p className="text-white/70 text-sm font-medium leading-relaxed mb-8 max-w-sm">
                                 Especialista em internacionalização de marcas, expansão de redes e estruturação de ecossistemas empresariais globais.
                             </p>

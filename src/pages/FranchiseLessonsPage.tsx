@@ -296,7 +296,7 @@ export default function FranchiseLessonsPage() {
             {/* Footer */}
             <footer className="bg-black text-white py-10 border-t border-white/5">
                 <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <img src="/marinho final.webp" alt="Marinho Ponci Logo" className="h-8 w-auto object-contain" />
+                    <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci Logo" className="h-8 w-auto object-contain" />
                     <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/10 text-center">
                         © 2026 MARINHO PONCI. FRANCHISE-SE. ALL RIGHTS RESERVED.
                     </p>

@@ -301,7 +301,7 @@ export default function FranqueadorLandingPage() {
                             className="flex flex-col leading-none select-none cursor-pointer group"
                         >
                             <img
-                                src="/marinho final.webp"
+                                src="/marinho-ponci-logo.webp"
                                 alt="Marinho Ponci"
                                 className="h-9 sm:h-12 md:h-16 lg:h-20 w-auto object-contain transition-transform group-hover:scale-105"
                             />
@@ -1118,7 +1118,7 @@ export default function FranqueadorLandingPage() {
                     <div className="max-w-[1700px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-5">
                         <Link to="/" className="flex items-center gap-3">
                             <img
-                                src="/marinho final.webp"
+                                src="/marinho-ponci-logo.webp"
                                 alt="Marinho Ponci"
                                 className="h-10 w-auto opacity-70 hover:opacity-100 transition-opacity"
                             />

@@ -246,7 +246,7 @@ export default function AdminAutomacoes() {
             {/* Header */}
             <header className="fixed top-0 w-full bg-[#050505]/80 backdrop-blur-md border-b border-white/5 z-40 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
                 <div>
-                    <img src="/marinho final.webp" alt="Marinho Ponci" className="h-8 md:h-10 object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.15)]" />
+                    <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci" className="h-8 md:h-10 object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.15)]" />
                 </div>
                 <div className="flex items-center gap-4">
                     <button
