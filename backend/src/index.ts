@@ -146,6 +146,34 @@ app.post(
             return res.status(400).send(`Webhook Error: ${err.message}`);
         }
 
+        // O workshop retorna erro em caso de falha para permitir nova entrega pela Stripe.
+        if (['checkout.session.completed', 'checkout.session.async_payment_succeeded'].includes(event.type) && event.data.object.metadata?.product === 'workshop_brasil_europa') {
+            try {
+                const session = event.data.object;
+                if (session.payment_status !== 'paid') return res.json({ received: true });
+                await recordWorkshopPayment(session);
+
+                // 🔔 Dispara automação pós-venda n8n (notifica Marinho + confirmação ao comprador)
+                const buyerName = session.metadata?.name || session.customer_details?.name || 'Participante';
+                const buyerEmail = session.customer_details?.email || session.customer_email || '';
+                const buyerPhone = session.metadata?.phone || session.customer_details?.phone || '';
+                const buyerAmount = session.amount_total ? (session.amount_total / 100).toFixed(2) : '300.00';
+                triggerN8nAsync('postvenda', {
+                    name: buyerName,
+                    email: buyerEmail,
+                    phone: buyerPhone,
+                    product: 'Workshop Online Brasil ➔ Europa',
+                    amount: buyerAmount,
+                    link: `${PUBLIC_URL}/workshop`,
+                    session_id: session.id,
+                });
+                return res.json({ received: true });
+            } catch (err) {
+                console.error('[stripe] Falha ao registrar pagamento do workshop:', err);
+                return res.status(500).json({ error: 'Falha ao registrar pagamento' });
+            }
+        }
+
         // Idempotência: ignora eventos repetidos
         try {
             const seen = await pool.query(
@@ -420,8 +448,8 @@ Se você não solicitou, pode ignorar este email — sua senha continua valendo.
 
 async function handleCheckoutCompleted(session: any) {
     const email = session.customer_details?.email || session.customer_email || '';
-    const name = session.customer_details?.name || 'Comprador';
-    const phone = session.customer_details?.phone || '';
+    const name = session.metadata?.name || session.customer_details?.name || 'Comprador';
+    const phone = session.metadata?.phone || session.customer_details?.phone || '';
     const amount = session.amount_total || 0;
     const currency = session.currency || 'brl';
     const paymentIntentId = typeof session.payment_intent === 'string'
@@ -491,6 +519,9 @@ async function handleCheckoutCompleted(session: any) {
         ]
     );
     const orderId = orderResult.rows[0].id;
+
+    // O workshop não deve receber o e-mail nem a automação de entrega do e-book.
+    if (session.metadata?.product === 'workshop_brasil_europa') return;
 
     // Vincula a compra ao produto (matching prioritário por metadata.product / slug, depois por stripe_price_id)
     const productKey = session.metadata?.product || null;
@@ -631,18 +662,116 @@ const requireAuth = (req: Request, res: Response, next: () => void) => {
     next();
 };
 
+// O registro e o cancelamento das recuperações acontecem na mesma transação.
+async function recordWorkshopPayment(session: { id: string; amount_total?: number | null; currency?: string | null }) {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        const result = await client.query(
+            `UPDATE workshop_leads SET payment_status='paid', paid_at=COALESCE(paid_at, now()),
+                amount_paid_cents=COALESCE($2, amount_paid_cents),
+                payment_currency=COALESCE($3, payment_currency)
+             WHERE checkout_session_id=$1 RETURNING id, email`,
+            [session.id, session.amount_total ?? null, session.currency ?? null]);
+        if (!result.rowCount) throw new Error('Workshop: sessão não vinculada a lead');
+        const { id, email } = result.rows[0];
+        await client.query(`UPDATE workshop_message_queue SET status='canceled'
+            WHERE kind IN ('recovery_1h','recovery_24h') AND status='held'
+            AND lead_id IN (SELECT id FROM workshop_leads WHERE lower(email)=lower($1))`, [email]);
+        await client.query(`INSERT INTO workshop_message_queue (lead_id,kind,scheduled_at)
+            VALUES ($1,'buyer_paid',now()),($1,'admin_paid',now()) ON CONFLICT (lead_id,kind) DO NOTHING`, [id]);
+        await client.query('COMMIT');
+    } catch (error) { await client.query('ROLLBACK'); throw error; }
+    finally { client.release(); }
+}
+
+app.get('/api/admin/workshop/leads', requireAuth, async (_req: Request, res: Response) => {
+    try {
+        const result = await pool.query(`SELECT id, name, email, phone, payment_status, marketing_consent, created_at, paid_at
+            FROM workshop_leads ORDER BY created_at DESC LIMIT 500`);
+        return res.json(result.rows);
+    } catch { return res.status(500).json({ error: 'Não foi possível consultar os leads do workshop' }); }
+});
+
+// O n8n deve verificar o estado novamente imediatamente antes de cada lembrete.
+// Sem chave configurada ou sem resposta confiável da Stripe, o envio é negado.
+app.post('/api/internal/workshop/reminder-eligibility', async (req: Request, res: Response) => {
+    const expected = process.env.WORKSHOP_AUTOMATION_SECRET;
+    const supplied = req.header('x-workshop-automation-secret');
+    if (!expected || !supplied) return res.status(401).json({ eligible: false });
+    const expectedBytes = Buffer.from(expected);
+    const suppliedBytes = Buffer.from(supplied);
+    if (expectedBytes.length !== suppliedBytes.length || !crypto.timingSafeEqual(expectedBytes, suppliedBytes)) {
+        return res.status(401).json({ eligible: false });
+    }
+
+    const leadId = req.body?.leadId;
+    if (typeof leadId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(leadId)) {
+        return res.status(400).json({ eligible: false });
+    }
+    try {
+        const result = await pool.query(
+            `SELECT l.checkout_session_id, l.marketing_consent, l.payment_status,
+                EXISTS (SELECT 1 FROM workshop_leads p WHERE lower(p.email)=lower(l.email)
+                        AND p.payment_status='paid') AS any_paid
+             FROM workshop_leads l WHERE l.id=$1`, [leadId]);
+        const lead = result.rows[0];
+        if (!lead || !lead.marketing_consent || lead.payment_status !== 'pending' || lead.any_paid || !lead.checkout_session_id) {
+            return res.json({ eligible: false });
+        }
+        const session = await stripeClient.checkout.sessions.retrieve(lead.checkout_session_id);
+        const eligible = session.metadata?.product === 'workshop_brasil_europa'
+            && session.payment_status === 'unpaid'
+            && (session.status === 'open' || session.status === 'expired');
+        return res.json({ eligible });
+    } catch (error) {
+        console.error('[workshop] Falha ao verificar elegibilidade para lembrete');
+        return res.status(503).json({ eligible: false });
+    }
+});
+
 // =====================================================================
 // EBOOK CHECKOUT  ·  cria sessão Stripe e devolve URL/ID
 // =====================================================================
 app.post('/api/checkout/create-session', async (req: Request, res: Response) => {
     try {
-        const { email, productKey, cancelUrl } = req.body || {};
+        const { email, name, phone, productKey, cancelUrl, marketingConsent } = req.body || {};
+        let workshopLeadId: string | undefined;
 
         let priceId: string | undefined;
         let cancelFallback = `${PUBLIC_URL}/ebook?canceled=1`;
         let successProductParam = '';
+        let dynamicLineItems: any = null;
 
-        if (productKey === 'dossie_futuro_franqueador' || productKey === 'dossie-futuro-franqueador') {
+        if (productKey === 'workshop_brasil_europa' || productKey === 'workshop') {
+            if (typeof email !== 'string' || !email.trim() || typeof name !== 'string' || !name.trim() || typeof phone !== 'string' || !phone.trim() || name.length > 200 || phone.length > 100) {
+                return res.status(400).json({ error: 'Preencha nome, e-mail e WhatsApp.' });
+            }
+            workshopLeadId = crypto.randomUUID();
+            try {
+                await pool.query(`INSERT INTO workshop_leads (id,name,email,phone,marketing_consent)
+                    VALUES ($1,$2,$3,$4,$5)`, [workshopLeadId,name.trim(),email.trim(),phone.trim(),marketingConsent === true]);
+            } catch (err) {
+                console.warn('[db] workshop_leads insert fallback:', err);
+            }
+            const liveStripeKey = /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY || '');
+            priceId = process.env.STRIPE_WORKSHOP_EUROPA_PRICE_ID || (liveStripeKey ? 'price_1UXTwM0l9XbFWgZqRoVdWtoK' : undefined);
+            cancelFallback = `${PUBLIC_URL}/workshop?canceled=1`;
+            successProductParam = '&product=workshop_brasil_europa';
+            if (!priceId) {
+                dynamicLineItems = [{
+                    price_data: {
+                        currency: 'brl',
+                        product_data: {
+                            name: 'Workshop Online Brasil ➔ Europa: Como morar, empreender e levar sua empresa para a Europa',
+                            description: 'Workshop online em 05/12'
+                        },
+                        unit_amount: 30000, // R$ 300,00
+                    },
+                    quantity: 1,
+                }];
+            }
+        } else if (productKey === 'dossie_futuro_franqueador' || productKey === 'dossie-futuro-franqueador') {
             priceId = process.env.STRIPE_FRANQUEADOR_PRICE_ID || process.env.STRIPE_EBOOK_PRICE_ID;
             cancelFallback = `${PUBLIC_URL}/franqueador?canceled=1`;
             successProductParam = '&product=dossie_futuro_franqueador';
@@ -660,27 +789,71 @@ app.post('/api/checkout/create-session', async (req: Request, res: Response) => 
             successProductParam = '&product=dossie_futuro_franqueado';
         }
 
-        if (!priceId) {
+        if (!priceId && !dynamicLineItems) {
             return res.status(500).json({ error: `Preço não configurado para o produto (${productKey || 'padrão'})` });
         }
+
+        const isWorkshop = productKey === 'workshop_brasil_europa' || productKey === 'workshop';
+        const defaultSuccessUrl = isWorkshop
+            ? `${PUBLIC_URL}/workshop?success=1&session_id={CHECKOUT_SESSION_ID}`
+            : `${PUBLIC_URL}/ebook/sucesso?session_id={CHECKOUT_SESSION_ID}${successProductParam}`;
 
         const session = await stripeClient.checkout.sessions.create({
             mode: 'payment',
             payment_method_types: ['card'],  // PIX adicionado automaticamente quando ativo na conta BR
-            line_items: [{ price: priceId, quantity: 1 }],
+            line_items: dynamicLineItems || [{ price: priceId, quantity: 1 }],
             customer_email: email || undefined,
             allow_promotion_codes: true,
-            success_url: `${PUBLIC_URL}/ebook/sucesso?session_id={CHECKOUT_SESSION_ID}${successProductParam}`,
-            cancel_url: cancelUrl || cancelFallback,
+            success_url: defaultSuccessUrl,
+            cancel_url: isWorkshop ? cancelFallback : (cancelUrl || cancelFallback),
             metadata: {
-                product: productKey || 'dossie_futuro_franqueado',
+                product: isWorkshop ? 'workshop_brasil_europa' : (productKey || 'dossie_futuro_franqueado'),
+                ...(isWorkshop ? { name: name.trim(), phone: phone.trim() } : {}),
             },
         });
 
+        if (workshopLeadId) {
+            try {
+                await pool.query('UPDATE workshop_leads SET checkout_session_id=$1 WHERE id=$2', [session.id, workshopLeadId]);
+                if (marketingConsent === true) await pool.query(`INSERT INTO workshop_message_queue (lead_id,kind,scheduled_at)
+                    VALUES ($1,'recovery_1h',now()+interval '1 hour'),($1,'recovery_24h',now()+interval '24 hours')`, [workshopLeadId]);
+            } catch (err) {
+                console.warn('[db] workshop session update fallback:', err);
+            }
+
+            // 🔔 Dispara automação n8n: notifica Marinho (admin) e envia mensagem ao lead
+            triggerN8nAsync('lead-captured', {
+                name: name.trim(),
+                email: email.trim(),
+                phone: phone.trim(),
+                link: `${PUBLIC_URL}/workshop`,
+                product: 'Workshop Online Brasil ➔ Europa',
+            });
+            // 🔔 Agenda fluxo de recuperação no n8n
+            triggerN8nAsync('recovery-start', {
+                name: name.trim(),
+                email: email.trim(),
+                phone: phone.trim(),
+                link: `${PUBLIC_URL}/workshop`,
+                product: 'Workshop Online Brasil ➔ Europa',
+            });
+        }
         return res.json({ id: session.id, url: session.url });
     } catch (err: any) {
         console.error('Error creating checkout session:', err);
         return res.status(500).json({ error: err.message || 'Erro ao criar sessão' });
+    }
+});
+
+app.get('/api/workshop/session/:sessionId', async (req: Request, res: Response) => {
+    try {
+        const sessionId = req.params.sessionId;
+        if (typeof sessionId !== 'string') return res.status(400).json({ error: 'Sessão inválida' });
+        const session = await stripeClient.checkout.sessions.retrieve(sessionId);
+        if (session.metadata?.product !== 'workshop_brasil_europa') return res.status(404).json({ error: 'Sessão não encontrada' });
+        return res.json({ paid: session.payment_status === 'paid' });
+    } catch {
+        return res.status(404).json({ error: 'Sessão não encontrada' });
     }
 });
 

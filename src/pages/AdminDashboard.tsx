@@ -119,7 +119,9 @@ interface Member {
     has_access: boolean;
 }
 
-type TabType = 'quiz' | 'priority' | 'contact' | 'ebook-leads' | 'members' | 'link-commerce';
+interface WorkshopLead extends EbookLead { payment_status: 'pending' | 'paid'; marketing_consent: boolean; }
+
+type TabType = 'workshop' | 'quiz' | 'priority' | 'contact' | 'ebook-leads' | 'members' | 'link-commerce';
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -129,6 +131,8 @@ export default function AdminDashboard() {
     const [priorityLeads, setPriorityLeads] = useState<PriorityLead[]>([]);
     const [contactLeads, setContactLeads] = useState<ContactLead[]>([]);
     const [ebookLeads, setEbookLeads] = useState<EbookLead[]>([]);
+    const [workshopLeads, setWorkshopLeads] = useState<WorkshopLead[]>([]);
+    const [workshopError, setWorkshopError] = useState(false);
     const [members, setMembers] = useState<Member[]>([]);
     const [linkLeads, setLinkLeads] = useState<any[]>([]);
     const [linkStats, setLinkStats] = useState<any>(null);
@@ -164,7 +168,7 @@ export default function AdminDashboard() {
         const token = localStorage.getItem('crm_admin_token');
         if (!token) { navigate('/admin'); return; }
         try {
-            const [quizRes, priorityRes, contactRes, ebookLeadsRes, membersRes, linkLeadsRes, linkStatsRes] = await Promise.all([
+            const [quizRes, priorityRes, contactRes, ebookLeadsRes, membersRes, linkLeadsRes, linkStatsRes, workshopRes] = await Promise.all([
                 fetch(`${API_URL}/api/leads/quiz`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/leads/priority`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/leads/contact`, { headers: { 'Authorization': `Basic ${token}` } }),
@@ -172,12 +176,15 @@ export default function AdminDashboard() {
                 fetch(`${API_URL}/api/admin/members`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/admin/link/leads`, { headers: { 'Authorization': `Basic ${token}` } }),
                 fetch(`${API_URL}/api/link/stats`, { headers: { 'Authorization': `Basic ${token}` } }),
+                fetch(`${API_URL}/api/admin/workshop/leads`, { headers: { 'Authorization': `Basic ${token}` } }),
             ]);
             if (!quizRes.ok || !priorityRes.ok || !contactRes.ok) throw new Error('Falha ao carregar dados');
             setQuizLeads(await quizRes.json());
             setPriorityLeads(await priorityRes.json());
             setContactLeads(await contactRes.json());
             if (ebookLeadsRes.ok) setEbookLeads(await ebookLeadsRes.json());
+            setWorkshopError(!workshopRes.ok);
+            if (workshopRes.ok) setWorkshopLeads(await workshopRes.json());
             if (membersRes.ok) setMembers(await membersRes.json());
             if (linkLeadsRes.ok) setLinkLeads(await linkLeadsRes.json());
             if (linkStatsRes.ok) setLinkStats(await linkStatsRes.json());
@@ -243,7 +250,7 @@ export default function AdminDashboard() {
     const handleDeleteLead = async () => {
         if (!confirmDelete) return;
         setDeletingId(confirmDelete.id);
-        const urlMap: Record<TabType, string> = {
+        const urlMap: Partial<Record<TabType, string>> = {
             quiz: `${API_URL}/api/leads/quiz/${confirmDelete.id}`,
             priority: `${API_URL}/api/leads/priority/${confirmDelete.id}`,
             contact: `${API_URL}/api/leads/contact/${confirmDelete.id}`,
@@ -251,8 +258,10 @@ export default function AdminDashboard() {
             members: `${API_URL}/api/admin/members/${confirmDelete.id}`,
             'link-commerce': `${API_URL}/api/admin/link/leads/${confirmDelete.id}`,
         };
+        const deleteUrl = urlMap[confirmDelete.type];
+        if (!deleteUrl) { setDeletingId(null); return; }
         try {
-            await fetch(urlMap[confirmDelete.type], { method: 'DELETE', headers: authHeader() });
+            await fetch(deleteUrl, { method: 'DELETE', headers: authHeader() });
             setConfirmDelete(null);
             fetchAll();
         } catch { /* silently fail */ }
@@ -286,6 +295,7 @@ export default function AdminDashboard() {
     }
 
     const tabTitle: Record<TabType, string> = {
+        workshop: 'Leads: Workshop Brasil → Europa',
         quiz: 'Leads: Diagnóstico',
         priority: 'Leads: Internacionalização',
         contact: 'Leads: Contato Direto',
@@ -295,6 +305,7 @@ export default function AdminDashboard() {
     };
 
     const tabSub: Record<TabType, string> = {
+        workshop: 'Inscrições iniciadas e pagamentos confirmados',
         quiz: 'Respostas do questionário avançado',
         priority: 'Lista de espera VIP Internacional',
         contact: 'Mensagens recebidas pelo formulário de contato',
@@ -354,6 +365,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="flex overflow-x-auto scrollbar-hide bg-[#050505] p-1.5 rounded-xl border border-white/5 shadow-inner shrink-0 w-full xl:w-auto">
                         {([
+                            ['workshop', `Workshop (${workshopLeads.length})`],
                             ['quiz', `Diagnóstico (${quizLeads.length})`],
                             ['priority', `Internacionalizar (${priorityLeads.length})`],
                             ['contact', `Contato (${contactLeads.length})`],
@@ -371,6 +383,15 @@ export default function AdminDashboard() {
                         ))}
                     </div>
                 </div>
+
+                {leadType === 'workshop' && (
+                    <div className="overflow-x-auto bg-[#050505] border border-white/5 rounded-2xl p-5">
+                        {workshopError ? <p>Não foi possível carregar os leads do workshop.</p> :
+                        <table className="w-full text-left text-sm"><thead><tr><th className="p-3">Data</th><th className="p-3">Nome</th><th className="p-3">E-mail</th><th className="p-3">WhatsApp</th><th className="p-3">Pagamento</th><th className="p-3">Lembretes</th></tr></thead>
+                        <tbody>{workshopLeads.map(lead => <tr key={lead.id} className="border-t border-white/10"><td className="p-3">{new Date(lead.created_at).toLocaleString('pt-BR')}</td><td className="p-3">{lead.name}</td><td className="p-3">{lead.email}</td><td className="p-3">{lead.phone}</td><td className="p-3">{lead.payment_status === 'paid' ? 'Pago' : 'Pendente'}</td><td className="p-3">{lead.marketing_consent ? 'Autorizados' : 'Não autorizados'}</td></tr>)}</tbody></table>}
+                        {!workshopError && workshopLeads.length === 0 && <p className="text-white/50 p-3">Nenhum lead registrado.</p>}
+                    </div>
+                )}
 
                 {/* ====== TAB: EBOOK LEADS ====== */}
                 {leadType === 'ebook-leads' && (

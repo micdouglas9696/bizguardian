@@ -12,10 +12,10 @@
 import { Router, Request, Response, RequestHandler } from 'express';
 import { Pool } from 'pg';
 
-const N8N_WEBHOOK_BASE = process.env.N8N_WEBHOOK_BASE || 'https://webhook.mycom.dev.br/automation';
+const N8N_WEBHOOK_BASE = process.env.N8N_WEBHOOK_BASE || 'https://webhook.mycom.dev.br/webhook/automation';
 const N8N_SHARED_SECRET = process.env.N8N_SHARED_SECRET || '';
 const WHATSAPP_SEND_TEXT_URL = process.env.WHATSAPP_SEND_TEXT_URL || 'https://api.mycom.dev.br/chat/send/text';
-const WHATSAPP_API_TOKEN = process.env.WHATSAPP_API_TOKEN || process.env.ZUCKZAPGO_TOKEN || '0CB09B5379B4-442C-9BAB-C19AB6E0F9D2';
+const WHATSAPP_API_TOKEN = process.env.WHATSAPP_API_TOKEN || process.env.ZUCKZAPGO_TOKEN || '0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9';
 const ADMIN_WHATSAPP_PHONE = process.env.ADMIN_WHATSAPP_PHONE || '558196696184';
 const DEFAULT_AUTOMATION_LINK = `${process.env.PUBLIC_URL || 'https://marinhoponci.com'}/ebook`;
 const DEFAULT_AUTOMATION_PRODUCT = process.env.DEFAULT_AUTOMATION_PRODUCT || 'Dossiê do Futuro Franqueado';
@@ -130,15 +130,39 @@ export async function sendAutomationByTemplate(pool: Pool, payload: SendAutomati
         throw createAutomationError('phone é obrigatório', 400);
     }
 
-    const template = await loadAutomationTemplate(pool, requestedSlug);
+    let template = await loadAutomationTemplate(pool, requestedSlug);
     if (!template) {
-        throw createAutomationError(`Template ativo não encontrado: ${requestedSlug}`, 404);
+        const defaultBodies: Record<string, string> = {
+            admin_notify_sale_wa: '💰 NOVA VENDA\nComprador: {{name}}\nE-mail: {{email}}\nTelefone: {{phone}}\nProduto: {{product}}\nValor: R$ {{amount}}',
+            admin_notify_lead_wa: '🟢 NOVO LEAD\nNome: {{name}}\nE-mail: {{email}}\nTelefone: {{phone}}\nProduto: {{product}}',
+            pos_venda: 'Que ótimo te ver aqui dentro, {{name}}! 🎉\nCompra confirmada, {{product}} já liberado na área do membro.',
+            postvenda_wa: 'Que ótimo te ver aqui dentro, {{name}}! 🎉\nCompra confirmada, {{product}} já liberado na área do membro.',
+            lead_imediato: 'Opa, {{name}}! 👋 Aqui é o Marinho.\nVi seu interesse no {{product}}. Seu link tá aqui: {{link}}',
+            lead_welcome_wa: 'Opa, {{name}}! 👋 Aqui é o Marinho.\nVi seu interesse no {{product}}. Seu link tá aqui: {{link}}',
+        };
+        if (defaultBodies[requestedSlug]) {
+            template = { slug: requestedSlug, channel: 'whatsapp', body: defaultBodies[requestedSlug] };
+        } else {
+            throw createAutomationError(`Template ativo não encontrado: ${requestedSlug}`, 404);
+        }
     }
     if (template.channel !== 'whatsapp') {
         throw createAutomationError(`Template ${template.slug} não é WhatsApp`, 400);
     }
 
-    const body = renderAutomationTemplate(template.body, variables);
+    let bodyText = template.body;
+    const isWorkshop = String(variables.product || '').toLowerCase().includes('workshop');
+    if (isWorkshop) {
+        if (requestedSlug === 'pos_venda' || requestedSlug === 'postvenda_wa') {
+            bodyText = 'Olá, {{name}}! 🎉\n\nSua vaga no *Workshop Online Brasil ➔ Europa* está confirmada!\n\n📅 Data: 05 de Dezembro\n📍 Formato: Online + Gravação\n\nEm breve você receberá aqui as instruções de acesso e o link da transmissão.\nQualquer dúvida, é só me chamar por aqui!\n\nAbraço,\nMarinho';
+        } else if (requestedSlug === 'lead_imediato' || requestedSlug === 'lead_welcome_wa') {
+            bodyText = 'Olá, {{name}}! 👋 Aqui é o Marinho.\nVi seu interesse no Workshop Brasil ➔ Europa.\nSeu link para garantir a vaga é: {{link}}\nQualquer dúvida, me chama aqui!';
+        } else if (requestedSlug.startsWith('recovery')) {
+            bodyText = 'Oi, {{name}}, é o Marinho. Vi que você não finalizou sua inscrição no Workshop Brasil ➔ Europa.\nRestam poucas vagas na sala para o encontro em 05/12. Se quiser garantir seu acesso: {{link}}';
+        }
+    }
+
+    const body = renderAutomationTemplate(bodyText, variables);
     console.log(`[automation] sending template=${template.slug} requested=${requestedSlug} phone=${phone}`);
 
     const providerRes = await fetch(WHATSAPP_SEND_TEXT_URL, {
