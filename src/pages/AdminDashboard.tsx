@@ -387,8 +387,8 @@ export default function AdminDashboard() {
                 {leadType === 'workshop' && (
                     <div className="overflow-x-auto bg-[#050505] border border-white/5 rounded-2xl p-5">
                         {workshopError ? <p>Não foi possível carregar os leads do workshop.</p> :
-                        <table className="w-full text-left text-sm"><thead><tr><th className="p-3">Data</th><th className="p-3">Nome</th><th className="p-3">E-mail</th><th className="p-3">WhatsApp</th><th className="p-3">Pagamento</th><th className="p-3">Lembretes</th></tr></thead>
-                        <tbody>{workshopLeads.map(lead => <tr key={lead.id} className="border-t border-white/10"><td className="p-3">{new Date(lead.created_at).toLocaleString('pt-BR')}</td><td className="p-3">{lead.name}</td><td className="p-3">{lead.email}</td><td className="p-3">{lead.phone}</td><td className="p-3">{lead.payment_status === 'paid' ? 'Pago' : 'Pendente'}</td><td className="p-3">{lead.marketing_consent ? 'Autorizados' : 'Não autorizados'}</td></tr>)}</tbody></table>}
+                        <table className="w-full text-left text-sm"><thead><tr><th className="p-3">Data</th><th className="p-3">Nome</th><th className="p-3">E-mail</th><th className="p-3">WhatsApp</th></tr></thead>
+                        <tbody>{workshopLeads.map(lead => <tr key={lead.id} className="border-t border-white/10"><td className="p-3">{new Date(lead.created_at).toLocaleString('pt-BR')}</td><td className="p-3">{lead.name}</td><td className="p-3">{lead.email}</td><td className="p-3">{lead.phone}</td></tr>)}</tbody></table>}
                         {!workshopError && workshopLeads.length === 0 && <p className="text-white/50 p-3">Nenhum lead registrado.</p>}
                     </div>
                 )}
