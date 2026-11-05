@@ -6,7 +6,13 @@ const { Pool } = require('pg');
 const { installWorkshopEmail } = require('../dist/workshop-email');
 
 (async () => {
-  const pool = new Pool({ connectionString: 'postgresql://127.0.0.1:55439/postgres' });
+  const connectionString = process.env.WORKSHOP_TEST_DATABASE_URL;
+  if (!connectionString) throw new Error('WORKSHOP_TEST_DATABASE_URL deve apontar para banco isolado de teste');
+  const db = new URL(connectionString);
+  if (!['localhost', '127.0.0.1', '::1'].includes(db.hostname) || !db.pathname.startsWith('/workshop_email_test_')) {
+    throw new Error('Banco de teste deve ser local e ter nome iniciado por workshop_email_test_');
+  }
+  const pool = new Pool({ connectionString });
   await pool.query(fs.readFileSync('migrations/2026-11-05_workshop_email.sql', 'utf8'));
   await pool.query('TRUNCATE workshop_confirmation_emails');
   const stripe = new Stripe('sk_test_local_only');
