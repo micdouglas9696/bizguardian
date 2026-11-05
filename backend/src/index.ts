@@ -10,6 +10,7 @@ import Stripe from 'stripe';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { createAutomationRouter, createAutomationSendRouter, renderAutomationTemplate, triggerN8nAsync } from './automation';
+import { installWorkshopEmail } from './workshop-email';
 
 // Carrega backend/.env primeiro; se não existir, cai para o .env da raiz do projeto.
 dotenv.config();
@@ -71,6 +72,28 @@ initTransporter().catch((err) => console.error('[smtp] init error:', err));
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
 
 const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:5173';
+
+if (process.env.WORKSHOP_EMAIL_ENABLED === 'true') {
+    installWorkshopEmail(app, {
+        pool,
+        stripe: stripeClient,
+        priceId: 'price_1UXTwM0l9XbFWgZqRoVdWtoK',
+        getSecret: () => {
+            try { return fs.readFileSync(process.env.WORKSHOP_EMAIL_WEBHOOK_SECRET_FILE || '/run/secrets/workshop_email_webhook', 'utf8').trim(); }
+            catch { return ''; }
+        },
+        sendMail: async (email) => {
+            if (!transporter || ethrealAccount || !process.env.SMTP_USER) throw new Error('Servidor de e-mail indisponível');
+            return transporter.sendMail({
+                from: `"Marinho Ponci" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+                to: email,
+                subject: 'Inscrição confirmada — Workshop Brasil → Europa',
+                text: 'Olá!\n\nConfirmamos o pagamento da sua inscrição no Workshop Online Brasil → Europa.\n\nAs informações de acesso ao workshop serão enviadas posteriormente pela equipe do Marinho.\n\nGuarde este e-mail como confirmação da sua inscrição.'
+            });
+        }
+    }, { startWorker: true });
+}
+
 
 // =====================================================================
 // MEMBER AUTH  ·  helpers
@@ -687,8 +710,10 @@ async function recordWorkshopPayment(session: { id: string; amount_total?: numbe
 
 app.get('/api/admin/workshop/leads', requireAuth, async (_req: Request, res: Response) => {
     try {
-        const result = await pool.query(`SELECT id, name, email, phone, payment_status, marketing_consent, created_at, paid_at
-            FROM workshop_leads ORDER BY created_at DESC LIMIT 500`);
+        const result = await pool.query(`SELECT id, name, email, whatsapp AS phone, created_at,
+            NULL::boolean AS marketing_consent, NULL::text AS payment_status
+            FROM leads_contact WHERE service=$1 ORDER BY created_at DESC LIMIT 500`,
+            ['Workshop Online Brasil ➔ Europa']);
         return res.json(result.rows);
     } catch { return res.status(500).json({ error: 'Não foi possível consultar os leads do workshop' }); }
 });

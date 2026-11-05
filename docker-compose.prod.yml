@@ -20,6 +20,7 @@ services:
   api:
     image: ${DOCKER_IMAGE:-bizguardian-api:latest}
     environment:
+      - WORKSHOP_EMAIL_ENABLED=true
       - PORT=3001
       - DATABASE_URL=postgresql://bizguardian_admin:${DB_PASSWORD:-CHANGE_ME_STRONG_PASSWORD}@db:5432/bizguardian_crm
       - CORS_ORIGIN=${CORS_ORIGIN:-https://marinhoponci.com}
@@ -40,6 +41,9 @@ services:
       - PUBLIC_URL=https://marinhoponci.com
       - N8N_WEBHOOK_BASE=${N8N_WEBHOOK_BASE:-https://n8n.mycom.dev.br/webhook/automation}
       - N8N_SHARED_SECRET=${N8N_SHARED_SECRET:-}
+    secrets:
+      - source: workshop_email_webhook
+        target: workshop_email_webhook
     volumes:
       - /root/bizguardian/public_media:/usr/src/app/public_media
       - /root/bizguardian/private_assets:/usr/src/app/private_assets
@@ -68,3 +72,8 @@ networks:
   mycom:
     external: true
     name: mycom
+
+secrets:
+  workshop_email_webhook:
+    external: true
+    name: workshop_email_webhook_20261105

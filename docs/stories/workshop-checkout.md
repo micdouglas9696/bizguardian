@@ -32,3 +32,14 @@ Arquivos adicionais: `backend/migrations/2026-11-02_workshop_funnel.sql`, `src/p
 - O valor e a moeda pagos passam a ser armazenados a partir da sessão Stripe; um cenário com desconto foi validado localmente.
 - Criado endpoint interno protegido por segredo para o n8n consultar a elegibilidade antes de um lembrete. Ele exige consentimento, ausência de compra paga e consulta atual da Stripe; falha fechada quando a consulta falha.
 - Os textos de 1h e 24h foram adaptados em rascunho no n8n e permanecem desativados. O endpoint, a fila, o descadastro e o n8n ainda não estão conectados em produção e nenhum envio real foi testado. Consultar a elegibilidade e enviar continuam sujeitos a uma janela de concorrência que precisa ser tratada antes da ativação.
+
+## Confirmação por e-mail — 05/11
+- [x] Criado endpoint Stripe exclusivo do workshop com verificação de assinatura e consulta dos itens da sessão.
+- [x] Criada fila persistente com deduplicação por sessão e repetição após falha no envio.
+- [x] Testados localmente assinatura válida/inválida, compra não paga, preço errado, eventos repetidos e falha de SMTP, com PostgreSQL isolado e envio simulado.
+- [x] Endpoint registrado na Stripe de produção e código ativado na API; reenvio de evento real de outro produto foi recebido e ignorado.
+- [x] Conexão SMTP verificada sem disparo e configuração do segredo preservada no stack. O e-mail usa SMTP da API, não o rascunho de WhatsApp do n8n.
+- [ ] Comprovar o processamento de uma compra real do workshop e a entrega na caixa postal do comprador.
+- [ ] Informações e link de acesso ao workshop ainda precisam ser fornecidos pela equipe; o e-mail de confirmação não contém link de acesso.
+
+Arquivos adicionais: `backend/src/workshop-email.ts`, `backend/migrations/2026-11-05_workshop_email.sql`, `backend/tests/workshop-email.test.cjs`, `backend/src/index.ts`, `docker-compose.prod.yml`.
