@@ -52,7 +52,7 @@ export default function WorkshopEuropaPage() {
 
     try {
       // Salva imediatamente no CRM (Aba Contatos)
-      await fetch(`${API_URL}/api/leads/contact`, {
+      const contactResponse = await fetch(`${API_URL}/api/leads/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -62,7 +62,8 @@ export default function WorkshopEuropaPage() {
           service: 'Workshop Online Brasil ➔ Europa',
           message: 'Inscrição iniciada - Checkout Stripe R$ 300',
         }),
-      }).catch(err => console.warn('[crm] Falha ao registrar contato:', err));
+      });
+      if (!contactResponse.ok) throw new Error('Não foi possível registrar sua inscrição. Tente novamente.');
 
       const resp = await fetch(`${API_URL}/api/checkout/create-session`, {
         method: 'POST',
