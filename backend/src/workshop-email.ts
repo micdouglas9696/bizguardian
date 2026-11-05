@@ -28,12 +28,17 @@ export function installWorkshopEmail(app: Express, deps: Dependencies, options: 
             return res.json({ received: true });
         }
         try {
+            const verified = await deps.stripe.checkout.sessions.retrieve(session.id);
+            if (!verified.livemode || verified.payment_status !== 'paid' || verified.metadata?.product !== 'workshop_brasil_europa') {
+                console.error('[workshop-email] Pagamento não confirmado na Stripe');
+                return res.status(503).json({ error: 'Pagamento ainda não confirmado' });
+            }
             const items = await deps.stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
             if (items.has_more || items.data.length !== 1 || items.data[0].price?.id !== deps.priceId || items.data[0].quantity !== 1) {
                 console.error('[workshop-email] Produto não confere com o preço esperado');
                 return res.status(400).json({ error: 'Produto não corresponde ao workshop' });
             }
-            const email = session.customer_details?.email || session.customer_email;
+            const email = verified.customer_details?.email || verified.customer_email;
             if (!email) return res.status(500).json({ error: 'E-mail ausente' });
             await deps.pool.query(`INSERT INTO workshop_confirmation_emails (session_id, customer_email)
                 VALUES ($1, $2) ON CONFLICT (session_id) DO NOTHING`, [session.id, email]);

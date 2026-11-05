@@ -43,3 +43,4 @@ Arquivos adicionais: `backend/migrations/2026-11-02_workshop_funnel.sql`, `src/p
 - [ ] Informações e link de acesso ao workshop ainda precisam ser fornecidos pela equipe; o e-mail de confirmação não contém link de acesso.
 
 Arquivos adicionais: `backend/src/workshop-email.ts`, `backend/migrations/2026-11-05_workshop_email.sql`, `backend/tests/workshop-email.test.cjs`, `backend/src/index.ts`, `docker-compose.prod.yml`.
+- [x] A sessão é consultada novamente na Stripe antes de enfileirar; teste em produção com evento simulado sobre sessão não paga foi recusado, sem criar envio.
