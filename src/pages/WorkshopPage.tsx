@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'https://api.marinhoponci.com');
@@ -12,20 +12,10 @@ export default function WorkshopPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('');
-  const [videoEnded, setVideoEnded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = 'Workshop Brasil ➔ Europa | 28 de Novembro | Marinho Ponci & Úp.INTELLIG3NCE';
-
-    // Iniciar vídeo de abertura suavemente se disponível
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Fallback imediato se o navegador bloquear autoplay
-        setVideoEnded(true);
-      });
-    }
 
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
@@ -153,21 +143,6 @@ export default function WorkshopPage() {
               fetchPriority="high"
               loading="eager"
             />
-
-            {/* Vídeo de Abertura: Roda 1x e dissolve suavemente na imagem */}
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
-              onEnded={() => setVideoEnded(true)}
-              className={`absolute inset-0 w-full h-full object-contain sm:object-cover object-[center_top] filter brightness-[0.99] contrast-[1.02] transition-opacity duration-1000 ${
-                videoEnded ? 'opacity-0 pointer-events-none' : 'opacity-100'
-              }`}
-            >
-              <source src="/hero-marinho-animated.mp4" type="video/mp4" />
-            </video>
 
             {/* Gradiente inferior suave conectando a base da imagem ao fundo da seção */}
             <div className="absolute bottom-0 inset-x-0 h-28 sm:h-44 bg-gradient-to-t from-[#050705] to-transparent pointer-events-none" />
