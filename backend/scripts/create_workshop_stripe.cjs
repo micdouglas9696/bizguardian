@@ -35,7 +35,7 @@ async function main() {
     console.log('+ Criando produto...');
     product = await stripe.products.create({
       name: 'Workshop Online Brasil ➔ Europa: Como morar, empreender e levar sua empresa para a Europa',
-      description: 'Acesso ao vivo em 05/12 às 19:30 + Gravação Vitalícia + Acesso ao Grupo VIP. Com Marinho Ponci + Advogado, Contador e Empresário convidados.',
+      description: 'Workshop online ao vivo em 28/11 + Gravação integral com Marinho Ponci.',
       images: ['https://marinhoponci.com/workshop-marinho-europa.jpg'],
       metadata: {
         product_key: 'workshop_brasil_europa',

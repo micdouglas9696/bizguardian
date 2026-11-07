@@ -789,7 +789,7 @@ app.post('/api/checkout/create-session', async (req: Request, res: Response) => 
                         currency: 'brl',
                         product_data: {
                             name: 'Workshop Online Brasil ➔ Europa: Como morar, empreender e levar sua empresa para a Europa',
-                            description: 'Workshop online em 05/12'
+                            description: 'Workshop online ao vivo em 28/11 + Gravação integral'
                         },
                         unit_amount: 30000, // R$ 300,00
                     },

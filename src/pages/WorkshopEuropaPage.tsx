@@ -141,7 +141,7 @@ export default function WorkshopEuropaPage() {
               <Calendar className="w-5 h-5 text-cyan-400" />
               <div>
                 <span className="block text-[11px] text-slate-400 uppercase font-bold tracking-wider">Data do Encontro</span>
-                <span className="text-sm sm:text-base font-bold text-white">05 de Dezembro</span>
+                <span className="text-sm sm:text-base font-bold text-white">28 de Novembro</span>
               </div>
             </div>
             <div className="hidden sm:block w-[1px] h-8 bg-slate-700/60"></div>
@@ -302,7 +302,7 @@ export default function WorkshopEuropaPage() {
               Ingresso Completo para o Workshop Online
             </h3>
             <p className="text-sm text-slate-400 mb-6">
-              Transmissão ao vivo em 05/12 + Gravação
+              Transmissão ao vivo em 28/11 + Gravação
             </p>
 
             <div className="my-6">

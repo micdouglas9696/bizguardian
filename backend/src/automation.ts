@@ -154,11 +154,11 @@ export async function sendAutomationByTemplate(pool: Pool, payload: SendAutomati
     const isWorkshop = String(variables.product || '').toLowerCase().includes('workshop');
     if (isWorkshop) {
         if (requestedSlug === 'pos_venda' || requestedSlug === 'postvenda_wa') {
-            bodyText = 'Olá, {{name}}! 🎉\n\nSua vaga no *Workshop Online Brasil ➔ Europa* está confirmada!\n\n📅 Data: 05 de Dezembro\n📍 Formato: Online + Gravação\n\nEm breve você receberá aqui as instruções de acesso e o link da transmissão.\nQualquer dúvida, é só me chamar por aqui!\n\nAbraço,\nMarinho';
+            bodyText = 'Olá, {{name}}! 🎉\n\nSua vaga no *Workshop Online Brasil ➔ Europa* está confirmada!\n\n📅 Data: 28 de Novembro\n📍 Formato: Online + Gravação\n\nEm breve você receberá aqui as instruções de acesso e o link da transmissão.\nQualquer dúvida, é só me chamar por aqui!\n\nAbraço,\nMarinho';
         } else if (requestedSlug === 'lead_imediato' || requestedSlug === 'lead_welcome_wa') {
             bodyText = 'Olá, {{name}}! 👋 Aqui é o Marinho.\nVi seu interesse no Workshop Brasil ➔ Europa.\nSeu link para garantir a vaga é: {{link}}\nQualquer dúvida, me chama aqui!';
         } else if (requestedSlug.startsWith('recovery')) {
-            bodyText = 'Oi, {{name}}, é o Marinho. Vi que você não finalizou sua inscrição no Workshop Brasil ➔ Europa.\nRestam poucas vagas na sala para o encontro em 05/12. Se quiser garantir seu acesso: {{link}}';
+            bodyText = 'Oi, {{name}}, é o Marinho. Vi que você não finalizou sua inscrição no Workshop Brasil ➔ Europa.\nRestam poucas vagas na sala para o encontro em 28/11. Se quiser garantir seu acesso: {{link}}';
         }
     }
 
