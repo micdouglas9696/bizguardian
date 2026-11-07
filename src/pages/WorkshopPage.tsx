@@ -264,7 +264,7 @@ export default function WorkshopPage() {
 
             </div>
 
-            {/* Lado Direito: Card 3 - Apresentação Ao Vivo · Com Marinho Ponci */}
+            {/* Lado Direito: Card 3 - Bate-papo Ao Vivo · Marinho Ponci + Convidados */}
             <div className="flex flex-col gap-3 max-w-[280px] items-end">
               <div 
                 className="bg-[#0A0E0B]/85 backdrop-blur-md border border-[#1E261C] p-2.5 sm:p-3 rounded-xl flex items-center gap-3 transition-transform duration-300 hover:scale-105 hover:border-[#02E99B]/60 cursor-default w-full"
@@ -274,12 +274,12 @@ export default function WorkshopPage() {
               >
                 <div className="w-8 h-8 rounded-lg bg-[#02E99B]/15 border border-[#02E99B]/30 flex items-center justify-center shrink-0 text-[#02E99B]">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
                 <div className="text-left">
-                  <p className="text-xs font-bold text-white leading-tight">Apresentação Ao Vivo</p>
-                  <p className="text-[10px] text-zinc-400 mt-0.5">Com Marinho Ponci</p>
+                  <p className="text-xs font-bold text-white leading-tight">Bate-papo Ao Vivo</p>
+                  <p className="text-[10px] text-zinc-400 mt-0.5">Marinho Ponci + Convidados</p>
                 </div>
               </div>
             </div>
@@ -506,6 +506,99 @@ export default function WorkshopPage() {
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
           
+          {/* =========================================================================
+              CHAMADA DE CONVIDADOS: BATE-PAPO COM ESPECIALISTAS E MARINHO PONCI
+              (Advogados, Contabilista, Relocation, Real Estate, Empreendedor Imigrante)
+             ========================================================================= */}
+          <div className="mb-14 sm:mb-20 bg-gradient-to-b from-[#0D130E] to-[#070A07] border border-[#1E261C] hover:border-[#02E99B]/40 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_30px_rgba(2,233,155,0.08)] relative overflow-hidden transition-all duration-300">
+            
+            {/* Glow esmeralda superior suave */}
+            <div 
+              className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 w-[420px] h-[200px] rounded-full opacity-25 blur-[90px]"
+              style={{ background: 'radial-gradient(circle, rgba(2, 233, 155, 0.6) 0%, transparent 70%)' }}
+            />
+
+            <div className="relative z-10 text-center max-w-4xl mx-auto">
+              <div className="inline-flex items-center gap-2 bg-[#02E99B]/10 border border-[#02E99B]/30 px-3.5 py-1.5 rounded-full mb-3.5">
+                <span className="w-2 h-2 rounded-full bg-[#02E99B] animate-pulse" />
+                <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase text-[#02E99B]">
+                  BANCADA MULTIDISCIPLINAR AO VIVO
+                </span>
+              </div>
+
+              <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-snug mb-3">
+                Bate-papo com especialistas convidados <br className="hidden sm:inline" />
+                <span className="text-[#02E99B] drop-shadow-[0_0_25px_rgba(2,233,155,0.45)]">
+                  e com Marinho Ponci!
+                </span>
+              </h3>
+
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed mb-8 max-w-2xl mx-auto">
+                Não é apenas uma apresentação individual. É uma mesa estratégica reunindo quem atua no mercado europeu para responder suas dúvidas diretamente:
+              </p>
+
+              {/* Grid dos 5 Convidados / Perfis */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                
+                {/* 1. Advogados */}
+                <div className="bg-[#0A0E0B] border border-[#1E261C] hover:border-[#02E99B]/60 p-4 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-11 h-11 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/25 flex items-center justify-center text-[#02E99B] mb-3 group-hover:scale-110 group-hover:bg-[#02E99B]/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                    </svg>
+                  </div>
+                  <span className="text-xs sm:text-sm font-extrabold text-white tracking-wide uppercase block">Advogados</span>
+                  <span className="text-[10px] text-zinc-400 mt-1 leading-tight">Vistos & Imigração</span>
+                </div>
+
+                {/* 2. Contabilista */}
+                <div className="bg-[#0A0E0B] border border-[#1E261C] hover:border-[#02E99B]/60 p-4 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-11 h-11 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/25 flex items-center justify-center text-[#02E99B] mb-3 group-hover:scale-110 group-hover:bg-[#02E99B]/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <span className="text-xs sm:text-sm font-extrabold text-white tracking-wide uppercase block">Contabilista</span>
+                  <span className="text-[10px] text-zinc-400 mt-1 leading-tight">Tributação & Empresas</span>
+                </div>
+
+                {/* 3. Relocation */}
+                <div className="bg-[#0A0E0B] border border-[#1E261C] hover:border-[#02E99B]/60 p-4 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-11 h-11 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/25 flex items-center justify-center text-[#02E99B] mb-3 group-hover:scale-110 group-hover:bg-[#02E99B]/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                  </div>
+                  <span className="text-xs sm:text-sm font-extrabold text-white tracking-wide uppercase block">Relocation</span>
+                  <span className="text-[10px] text-zinc-400 mt-1 leading-tight">Mudança & Moradia</span>
+                </div>
+
+                {/* 4. Real Estate */}
+                <div className="bg-[#0A0E0B] border border-[#1E261C] hover:border-[#02E99B]/60 p-4 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-11 h-11 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/25 flex items-center justify-center text-[#02E99B] mb-3 group-hover:scale-110 group-hover:bg-[#02E99B]/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <span className="text-xs sm:text-sm font-extrabold text-white tracking-wide uppercase block">Real Estate</span>
+                  <span className="text-[10px] text-zinc-400 mt-1 leading-tight">Imóveis & Investimento</span>
+                </div>
+
+                {/* 5. Empreendedor Imigrante */}
+                <div className="col-span-2 sm:col-span-1 bg-[#0A0E0B] border border-[#1E261C] hover:border-[#02E99B]/60 p-4 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-11 h-11 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/25 flex items-center justify-center text-[#02E99B] mb-3 group-hover:scale-110 group-hover:bg-[#02E99B]/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <span className="text-xs sm:text-sm font-extrabold text-white tracking-wide uppercase block">Empreendedor</span>
+                  <span className="text-[10px] text-zinc-400 mt-1 leading-tight">Vivência Real de Imigrante</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          
           {/* Título Estilo Referência */}
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <span className="text-xs font-mono font-bold text-[#02E99B] tracking-widest uppercase mb-3 block">
@@ -539,8 +632,8 @@ export default function WorkshopPage() {
                 desc: 'As maiores armadilhas no início da operação e como blindar o seu capital.'
               },
               {
-                title: 'Sessão de Perguntas ao Vivo',
-                desc: 'Espaço aberto para tirar suas dúvidas diretamente com Marinho Ponci.'
+                title: 'Sessão de Perguntas e Respostas ao Vivo',
+                desc: 'Espaço aberto para tirar suas dúvidas diretamente com Marinho Ponci e com os especialistas convidados.'
               },
               {
                 title: 'Gravação Integral Disponível',
@@ -609,7 +702,7 @@ export default function WorkshopPage() {
               Garanta sua participação no dia <span className="text-[#02E99B]">28/11</span>
             </h2>
             <p className="text-zinc-400 text-xs sm:text-base max-w-lg mx-auto">
-              Acesso completo ao Workshop online ao vivo + gravação integral + sessão de perguntas com Marinho Ponci.
+              Acesso completo ao Workshop online ao vivo + gravação integral + bate-papo com especialistas convidados e Marinho Ponci.
             </p>
           </div>
 
@@ -629,7 +722,10 @@ export default function WorkshopPage() {
                 <span className="text-[#02E99B] font-bold">✓</span> Transmissão online ao vivo no dia 28/11.
               </li>
               <li className="flex items-center gap-3">
-                <span className="text-[#02E99B] font-bold">✓</span> Apresentação completa com Marinho Ponci.
+                <span className="text-[#02E99B] font-bold">✓</span> Apresentação e condução com Marinho Ponci.
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-[#02E99B] font-bold">✓</span> Bate-papo com convidados: Advogados, Contabilista, Relocation, Real Estate e Empreendedor.
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-[#02E99B] font-bold">✓</span> Sessão aberta para dúvidas e perguntas diretas.
