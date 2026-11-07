@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'https://api.marinhoponci.com');
@@ -12,6 +12,24 @@ export default function WorkshopPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('');
+  const [isPlayingDesktop, setIsPlayingDesktop] = useState(false);
+  const [isPlayingMobile, setIsPlayingMobile] = useState(false);
+  const desktopVideoRef = useRef<HTMLVideoElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlayDesktop = () => {
+    setIsPlayingDesktop(true);
+    if (desktopVideoRef.current) {
+      desktopVideoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handlePlayMobile = () => {
+    setIsPlayingMobile(true);
+    if (mobileVideoRef.current) {
+      mobileVideoRef.current.play().catch(() => {});
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -316,6 +334,114 @@ export default function WorkshopPage() {
               <span className="text-[10px] sm:text-[11px] text-zinc-400 text-center block mt-2">
                 Clique no botão acima e garanta sua vaga para o encontro ao vivo em 28/11
               </span>
+            </div>
+
+          </div>
+
+          {/* =========================================================================
+              VÍDEO DE APRESENTAÇÃO RESPONSIVO (DESKTOP HORIZONTAL / MOBILE VERTICAL)
+              Posicionado entre o CTA da Hero e o Banner Divisor Cinético
+             ========================================================================= */}
+          <div className="w-full mt-10 sm:mt-14 mb-2">
+            
+            {/* VERSÃO DESKTOP (Widescreen 848x464) */}
+            <div className="hidden md:flex flex-col items-center justify-center">
+              <div className="w-full max-w-3xl relative rounded-2xl lg:rounded-3xl overflow-hidden bg-[#0A0D08] border border-[#1E261C] hover:border-[#02E99B]/40 shadow-[0_12px_45px_rgba(0,0,0,0.85),0_0_35px_rgba(2,233,155,0.12)] transition-all duration-300 aspect-[848/464]">
+                <video
+                  ref={desktopVideoRef}
+                  className="w-full h-full object-cover rounded-2xl lg:rounded-3xl"
+                  controls={isPlayingDesktop}
+                  playsInline
+                  preload="metadata"
+                  poster="/workshop-video-desktop-cover.webp"
+                  onPlay={() => setIsPlayingDesktop(true)}
+                  onPause={() => setIsPlayingDesktop(false)}
+                >
+                  <source src="/workshop-video-desktop.mp4" type="video/mp4" />
+                  <source src="/desktop.MOV" type="video/quicktime" />
+                  Seu navegador não suporta a reprodução deste vídeo.
+                </video>
+
+                {/* Overlay de Capa com Botão Play Elegante */}
+                {!isPlayingDesktop && (
+                  <button
+                    onClick={handlePlayDesktop}
+                    aria-label="Assistir vídeo de apresentação do Workshop"
+                    className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-black/35 hover:bg-black/20 transition-all duration-300 group cursor-pointer"
+                  >
+                    {/* Badge superior sutil */}
+                    <div className="absolute top-4 left-4 bg-[#0A0E0B]/85 backdrop-blur-md border border-[#1E261C] px-3.5 py-1.5 rounded-full flex items-center gap-2 text-xs font-bold text-white shadow-lg pointer-events-none">
+                      <span className="w-2 h-2 rounded-full bg-[#02E99B] animate-pulse" />
+                      <span>Mensagem de Marinho Ponci</span>
+                    </div>
+
+                    {/* Botão Play Neon Pulsante */}
+                    <div className="relative flex items-center justify-center">
+                      <div className="absolute w-20 h-20 rounded-full bg-[#02E99B]/30 animate-ping" />
+                      <div className="relative z-10 w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-[#02E99B] text-black flex items-center justify-center shadow-[0_0_35px_rgba(2,233,155,0.7)] group-hover:scale-110 group-hover:bg-[#20f5aa] group-hover:shadow-[0_0_55px_rgba(2,233,155,0.95)] transition-all duration-300">
+                        <svg className="w-7 sm:w-8 h-7 sm:h-8 fill-black translate-x-0.5" viewBox="0 0 24 24">
+                          <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Subtítulo inferior */}
+                    <div className="absolute bottom-4 bg-[#0A0E0B]/85 backdrop-blur-md border border-[#1E261C] px-4 py-1.5 rounded-full text-xs font-semibold text-zinc-300 pointer-events-none group-hover:text-white group-hover:border-[#02E99B]/40 transition-colors">
+                      Clique para reproduzir com áudio
+                    </div>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* VERSÃO MOBILE (Vertical Reel 464x848) */}
+            <div className="flex md:hidden flex-col items-center justify-center">
+              <div className="w-full max-w-[320px] sm:max-w-[340px] relative rounded-2xl overflow-hidden bg-[#0A0D08] border border-[#1E261C] hover:border-[#02E99B]/40 shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_30px_rgba(2,233,155,0.15)] transition-all duration-300 aspect-[464/848]">
+                <video
+                  ref={mobileVideoRef}
+                  className="w-full h-full object-cover rounded-2xl"
+                  controls={isPlayingMobile}
+                  playsInline
+                  preload="metadata"
+                  poster="/workshop-video-mobile-cover.webp"
+                  onPlay={() => setIsPlayingMobile(true)}
+                  onPause={() => setIsPlayingMobile(false)}
+                >
+                  <source src="/workshop-video-mobile.mp4" type="video/mp4" />
+                  <source src="/para mobile.MOV" type="video/quicktime" />
+                  Seu navegador não suporta a reprodução deste vídeo.
+                </video>
+
+                {/* Overlay Mobile com Botão Play Elegante */}
+                {!isPlayingMobile && (
+                  <button
+                    onClick={handlePlayMobile}
+                    aria-label="Assistir vídeo de apresentação do Workshop"
+                    className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-black/35 active:bg-black/20 transition-all duration-300 group cursor-pointer"
+                  >
+                    {/* Badge superior sutil */}
+                    <div className="absolute top-3 left-3 bg-[#0A0E0B]/85 backdrop-blur-md border border-[#1E261C] px-3 py-1 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-white shadow-lg pointer-events-none">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#02E99B] animate-pulse" />
+                      <span>Mensagem de Marinho</span>
+                    </div>
+
+                    {/* Botão Play Central */}
+                    <div className="relative flex items-center justify-center">
+                      <div className="absolute w-16 h-16 rounded-full bg-[#02E99B]/30 animate-ping" />
+                      <div className="relative z-10 w-14 h-14 rounded-full bg-[#02E99B] text-black flex items-center justify-center shadow-[0_0_30px_rgba(2,233,155,0.7)] active:scale-95 transition-all duration-200">
+                        <svg className="w-6 h-6 fill-black translate-x-0.5" viewBox="0 0 24 24">
+                          <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Subtítulo inferior */}
+                    <div className="absolute bottom-3 bg-[#0A0E0B]/85 backdrop-blur-md border border-[#1E261C] px-3.5 py-1.5 rounded-full text-[11px] font-semibold text-zinc-300 pointer-events-none">
+                      Toque para reproduzir com áudio
+                    </div>
+                  </button>
+                )}
+              </div>
             </div>
 
           </div>
