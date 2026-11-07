@@ -264,7 +264,7 @@ export default function WorkshopPage() {
 
             </div>
 
-            {/* Lado Direito: Card 3 - Banca Estratégica · Marinho Ponci + 3 Especialistas */}
+            {/* Lado Direito: Card 3 - Apresentação Ao Vivo · Com Marinho Ponci */}
             <div className="flex flex-col gap-3 max-w-[280px] items-end">
               <div 
                 className="bg-[#0A0E0B]/85 backdrop-blur-md border border-[#1E261C] p-2.5 sm:p-3 rounded-xl flex items-center gap-3 transition-transform duration-300 hover:scale-105 hover:border-[#02E99B]/60 cursor-default w-full"
@@ -274,12 +274,12 @@ export default function WorkshopPage() {
               >
                 <div className="w-8 h-8 rounded-lg bg-[#02E99B]/15 border border-[#02E99B]/30 flex items-center justify-center shrink-0 text-[#02E99B]">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
                 <div className="text-left">
-                  <p className="text-xs font-bold text-white leading-tight">Banca Estratégica</p>
-                  <p className="text-[10px] text-zinc-400 mt-0.5">Marinho Ponci + 3 Especialistas</p>
+                  <p className="text-xs font-bold text-white leading-tight">Apresentação Ao Vivo</p>
+                  <p className="text-[10px] text-zinc-400 mt-0.5">Com Marinho Ponci</p>
                 </div>
               </div>
             </div>
@@ -539,8 +539,8 @@ export default function WorkshopPage() {
                 desc: 'As maiores armadilhas no início da operação e como blindar o seu capital.'
               },
               {
-                title: 'Sessão de Perguntas ao Vivo com a Banca',
-                desc: 'Espaço aberto para tirar suas dúvidas diretamente com Marinho e os convidados.'
+                title: 'Sessão de Perguntas ao Vivo',
+                desc: 'Espaço aberto para tirar suas dúvidas diretamente com Marinho Ponci.'
               },
               {
                 title: 'Gravação Integral Disponível',
@@ -593,94 +593,7 @@ export default function WorkshopPage() {
       </section>
 
       {/* =========================================================================
-          SEÇÃO 2: A BANCA DE ESPECIALISTAS (APRESENTAÇÃO COM MARINHO + 3 CONVIDADOS)
-          Centralizado no mobile / Grid no desktop, com total conformidade
-         ========================================================================= */}
-      <section className="py-16 md:py-28 bg-[#080B07] border-b border-[#1E261C]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <span className="text-xs font-bold text-[#02E99B] tracking-widest uppercase mb-2 block">
-              Banca de Especialistas
-            </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-              Apresentação com <span className="text-[#02E99B]">Marinho Ponci</span> <br className="hidden sm:inline" />
-              + 3 convidados estratégicos.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            
-            {/* Especialista em Imigração */}
-            <div className="bg-[#0E120D] border border-[#1E261C] hover:border-[#02E99B]/50 rounded-2xl p-6 sm:p-8 transition-all flex flex-col justify-between items-center text-center md:items-start md:text-left">
-              <div>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/30 flex items-center justify-center text-[#02E99B] mb-4 sm:mb-6 mx-auto md:mx-0">
-                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#02E99B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                  </svg>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">Imigração & Vistos</h3>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#02E99B] block mb-2 sm:mb-3">
-                  Consultoria Estratégica
-                </span>
-                <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed mb-5 sm:mb-6">
-                  Vistos de empreendedor (D2), vistos de renda (D7), nômade digital, autorizações de residência na União Europeia e cidadania.
-                </p>
-              </div>
-              <button onClick={scrollToOffer} className="text-[#02E99B] text-xs font-bold uppercase tracking-wider text-center md:text-left cursor-pointer">
-                Tirar dúvidas no encontro →
-              </button>
-            </div>
-
-            {/* Especialista em Estruturação Societária */}
-            <div className="bg-[#0E120D] border border-[#1E261C] hover:border-[#02E99B]/50 rounded-2xl p-6 sm:p-8 transition-all flex flex-col justify-between items-center text-center md:items-start md:text-left">
-              <div>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/30 flex items-center justify-center text-[#02E99B] mb-4 sm:mb-6 mx-auto md:mx-0">
-                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#02E99B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">Estrutura Societária</h3>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#02E99B] block mb-2 sm:mb-3">
-                  Empresas & Transição
-                </span>
-                <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed mb-5 sm:mb-6">
-                  Abertura de empresa em Portugal e na UE, conformidade internacional, proteção patrimonial e planejamento de transição de negócios.
-                </p>
-              </div>
-              <button onClick={scrollToOffer} className="text-[#02E99B] text-xs font-bold uppercase tracking-wider text-center md:text-left cursor-pointer">
-                Tirar dúvidas no encontro →
-              </button>
-            </div>
-
-            {/* Empresário Convidado */}
-            <div className="bg-[#0E120D] border border-[#1E261C] hover:border-[#02E99B]/50 rounded-2xl p-6 sm:p-8 transition-all flex flex-col justify-between items-center text-center md:items-start md:text-left">
-              <div>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#02E99B]/10 border border-[#02E99B]/30 flex items-center justify-center text-[#02E99B] mb-4 sm:mb-6 mx-auto md:mx-0">
-                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#02E99B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">Operação Real na UE</h3>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#02E99B] block mb-2 sm:mb-3">
-                  Vivência de Mercado
-                </span>
-                <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed mb-5 sm:mb-6">
-                  Custos reais em euros, formação de equipe local, negociação com parceiros e adaptação da oferta ao mercado europeu.
-                </p>
-              </div>
-              <button onClick={scrollToOffer} className="text-[#02E99B] text-xs font-bold uppercase tracking-wider text-center md:text-left cursor-pointer">
-                Tirar dúvidas no encontro →
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SEÇÃO 3: CHECKOUT CARD (INGRESSO R$ 300)
+          SEÇÃO 2: CHECKOUT CARD (INGRESSO R$ 300)
          ========================================================================= */}
       <section id="oferta" className="py-16 md:py-28 relative bg-[#080B07] border-t border-[#1E261C]">
         
@@ -696,7 +609,7 @@ export default function WorkshopPage() {
               Garanta sua participação no dia <span className="text-[#02E99B]">28/11</span>
             </h2>
             <p className="text-zinc-400 text-xs sm:text-base max-w-lg mx-auto">
-              Acesso completo ao Workshop online ao vivo + gravação integral + banca de especialistas.
+              Acesso completo ao Workshop online ao vivo + gravação integral + sessão de perguntas com Marinho Ponci.
             </p>
           </div>
 
@@ -717,9 +630,6 @@ export default function WorkshopPage() {
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-[#02E99B] font-bold">✓</span> Apresentação completa com Marinho Ponci.
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="text-[#02E99B] font-bold">✓</span> Banca com especialistas convidados.
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-[#02E99B] font-bold">✓</span> Sessão aberta para dúvidas e perguntas diretas.
@@ -801,8 +711,8 @@ export default function WorkshopPage() {
                   internacionalização de marcas, formatação de redes e expansão de negócios entre o Brasil, Portugal, Espanha, Áustria e EUA.
                 </p>
                 <p>
-                  No workshop <strong>Brasil ➔ Europa no dia 28/11</strong>, ele reúne essa vivência de trincheira ao lado de especialistas 
-                  em transição internacional para entregar um roteiro objetivo e sem riscos desnecessários.
+                  No workshop <strong>Brasil ➔ Europa no dia 28/11</strong>, ele entrega essa vivência prática de trincheira 
+                  em transição internacional com um roteiro objetivo, seguro e sem riscos desnecessários.
                 </p>
               </div>
 

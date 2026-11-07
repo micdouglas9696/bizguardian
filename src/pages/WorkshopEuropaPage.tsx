@@ -194,10 +194,10 @@ export default function WorkshopEuropaPage() {
               <div>
                 <span className="text-emerald-400 text-sm font-bold uppercase tracking-widest">Apresentação & Mentoria</span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1">
-                  Com Marinho Ponci + Convidados Estratégicos
+                  Com Marinho Ponci
                 </h2>
                 <p className="text-slate-300 mt-3 text-base leading-relaxed">
-                  Quase 40 anos de liderança empresarial, internacionalização de marcas e expansão no franchising. Marinho reúne uma mesa de especialistas para entregar o mapa prático e sem atalhos perigosos para você e seu negócio na Europa.
+                  Quase 40 anos de liderança empresarial, internacionalização de marcas e expansão no franchising. Marinho entrega o mapa prático e sem atalhos perigosos para você e seu negócio na Europa.
                 </p>
               </div>
 
@@ -270,8 +270,8 @@ export default function WorkshopEuropaPage() {
                 desc: 'O que a maioria dos empresários faz de errado nos primeiros 6 meses e como blindar seu capital.'
               },
               {
-                title: 'Sessão de Dúvidas ao Vivo com a Banca',
-                desc: 'Espaço aberto para fazer perguntas diretas para Marinho, o advogado e o contador convidados.'
+                title: 'Sessão de Dúvidas ao Vivo',
+                desc: 'Espaço aberto para fazer perguntas diretas diretamente para Marinho Ponci.'
               },
               {
                 title: 'Acesso à Gravação Integral',
