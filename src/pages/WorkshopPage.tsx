@@ -1,12 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-declare global {
-  interface Window {
-    trackWorkshopPageView?: () => void;
-  }
-}
-
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'https://api.marinhoponci.com');
 
 export default function WorkshopPage() {
@@ -22,7 +16,6 @@ export default function WorkshopPage() {
   const [isPlayingMobile, setIsPlayingMobile] = useState(false);
   const desktopVideoRef = useRef<HTMLVideoElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
-  const pixelTracked = useRef(false);
 
   const handlePlayDesktop = () => {
     setIsPlayingDesktop(true);
@@ -39,10 +32,6 @@ export default function WorkshopPage() {
   };
 
   useEffect(() => {
-    if (!pixelTracked.current) {
-      window.trackWorkshopPageView?.();
-      pixelTracked.current = true;
-    }
     window.scrollTo(0, 0);
     document.title = 'Workshop Brasil ➔ Europa | 28 de Novembro | Marinho Ponci & Úp.INTELLIG3NCE';
 
@@ -56,7 +45,18 @@ export default function WorkshopPage() {
           return res.json();
         })
         .then((data) => {
-          setPaymentStatus(data.paid ? 'Pagamento confirmado com sucesso! Verifique seu e-mail.' : 'Pagamento em processamento.');
+          if (data.paid) {
+            setPaymentStatus('Pagamento confirmado com sucesso! Verifique seu e-mail.');
+            if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+              window.fbq('track', 'Purchase', {
+                content_name: 'Workshop Online Brasil ➔ Europa (28/11)',
+                value: 300,
+                currency: 'BRL',
+              });
+            }
+          } else {
+            setPaymentStatus('Pagamento em processamento.');
+          }
         })
         .catch(() => {
           setPaymentStatus('Pagamento recebido! Você receberá os detalhes no seu e-mail.');
@@ -92,6 +92,15 @@ export default function WorkshopPage() {
           message: 'Inscrição iniciada - Checkout Stripe R$ 300',
         }),
       }).catch(() => {});
+
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        window.fbq('track', 'InitiateCheckout', {
+          content_name: 'Workshop Online Brasil ➔ Europa (28/11)',
+          content_category: 'Workshop',
+          value: 300,
+          currency: 'BRL',
+        });
+      }
 
       const resp = await fetch(`${API_URL}/api/checkout/create-session`, {
         method: 'POST',

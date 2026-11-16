@@ -92,35 +92,32 @@
   <!-- Preload do hero (LCP) -->
   <link rel="preload" as="image" href="/marinho principal.webp" imagesrcset="/marinho-principal-800.webp 800w, /marinho principal.webp 1200w" imagesizes="(max-width: 1024px) 800px, 1200px" fetchpriority="high" />
 
-  <!-- Google Tag Manager & Meta Pixel (Carregamento via Interação do Usuário para Score 100 no PageSpeed) -->
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1790939695506643');
+    fbq('track', 'PageView');
+  </script>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Google Tag Manager (Carregamento Otimizado) -->
   <script>
     (function() {
-      var workshopPixelInitialized = false;
-      window.trackWorkshopPageView = function() {
-        if (!window.fbq) {
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window,document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-        }
-        if (!workshopPixelInitialized) {
-          fbq('init', '1790939695506643');
-          workshopPixelInitialized = true;
-        }
-        fbq('trackSingle', '1790939695506643', 'PageView');
-      };
-      var analyticsLoaded = false;
-      function loadAnalytics() {
-        if (analyticsLoaded) return;
-        analyticsLoaded = true;
+      var gtmLoaded = false;
+      function loadGTM() {
+        if (gtmLoaded) return;
+        gtmLoaded = true;
 
         // Remover listeners de evento
         ['touchstart', 'scroll', 'mousemove', 'keydown', 'click'].forEach(function(e) {
-          window.removeEventListener(e, loadAnalytics, { passive: true });
+          window.removeEventListener(e, loadGTM, { passive: true });
         });
 
         // GTM
@@ -129,41 +126,25 @@
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-NLVV9QS7');
-
-        // Meta Pixel
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '25215752718122898');
-        if (workshopPixelInitialized) {
-          fbq('trackSingle', '25215752718122898', 'PageView');
-        } else {
-          fbq('track', 'PageView');
-        }
       }
 
-      // Escutar primeira interação ou fallback após 5 segundos
+      // Escutar primeira interação ou fallback após 3.5 segundos
       ['touchstart', 'scroll', 'mousemove', 'keydown', 'click'].forEach(function(e) {
-        window.addEventListener(e, loadAnalytics, { passive: true, once: true });
+        window.addEventListener(e, loadGTM, { passive: true, once: true });
       });
-      setTimeout(loadAnalytics, 5000);
+      setTimeout(loadGTM, 3500);
     })();
   </script>
 </head>
 
 <style>body{background:#000;margin:0}#root{min-height:100vh}</style>
 <body>
-  <!-- Google Tag Manager (noscript) -->
+  <!-- Google Tag Manager (noscript) & Meta Pixel (noscript) -->
   <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLVV9QS7" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=25215752718122898&ev=PageView&noscript=1" />
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1790939695506643&ev=PageView&noscript=1" />
   </noscript>
-  <!-- End Google Tag Manager (noscript) -->
+  <!-- End Google Tag Manager (noscript) & Meta Pixel (noscript) -->
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
