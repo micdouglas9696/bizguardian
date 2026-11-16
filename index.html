@@ -95,6 +95,24 @@
   <!-- Google Tag Manager & Meta Pixel (Carregamento via Interação do Usuário para Score 100 no PageSpeed) -->
   <script>
     (function() {
+      var workshopPixelInitialized = false;
+      window.trackWorkshopPageView = function() {
+        if (!window.fbq) {
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window,document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+        }
+        if (!workshopPixelInitialized) {
+          fbq('init', '1790939695506643');
+          workshopPixelInitialized = true;
+        }
+        fbq('trackSingle', '1790939695506643', 'PageView');
+      };
       var analyticsLoaded = false;
       function loadAnalytics() {
         if (analyticsLoaded) return;
@@ -122,7 +140,11 @@
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '25215752718122898');
-        fbq('track', 'PageView');
+        if (workshopPixelInitialized) {
+          fbq('trackSingle', '25215752718122898', 'PageView');
+        } else {
+          fbq('track', 'PageView');
+        }
       }
 
       // Escutar primeira interação ou fallback após 5 segundos

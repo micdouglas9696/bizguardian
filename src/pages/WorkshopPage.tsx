@@ -1,6 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+declare global {
+  interface Window {
+    trackWorkshopPageView?: () => void;
+  }
+}
+
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'https://api.marinhoponci.com');
 
 export default function WorkshopPage() {
@@ -16,6 +22,7 @@ export default function WorkshopPage() {
   const [isPlayingMobile, setIsPlayingMobile] = useState(false);
   const desktopVideoRef = useRef<HTMLVideoElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
+  const pixelTracked = useRef(false);
 
   const handlePlayDesktop = () => {
     setIsPlayingDesktop(true);
@@ -32,6 +39,10 @@ export default function WorkshopPage() {
   };
 
   useEffect(() => {
+    if (!pixelTracked.current) {
+      window.trackWorkshopPageView?.();
+      pixelTracked.current = true;
+    }
     window.scrollTo(0, 0);
     document.title = 'Workshop Brasil ➔ Europa | 28 de Novembro | Marinho Ponci & Úp.INTELLIG3NCE';
 

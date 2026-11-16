@@ -1,5 +1,13 @@
 # Checkout Workshop Brasil → Europa
 
+## Pixel do workshop — 16/11
+- [x] Inicializar o Pixel 1790939695506643 somente no Workshop e registrar PageView sem duplicar o Pixel existente.
+- [x] Verificar build e disparo em ambiente local.
+- [x] Publicar e verificar a página de produção: navegador disparou um PageView para cada Pixel no Workshop, sem o Pixel novo na página inicial. A recepção no Gerenciador de Eventos Meta não foi conferida.
+- Publicação feita diretamente na Vercel a partir da revisão 5509a0f; alterações ainda não estão no Git remoto e podem ser perdidas em outro deploy.
+- O lint global encontrou 62 erros preexistentes; os scripts `typecheck` e `test` exigidos pelo projeto não estão definidos. O build (que inclui TypeScript) e o lint do arquivo alterado passaram.
+- Arquivos: `index.html`, `src/pages/WorkshopPage.tsx`.
+
 - [x] API local acessível pelo frontend sem erro CORS (Stripe simulada).
 - [x] Checkout Stripe em BRL por R$ 300, com nome, e-mail e WhatsApp associados à sessão (Stripe simulada).
 - [x] Retorno indica pagamento apenas após confirmação da Stripe (resposta simulada).
