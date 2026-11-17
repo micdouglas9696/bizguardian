@@ -825,7 +825,7 @@ app.post('/api/checkout/create-session', async (req: Request, res: Response) => 
 
         const session = await stripeClient.checkout.sessions.create({
             mode: 'payment',
-            payment_method_types: ['card'],  // PIX adicionado automaticamente quando ativo na conta BR
+            payment_method_types: ['card', 'pix'],
             line_items: dynamicLineItems || [{ price: priceId, quantity: 1 }],
             customer_email: email || undefined,
             allow_promotion_codes: true,
