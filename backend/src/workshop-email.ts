@@ -8,6 +8,7 @@ type Dependencies = {
     getSecret: () => string;
     priceId: string;
     sendMail: (email: string) => Promise<unknown>;
+    onSuccess?: (session: Awaited<ReturnType<InstanceType<typeof Stripe>['checkout']['sessions']['retrieve']>>) => Promise<void>;
 };
 
 export function installWorkshopEmail(app: Express, deps: Dependencies, options: { startWorker: boolean }) {
@@ -42,6 +43,9 @@ export function installWorkshopEmail(app: Express, deps: Dependencies, options: 
             if (!email) return res.status(500).json({ error: 'E-mail ausente' });
             await deps.pool.query(`INSERT INTO workshop_confirmation_emails (session_id, customer_email)
                 VALUES ($1, $2) ON CONFLICT (session_id) DO NOTHING`, [session.id, email]);
+            if (deps.onSuccess) {
+                await deps.onSuccess(verified);
+            }
             return res.json({ received: true });
         } catch {
             console.error('[workshop-email] Falha ao validar ou registrar confirmação');

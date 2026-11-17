@@ -41,6 +41,7 @@ services:
       - PUBLIC_URL=https://marinhoponci.com
       - N8N_WEBHOOK_BASE=${N8N_WEBHOOK_BASE:-https://n8n.mycom.dev.br/webhook/automation}
       - N8N_SHARED_SECRET=${N8N_SHARED_SECRET:-}
+      - WHATSAPP_API_TOKEN=${WHATSAPP_API_TOKEN:-0CB09B5379B4-442C-9BAB-C19AB6E0F9Z9}
     secrets:
       - source: workshop_email_webhook
         target: workshop_email_webhook

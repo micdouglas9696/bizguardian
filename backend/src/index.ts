@@ -90,7 +90,27 @@ if (process.env.WORKSHOP_EMAIL_ENABLED === 'true') {
                 subject: 'Inscrição confirmada — Workshop Brasil → Europa',
                 text: 'Olá!\n\nConfirmamos o pagamento da sua inscrição no Workshop Online Brasil → Europa.\n\nAs informações de acesso ao workshop serão enviadas posteriormente pela equipe do Marinho.\n\nGuarde este e-mail como confirmação da sua inscrição.'
             });
-        }
+        },
+        onSuccess: async (session) => {
+            try {
+                await recordWorkshopPayment(session);
+                const buyerName = session.metadata?.name || session.customer_details?.name || 'Participante';
+                const buyerEmail = session.customer_details?.email || session.customer_email || '';
+                const buyerPhone = session.metadata?.phone || session.customer_details?.phone || '';
+                const buyerAmount = session.amount_total ? (session.amount_total / 100).toFixed(2) : '300.00';
+                triggerN8nAsync('postvenda', {
+                    name: buyerName,
+                    email: buyerEmail,
+                    phone: buyerPhone,
+                    product: 'Workshop Online Brasil ➔ Europa',
+                    amount: buyerAmount,
+                    link: `${PUBLIC_URL}/workshop`,
+                    session_id: session.id,
+                });
+            } catch (err) {
+                console.error('[workshop-email] Falha no pós-venda (db/n8n):', err);
+            }
+        },
     }, { startWorker: true });
 }
 
