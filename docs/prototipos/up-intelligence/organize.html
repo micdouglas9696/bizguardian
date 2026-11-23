@@ -9,8 +9,6 @@
   <script src="marinho.js" defer></script>
 </head>
 <body>
-  <div class="ws-notice">ESTUDO DE REDESIGN · DESIGN SYSTEM UP.INTELLIG3NCE</div>
-
   <header class="ws-header">
     <div class="wrap ws-header-inner">
       <a class="ws-logo-link" href="index.html" aria-label="Up.INTELLIG3NCE - Início">
@@ -24,16 +22,19 @@
         <a href="dossies.html">Dossiês</a>
         <a href="blog.html">Blog</a>
       </nav>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <a class="ws-header-cta" href="index.html#contato">Vamos conversar</a>
-        <button class="ws-menu-toggle-btn" type="button" aria-label="Abrir Menu Lateral">
-          <span class="ws-toggle-icon">
-            <span class="ws-toggle-bar"></span>
-            <span class="ws-toggle-bar"></span>
-          </span>
-          <span>Menu</span>
-        </button>
-      </div>
+      <a class="ws-header-cta" href="index.html#contato">Vamos conversar</a>
+      <details class="ws-mobile-menu">
+        <summary>Menu ☰</summary>
+        <div>
+          <a href="index.html">Início</a>
+          <a href="up-intelligence.html">Up.INTELLIG3NCE</a>
+          <a href="organize.html">ORG4NIZE.Up</a>
+          <a href="scale.html">SC4LE.Up</a>
+          <a href="dossies.html">Dossiês</a>
+          <a href="blog.html">Blog</a>
+          <a href="index.html#contato">Contato</a>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -264,44 +265,5 @@
       </nav>
     </div>
   </footer>
-
-  <!-- BACKDROP E MENU LATERAL ANIMADO -->
-  <div class="ws-side-backdrop" aria-hidden="true"></div>
-  <aside class="ws-side-drawer" aria-label="Navegação Lateral">
-    <div class="ws-drawer-header">
-      <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
-      <button class="ws-drawer-close" type="button" aria-label="Fechar menu">✕</button>
-    </div>
-    <nav class="ws-drawer-nav">
-      <a class="ws-drawer-link" href="index.html">
-        <span><span class="ws-link-index">01</span>Início</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="up-intelligence.html">
-        <span><span class="ws-link-index">02</span>Up.INTELLIG3NCE Hub</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="organize.html" aria-current="page">
-        <span><span class="ws-link-index">03</span>ORG4NIZE.Up (PMEs)</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="scale.html">
-        <span><span class="ws-link-index">04</span>SC4LE.Up (Expansão)</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="dossies.html">
-        <span><span class="ws-link-index">05</span>Dossiês de Franquias</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="blog.html">
-        <span><span class="ws-link-index">06</span>Blog & Artigos</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-    </nav>
-    <div class="ws-drawer-footer">
-      <a class="ws-btn-primary" style="width:100%;text-align:center;" href="index.html#contato">Vamos Conversar</a>
-      <p style="font-size:11px;color:#71717A;margin-top:14px;text-align:center;">© 2026 Marinho Ponci · Up.INTELLIG3NCE</p>
-    </div>
-  </aside>
 </body>
 </html>

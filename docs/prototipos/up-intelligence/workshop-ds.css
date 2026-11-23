@@ -988,174 +988,7 @@ img {
    MÓDULOS DE INTERAÇÃO & ANIMAÇÃO DE ALTO IMPACTO (NOVAS REFERÊNCIAS)
    ========================================================================= */
 
-/* 1. MENU LATERAL ANIMADO (Off-Canvas Drawer com Transição 3D) */
-.ws-side-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-  z-index: 1000;
-}
-
-.ws-side-backdrop.is-active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.ws-side-drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: min(440px, 92vw);
-  height: 100vh;
-  height: 100dvh;
-  background: rgba(8, 12, 9, 0.96);
-  border-left: 1px solid rgba(2, 233, 155, 0.28);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  box-shadow: -15px 0 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(2, 233, 155, 0.12);
-  transform: translateX(105%);
-  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(24px, 4vw, 36px);
-  box-sizing: border-box;
-}
-
-.ws-side-drawer.is-active {
-  transform: translateX(0);
-}
-
-.ws-drawer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #1E281F;
-}
-
-.ws-drawer-close {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--ws-border);
-  color: #FFF;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  transition: all 0.25s ease;
-}
-
-.ws-drawer-close:hover {
-  background: var(--ws-green);
-  color: #000;
-  border-color: var(--ws-green);
-  transform: rotate(90deg);
-}
-
-.ws-drawer-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 32px 0 auto;
-}
-
-.ws-drawer-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  border-radius: 12px;
-  color: var(--ws-text-light);
-  font-size: 16px;
-  font-weight: 700;
-  text-decoration: none;
-  background: transparent;
-  border: 1px solid transparent;
-  opacity: 0;
-  transform: translateX(25px);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, border-color 0.2s, color 0.2s;
-}
-
-.ws-side-drawer.is-active .ws-drawer-link {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.ws-drawer-link:nth-child(1) { transition-delay: 0.15s; }
-.ws-drawer-link:nth-child(2) { transition-delay: 0.20s; }
-.ws-drawer-link:nth-child(3) { transition-delay: 0.25s; }
-.ws-drawer-link:nth-child(4) { transition-delay: 0.30s; }
-.ws-drawer-link:nth-child(5) { transition-delay: 0.35s; }
-.ws-drawer-link:nth-child(6) { transition-delay: 0.40s; }
-
-.ws-drawer-link:hover {
-  background: rgba(2, 233, 155, 0.08);
-  border-color: rgba(2, 233, 155, 0.3);
-  color: #FFFFFF;
-}
-
-.ws-drawer-link .ws-link-index {
-  font-family: var(--ws-font-mono);
-  font-size: 11px;
-  color: var(--ws-green);
-  margin-right: 12px;
-}
-
-.ws-drawer-footer {
-  padding-top: 24px;
-  border-top: 1px solid #1E281F;
-}
-
-/* Botão de Toggle do Menu com Efeito Flip 3D */
-.ws-menu-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 18px;
-  background: rgba(14, 22, 16, 0.9);
-  border: 1px solid var(--ws-border);
-  border-radius: 999px;
-  color: #FFFFFF;
-  font-family: var(--ws-font-sans);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.ws-menu-toggle-btn:hover {
-  border-color: var(--ws-green);
-  box-shadow: 0 0 20px rgba(2, 233, 155, 0.3);
-  background: #111A13;
-}
-
-.ws-toggle-icon {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 16px;
-}
-
-.ws-toggle-bar {
-  height: 2px;
-  width: 100%;
-  background: var(--ws-green);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-/* 2. HERO COM 3D APPLE-LIKE SCROLL ANIMATION */
+/* 1. HERO COM 3D APPLE-LIKE SCROLL ANIMATION */
 .ws-apple-scroll-section {
   position: relative;
   width: 100%;
@@ -1417,32 +1250,376 @@ img {
   box-shadow: 0 0 70px rgba(2, 233, 155, 0.7);
 }
 
+/* =========================================================================
+   HERO COM MARINHO PONCI + APPLE-LIKE SCROLL DEPTH & RESPLENDENT SHIMMER
+   ========================================================================= */
+
+.ws-marinho-hero-section {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  padding: clamp(40px, 6vw, 80px) 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 75% 45%, rgba(2, 233, 155, 0.12) 0%, rgba(5, 7, 5, 0.98) 55%, #050705 100%);
+}
+
+.ws-marinho-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.ws-marinho-hero-content {
+  position: relative;
+  z-index: 3;
+}
+
+.ws-marinho-hero-title {
+  font-size: clamp(36px, 4.8vw, 66px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  margin: 16px 0 20px;
+  color: #FFFFFF;
+}
+
+/* Degrade verde esmeralda resplandecente passando por dentro do texto */
+.ws-resplendent-text {
+  background: linear-gradient(
+    90deg,
+    #FFFFFF 0%,
+    #02E99B 25%,
+    #6EE7B7 50%,
+    #02E99B 75%,
+    #FFFFFF 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: wsTextShimmer 4s linear infinite;
+  display: inline-block;
+  text-shadow: 0 0 35px rgba(2, 233, 155, 0.4);
+}
+
+@keyframes wsTextShimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.ws-marinho-visual-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+}
+
+/* Aura Circular Brilhante atrás da foto */
+.ws-marinho-orb {
+  position: absolute;
+  width: clamp(320px, 35vw, 480px);
+  height: clamp(320px, 35vw, 480px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2, 233, 155, 0.45) 0%, rgba(2, 233, 155, 0.15) 50%, transparent 72%);
+  filter: blur(45px);
+  z-index: 1;
+  pointer-events: none;
+  animation: wsOrbBreathe 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes wsOrbBreathe {
+  0% { transform: scale(0.92); opacity: 0.7; }
+  100% { transform: scale(1.08); opacity: 1; filter: blur(55px); }
+}
+
+.ws-marinho-photo-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 45px rgba(2, 233, 155, 0.2);
+  border: 1px solid rgba(2, 233, 155, 0.3);
+  background: #080C09;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
+.ws-marinho-photo-wrap img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  object-position: center 15%;
+  filter: contrast(1.06) brightness(0.98);
+}
+
+/* Badge flutuante de autoridade */
+.ws-marinho-float-badge {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  right: 20px;
+  background: rgba(8, 14, 10, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(2, 233, 155, 0.35);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.ws-marinho-float-badge strong {
+  display: block;
+  font-size: 14px;
+  color: #FFF;
+}
+
+.ws-marinho-float-badge small {
+  font-size: 11px;
+  color: var(--ws-green);
+  font-family: var(--ws-font-mono);
+  font-weight: 700;
+}
+
+/* =========================================================================
+   ADVANCED SLIDER WITH CARD CAROUSEL (ECOSSISTEMA UP - REFERÊNCIA HUSK)
+   ========================================================================= */
+
+.ws-carousel-section {
+  position: relative;
+  padding: clamp(60px, 8vw, 110px) 0;
+  background: #050705;
+  overflow: hidden;
+  border-top: 1px solid var(--ws-border);
+  border-bottom: 1px solid var(--ws-border);
+}
+
+.ws-carousel-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.ws-carousel-viewport {
+  position: relative;
+  overflow: hidden;
+  min-height: 540px;
+}
+
+.ws-carousel-track {
+  display: flex;
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+
+.ws-carousel-item {
+  min-width: 100%;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(32px, 5vw, 60px);
+  align-items: center;
+  padding: 10px 0;
+  opacity: 0.35;
+  transform: scale(0.96);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ws-carousel-item.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ws-carousel-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ws-carousel-eyebrow {
+  font-family: var(--ws-font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--ws-green);
+  text-transform: uppercase;
+}
+
+.ws-carousel-item-title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.ws-carousel-item-desc {
+  font-size: 16px;
+  color: #A1A1AA;
+  line-height: 1.65;
+  max-width: 520px;
+  margin: 0;
+}
+
+.ws-carousel-visual-col {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Aura Circular Vermelha/Verde estilo HUSK */
+.ws-carousel-card-orb {
+  position: absolute;
+  width: clamp(280px, 32vw, 440px);
+  height: clamp(280px, 32vw, 440px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2, 233, 155, 0.5) 0%, rgba(2, 233, 155, 0.12) 55%, transparent 72%);
+  filter: blur(40px);
+  z-index: 1;
+  animation: wsOrbBreathe 4s infinite alternate ease-in-out;
+}
+
+.ws-carousel-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  height: 380px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1.5px solid rgba(2, 233, 155, 0.35);
+  background: #080D09;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(2, 233, 155, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.ws-carousel-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.ws-carousel-card:hover img {
+  transform: scale(1.05);
+}
+
+.ws-carousel-card-overlay {
+  position: relative;
+  z-index: 2;
+  padding: 24px;
+  background: linear-gradient(0deg, rgba(5, 7, 5, 0.95) 0%, rgba(5, 7, 5, 0.6) 60%, transparent 100%);
+}
+
+/* Controles de Navegação estilo HUSK (Seta Circular + Swipe Hint) */
+.ws-carousel-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ws-border);
+}
+
+.ws-carousel-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ws-carousel-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(14, 22, 16, 0.9);
+  border: 1px solid var(--ws-border);
+  color: #FFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.ws-carousel-arrow:hover {
+  background: var(--ws-green);
+  color: #000;
+  border-color: var(--ws-green);
+  box-shadow: 0 0 25px rgba(2, 233, 155, 0.45);
+  transform: scale(1.08);
+}
+
+.ws-carousel-swipe-hint {
+  font-family: var(--ws-font-mono);
+  font-size: 11px;
+  color: var(--ws-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Barra de Progresso estilo HUSK (01 ────── 03) */
+.ws-carousel-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--ws-font-mono);
+  font-size: 13px;
+  color: var(--ws-text-muted);
+}
+
+.ws-carousel-progress .num-active {
+  color: var(--ws-green);
+  font-weight: 800;
+}
+
+.ws-carousel-progress-track {
+  width: 120px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ws-carousel-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--ws-green);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
 @media (max-width: 900px) {
-  .ws-hex-grid {
+  .ws-marinho-hero-grid,
+  .ws-carousel-item {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
-  .ws-cards-to-btn-section {
-    height: auto;
+  .ws-marinho-photo-wrap img {
+    height: 400px;
   }
-  .ws-cards-to-btn-sticky {
-    position: relative;
-    height: auto;
-    padding: 60px 0;
+  .ws-carousel-card {
+    height: 280px;
   }
-  .ws-converge-stage {
-    height: auto;
-    display: flex;
+  .ws-carousel-bottom-bar {
     flex-direction: column;
-    gap: 16px;
-  }
-  .ws-converge-card {
-    position: relative;
-    top: unset !important;
-    left: unset !important;
-    right: unset !important;
-    bottom: unset !important;
-    width: 100%;
-    transform: none !important;
-    opacity: 1 !important;
+    gap: 20px;
+    align-items: flex-start;
   }
 }

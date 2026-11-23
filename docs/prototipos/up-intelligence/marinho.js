@@ -51,101 +51,120 @@
 })();
 
 /* =========================================================================
-   1. MENU LATERAL ANIMADO (OFF-CANVAS DRAWER)
+   1. HERO COM MARINHO PONCI: APPLE-LIKE SCROLL DEPTH & PARALLAX
    ========================================================================= */
 (() => {
-  const drawer = document.querySelector('.ws-side-drawer');
-  const backdrop = document.querySelector('.ws-side-backdrop');
-  const toggleBtns = document.querySelectorAll('.ws-menu-toggle-btn');
-  const closeBtn = document.querySelector('.ws-drawer-close');
-  if (!drawer || !backdrop) return;
+  const heroSection = document.querySelector('.ws-marinho-hero-section');
+  if (!heroSection) return;
 
-  const openDrawer = () => {
-    drawer.classList.add('is-active');
-    backdrop.classList.add('is-active');
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeDrawer = () => {
-    drawer.classList.remove('is-active');
-    backdrop.classList.remove('is-active');
-    document.body.style.overflow = '';
-  };
-
-  toggleBtns.forEach(btn => btn.addEventListener('click', openDrawer));
-  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-  backdrop.addEventListener('click', closeDrawer);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && drawer.classList.contains('is-active')) {
-      closeDrawer();
-    }
-  });
-
-  // Fecha o menu ao clicar em qualquer link interno
-  drawer.querySelectorAll('.ws-drawer-link').forEach(link => {
-    link.addEventListener('click', closeDrawer);
-  });
-})();
-
-/* =========================================================================
-   2. HERO COM 3D APPLE-LIKE SCROLL ANIMATION
-   ========================================================================= */
-(() => {
-  const section = document.querySelector('.ws-apple-scroll-section');
-  if (!section) return;
-
-  const stage = section.querySelector('.ws-3d-stage');
-  const heroText = section.querySelector('.ws-apple-hero-text');
-  const hint = section.querySelector('.ws-scroll-hint');
-  if (!stage) return;
+  const photoWrap = heroSection.querySelector('.ws-marinho-photo-wrap');
+  const orb = heroSection.querySelector('.ws-marinho-orb');
+  const title = heroSection.querySelector('.ws-marinho-hero-title');
+  if (!photoWrap) return;
 
   let ticking = false;
 
-  const onScroll = () => {
+  window.addEventListener('scroll', () => {
     if (!ticking) {
       requestAnimationFrame(() => {
-        const rect = section.getBoundingClientRect();
-        const windowH = window.innerHeight;
-        const totalScrollable = rect.height - windowH;
+        const scrolled = window.scrollY;
+        const maxScroll = 600;
+        const progress = Math.min(scrolled / maxScroll, 1);
 
-        if (totalScrollable <= 0) {
-          ticking = false;
-          return;
-        }
+        // Zoom sutil estilo Apple na foto de Marinho e expansão da aura
+        const scale = 1 + progress * 0.08;
+        const transY = progress * 15;
+        photoWrap.style.transform = `scale(${scale.toFixed(3)}) translateY(${transY.toFixed(1)}px)`;
 
-        // Progresso de 0.0 (topo) a 1.0 (final da seção)
-        const scrolled = -rect.top;
-        const progress = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
-
-        // Interpolação 3D suave estilo Apple
-        const rotX = (1 - progress) * 18; // 18deg -> 0deg
-        const rotY = (1 - progress) * -8; // -8deg -> 0deg
-        const scale = 0.84 + progress * 0.16; // 0.84 -> 1.0
-        const transZ = (1 - progress) * -70; // -70px -> 0px
-
-        stage.style.transform = `perspective(1300px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${transZ.toFixed(1)}px)`;
-
-        if (heroText) {
-          const textOpacity = Math.max(0, 1 - progress * 1.8);
-          const textTransY = progress * -40;
-          heroText.style.opacity = textOpacity.toFixed(2);
-          heroText.style.transform = `translateY(${textTransY.toFixed(1)}px)`;
-        }
-
-        if (hint) {
-          hint.style.opacity = progress > 0.06 ? '0' : '1';
+        if (orb) {
+          const orbScale = 1 + progress * 0.25;
+          orb.style.transform = `scale(${orbScale.toFixed(3)})`;
         }
 
         ticking = false;
       });
       ticking = true;
     }
+  }, { passive: true });
+})();
+
+/* =========================================================================
+   2. ADVANCED SLIDER WITH CARD CAROUSEL (ECOSSISTEMA UP - REFERÊNCIA HUSK)
+   ========================================================================= */
+(() => {
+  const carousel = document.querySelector('.ws-carousel-section');
+  if (!carousel) return;
+
+  const track = carousel.querySelector('.ws-carousel-track');
+  const items = carousel.querySelectorAll('.ws-carousel-item');
+  const prevBtn = carousel.querySelector('.ws-carousel-arrow.ws-prev');
+  const nextBtn = carousel.querySelector('.ws-carousel-arrow.ws-next');
+  const currentNum = carousel.querySelector('.ws-carousel-progress .num-active');
+  const totalNum = carousel.querySelector('.ws-carousel-progress .num-total');
+  const progressBar = carousel.querySelector('.ws-carousel-progress-fill');
+  if (!track || !items.length) return;
+
+  let currentIndex = 0;
+  const totalSlides = items.length;
+
+  if (totalNum) {
+    totalNum.textContent = String(totalSlides).padStart(2, '0');
+  }
+
+  const updateSlide = (newIndex) => {
+    currentIndex = (newIndex + totalSlides) % totalSlides;
+
+    // Movimentação do track horizontal
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    // Atualização de classes ativas para transição de texto e card
+    items.forEach((item, idx) => {
+      item.classList.toggle('is-active', idx === currentIndex);
+    });
+
+    // Atualização do indicador numérico (ex: 01, 02, 03)
+    if (currentNum) {
+      currentNum.textContent = String(currentIndex + 1).padStart(2, '0');
+    }
+
+    // Atualização da barra de progresso (ex: 33%, 66%, 100%)
+    if (progressBar) {
+      const pct = ((currentIndex + 1) / totalSlides) * 100;
+      progressBar.style.width = `${pct}%`;
+    }
   };
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  onScroll();
+  if (nextBtn) nextBtn.addEventListener('click', () => updateSlide(currentIndex + 1));
+  if (prevBtn) prevBtn.addEventListener('click', () => updateSlide(currentIndex - 1));
+
+  // Suporte a teclado (setas direita/esquerda)
+  carousel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') updateSlide(currentIndex + 1);
+    if (e.key === 'ArrowLeft') updateSlide(currentIndex - 1);
+  });
+
+  // Suporte a gestos touch/swipe
+  let startX = 0;
+  let endX = 0;
+
+  carousel.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', (e) => {
+    endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) {
+        updateSlide(currentIndex + 1); // Swipe esquerda -> próximo
+      } else {
+        updateSlide(currentIndex - 1); // Swipe direita -> anterior
+      }
+    }
+  }, { passive: true });
+
+  // Iniciar primeiro slide
+  updateSlide(0);
 })();
 
 /* =========================================================================
