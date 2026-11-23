@@ -49,3 +49,175 @@
   dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => { video.pause(); video.removeAttribute('src'); video.load(); });
 })();
+
+/* =========================================================================
+   1. MENU LATERAL ANIMADO (OFF-CANVAS DRAWER)
+   ========================================================================= */
+(() => {
+  const drawer = document.querySelector('.ws-side-drawer');
+  const backdrop = document.querySelector('.ws-side-backdrop');
+  const toggleBtns = document.querySelectorAll('.ws-menu-toggle-btn');
+  const closeBtn = document.querySelector('.ws-drawer-close');
+  if (!drawer || !backdrop) return;
+
+  const openDrawer = () => {
+    drawer.classList.add('is-active');
+    backdrop.classList.add('is-active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeDrawer = () => {
+    drawer.classList.remove('is-active');
+    backdrop.classList.remove('is-active');
+    document.body.style.overflow = '';
+  };
+
+  toggleBtns.forEach(btn => btn.addEventListener('click', openDrawer));
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  backdrop.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('is-active')) {
+      closeDrawer();
+    }
+  });
+
+  // Fecha o menu ao clicar em qualquer link interno
+  drawer.querySelectorAll('.ws-drawer-link').forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+})();
+
+/* =========================================================================
+   2. HERO COM 3D APPLE-LIKE SCROLL ANIMATION
+   ========================================================================= */
+(() => {
+  const section = document.querySelector('.ws-apple-scroll-section');
+  if (!section) return;
+
+  const stage = section.querySelector('.ws-3d-stage');
+  const heroText = section.querySelector('.ws-apple-hero-text');
+  const hint = section.querySelector('.ws-scroll-hint');
+  if (!stage) return;
+
+  let ticking = false;
+
+  const onScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const rect = section.getBoundingClientRect();
+        const windowH = window.innerHeight;
+        const totalScrollable = rect.height - windowH;
+
+        if (totalScrollable <= 0) {
+          ticking = false;
+          return;
+        }
+
+        // Progresso de 0.0 (topo) a 1.0 (final da seção)
+        const scrolled = -rect.top;
+        const progress = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
+
+        // Interpolação 3D suave estilo Apple
+        const rotX = (1 - progress) * 18; // 18deg -> 0deg
+        const rotY = (1 - progress) * -8; // -8deg -> 0deg
+        const scale = 0.84 + progress * 0.16; // 0.84 -> 1.0
+        const transZ = (1 - progress) * -70; // -70px -> 0px
+
+        stage.style.transform = `perspective(1300px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${transZ.toFixed(1)}px)`;
+
+        if (heroText) {
+          const textOpacity = Math.max(0, 1 - progress * 1.8);
+          const textTransY = progress * -40;
+          heroText.style.opacity = textOpacity.toFixed(2);
+          heroText.style.transform = `translateY(${textTransY.toFixed(1)}px)`;
+        }
+
+        if (hint) {
+          hint.style.opacity = progress > 0.06 ? '0' : '1';
+        }
+
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* =========================================================================
+   3. CARDS TO BUTTON SCROLL EFFECT (CONVERGÊNCIA DINÂMICA)
+   ========================================================================= */
+(() => {
+  const section = document.querySelector('.ws-cards-to-btn-section');
+  if (!section) return;
+
+  const cards = section.querySelectorAll('.ws-converge-card');
+  const targetBtn = section.querySelector('.ws-converge-target-btn');
+  const stage = section.querySelector('.ws-converge-stage');
+  if (!cards.length || !targetBtn || !stage) return;
+
+  let ticking = false;
+
+  const updateConvergence = () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        if (window.innerWidth <= 900) {
+          cards.forEach(card => {
+            card.style.transform = '';
+            card.style.opacity = '';
+          });
+          ticking = false;
+          return;
+        }
+
+        const rect = section.getBoundingClientRect();
+        const windowH = window.innerHeight;
+        const total = rect.height - windowH;
+        if (total <= 0) {
+          ticking = false;
+          return;
+        }
+
+        const scrolled = -rect.top;
+        const progress = Math.min(Math.max(scrolled / total, 0), 1);
+
+        // Fase de convergência: 0.0 até 0.8
+        const pNorm = Math.min(progress / 0.8, 1);
+
+        // Coordenadas relativas ao centro do estágio
+        const stageRect = stage.getBoundingClientRect();
+        const centerX = stageRect.width / 2;
+        const centerY = stageRect.height / 2;
+
+        cards.forEach((card) => {
+          const cardLeft = card.offsetLeft + card.offsetWidth / 2;
+          const cardTop = card.offsetTop + card.offsetHeight / 2;
+
+          const deltaX = (centerX - cardLeft) * pNorm;
+          const deltaY = (centerY - cardTop) * pNorm;
+          const scale = 1 - pNorm * 0.55;
+          const opacity = Math.max(0, 1 - pNorm * 1.05);
+
+          card.style.transform = `translate3d(${deltaX.toFixed(1)}px, ${deltaY.toFixed(1)}px, 0) scale(${scale.toFixed(2)})`;
+          card.style.opacity = opacity.toFixed(2);
+        });
+
+        if (targetBtn) {
+          const btnScale = 1 + (pNorm >= 0.85 ? 0.08 : 0);
+          targetBtn.style.transform = `scale(${btnScale})`;
+        }
+
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', updateConvergence, { passive: true });
+  window.addEventListener('resize', updateConvergence, { passive: true });
+  updateConvergence();
+})();

@@ -13,7 +13,7 @@
   <div class="ws-notice">ESTUDO DE REDESIGN · DESIGN SYSTEM UP.INTELLIG3NCE</div>
   <header class="header wrap">
     <a class="signature-logo" href="index.html" aria-label="Marinho Ponci — início">
-      <img src="../../../public/marinho-ponci-logo.webp" alt="Marinho Ponci">
+      <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci">
     </a>
     <nav class="desktop-nav" aria-label="Navegação principal">
       <a href="#sobre">Sobre</a>
@@ -24,34 +24,82 @@
       <a href="blog.html">Blog</a>
       <a href="https://marinhoponci.com/membro/login">Área de membros</a>
     </nav>
-    <a class="header-button" href="#contato">Vamos conversar</a>
-    <details class="mobile-menu">
-      <summary>Menu ☰</summary>
-      <nav aria-label="Menu móvel">
-        <a href="#sobre">Sobre</a>
-        <a href="up-intelligence.html">Up.INTELLIG3NCE</a>
-        <a href="organize.html">ORG4NIZE.Up</a>
-        <a href="scale.html">SC4LE.Up</a>
-        <a href="dossies.html">Dossiês</a>
-        <a href="blog.html">Blog</a>
-        <a href="https://marinhoponci.com/membro/login">Área de membros</a>
-        <a href="#contato">Contato</a>
-      </nav>
-    </details>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a class="header-button" href="#contato">Vamos conversar</a>
+      <button class="ws-menu-toggle-btn" type="button" aria-label="Abrir Menu Lateral">
+        <span class="ws-toggle-icon">
+          <span class="ws-toggle-bar"></span>
+          <span class="ws-toggle-bar"></span>
+        </span>
+        <span>Menu</span>
+      </button>
+    </div>
   </header>
 
   <main>
-    <section class="hero" id="inicio">
-      <div class="hero-portrait" aria-hidden="true">
-        <img src="../../../public/marinho%20principal.webp" alt="">
-      </div>
-      <div class="hero-overlay" aria-hidden="true"></div>
-      <div class="wrap hero-content">
-        <h1>Boas decisões constroem <span>grandes negócios.</span></h1>
-        <p>Experiência, estratégia e conhecimento para ajudar empresários a organizar, desenvolver e expandir suas empresas.</p>
-        <div class="actions">
-          <a class="button" href="#solucoes">Conheça as soluções</a>
-          <a class="text-link" href="#sobre">Conheça minha trajetória</a>
+    <!-- HERO COM 3D APPLE-LIKE SCROLL ANIMATION (REFERÊNCIA VISION PRO) -->
+    <section class="ws-apple-scroll-section" id="inicio">
+      <div class="ws-apple-sticky">
+        <div class="ws-apple-hero-text">
+          <div class="ws-badge">
+            <span class="ws-badge-dot"></span>
+            <span>UP.INTELLIG3NCE · ESTRATÉGIA, TECNOLOGIA & IA</span>
+          </div>
+          <span class="ws-eyebrow">DECISÕES MAIS BEM FUNDAMENTADAS</span>
+          <h1 class="ws-title" style="margin: 12px 0 16px;">
+            Boas decisões constroem <br>
+            <span class="ws-title-green">grandes negócios.</span>
+          </h1>
+          <p class="ws-lead" style="margin: 0 auto 24px;">
+            Reunimos quase 40 anos de vivência executiva de mercado com a capacidade analítica da inteligência artificial para orientar empresários a gerir e expandir com critério real.
+          </p>
+          <div class="ws-actions" style="justify-content: center;">
+            <a class="ws-btn-primary" href="#solucoes">Conheça as Soluções</a>
+            <a class="ws-btn-secondary" href="#sobre">Conheça Minha Trajetória</a>
+          </div>
+        </div>
+
+        <!-- COCKPIT ESPACIAL TRIDIMENSIONAL QUE SE AJUSTA NO SCROLL -->
+        <div class="ws-3d-stage">
+          <div class="ws-3d-cockpit-frame">
+            <div class="ws-cockpit-bar">
+              <div class="ws-cockpit-dots">
+                <span class="ws-cockpit-dot active"></span>
+                <span class="ws-cockpit-dot"></span>
+                <span class="ws-cockpit-dot"></span>
+              </div>
+              <span>UP.INTELLIG3NCE // EXECUTIVE TERMINAL V4.2 · ANÁLISE DE MERCADO EM TEMPO REAL</span>
+              <span style="color: var(--ws-green); font-weight: 700;">● SISTEMA OPERACIONAL ATIVO</span>
+            </div>
+            <div class="ws-cockpit-body">
+              <div class="ws-cockpit-metric">
+                <small>01 · Vivência Prática</small>
+                <strong>+38 Anos de Gestão Real</strong>
+                <div style="margin-top: 8px; font-size: 12px; color: #A1A1AA;">Formatação, governança e expansão de grandes redes no varejo</div>
+              </div>
+              <div class="ws-cockpit-metric">
+                <small>02 · IA Aplicada a Negócios</small>
+                <div class="score">CAPACIDADE ANALÍTICA CONTÍNUA</div>
+                <div style="margin-top: 8px; font-size: 12px; color: #A1A1AA;">Diagnóstico financeiro e acompanhamento com modelos de inteligência</div>
+              </div>
+              <div class="ws-cockpit-metric">
+                <small>03 · ORG4NIZE.Up (PMEs)</small>
+                <div class="score" style="color: #60A5FA;">FLUXO DE CAIXA & ROTINAS</div>
+                <div style="margin-top: 8px; font-size: 12px; color: #A1A1AA;">Estruturação de rotinas administrativas e descentralização da liderança</div>
+              </div>
+              <div class="ws-cockpit-metric">
+                <small>04 · SC4LE.Up (Expansão)</small>
+                <strong>Geointeligência de Praças</strong>
+                <div style="margin-top: 8px; font-size: 12px; color: var(--ws-green);">Cenários consistentes para decidir onde, como e com quem expandir</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HINT DE ROLAGEM DINÂMICO -->
+        <div class="ws-scroll-hint">
+          <div class="ws-scroll-hint-mouse"></div>
+          <span>Role para Explorar</span>
         </div>
       </div>
     </section>
@@ -90,11 +138,12 @@
       </div>
     </div>
 
+    <!-- SOBRE MARINHO PONCI -->
     <section class="section about" id="sobre">
       <span id="marinho"></span>
       <div class="wrap about-grid reveal">
         <div class="about-photo">
-          <img src="../../../public/sobre.webp" alt="Marinho Ponci">
+          <img src="/sobre.webp" alt="Marinho Ponci">
         </div>
         <div>
           <div class="ws-badge">
@@ -103,12 +152,13 @@
           </div>
           <h2>A experiência faz diferença em cada decisão.</h2>
           <p>Ao longo de quase quatro décadas, participei da construção, gestão e expansão de empresas em diferentes mercados.</p>
-          <p>Hoje, compartilho essa experiência com empresários que querem entender melhor seus negócios, fazer escolhas mais seguras e encontrar caminhos para crescer.</p>
-          <img class="about-signature" src="../../../public/marinho-ponci-logo.webp" alt="Assinatura de Marinho Ponci">
+          <p>Hoje, compartilho essa experiência com empresários que querem entender melhor seus negócios, fazer escolhas mais seguras e encontrar caminhos sólidos para crescer.</p>
+          <img class="about-signature" src="/marinho-ponci-logo.webp" alt="Assinatura de Marinho Ponci">
         </div>
       </div>
     </section>
 
+    <!-- SOLUÇÕES EM CARDS HEXAGONAIS COM GLASSMORPHISM (REFERÊNCIA HEXAGON GLASS) -->
     <section class="section offerings" id="solucoes">
       <div class="wrap reveal">
         <div class="section-heading solutions-heading">
@@ -117,29 +167,50 @@
             <span>ECOSSISTEMA UP</span>
           </div>
           <h2>Conhecimento e soluções para o seu negócio</h2>
-          <p>Organize sua empresa ou prepare o próximo passo da sua expansão.</p>
+          <p>Organize sua empresa ou prepare o próximo passo da sua expansão com inteligência artificial.</p>
         </div>
-        <div class="cinema-grid stagger-group">
-          <article class="cinema cinema-organize reveal">
-            <div class="cinema-image" aria-hidden="true"></div>
-            <div class="cinema-content">
-              <h3>ORG4NIZE.Up</h3>
-              <p>Mais clareza para organizar as finanças, a gestão e a rotina da sua empresa.</p>
-              <a class="cinema-cta" href="organize.html">Conhecer ORG4NIZE.Up</a>
+
+        <div class="ws-hex-grid stagger-group">
+          <!-- CARD 01: ORG4NIZE.UP -->
+          <article class="ws-hex-card reveal">
+            <div class="ws-hex-media">
+              <img src="/workshop-brasil-europa.jpg" alt="ORG4NIZE.Up Gestão & Finanças">
+            </div>
+            <div class="ws-hex-glass">
+              <div class="ws-badge" style="margin-bottom:8px;">
+                <span class="ws-badge-dot"></span>
+                <span>01 · GESTÃO, FINANÇAS & ROTINA</span>
+              </div>
+              <h3 style="font-size:26px;font-weight:900;color:#FFF;margin:0 0 8px;">ORG4NIZE.Up</h3>
+              <p style="font-size:14px;color:#D4D4D8;line-height:1.55;margin:0 0 16px;">
+                Mais clareza para organizar as finanças, a gestão e a rotina da sua empresa, eliminando a sobrecarga do empresário com processos consolidados.
+              </p>
+              <a class="ws-btn-primary" style="padding:10px 22px;font-size:13px;" href="organize.html">Conhecer ORG4NIZE.Up</a>
             </div>
           </article>
-          <article class="cinema cinema-scale reveal">
-            <div class="cinema-image" aria-hidden="true"></div>
-            <div class="cinema-content">
-              <h3>SC4LE.Up</h3>
-              <p>Mais informação e critério para decidir onde, como e com quem expandir.</p>
-              <a class="cinema-cta" href="scale.html">Conhecer SC4LE.Up</a>
+
+          <!-- CARD 02: SC4LE.UP -->
+          <article class="ws-hex-card reveal">
+            <div class="ws-hex-media">
+              <img src="up-ecosystem.jpeg" alt="SC4LE.Up Expansão & Franchising">
+            </div>
+            <div class="ws-hex-glass">
+              <div class="ws-badge" style="margin-bottom:8px;">
+                <span class="ws-badge-dot"></span>
+                <span>02 · EXPANSÃO DE REDES & IA</span>
+              </div>
+              <h3 style="font-size:26px;font-weight:900;color:#FFF;margin:0 0 8px;">SC4LE.Up</h3>
+              <p style="font-size:14px;color:#D4D4D8;line-height:1.55;margin:0 0 16px;">
+                Mais informação e critério para decidir onde, como e com quem expandir sua rede, utilizando geointeligência, perfil de operadores e viabilidade econômica.
+              </p>
+              <a class="ws-btn-primary" style="padding:10px 22px;font-size:13px;" href="scale.html">Conhecer SC4LE.Up</a>
             </div>
           </article>
         </div>
       </div>
     </section>
 
+    <!-- DOSSIÊS DE FRANQUIAS -->
     <section class="section dossiers" id="dossies">
       <div class="wrap reveal">
         <div class="section-heading">
@@ -154,19 +225,68 @@
           <a class="dossier-card reveal" href="dossie-franqueado.html">
             <span>Para quem quer investir</span>
             <h3>Dossiê do Futuro Franqueado</h3>
-            <p>Entenda pontos importantes antes de investir em uma franquia.</p>
+            <p>Entenda pontos importantes antes de investir em uma franquia e aprenda a auditar a COF.</p>
             <strong>Conhecer o Dossiê</strong>
           </a>
           <a class="dossier-card reveal" href="dossie-franqueador.html">
             <span>Para quem quer expandir</span>
             <h3>Dossiê do Futuro Franqueador</h3>
-            <p>Conheça o caminho de quem quer expandir uma marca por franquias.</p>
+            <p>Conheça o caminho de quem quer formatar e expandir uma marca por franquias de modo sustentável.</p>
             <strong>Conhecer o Dossiê</strong>
           </a>
         </div>
       </div>
     </section>
 
+    <!-- CARDS TO BUTTON SCROLL EFFECT (REFERÊNCIA CARDS TO BUTTON) -->
+    <section class="ws-cards-to-btn-section" id="convergencia">
+      <div class="ws-cards-to-btn-sticky">
+        <div class="ws-section-header" style="margin-bottom:28px;">
+          <div class="ws-badge">
+            <span class="ws-badge-dot"></span>
+            <span>SÍNTESE EXECUTIVA</span>
+          </div>
+          <h2 style="color:#FFF;">Todas as áreas convergem para uma decisão segura</h2>
+          <p>Conforme você avança, a complexidade se condensa em um único direcionamento claro:</p>
+        </div>
+
+        <div class="ws-converge-stage">
+          <div class="ws-converge-card ws-card-pos-1">
+            <span style="color:var(--ws-green);font-size:11px;font-weight:800;font-family:var(--ws-font-mono);">01 // FINANÇAS</span>
+            <strong>Caixa & Margem Real</strong>
+            <small>DRE gerencial transparente e controle rigoroso de fluxo</small>
+          </div>
+
+          <div class="ws-converge-card ws-card-pos-2">
+            <span style="color:var(--ws-green);font-size:11px;font-weight:800;font-family:var(--ws-font-mono);">02 // GEOMARKETING</span>
+            <strong>Estudo de Praças</strong>
+            <small>Densidade e demanda mapeadas por inteligência artificial</small>
+          </div>
+
+          <div class="ws-converge-card ws-card-pos-3">
+            <span style="color:var(--ws-green);font-size:11px;font-weight:800;font-family:var(--ws-font-mono);">03 // FRANCHISING</span>
+            <strong>Auditoria de COF & Modelo</strong>
+            <small>Análise profunda de sustentabilidade e regras da rede</small>
+          </div>
+
+          <div class="ws-converge-card ws-card-pos-4">
+            <span style="color:var(--ws-green);font-size:11px;font-weight:800;font-family:var(--ws-font-mono);">04 // OPERAÇÃO</span>
+            <strong>Processos & Autonomia</strong>
+            <small>Equipe alinhada e empresa independente do fundador</small>
+          </div>
+
+          <!-- BOTÃO CENTRAL ALVO DA CONVERGÊNCIA -->
+          <a class="ws-converge-target-btn" href="#contato">
+            <span>Conversar com a Equipe de Marinho Ponci</span>
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEPOIMENTOS EM VÍDEO -->
     <section class="section testimonials" id="depoimentos">
       <div class="wrap reveal">
         <div class="testimonial-header">
@@ -180,8 +300,8 @@
           </div>
         </div>
         <div class="testimonial-grid stagger-group">
-          <button class="testimonial reveal" type="button" data-video="../../../public/videos/diego.mp4" data-name="Diego Bim">
-            <img src="../../../public/diego.webp" alt="" loading="lazy">
+          <button class="testimonial reveal" type="button" data-video="/videos/diego.mp4" data-name="Diego Bim">
+            <img src="/diego.webp" alt="" loading="lazy">
             <span class="testimonial-shade"></span>
             <span class="testimonial-copy">
               <span class="play-icon" aria-hidden="true">▶</span>
@@ -190,8 +310,8 @@
               <span class="watch">Assistir Depoimento</span>
             </span>
           </button>
-          <button class="testimonial reveal" type="button" data-video="../../../public/videos/marcelo.mp4" data-name="Marcelo Zacarias">
-            <img src="../../../public/marcelo.webp" alt="" loading="lazy">
+          <button class="testimonial reveal" type="button" data-video="/videos/marcelo.mp4" data-name="Marcelo Zacarias">
+            <img src="/marcelo.webp" alt="" loading="lazy">
             <span class="testimonial-shade"></span>
             <span class="testimonial-copy">
               <span class="play-icon" aria-hidden="true">▶</span>
@@ -200,8 +320,8 @@
               <span class="watch">Assistir Depoimento</span>
             </span>
           </button>
-          <button class="testimonial reveal" type="button" data-video="../../../public/videos/joao.mp4" data-name="João Ferrari">
-            <img src="../../../public/joao%20ferrai.webp" alt="" loading="lazy">
+          <button class="testimonial reveal" type="button" data-video="/videos/joao.mp4" data-name="João Ferrari">
+            <img src="/joao ferrai.webp" alt="" loading="lazy">
             <span class="testimonial-shade"></span>
             <span class="testimonial-copy">
               <span class="play-icon" aria-hidden="true">▶</span>
@@ -210,8 +330,8 @@
               <span class="watch">Assistir Depoimento</span>
             </span>
           </button>
-          <button class="testimonial reveal" type="button" data-video="../../../public/videos/adriana.mp4" data-name="Adriana Auriemo">
-            <img src="../../../public/adriana%20.webp" alt="" loading="lazy">
+          <button class="testimonial reveal" type="button" data-video="/videos/adriana.mp4" data-name="Adriana Auriemo">
+            <img src="/adriana .webp" alt="" loading="lazy">
             <span class="testimonial-shade"></span>
             <span class="testimonial-copy">
               <span class="play-icon" aria-hidden="true">▶</span>
@@ -220,8 +340,8 @@
               <span class="watch">Assistir Depoimento</span>
             </span>
           </button>
-          <button class="testimonial reveal" type="button" data-video="../../../public/videos/leandro.mp4" data-name="Leandro Otávio">
-            <img src="../../../public/leandro.webp" alt="" loading="lazy">
+          <button class="testimonial reveal" type="button" data-video="/videos/leandro.mp4" data-name="Leandro Otávio">
+            <img src="/leandro.webp" alt="" loading="lazy">
             <span class="testimonial-shade"></span>
             <span class="testimonial-copy">
               <span class="play-icon" aria-hidden="true">▶</span>
@@ -242,6 +362,7 @@
       <video controls playsinline preload="none"></video>
     </dialog>
 
+    <!-- FORMULÁRIO DE CONTATO -->
     <section class="section contact" id="contato">
       <div class="wrap contact-box reveal">
         <div>
@@ -268,7 +389,7 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <a class="signature-logo" href="#inicio">
-        <img src="../../../public/marinho-ponci-logo.webp" alt="Marinho Ponci">
+        <img src="/marinho-ponci-logo.webp" alt="Marinho Ponci">
       </a>
       <nav aria-label="Rodapé">
         <a href="up-intelligence.html">Up.INTELLIG3NCE</a>
@@ -281,5 +402,44 @@
       <p>© Marinho Ponci & Up.INTELLIG3NCE</p>
     </div>
   </footer>
+
+  <!-- BACKDROP E MENU LATERAL ANIMADO (OFF-CANVAS DRAWER) -->
+  <div class="ws-side-backdrop" aria-hidden="true"></div>
+  <aside class="ws-side-drawer" aria-label="Navegação Lateral">
+    <div class="ws-drawer-header">
+      <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
+      <button class="ws-drawer-close" type="button" aria-label="Fechar menu">✕</button>
+    </div>
+    <nav class="ws-drawer-nav">
+      <a class="ws-drawer-link" href="index.html">
+        <span><span class="ws-link-index">01</span>Início</span>
+        <span style="color:var(--ws-green)">●</span>
+      </a>
+      <a class="ws-drawer-link" href="up-intelligence.html">
+        <span><span class="ws-link-index">02</span>Up.INTELLIG3NCE Hub</span>
+        <span style="color:var(--ws-green)">●</span>
+      </a>
+      <a class="ws-drawer-link" href="organize.html">
+        <span><span class="ws-link-index">03</span>ORG4NIZE.Up (PMEs)</span>
+        <span style="color:var(--ws-green)">●</span>
+      </a>
+      <a class="ws-drawer-link" href="scale.html">
+        <span><span class="ws-link-index">04</span>SC4LE.Up (Expansão & IA)</span>
+        <span style="color:var(--ws-green)">●</span>
+      </a>
+      <a class="ws-drawer-link" href="dossies.html">
+        <span><span class="ws-link-index">05</span>Dossiês de Franquias</span>
+        <span style="color:var(--ws-green)">●</span>
+      </a>
+      <a class="ws-drawer-link" href="blog.html">
+        <span><span class="ws-link-index">06</span>Blog & Artigos</span>
+        <span style="color:var(--ws-green)">●</span>
+      </a>
+    </nav>
+    <div class="ws-drawer-footer">
+      <a class="ws-btn-primary" style="width:100%;text-align:center;" href="#contato">Vamos Conversar</a>
+      <p style="font-size:11px;color:#71717A;margin-top:14px;text-align:center;">© 2026 Marinho Ponci · Up.INTELLIG3NCE</p>
+    </div>
+  </aside>
 </body>
 </html>

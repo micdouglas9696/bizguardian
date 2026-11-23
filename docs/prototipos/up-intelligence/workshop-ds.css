@@ -983,3 +983,466 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================================================
+   MÓDULOS DE INTERAÇÃO & ANIMAÇÃO DE ALTO IMPACTO (NOVAS REFERÊNCIAS)
+   ========================================================================= */
+
+/* 1. MENU LATERAL ANIMADO (Off-Canvas Drawer com Transição 3D) */
+.ws-side-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  z-index: 1000;
+}
+
+.ws-side-backdrop.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ws-side-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(440px, 92vw);
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(8, 12, 9, 0.96);
+  border-left: 1px solid rgba(2, 233, 155, 0.28);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  box-shadow: -15px 0 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(2, 233, 155, 0.12);
+  transform: translateX(105%);
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 4vw, 36px);
+  box-sizing: border-box;
+}
+
+.ws-side-drawer.is-active {
+  transform: translateX(0);
+}
+
+.ws-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #1E281F;
+}
+
+.ws-drawer-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ws-border);
+  color: #FFF;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.25s ease;
+}
+
+.ws-drawer-close:hover {
+  background: var(--ws-green);
+  color: #000;
+  border-color: var(--ws-green);
+  transform: rotate(90deg);
+}
+
+.ws-drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 32px 0 auto;
+}
+
+.ws-drawer-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 12px;
+  color: var(--ws-text-light);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  opacity: 0;
+  transform: translateX(25px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.ws-side-drawer.is-active .ws-drawer-link {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ws-drawer-link:nth-child(1) { transition-delay: 0.15s; }
+.ws-drawer-link:nth-child(2) { transition-delay: 0.20s; }
+.ws-drawer-link:nth-child(3) { transition-delay: 0.25s; }
+.ws-drawer-link:nth-child(4) { transition-delay: 0.30s; }
+.ws-drawer-link:nth-child(5) { transition-delay: 0.35s; }
+.ws-drawer-link:nth-child(6) { transition-delay: 0.40s; }
+
+.ws-drawer-link:hover {
+  background: rgba(2, 233, 155, 0.08);
+  border-color: rgba(2, 233, 155, 0.3);
+  color: #FFFFFF;
+}
+
+.ws-drawer-link .ws-link-index {
+  font-family: var(--ws-font-mono);
+  font-size: 11px;
+  color: var(--ws-green);
+  margin-right: 12px;
+}
+
+.ws-drawer-footer {
+  padding-top: 24px;
+  border-top: 1px solid #1E281F;
+}
+
+/* Botão de Toggle do Menu com Efeito Flip 3D */
+.ws-menu-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  background: rgba(14, 22, 16, 0.9);
+  border: 1px solid var(--ws-border);
+  border-radius: 999px;
+  color: #FFFFFF;
+  font-family: var(--ws-font-sans);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ws-menu-toggle-btn:hover {
+  border-color: var(--ws-green);
+  box-shadow: 0 0 20px rgba(2, 233, 155, 0.3);
+  background: #111A13;
+}
+
+.ws-toggle-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 16px;
+}
+
+.ws-toggle-bar {
+  height: 2px;
+  width: 100%;
+  background: var(--ws-green);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* 2. HERO COM 3D APPLE-LIKE SCROLL ANIMATION */
+.ws-apple-scroll-section {
+  position: relative;
+  width: 100%;
+  height: 210vh; /* Profundidade de scroll */
+  background: #000;
+}
+
+.ws-apple-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1300px;
+}
+
+.ws-apple-hero-text {
+  text-align: center;
+  max-width: 860px;
+  padding: 0 24px;
+  z-index: 5;
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+  will-change: transform, opacity;
+}
+
+.ws-3d-stage {
+  width: min(1040px, 94vw);
+  margin-top: 24px;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.08s linear;
+  position: relative;
+  z-index: 6;
+}
+
+.ws-3d-cockpit-frame {
+  background: linear-gradient(175deg, #0D1610 0%, #050806 100%);
+  border: 1.5px solid rgba(2, 233, 155, 0.4);
+  border-radius: 22px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.95), 0 0 50px rgba(2, 233, 155, 0.2);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Indicador de Scroll Down Estilo Apple */
+.ws-scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--ws-text-muted);
+  font-family: var(--ws-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  z-index: 10;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.ws-scroll-hint-mouse {
+  width: 20px;
+  height: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  position: relative;
+}
+
+.ws-scroll-hint-mouse::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 6px;
+  background: var(--ws-green);
+  border-radius: 2px;
+  animation: wsMouseScroll 1.6s infinite ease-in-out;
+}
+
+@keyframes wsMouseScroll {
+  0% { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, 12px); opacity: 0; }
+}
+
+/* 3. HEXAGON CUT GLASSMORPHISM CARDS */
+.ws-hex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(24px, 3.5vw, 40px);
+  margin-top: 36px;
+}
+
+.ws-hex-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #080D09;
+  border: 1px solid var(--ws-border);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.ws-hex-card:hover {
+  border-color: var(--ws-green);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(2, 233, 155, 0.2);
+}
+
+.ws-hex-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ws-hex-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.075, 0.82, 0.165, 1), filter 1.2s ease;
+  filter: brightness(0.7) contrast(1.1);
+}
+
+.ws-hex-card:hover .ws-hex-media img {
+  transform: scale(1.15);
+  filter: brightness(0.85) contrast(1.15);
+}
+
+.ws-hex-glass {
+  position: relative;
+  z-index: 2;
+  margin: 18px;
+  padding: clamp(22px, 3vw, 32px);
+  /* Chanfro Poligonal / Hexagonal */
+  clip-path: polygon(
+    0% 0px,
+    0px 0%,
+    calc(100% - 36px) 0px,
+    100% 36px,
+    100% 100%,
+    calc(100% - 0px) 100%,
+    36px 100%,
+    0px calc(100% - 36px)
+  );
+  background: rgba(6, 12, 8, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(2, 233, 155, 0.35);
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.ws-hex-card:hover .ws-hex-glass {
+  background: rgba(8, 16, 10, 0.92);
+  border-color: var(--ws-green);
+  box-shadow: 0 0 30px rgba(2, 233, 155, 0.25);
+}
+
+/* 4. CARDS TO BUTTON SCROLL EFFECT (Convergência de Cards) */
+.ws-cards-to-btn-section {
+  position: relative;
+  width: 100%;
+  height: 200vh; /* Distância da animação */
+  background: #000;
+}
+
+.ws-cards-to-btn-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ws-converge-stage {
+  position: relative;
+  width: min(1000px, 94vw);
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ws-converge-card {
+  position: absolute;
+  width: clamp(230px, 24vw, 290px);
+  padding: 20px 24px;
+  background: rgba(10, 16, 12, 0.92);
+  border: 1px solid rgba(2, 233, 155, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(2, 233, 155, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  will-change: transform, opacity;
+  transition: border-color 0.3s;
+}
+
+.ws-converge-card strong {
+  display: block;
+  font-size: 15px;
+  color: #FFF;
+  margin-bottom: 4px;
+}
+
+.ws-converge-card small {
+  font-size: 12px;
+  color: var(--ws-text-muted);
+  line-height: 1.45;
+  display: block;
+}
+
+/* Posições Iniciais dos 4 Cards */
+.ws-card-pos-1 { top: 30px; left: 40px; }
+.ws-card-pos-2 { top: 30px; right: 40px; }
+.ws-card-pos-3 { bottom: 40px; left: 40px; }
+.ws-card-pos-4 { bottom: 40px; right: 40px; }
+
+/* Botão Alvo Central de Convergência */
+.ws-converge-target-btn {
+  position: relative;
+  z-index: 10;
+  padding: 18px 38px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #000;
+  background: var(--ws-green);
+  border: 2px solid var(--ws-green);
+  border-radius: 999px;
+  box-shadow: 0 0 50px rgba(2, 233, 155, 0.45);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ws-converge-target-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 70px rgba(2, 233, 155, 0.7);
+}
+
+@media (max-width: 900px) {
+  .ws-hex-grid {
+    grid-template-columns: 1fr;
+  }
+  .ws-cards-to-btn-section {
+    height: auto;
+  }
+  .ws-cards-to-btn-sticky {
+    position: relative;
+    height: auto;
+    padding: 60px 0;
+  }
+  .ws-converge-stage {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .ws-converge-card {
+    position: relative;
+    top: unset !important;
+    left: unset !important;
+    right: unset !important;
+    bottom: unset !important;
+    width: 100%;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
