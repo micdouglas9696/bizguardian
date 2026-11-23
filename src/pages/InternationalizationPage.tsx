@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PriorityListModal from '../components/PriorityListModal';
+import SEO from '../components/SEO';
 
 export default function InternationalizationPage() {
     const [scrolled, setScrolled] = useState(false);
@@ -16,6 +17,11 @@ export default function InternationalizationPage() {
 
     return (
         <div className="bg-black text-white min-h-screen overflow-x-hidden selection:bg-accent-gold selection:text-black font-sans">
+            <SEO
+                title="Internacionalização de Empresas | Marinho Ponci & Biz Guardian"
+                description="Expansão global de marcas e franquias: estruturação estratégica, inteligência de mercado e governança com 38 anos de experiência com Marinho Ponci."
+                canonical="https://marinhoponci.com/internationalization"
+            />
             {/* Header */}
             <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-xl py-4' : 'bg-transparent py-8'}`}>
                 <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">

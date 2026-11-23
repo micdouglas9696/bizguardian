@@ -949,10 +949,22 @@ app.post('/api/leads/quiz', async (req: Request, res: Response) => {
         const result = await pool.query(query, [name, email, whatsapp, score, JSON.stringify(answers)]);
         res.status(201).json({ success: true, id: result.rows[0].id });
 
+        const outcome = getOutcomeForScore(score);
+
+        // Silent WhatsApp / webhook automation trigger via n8n/ZuckZapGo (non-blocking)
+        triggerN8nAsync('lead-captured', {
+            name,
+            email,
+            phone: whatsapp,
+            product: `Diagnóstico: ${outcome.title}`,
+            amount: 0,
+            link: 'https://marinhoponci.com/franquia',
+            custom: { score, answers }
+        });
+
         // Send diagnostic email asynchronously (non-blocking)
         if (email && process.env.SMTP_USER) {
             const html = buildEmailHtml(name || 'Participante', score);
-            const outcome = getOutcomeForScore(score);
             transporter.sendMail({
                 from: `"Marinho Ponci" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
                 to: email,

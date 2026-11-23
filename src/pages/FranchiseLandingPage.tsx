@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import FranchiseQuizModal from '../components/FranchiseQuizModal';
+import SEO from '../components/SEO';
 
 const BENEFITS = [
     {
@@ -67,6 +68,31 @@ const FAQ_ITEMS = [
         q: 'Como funciona o grupo de WhatsApp?',
         a: 'Após a inscrição, você receberá o link para entrar no grupo exclusivo. Lá você terá acesso a conteúdos extras, networking e suporte direto.',
     },
+];
+
+const PAGE_SCHEMA = [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'EducationalOccupationalProgram',
+        name: 'Imersão Franchise-se: O Caminho Seguro para Escolher ou Criar sua Franquia',
+        description: 'Aprenda o método prático de quem estruturou redes com mais de 850 pontos de venda. Modelagem de franquia, análise de riscos, validação de COF e expansão.',
+        provider: {
+            '@id': 'https://marinhoponci.com/#organization'
+        },
+        instructor: {
+            '@id': 'https://marinhoponci.com/#person'
+        },
+        url: 'https://marinhoponci.com/franquia'
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: FAQ_ITEMS.map((item) => ({
+            '@type': 'Question',
+            name: item.q,
+            acceptedAnswer: { '@type': 'Answer', text: item.a }
+        }))
+    }
 ];
 
 /* ------------------------------------------------------------------ */
@@ -169,6 +195,12 @@ export default function FranchiseLandingPage() {
     /* =================================================================== */
     return (
         <div className="bg-black text-white min-h-screen overflow-x-hidden selection:bg-accent-gold selection:text-black font-sans">
+            <SEO
+                title="Imersão Franchise-se | Marinho Ponci — O Caminho Seguro no Franchising"
+                description="Descubra como escolher a franquia certa ou formatar sua rede com segurança. Análise de COF, riscos e método de expansão com Marinho Ponci."
+                canonical="https://marinhoponci.com/franquia"
+                schema={PAGE_SCHEMA}
+            />
             {/* CSS for stagger animations — inline since they are page-scoped */}
             <style>{`
                 .stagger-child {

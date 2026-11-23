@@ -131,11 +131,14 @@ const FAQ_SCHEMA = {
 const PRODUCT_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'Product',
+    '@id': 'https://marinhoponci.com/ebook-ingles#product',
     name: 'The Future Franchisee Dossier',
     description:
         'Interactive program with 6 video modules, practical exercises, and reflections for those about to invest in a franchise. By Marinho Ponci, 38 years behind the scenes in franchising.',
-    image: 'https://marinhoponci.com/og-dossie.jpg',
+    image: 'https://marinhoponci.com/dossie_ingles.png',
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
+    author: { '@id': 'https://marinhoponci.com/#person' },
+    publisher: { '@id': 'https://marinhoponci.com/#organization' },
     offers: {
         '@type': 'Offer',
         price: '247.00',

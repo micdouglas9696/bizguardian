@@ -119,11 +119,14 @@ const FAQ_SCHEMA = {
 const PRODUCT_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'Product',
+    '@id': 'https://marinhoponci.com/franqueador-ingles#product',
     name: 'The Future Franchisor Dossier',
     description:
         'A complete method and franchisability checklists for successful business owners who want to structure and expand their business through franchising. By Marinho Ponci.',
-    image: 'https://marinhoponci.com/og-dossie-franqueador.jpg',
+    image: 'https://marinhoponci.com/capa_franqueador_en.png',
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
+    author: { '@id': 'https://marinhoponci.com/#person' },
+    publisher: { '@id': 'https://marinhoponci.com/#organization' },
     offers: {
         '@type': 'Offer',
         price: '47.00',

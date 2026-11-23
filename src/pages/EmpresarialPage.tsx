@@ -2,6 +2,20 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import CountryPhoneInput from '../components/CountryPhoneInput';
 import VideoModal from '../components/VideoModal';
+import SEO from '../components/SEO';
+
+const EMPRESARIAL_SCHEMA = {
+    '@context': 'https://schema.org',
+    '@type': 'ConsultingService',
+    '@id': 'https://marinhoponci.com/#consultoria',
+    name: 'Consultoria Empresarial Estratégica para Pequenas e Médias Empresas',
+    description: 'Acompanhamento prático e estratégico para empresários organizarem processos, melhorarem finanças, desenvolverem liderança e expandirem sustentavelmente com Marinho Ponci.',
+    provider: {
+        '@id': 'https://marinhoponci.com/#person'
+    },
+    areaServed: ['Portugal', 'Brasil', 'Espanha', 'Estados Unidos', 'Áustria', 'Global'],
+    url: 'https://marinhoponci.com/empresarial'
+};
 
 export default function EmpresarialPage() {
     const [scrolled, setScrolled] = useState(false);
@@ -111,6 +125,12 @@ export default function EmpresarialPage() {
 
     return (
         <div className="bg-black text-white min-h-screen overflow-x-hidden selection:bg-accent-gold selection:text-black font-sans">
+            <SEO
+                title="Consultoria Empresarial Estratégica | Marinho Ponci"
+                description="Acompanhamento prático e estratégico para empresários organizarem processos, melhorarem finanças, desenvolverem liderança e expandirem seus negócios."
+                canonical="https://marinhoponci.com/empresarial"
+                schema={EMPRESARIAL_SCHEMA}
+            />
             {/* Header */}
             <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/90 backdrop-blur-xl py-4 border-b border-white/10' : 'bg-transparent py-6 sm:py-8'}`}>
                 <div className="max-w-[1700px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">

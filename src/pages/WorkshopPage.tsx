@@ -1,5 +1,22 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
+
+const WORKSHOP_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationEvent',
+  name: 'Workshop Online Brasil ➔ Europa: Internacionalização de Negócios',
+  description: 'Estratégias práticas, governança e estruturação de empresas brasileiras na Europa e Portugal com Marinho Ponci & Úp.INTELLIG3NCE.',
+  organizer: {
+    '@id': 'https://marinhoponci.com/#organization'
+  },
+  performer: {
+    '@id': 'https://marinhoponci.com/#person'
+  },
+  eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  url: 'https://marinhoponci.com/workshop'
+};
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'https://api.marinhoponci.com');
 
@@ -147,6 +164,12 @@ export default function WorkshopPage() {
 
   return (
     <div className="min-h-screen bg-[#050705] text-white font-sans selection:bg-[#02E99B] selection:text-black antialiased relative overflow-x-hidden">
+      <SEO
+        title="Workshop Brasil ➔ Europa | Marinho Ponci & Úp.INTELLIG3NCE"
+        description="Workshop exclusivo sobre estratégias de internacionalização, governança e estruturação de empresas brasileiras na Europa e Portugal com Marinho Ponci."
+        canonical="https://marinhoponci.com/workshop"
+        schema={WORKSHOP_SCHEMA}
+      />
       
       {/* Banner de status pós-checkout */}
       {paymentStatus && (

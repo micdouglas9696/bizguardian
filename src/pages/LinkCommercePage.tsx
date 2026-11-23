@@ -6,6 +6,7 @@ import LinkInstagramFeed from '../components/LinkCommerce/LinkInstagramFeed';
 import LinkScheduler from '../components/LinkCommerce/LinkScheduler';
 import LinkWhatsAppFloat from '../components/LinkCommerce/LinkWhatsAppFloat';
 import LinkDiagnosticModal from '../components/LinkCommerce/LinkDiagnosticModal';
+import SEO from '../components/SEO';
 
 export default function LinkCommercePage() {
     const [isDiagnosticOpen, setIsDiagnosticOpen] = useState(false);
@@ -57,6 +58,11 @@ export default function LinkCommercePage() {
 
     return (
         <div className="min-h-screen bg-[#080808] text-white flex justify-center py-10 px-5 sm:px-6 relative overflow-hidden">
+            <SEO
+                title="Marinho Ponci | Hub Oficial de Soluções e Diagnósticos"
+                description="Acesse diagnósticos gratuitos, materiais exclusivos, agendamento de consultoria e conteúdos de franchising com Marinho Ponci."
+                canonical="https://marinhoponci.com/link"
+            />
             {/* Ambient Background Glows */}
             <div className="absolute top-[-20%] left-[-30%] w-[80%] h-[60%] rounded-full opacity-10 blur-[120px] pointer-events-none"
                  style={{ background: 'radial-gradient(circle, rgba(225,169,96,0.6) 0%, rgba(0,0,0,0) 70%)' }} />

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import EcosystemMolecule from '../components/EcosystemMolecule';
 import HeroBillboard from '../components/HeroBillboard';
 import MainHero from '../components/MainHero';
@@ -151,6 +152,11 @@ export default function LandingPage() {
 
     return (
         <div className="bg-black text-white min-h-screen overflow-x-hidden selection:bg-accent-gold selection:text-black font-sans">
+            <SEO
+                title="Marinho Ponci | Consultoria Empresarial & Franchising Global"
+                description="Marinho Ponci — Quase 40 anos de experiência na criação, gestão, expansão e internacionalização de empresas. Consultoria Empresarial para empresários em qualquer mercado e aconselhamento em franchising global."
+                canonical="https://marinhoponci.com/"
+            />
             {/* Header */}
             <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/90 backdrop-blur-xl py-4' : 'bg-transparent py-6 sm:py-8'}`}>
                 <div className="max-w-[1700px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">

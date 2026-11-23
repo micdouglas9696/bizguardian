@@ -119,11 +119,14 @@ const FAQ_SCHEMA = {
 const PRODUCT_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'Product',
+    '@id': 'https://marinhoponci.com/franqueador#product',
     name: 'O Dossiê do Futuro Franqueador',
     description:
         'Método completo e checklists de franqueabilidade para empresários de sucesso que querem formatar e expandir seu negócio através do franchising. Por Marinho Ponci.',
-    image: 'https://marinhoponci.com/og-dossie-franqueador.jpg',
+    image: 'https://marinhoponci.com/capa_franqueador.png',
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
+    author: { '@id': 'https://marinhoponci.com/#person' },
+    publisher: { '@id': 'https://marinhoponci.com/#organization' },
     offers: {
         '@type': 'Offer',
         price: '247.00',

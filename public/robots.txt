@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /membro
+Disallow: /membro/
+Disallow: /franquia/crm
 
-Sitemap: https://www.marinhoponci.com/sitemap.xml
-LLMSTxt: https://www.marinhoponci.com/llms.txt
+Sitemap: https://marinhoponci.com/sitemap.xml
+LLMSTxt: https://marinhoponci.com/llms.txt

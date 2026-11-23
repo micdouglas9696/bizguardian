@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CountryPhoneInput from './CountryPhoneInput';
+import { trackLeadSubmission, trackProductClick } from '../utils/analytics';
 
 export interface Option {
     text: string;
@@ -161,6 +163,7 @@ interface FranchiseQuizModalProps {
 type QuizPhase = 'start' | 'question' | 'statement' | 'lead' | 'result';
 
 export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: FranchiseQuizModalProps) {
+    const navigate = useNavigate();
     const [phase, setPhase] = useState<QuizPhase>('start');
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
@@ -173,6 +176,7 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [lgpdConsent, setLgpdConsent] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Keep a stable ref of onClose to use in the popstate listener
@@ -296,6 +300,17 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
         }, 300);
     };
 
+    const saveLeadOffline = (lead: Record<string, unknown>) => {
+        try {
+            const stored = localStorage.getItem('pending_quiz_leads');
+            const leads = stored ? JSON.parse(stored) : [];
+            leads.push(lead);
+            localStorage.setItem('pending_quiz_leads', JSON.stringify(leads));
+        } catch {
+            // Ignore localStorage quota errors
+        }
+    };
+
     const handleLeadCapture = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -304,6 +319,22 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
         const totalScore = Object.values(answers).reduce((a, b) => a + b, 0);
         setScore(totalScore);
 
+        trackLeadSubmission('Diagnostico_Franquia', {
+            name,
+            email,
+            phone,
+            score: totalScore
+        });
+
+        const leadPayload = {
+            name,
+            email,
+            whatsapp: phone,
+            score: totalScore,
+            answers,
+            timestamp: new Date().toISOString()
+        };
+
         try {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
             const response = await fetch(`${apiUrl}/api/leads/quiz`, {
@@ -311,25 +342,18 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    whatsapp: phone,
-                    score: totalScore,
-                    answers
-                }),
+                body: JSON.stringify(leadPayload),
             });
 
             if (!response.ok) {
-                throw new Error('Falha ao enviar formulário');
+                saveLeadOffline(leadPayload);
             }
-
-            setPhase('result');
         } catch (error) {
-            console.error('Erro:', error);
-            alert('Houve um erro ao salvar o seu diagnóstico. Tente novamente mais tarde.');
+            console.warn('Backend indisponível, salvo offline no navegador:', error);
+            saveLeadOffline(leadPayload);
         } finally {
             setIsSubmitting(false);
+            setPhase('result');
         }
     };
 
@@ -380,24 +404,24 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                         {phase === 'start' && (
                             <div className="text-center animate-in slide-in-from-bottom-4 duration-500">
                                 <span className="inline-block py-1 px-3 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[10px] font-black tracking-[0.3em] uppercase mb-6 rounded-full">
-                                    Por Marinho Ponci
+                                    Diagnóstico Gratuito · Por Marinho Ponci
                                 </span>
-                                <h2 className="text-3xl sm:text-5xl font-black text-white mb-6 uppercase tracking-tight">
-                                    Diagnóstico de Maturidade para <span className="text-accent-gold italic">Franchising</span>
+                                <h2 className="text-3xl sm:text-5xl font-black text-white mb-4 uppercase tracking-tight">
+                                    Você tem perfil para ser um <span className="text-accent-gold italic">franqueado?</span>
                                 </h2>
                                 <p className="text-white/60 mb-6 font-medium text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
-                                    Antes de conversar com qualquer franqueadora, descubra em qual nível de consciência você realmente está.
+                                    Antes de investir suas economias ou assinar qualquer Circular de Oferta (COF), avalie seu nível real de preparo operacional, financeiro e de gestão.
                                 </p>
                                 <ul className="text-white/40 text-xs sm:text-sm text-left mx-auto max-w-sm mb-10 space-y-2 font-medium">
-                                    <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">check_circle</span> São 12 perguntas essenciais.</li>
+                                    <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">check_circle</span> 12 perguntas essenciais de bastidores.</li>
                                     <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">timer</span> Tempo estimado: 3 minutos.</li>
-                                    <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">psychology</span> Seja honesto — o mercado vai ser.</li>
+                                    <li className="flex items-center gap-2"><span className="material-symbols-outlined text-accent-gold text-lg">psychology</span> Diagnóstico e recomendação imediata.</li>
                                 </ul>
                                 <button
                                     onClick={handleStart}
                                     className="w-full sm:w-auto px-10 py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all duration-300 shadow-glow-primary rounded"
                                 >
-                                    Começar Diagnóstico
+                                    Começar Diagnóstico Gratuito
                                 </button>
                             </div>
                         )}
@@ -528,15 +552,28 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                                         label="WhatsApp"
                                     />
 
+                                    <label className="flex items-start gap-3 cursor-pointer text-left text-xs text-white/60 pt-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={lgpdConsent}
+                                            onChange={(e) => setLgpdConsent(e.target.checked)}
+                                            required
+                                            className="mt-0.5 rounded border-white/20 bg-black text-accent-gold focus:ring-accent-gold h-4 w-4"
+                                        />
+                                        <span className="leading-snug">
+                                            Concordo com o tratamento dos meus dados conforme a LGPD para envio do meu diagnóstico personalizado e orientações sobre franquias de Marinho Ponci.
+                                        </span>
+                                    </label>
+
                                     <button
                                         type="submit"
-                                        disabled={isSubmitting}
-                                        className="w-full py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-glow-primary rounded mt-4"
+                                        disabled={isSubmitting || !lgpdConsent}
+                                        className="w-full py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-glow-primary rounded mt-4 disabled:opacity-40 disabled:cursor-not-allowed"
                                     >
                                         {isSubmitting ? 'Gerando Resultado...' : 'Ver Meu Resultado →'}
                                     </button>
                                     <p className="text-[9px] font-bold text-white/20 text-center uppercase tracking-widest mt-4">
-                                        Seus dados são usados exclusivamente para envio do resultado e informações sobre a Imersão Franchise-se. Sem spam.
+                                        Seus dados são protegidos e usados exclusivamente para envio do resultado e recomendações estratégicas. Sem spam.
                                     </p>
                                 </form>
                             </div>
@@ -544,9 +581,12 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
 
                         {phase === 'result' && (
                             <div className="text-center animate-in slide-in-from-bottom-8 duration-700">
-                                <div className="w-20 h-20 bg-accent-gold/10 border border-accent-gold rounded-full flex items-center justify-center mx-auto mb-8 shadow-glow-primary">
+                                <div className="w-20 h-20 bg-accent-gold/10 border border-accent-gold rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow-primary">
                                     <span className="material-symbols-outlined text-accent-gold text-4xl">verified</span>
                                 </div>
+                                <span className="inline-block py-1 px-3 bg-white/5 border border-white/10 text-accent-gold text-[10px] font-black tracking-[0.25em] uppercase mb-4 rounded-full">
+                                    Pontuação: {score} de 36 pontos
+                                </span>
                                 <h3 className="text-2xl sm:text-4xl font-black text-white mb-6 uppercase tracking-tighter">
                                     {outcome.title}
                                 </h3>
@@ -556,15 +596,100 @@ export default function FranchiseQuizModal({ isOpen, onClose, onGoToForm }: Fran
                                     </p>
                                 ))}
 
-                                <div className="mt-10">
+                                {/* Dynamic Product Recommendation (Fase 4) */}
+                                {score <= 24 ? (
+                                    <div className="mt-8 p-6 rounded-lg border border-accent-gold/30 bg-accent-gold/[0.03] text-left max-w-2xl mx-auto shadow-[0_0_30px_rgba(234,179,8,0.06)]">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-accent-gold text-black">
+                                                Recomendação para seu Perfil
+                                            </span>
+                                        </div>
+                                        <h4 className="text-xl font-black text-white mb-2">O Dossiê do Futuro Franqueado</h4>
+                                        <p className="text-xs sm:text-sm text-white/70 mb-4 leading-relaxed">
+                                            Programa interativo com 6 módulos em vídeo, exercícios práticos e reflexões gravados por Marinho Ponci para você aprender a auditar a franqueadora, validar a COF e evitar erros fatais antes de assinar contratos.
+                                        </p>
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-3 border-t border-white/10">
+                                            <div>
+                                                <span className="text-[10px] uppercase font-bold text-white/40 block">Acesso Imediato</span>
+                                                <span className="text-lg font-black text-accent-gold">R$ 247,00</span>
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    trackProductClick('O Dossiê do Futuro Franqueado', 'dossie-franqueado', 247);
+                                                    onClose();
+                                                    navigate('/ebook');
+                                                }}
+                                                className="w-full sm:w-auto px-6 py-3 bg-accent-gold text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white transition-all rounded shadow-glow-primary"
+                                            >
+                                                Conhecer o Dossiê →
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="mt-8 space-y-4 max-w-2xl mx-auto text-left">
+                                        <div className="p-6 rounded-lg border border-accent-gold/30 bg-accent-gold/[0.03] shadow-[0_0_30px_rgba(234,179,8,0.06)]">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-accent-gold text-black">
+                                                    Próximo Passo Estratégico
+                                                </span>
+                                            </div>
+                                            <h4 className="text-xl font-black text-white mb-2">Imersão Franchise-se</h4>
+                                            <p className="text-xs sm:text-sm text-white/70 mb-4 leading-relaxed">
+                                                Formação técnica em franchising com Marinho Ponci para aprofundar na modelagem de negócio, análise de viabilidade e critérios avançados de escolha e expansão de unidades.
+                                            </p>
+                                            <button
+                                                onClick={() => {
+                                                    trackProductClick('Imersão Franchise-se', 'imersao-franquia');
+                                                    onClose();
+                                                    navigate('/franquia');
+                                                }}
+                                                className="w-full sm:w-auto px-6 py-3 bg-accent-gold text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white transition-all rounded shadow-glow-primary"
+                                            >
+                                                Acessar Imersão Franchise-se →
+                                            </button>
+                                        </div>
+
+                                        <div className="p-6 rounded-lg border border-white/10 bg-white/[0.02]">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-white/20 text-white">
+                                                    Aconselhamento Executivo
+                                                </span>
+                                            </div>
+                                            <h4 className="text-lg font-black text-white mb-2">Consultoria Empresarial com Marinho Ponci</h4>
+                                            <p className="text-xs text-white/60 mb-4 leading-relaxed">
+                                                Acompanhamento direto e estratégico para empresários e investidores validarem expansão, organizarem governança ou formatarem sua rede.
+                                            </p>
+                                            <button
+                                                onClick={() => {
+                                                    trackProductClick('Consultoria Empresarial', 'consultoria-empresarial');
+                                                    onClose();
+                                                    navigate('/empresarial');
+                                                }}
+                                                className="w-full sm:w-auto px-6 py-3 border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all rounded"
+                                            >
+                                                Conhecer Consultoria →
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                    {onGoToForm && (
+                                        <button
+                                            onClick={() => {
+                                                onClose();
+                                                onGoToForm();
+                                            }}
+                                            className="text-accent-gold/70 hover:text-accent-gold text-xs font-bold uppercase tracking-widest transition-colors py-2 px-4"
+                                        >
+                                            Ir para Inscrição da Imersão →
+                                        </button>
+                                    )}
                                     <button
-                                        onClick={() => {
-                                            onClose();
-                                            onGoToForm();
-                                        }}
-                                        className="w-full sm:w-auto px-10 py-5 bg-accent-gold text-black text-[11px] font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-glow-primary rounded"
+                                        onClick={onClose}
+                                        className="text-white/40 hover:text-white text-xs uppercase tracking-widest transition-colors py-2 px-4"
                                     >
-                                        {outcome.btnText} →
+                                        Fechar Diagnóstico
                                     </button>
                                 </div>
                             </div>

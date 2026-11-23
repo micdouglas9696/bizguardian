@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://marinhoponci.com/</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/franquia</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/franquia/aulas</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/franqueador</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://marinhoponci.com/franqueador" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marinhoponci.com/franqueador-ingles" />
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/franqueador-ingles</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://marinhoponci.com/franqueador-ingles" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://marinhoponci.com/franqueador" />
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/ebook</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://marinhoponci.com/ebook" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://marinhoponci.com/ebook-ingles" />
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/ebook-ingles</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://marinhoponci.com/ebook-ingles" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://marinhoponci.com/ebook" />
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/empresarial</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/internationalization</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/workshop</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://marinhoponci.com/link</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

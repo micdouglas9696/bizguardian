@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const LESSONS = [
     {
@@ -74,6 +75,11 @@ export default function FranchiseLessonsPage() {
 
     return (
         <div className="bg-black text-white min-h-screen overflow-x-hidden selection:bg-accent-gold selection:text-black font-sans">
+            <SEO
+                title="Aulas Imersão Franchise-se | Marinho Ponci"
+                description="Assista às aulas exclusivas da Imersão Franchise-se com Marinho Ponci. Bastidores reais sobre formatação, modelagem e expansão de franquias."
+                canonical="https://marinhoponci.com/franquia/aulas"
+            />
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between">

@@ -142,22 +142,20 @@ const FAQ_SCHEMA = {
 const PRODUCT_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'Product',
+    '@id': 'https://marinhoponci.com/ebook#product',
     name: 'O Dossiê do Futuro Franqueado',
     description:
         'Programa interativo com 6 módulos em vídeo, exercícios práticos e reflexões para quem está prestes a investir em uma franquia. Por Marinho Ponci, 38 anos de bastidores no franchising.',
-    image: 'https://marinhoponci.com/og-dossie.jpg',
+    image: 'https://marinhoponci.com/capaebookdesk_franqueado.webp',
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
+    author: { '@id': 'https://marinhoponci.com/#person' },
+    publisher: { '@id': 'https://marinhoponci.com/#organization' },
     offers: {
         '@type': 'Offer',
         price: '247.00',
         priceCurrency: 'BRL',
         availability: 'https://schema.org/InStock',
         url: 'https://marinhoponci.com/ebook',
-    },
-    aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        reviewCount: '127',
     },
 };
 

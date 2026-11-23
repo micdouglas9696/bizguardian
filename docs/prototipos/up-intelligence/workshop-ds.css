@@ -682,26 +682,304 @@ img {
 }
 
 /* Responsividade */
+/* =========================================================================
+   COMPONENTES ARQUITETURAIS BESPOKE (VARIAÇÃO ENTRE PÁGINAS)
+   ========================================================================= */
+
+/* 1. Hero Assimétrico com Blueprint (Up.INTELLIG3NCE) */
+.ws-hero-asymmetric {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  gap: clamp(36px, 5vw, 70px);
+  align-items: center;
+}
+
+.ws-blueprint-frame {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid var(--ws-border);
+  background: #060A07;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(2, 233, 155, 0.12);
+}
+
+.ws-blueprint-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.8s ease;
+}
+
+.ws-blueprint-frame:hover img {
+  transform: scale(1.02);
+}
+
+/* 2. Cockpit de Geointeligência & Expansão (SC4LE.Up) */
+.ws-cockpit {
+  background: #090E0B;
+  border: 1px solid #1E2B20;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(2, 233, 155, 0.15);
+}
+
+.ws-cockpit-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: #0D1610;
+  border-bottom: 1px solid #1E2B20;
+  font-family: var(--ws-font-mono);
+  font-size: 11px;
+  color: #71717A;
+}
+
+.ws-cockpit-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.ws-cockpit-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1E2B20;
+}
+
+.ws-cockpit-dot.active {
+  background: var(--ws-green);
+  box-shadow: 0 0 8px var(--ws-green);
+}
+
+.ws-cockpit-body {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.ws-cockpit-metric {
+  background: #060A07;
+  border: 1px solid #1A261C;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ws-cockpit-metric small {
+  display: block;
+  font-family: var(--ws-font-mono);
+  font-size: 10px;
+  color: #A1A1AA;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.ws-cockpit-metric strong {
+  font-size: 18px;
+  color: #FFFFFF;
+}
+
+.ws-cockpit-metric .score {
+  color: var(--ws-green);
+  font-weight: 900;
+  font-size: 20px;
+}
+
+/* 3. Matriz em 4 Quadrantes (SC4LE.Up) */
+.ws-quadrant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  position: relative;
+}
+
+.ws-quadrant {
+  background: #0A0E0B;
+  border: 1px solid var(--ws-border);
+  border-radius: 18px;
+  padding: clamp(26px, 3.5vw, 36px);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.ws-quadrant:hover {
+  background: #111812;
+  border-color: var(--ws-green);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(2, 233, 155, 0.15);
+}
+
+.ws-quadrant-number {
+  font-family: var(--ws-font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ws-green);
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* 4. Quadro de Transformação Antes vs Depois (ORG4NIZE.Up) */
+.ws-transform-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.ws-transform-before {
+  background: rgba(20, 8, 8, 0.6);
+  border: 1px solid #3A1C1C;
+  border-radius: 18px;
+  padding: clamp(24px, 3.5vw, 36px);
+}
+
+.ws-transform-before h3 {
+  color: #F87171;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ws-transform-after {
+  background: rgba(6, 26, 14, 0.7);
+  border: 1px solid #1E5C38;
+  border-radius: 18px;
+  padding: clamp(24px, 3.5vw, 36px);
+  box-shadow: 0 0 35px rgba(2, 233, 155, 0.1);
+}
+
+.ws-transform-after h3 {
+  color: var(--ws-green);
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ws-transform-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ws-transform-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ws-bad-dot {
+  color: #EF4444;
+  font-weight: 900;
+}
+
+/* 5. Linha do Tempo / Processo Step-by-Step Conectado */
+.ws-pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  position: relative;
+  margin-top: 36px;
+}
+
+.ws-pipeline-card {
+  background: #080D09;
+  border: 1px solid var(--ws-border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.ws-pipeline-card:hover {
+  border-color: var(--ws-green);
+  transform: translateY(-4px);
+}
+
+.ws-pipeline-step {
+  font-family: var(--ws-font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--ws-green);
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* 6. Palco 3D Dual-Book dos Dossiês */
+.ws-dual-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 4vw, 50px);
+  margin-top: 40px;
+}
+
+.ws-book-portal {
+  background: linear-gradient(160deg, #0D1610 0%, #060906 100%);
+  border: 1px solid var(--ws-border);
+  border-radius: 24px;
+  padding: clamp(28px, 4vw, 44px);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ws-book-portal:hover {
+  border-color: var(--ws-green);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(2, 233, 155, 0.2);
+  transform: translateY(-5px);
+}
+
+.ws-book-portal-franchisor {
+  background: linear-gradient(160deg, #121A14 0%, #060906 100%);
+}
+
+.ws-book-cover-stage {
+  width: 100%;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  perspective: 1000px;
+}
+
+.ws-book-cover-stage img {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
+  transition: transform 0.5s ease;
+}
+
+.ws-book-portal:hover .ws-book-cover-stage img {
+  transform: scale(1.04) rotateY(-4deg);
+}
+
 @media (max-width: 900px) {
-  .ws-desktop-nav {
-    display: none;
-  }
-  .ws-mobile-menu {
-    display: block;
-  }
-  .ws-card-grid-2,
-  .ws-card-grid-3,
-  .ws-card-grid-4,
-  .ws-stats-grid,
-  .ws-split-box {
+  .ws-hero-asymmetric,
+  .ws-quadrant-grid,
+  .ws-transform-board,
+  .ws-pipeline,
+  .ws-dual-stage {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  .ws-cover-wrap img {
-    height: 280px;
-  }
-  .ws-footer-inner {
-    flex-direction: column;
-    text-align: center;
+  .ws-cockpit-body {
+    grid-template-columns: 1fr;
   }
 }
