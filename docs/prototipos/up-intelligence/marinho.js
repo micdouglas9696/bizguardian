@@ -2,11 +2,35 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const elements = document.querySelectorAll('.reveal');
   if (reduced.matches || !('IntersectionObserver' in window)) return;
+
+  // Stagger delays within stagger-groups for fluid cascading reveals
+  document.querySelectorAll('.stagger-group').forEach((group) => {
+    const reveals = group.querySelectorAll('.reveal');
+    reveals.forEach((el, index) => {
+      el.style.transitionDelay = `${index * 110}ms`;
+    });
+  });
+
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
-  }, { threshold: 0.08 });
-  elements.forEach(element => { element.classList.add('animate'); observer.observe(element); });
-  reduced.addEventListener('change', () => { if (reduced.matches) elements.forEach(element => element.classList.add('visible')); });
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.06,
+    rootMargin: '0px 0px -30px 0px'
+  });
+
+  elements.forEach(element => {
+    element.classList.add('animate');
+    observer.observe(element);
+  });
+
+  reduced.addEventListener('change', () => {
+    if (reduced.matches) elements.forEach(element => element.classList.add('visible'));
+  });
 })();
 
 (() => {
