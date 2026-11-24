@@ -1293,8 +1293,8 @@ img {
   max-height: 640px;
   object-fit: contain;
   object-position: center;
-  opacity: 0.92;
-  filter: contrast(1.12) brightness(0.96);
+  opacity: 0.55;
+  filter: contrast(1.18) brightness(0.92);
   /* Máscara radial suave para dissolver totalmente quaisquer bordas no fundo preto obsidian */
   mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 45%, transparent 85%);
   -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 45%, transparent 85%);
@@ -1306,8 +1306,13 @@ img {
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: radial-gradient(ellipse 85% 75% at center, transparent 35%, rgba(3, 5, 4, 0.7) 75%, #030504 100%),
-              linear-gradient(to bottom, #030504 0%, transparent 18%, transparent 82%, #030504 100%);
+  background:
+    /* Sombreamento forte e gradual de baixo para cima para destacar o texto */
+    linear-gradient(to top, #030504 0%, rgba(3, 5, 4, 0.94) 30%, rgba(3, 5, 4, 0.45) 60%, transparent 100%),
+    /* Sombreamento lateral escurecendo as áreas de texto à esquerda e direita */
+    linear-gradient(to right, #030504 0%, rgba(3, 5, 4, 0.90) 28%, rgba(3, 5, 4, 0.12) 50%, rgba(3, 5, 4, 0.90) 72%, #030504 100%),
+    /* Fade suave no topo */
+    linear-gradient(to bottom, #030504 0%, transparent 20%);
   pointer-events: none;
 }
 
@@ -1345,6 +1350,7 @@ img {
 .ws-ecosystem-showcase.is-hover-left .ws-ecosystem-globe-img {
   transform: scale(1.04) translateX(15px);
   filter: contrast(1.2) brightness(0.98);
+  opacity: 0.68;
 }
 
 .ws-ecosystem-showcase.is-hover-right .ws-ecosystem-glow-right {
@@ -1353,6 +1359,7 @@ img {
 .ws-ecosystem-showcase.is-hover-right .ws-ecosystem-globe-img {
   transform: scale(1.04) translateX(-15px);
   filter: contrast(1.25) brightness(1.05);
+  opacity: 0.68;
 }
 
 /* Divisor central vertical luminoso suave */
@@ -1374,7 +1381,7 @@ img {
   position: relative;
   z-index: 3;
   flex: 1;
-  padding: clamp(32px, 4vw, 56px);
+  padding: clamp(24px, 3.5vw, 48px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1386,7 +1393,15 @@ img {
 .ws-panel-inner {
   position: relative;
   z-index: 2;
-  max-width: 460px;
+  max-width: 440px;
+  padding: 30px 32px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(3, 5, 4, 0.65) 0%, rgba(6, 32, 22, 0.78) 55%, rgba(3, 5, 4, 0.94) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(16, 232, 138, 0.22);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ws-ecosystem-panel.panel-organize {
@@ -1402,34 +1417,37 @@ img {
   margin-left: auto;
 }
 
-/* Tipografia e Títulos dos Painéis */
+/* Tipografia e Títulos dos Painéis com Máxima Legibilidade */
 .ws-ecosystem-brand-title {
   font-family: var(--ws-font-sans);
-  font-size: clamp(28px, 3.2vw, 42px);
+  font-size: clamp(28px, 3.2vw, 40px);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: #FFFFFF;
   margin: 0 0 8px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .ws-ecosystem-tagline {
   display: inline-block;
   font-family: var(--ws-font-mono);
-  font-size: clamp(11px, 1.1vw, 13px);
+  font-size: 11.5px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ws-green);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .ws-ecosystem-desc {
   font-family: var(--ws-font-sans);
-  font-size: clamp(14px, 1.2vw, 16px);
-  line-height: 1.65;
-  color: #C0CDC6;
-  margin: 0 0 28px;
+  font-size: clamp(14.5px, 1.25vw, 15.5px);
+  line-height: 1.6;
+  color: #E2E8F0;
+  margin: 0 0 24px;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
   transition: color 0.3s ease;
 }
 
@@ -1438,10 +1456,10 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 28px;
+  padding: 13px 26px;
   font-family: var(--ws-font-sans);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13.5px;
+  font-weight: 800;
   color: #030504;
   background: var(--ws-green);
   border: 1px solid var(--ws-green);
@@ -1466,14 +1484,22 @@ img {
 }
 
 /* Estados de Hover: ao focar em um lado, eleva o contraste e ilumina */
+.ws-ecosystem-showcase.is-hover-left .panel-organize .ws-panel-inner {
+  border-color: rgba(16, 232, 138, 0.55);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(16, 232, 138, 0.25);
+}
 .ws-ecosystem-showcase.is-hover-left .panel-organize .ws-ecosystem-brand-title {
   color: #FFFFFF;
-  text-shadow: 0 0 24px rgba(16, 232, 138, 0.4);
+  text-shadow: 0 0 24px rgba(16, 232, 138, 0.5);
 }
 .ws-ecosystem-showcase.is-hover-left .panel-scale {
-  opacity: 0.45;
+  opacity: 0.40;
 }
 
+.ws-ecosystem-showcase.is-hover-right .panel-scale .ws-panel-inner {
+  border-color: rgba(16, 232, 138, 0.65);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(16, 232, 138, 0.35);
+}
 .ws-ecosystem-showcase.is-hover-right .panel-scale .ws-ecosystem-brand-title {
   color: #FFFFFF;
   text-shadow: 0 0 28px rgba(16, 232, 138, 0.7);
@@ -1482,20 +1508,20 @@ img {
   color: #10E88A;
 }
 .ws-ecosystem-showcase.is-hover-right .panel-organize {
-  opacity: 0.45;
+  opacity: 0.40;
 }
 
 @media (max-width: 860px) {
   .ws-ecosystem-showcase {
     flex-direction: column;
     min-height: auto;
-    gap: 32px;
-    padding: 20px 0;
+    gap: 24px;
+    padding: 10px 0;
   }
   .ws-ecosystem-backdrop {
     position: absolute;
     inset: -20px 0;
-    opacity: 0.85;
+    opacity: 0.65;
   }
   .ws-ecosystem-globe-img {
     max-height: 520px;
@@ -1507,12 +1533,12 @@ img {
     display: none;
   }
   .ws-ecosystem-panel {
+    padding: 0;
+  }
+  .ws-panel-inner {
     padding: 24px 20px;
-    background: rgba(3, 5, 4, 0.68);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-radius: 20px;
-    border: 1px solid rgba(16, 232, 138, 0.14);
+    max-width: 100%;
+    background: linear-gradient(180deg, rgba(3, 5, 4, 0.75) 0%, rgba(6, 32, 22, 0.88) 100%);
   }
   .ws-ecosystem-panel.panel-scale {
     align-items: flex-start;
