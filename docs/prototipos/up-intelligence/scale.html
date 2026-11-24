@@ -1,353 +1,1131 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
-  <title>SC4LE.Up | Expansão de Redes & Franchising com Inteligência Artificial</title>
-  <link rel="stylesheet" href="workshop-ds.css">
-  <script src="marinho.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SC4LE.Up | Expansão de Redes &amp; Franchising com Inteligência Territorial</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            obsidian: '#030504',
+            deepEmerald: '#062016',
+            emeraldNeon: '#10E88A',
+            crispWhite: '#F4F7F5',
+            slateMuted: '#8E9E96',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-obsidian: #030504;
+      --deep-emerald: #062016;
+      --neon-emerald: #10E88A;
+      --crisp-white: #F4F7F5;
+      --slate-muted: #8E9E96;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-obsidian);
+      color: var(--crisp-white);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Minimalist dark scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030504;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(16, 232, 138, 0.35);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 232, 138, 0.75);
+    }
+
+    /* Ambient atmospheric lighting */
+    .ambient-emerald-glow {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 65% 45% at 75% 25%, rgba(16, 232, 138, 0.08) 0%, rgba(6, 32, 22, 0.05) 45%, transparent 75%),
+        radial-gradient(ellipse 55% 40% at 20% 75%, rgba(6, 32, 22, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .architectural-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(16, 232, 138, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 232, 138, 0.025) 1px, transparent 1px);
+      background-size: 72px 72px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Emerald Text Glow */
+    .text-emerald-glow {
+      color: #10E88A;
+      text-shadow: 0 0 28px rgba(16, 232, 138, 0.42), 0 0 56px rgba(16, 232, 138, 0.16);
+    }
+
+    /* Buttons */
+    .btn-emerald {
+      background: linear-gradient(135deg, #10E88A 0%, #05D67B 100%);
+      color: #030504;
+      box-shadow: 0 0 24px rgba(16, 232, 138, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    }
+    .btn-emerald:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 38px rgba(16, 232, 138, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-outline {
+      background: rgba(5, 9, 7, 0.75);
+      border: 1px solid rgba(244, 247, 245, 0.2);
+      color: #F4F7F5;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.25s ease;
+    }
+    .btn-outline:hover {
+      border-color: rgba(16, 232, 138, 0.65);
+      background: rgba(16, 232, 138, 0.08);
+      box-shadow: 0 0 22px rgba(16, 232, 138, 0.18);
+      transform: translateY(-2px);
+    }
+
+    /* Solid Dark Glassmorphic Surfaces */
+    .safe-surface {
+      background: rgba(5, 10, 8, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .safe-surface-hover {
+      transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .safe-surface-hover:hover {
+      transform: translateY(-4px);
+      border-color: rgba(16, 232, 138, 0.45);
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.75), 0 0 36px rgba(16, 232, 138, 0.12);
+    }
+
+    /* Navbar Active Pill */
+    .nav-pill {
+      color: #8E9E96;
+      transition: all 0.25s ease;
+    }
+    .nav-pill:hover {
+      color: #F4F7F5;
+    }
+    .nav-pill.active {
+      background: rgba(16, 232, 138, 0.14);
+      color: #10E88A;
+      box-shadow: inset 0 0 0 1px rgba(16, 232, 138, 0.28), 0 0 18px rgba(16, 232, 138, 0.16);
+    }
+
+    /* Animated pulse dot */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 0.3; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .pulse-ring {
+      animation: pulseRing 3s ease-in-out infinite;
+    }
+
+    /* Modal transitions */
+    .modal-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-panel {
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-backdrop.open .modal-panel {
+      transform: translateY(0) scale(1);
+    }
+  </style>
 </head>
-<body>
-  <div class="ws-notice">ESTUDO DE REDESIGN · DESIGN SYSTEM UP.INTELLIG3NCE</div>
 
-  <!-- 01. BARRA DE NAVEGAÇÃO FIXA (MARINHO PONCI) -->
-  <header class="cinematic-header">
-    <a class="cinematic-brand" href="index.html" aria-label="Marinho Ponci — início">
-      <img src="/marinho-signature-header.png" alt="Marinho Ponci">
-    </a>
+<body class="bg-obsidian text-crispWhite antialiased selection:bg-emeraldNeon/30 selection:text-emeraldNeon">
+  <!-- Subtle Atmospheric Glows & Architectural Grid -->
+  <div class="ambient-emerald-glow"></div>
+  <div class="architectural-grid"></div>
 
-    <nav class="cinematic-nav-pill" aria-label="Navegação principal">
-      <a href="index.html" class="cinematic-nav-item">Início</a>
-      <a href="up-intelligence.html" class="cinematic-nav-item">Up.INTELLIG3NCE</a>
-      <a href="organize.html" class="cinematic-nav-item">ORG4NIZE.Up</a>
-      <a href="scale.html" class="cinematic-nav-item is-active">SC4LE.Up</a>
-      <a href="dossies.html" class="cinematic-nav-item">Dossiês</a>
-      <a href="blog.html" class="cinematic-nav-item">Blog</a>
-    </nav>
-
-    <div class="cinematic-header-right">
-      <a class="cinematic-cta-pill" href="index.html#contato">Vamos conversar</a>
-      <button class="ws-menu-toggle-btn ws-mobile-toggle" type="button" aria-label="Abrir Menu Lateral">
-        <span class="ws-toggle-icon">
-          <span class="ws-toggle-bar"></span>
-          <span class="ws-toggle-bar"></span>
+  <!-- ===================================================================== -->
+  <!-- FIXED TOP NAVIGATION BAR (IDENTICAL TO HOME / UP.INTELLIG3NCE ECOSYSTEM) -->
+  <!-- ===================================================================== -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <!-- Left: Signature Marinho Ponci Brand -->
+      <a href="index.html" class="group flex items-center gap-3 focus:outline-none" aria-label="Marinho Ponci — Hub Principal">
+        <img
+          src="/marinho-signature-header.png"
+          alt="Marinho Ponci"
+          class="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          onerror="this.onerror=null; this.src='/marinho-signature.png';"
+        />
+        <span class="hidden sm:inline-block font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon/80 px-2.5 py-1 rounded-full border border-emeraldNeon/25 bg-[#040907]">
+          SC4LE.Up
         </span>
-      </button>
+      </a>
+
+      <!-- Center: Floating Pill Navigation (Same Layout & Items as Home) -->
+      <nav
+        aria-label="Navegação Principal"
+        class="hidden lg:flex items-center gap-1 px-2 py-1.5 rounded-full bg-[#070C0A]/85 border border-white/[0.09] backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.65)]"
+      >
+        <a href="index.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Início</a>
+        <a href="up-intelligence.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Up.INTELLIG3NCE</a>
+        <a href="organize.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">ORG4NIZE.Up</a>
+        <a href="scale.html" class="nav-pill active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">SC4LE.Up</a>
+        <a href="dossies.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Dossiês</a>
+        <a href="blog.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Blog</a>
+      </nav>
+
+      <!-- Right: Glowing Emerald CTA + Mobile Toggle -->
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          onclick="openContactModal()"
+          class="btn-emerald px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-extrabold tracking-tight cursor-pointer"
+        >
+          Vamos conversar
+        </button>
+
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+          class="lg:hidden p-2.5 rounded-full bg-[#070C0A]/90 border border-white/15 text-crispWhite hover:border-emeraldNeon/60 transition-colors"
+        >
+          <svg id="ham-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg id="x-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="lg:hidden hidden mt-3 max-w-7xl mx-auto rounded-3xl safe-surface p-4">
+      <div class="flex flex-col gap-1">
+        <a href="index.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Início</a>
+        <a href="up-intelligence.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Up.INTELLIG3NCE</a>
+        <a href="organize.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">ORG4NIZE.Up</a>
+        <a href="scale.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-emeraldNeon bg-emeraldNeon/10">SC4LE.Up</a>
+        <a href="dossies.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Dossiês</a>
+        <a href="blog.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Blog</a>
+        <div class="my-2 border-t border-white/10"></div>
+        <div class="px-4 py-1 text-[10px] font-mono tracking-widest text-slateMuted uppercase">Nesta Página</div>
+        <a href="#hero" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">SC4LE.Up</a>
+        <a href="#desafio" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">O Desafio da Expansão</a>
+        <a href="#solucao" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">A Solução</a>
+        <a href="#plataforma" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">O que a Plataforma Permite</a>
+        <a href="#principio" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">O Princípio</a>
+        <a href="#importancia" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Porquê Isto Importa</a>
+        <a href="#contato" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Falar com Especialistas</a>
+      </div>
     </div>
   </header>
 
-  <main>
-    <!-- HERO NO ESTILO WORKSHOP COM COCKPIT EXCLUSIVO -->
-    <section class="ws-hero">
-      <div class="cinematic-aura" aria-hidden="true"></div>
-      <div class="wrap reveal">
-        <div style="max-width: 820px; margin: 0 auto; text-align: center;">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>SC4LE.UP · EXPANSÃO DE REDES & FRANCHISING</span>
+  <!-- ===================================================================== -->
+  <!-- MAIN CONTAINER                                                        -->
+  <!-- ===================================================================== -->
+  <main class="relative z-10 pt-28 pb-16">
+
+    <!-- =================================================================== -->
+    <!-- SECTION 01: HERO                                                    -->
+    <!-- =================================================================== -->
+    <section id="hero" class="min-h-[82vh] flex items-center px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto py-12 lg:py-20">
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- 7 Cols Left Content -->
+        <div class="lg:col-span-7 max-w-2xl">
+          <!-- Eyebrow -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emeraldNeon/[0.08] border border-emeraldNeon/25 mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
+            <span class="font-mono text-[11px] font-medium tracking-[0.2em] uppercase text-emeraldNeon">
+              EXPANSÃO DE REDES · FRANCHISING · IA
+            </span>
           </div>
-          <span class="ws-eyebrow">DADOS DE MERCADO + IA + MÉTODO</span>
-          <h1 class="ws-title">
-            SC4LE.UP <br>
-            <span class="ws-title-green">EXPANDIR COM INFORMAÇÃO E CRITÉRIO</span>
-          </h1>
-          <p class="ws-lead">
-            Mais informação e critério para decidir onde, como e com quem expandir sua rede. Sem palpites e sem dar passos no escuro.
+
+          <!-- Main Title & Headline -->
+          <div class="mb-6">
+            <span class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon font-bold block mb-2">
+              SOLUÇÃO DE EXPANSÃO INTELIGENTE
+            </span>
+            <h1 class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-[-0.035em] leading-[1.05] text-crispWhite">
+              SC<span class="text-emeraldNeon">4</span>LE<span class="text-emeraldNeon">.Up</span>
+            </h1>
+            <p class="text-2xl sm:text-3xl xl:text-4xl font-bold tracking-tight text-crispWhite/95 mt-4 leading-tight">
+              Mais informação e critério para decidir onde, como e com quem expandir.
+            </p>
+          </div>
+
+          <!-- Lead Paragraph -->
+          <p class="text-base sm:text-lg text-slateMuted leading-relaxed mb-8 max-w-xl">
+            Metodologia de expansão, conhecimento de franchising, dados de mercado e inteligência artificial numa única solução.
           </p>
-          <div class="ws-actions" style="justify-content: center;">
-            <a class="ws-btn-primary" href="#cockpit">Ver Cockpit de Expansão</a>
-            <a class="ws-btn-secondary" href="index.html#contato">Falar com a Equipe</a>
-          </div>
-        </div>
 
-        <!-- SIMULADOR COCKPIT DE GEOINTELIGÊNCIA (EXCLUSIVO SC4LE.UP) -->
-        <div class="ws-cockpit" id="cockpit" style="max-width: 980px; margin: 48px auto 0;">
-          <div class="ws-cockpit-bar">
-            <div class="ws-cockpit-dots">
-              <span class="ws-cockpit-dot active"></span>
-              <span class="ws-cockpit-dot"></span>
-              <span class="ws-cockpit-dot"></span>
-            </div>
-            <span>SC4LE.UP // GEO-TERMINAL V4.2 · SIMULAÇÃO DE PRAÇA EM TEMPO REAL</span>
-            <span style="color: var(--ws-green); font-weight: 700;">● SISTEMA ATIVO</span>
+          <!-- CTAs -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10">
+            <button
+              type="button"
+              onclick="openContactModal()"
+              class="btn-emerald px-8 py-4 rounded-full text-sm font-extrabold tracking-tight text-center inline-flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Falar com um Especialista</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
+            <a
+              href="#solucao"
+              class="btn-outline px-8 py-4 rounded-full text-sm font-bold tracking-tight text-center cursor-pointer"
+            >
+              Ver como funciona
+            </a>
           </div>
-          <div class="ws-cockpit-body">
-            <div class="ws-cockpit-metric">
-              <small>01 · Território Analisado</small>
-              <strong>Campinas - SP · Eixo Cambuí / Nova Campinas</strong>
-              <div style="margin-top: 8px; font-size: 12px; color: #A1A1AA;">Densidade classe A/B: 71.4% · Fluxo estimado: 36.500 pessoas/dia</div>
+
+          <!-- Trust Pillars Strip -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 text-left">
+            <div>
+              <div class="text-lg sm:text-xl font-extrabold text-crispWhite tracking-tight">Onde</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Praças &amp; Regiões</div>
             </div>
-            <div class="ws-cockpit-metric">
-              <small>02 · Índice de Viabilidade da Praça</small>
-              <div class="score">9.4 / 10 · ALTAMENTE RECOMENDADO</div>
-              <div style="margin-top: 8px; font-size: 12px; color: #A1A1AA;">Saturação concorrencial: Baixa (18%) · Alta demanda reprimida</div>
+            <div class="border-l border-white/10 pl-4">
+              <div class="text-lg sm:text-xl font-extrabold text-emeraldNeon tracking-tight">Como</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Ponto &amp; Modelo</div>
             </div>
-            <div class="ws-cockpit-metric">
-              <small>03 · Match de Perfil do Franqueado</small>
-              <div class="score" style="color: #60A5FA;">92% ADERÊNCIA AO MODELO</div>
-              <div style="margin-top: 8px; font-size: 12px; color: #A1A1AA;">Capacidade financeira validada · Histórico comprovado de gestão</div>
-            </div>
-            <div class="ws-cockpit-metric">
-              <small>04 · Projeção Econômica da Unidade</small>
-              <strong>Payback Projetado: 18 a 22 Meses</strong>
-              <div style="margin-top: 8px; font-size: 12px; color: var(--ws-green);">Margem EBITDA prevista: 21.8% · Risco operacional mitigado</div>
+            <div class="border-l border-white/10 pl-4">
+              <div class="text-lg sm:text-xl font-extrabold text-crispWhite tracking-tight">Com Quem</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Perfil de Parceiro</div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- TICKER KINÉTICO DA UP -->
-    <div class="ws-ticker-ribbon">
-      <div class="ws-ticker-track">
-        <div class="ws-ticker-item">
-          <span>SC4LE.UP</span>
-          <span class="ws-ticker-dot"></span>
-          <span>ONDE EXPANDIR</span>
-          <span class="ws-ticker-dot"></span>
-          <span>QUAL PONTO COMERCIAL</span>
-          <span class="ws-ticker-dot"></span>
-          <span>QUEM É O PARCEIRO CERTO</span>
-          <span class="ws-ticker-dot"></span>
-          <span>VIABILIDADE REAL</span>
-          <span class="ws-ticker-dot"></span>
-          <span>INTELIGÊNCIA ARTIFICIAL + FRANCHISING</span>
-          <span class="ws-ticker-dot"></span>
-        </div>
-        <div class="ws-ticker-item">
-          <span>SC4LE.UP</span>
-          <span class="ws-ticker-dot"></span>
-          <span>ONDE EXPANDIR</span>
-          <span class="ws-ticker-dot"></span>
-          <span>QUAL PONTO COMERCIAL</span>
-          <span class="ws-ticker-dot"></span>
-          <span>QUEM É O PARCEIRO CERTO</span>
-          <span class="ws-ticker-dot"></span>
-          <span>VIABILIDADE REAL</span>
-          <span class="ws-ticker-dot"></span>
-          <span>INTELIGÊNCIA ARTIFICIAL + FRANCHISING</span>
-          <span class="ws-ticker-dot"></span>
-        </div>
-      </div>
-    </div>
+        <!-- 5 Cols Right: Interactive Territorial Expansion Matrix Visual -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-3xl safe-surface p-6 sm:p-8 border border-emeraldNeon/25 shadow-[0_24px_70px_rgba(0,0,0,0.85)] overflow-hidden">
+            <!-- Background Radial Glow -->
+            <div class="absolute -top-16 -right-16 w-56 h-56 bg-emeraldNeon/15 rounded-full blur-3xl pointer-events-none"></div>
 
-    <!-- RADAR DE DECISÃO EM 4 QUADRANTES (EXCLUSIVO SC4LE.UP) -->
-    <section class="ws-section" id="radar">
-      <div class="wrap">
-        <div class="ws-section-header reveal">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>RADAR DE EXPANSÃO 360°</span>
-          </div>
-          <h2>Expandir uma rede exige respostas que dados incompletos não dão</h2>
-          <p>Decisões que definem o futuro e a rentabilidade da sua marca organizadas em uma matriz de 4 quadrantes críticos:</p>
-        </div>
-
-        <div class="ws-quadrant-grid">
-          <div class="ws-quadrant reveal">
-            <span class="ws-quadrant-number">QUADRANTE 01 // TERRITÓRIO</span>
-            <h3 style="font-size: 20px; font-weight: 800; color: #FFF; margin: 0 0 10px;">Em que cidade entrar?</h3>
-            <p style="font-size: 14px; color: #A1A1AA; line-height: 1.6; margin: 0 0 16px;">
-              Mapeamento de demanda real, saturação de concorrentes diretos e microrregiões com maior potencial de absorção da sua marca.
-            </p>
-            <ul class="ws-feature-list" style="border-top: 1px solid #1A261C; padding-top: 14px;">
-              <li><span class="ws-check">✓</span> Análise demográfica e renda média</li>
-              <li><span class="ws-check">✓</span> Índice de saturação concorrencial</li>
-            </ul>
-          </div>
-
-          <div class="ws-quadrant reveal">
-            <span class="ws-quadrant-number">QUADRANTE 02 // PONTO COMERCIAL</span>
-            <h3 style="font-size: 20px; font-weight: 800; color: #FFF; margin: 0 0 10px;">O local é adequado?</h3>
-            <p style="font-size: 14px; color: #A1A1AA; line-height: 1.6; margin: 0 0 16px;">
-              Critérios técnicos de fluxo de pedestres e veículos, visibilidade, facilidade de acesso e proporção do custo de ocupação versus margem.
-            </p>
-            <ul class="ws-feature-list" style="border-top: 1px solid #1A261C; padding-top: 14px;">
-              <li><span class="ws-check">✓</span> Densidade e qualificação do tráfego</li>
-              <li><span class="ws-check">✓</span> Custo de ocupação vs. ticket médio</li>
-            </ul>
-          </div>
-
-          <div class="ws-quadrant reveal">
-            <span class="ws-quadrant-number">QUADRANTE 03 // PARCEIRO CERTO</span>
-            <h3 style="font-size: 20px; font-weight: 800; color: #FFF; margin: 0 0 10px;">O perfil é aderente?</h3>
-            <p style="font-size: 14px; color: #A1A1AA; line-height: 1.6; margin: 0 0 16px;">
-              Avaliação criteriosa da capacidade financeira real, histórico de liderança operacional e alinhamento à cultura da franqueadora.
-            </p>
-            <ul class="ws-feature-list" style="border-top: 1px solid #1A261C; padding-top: 14px;">
-              <li><span class="ws-check">✓</span> Matriz comportamental e perfil gestor</li>
-              <li><span class="ws-check">✓</span> Capacidade de fôlego financeiro inicial</li>
-            </ul>
-          </div>
-
-          <div class="ws-quadrant reveal">
-            <span class="ws-quadrant-number">QUADRANTE 04 // SUSTENTABILIDADE</span>
-            <h3 style="font-size: 20px; font-weight: 800; color: #FFF; margin: 0 0 10px;">O negócio será viável?</h3>
-            <p style="font-size: 14px; color: #A1A1AA; line-height: 1.6; margin: 0 0 16px;">
-              Projeções financeiras consistentes com cenários otimista, moderado e conservador, garantindo rentabilidade para o franqueado e para a rede.
-            </p>
-            <ul class="ws-feature-list" style="border-top: 1px solid #1A261C; padding-top: 14px;">
-              <li><span class="ws-check">✓</span> Projeção de DRE e ponto de equilíbrio</li>
-              <li><span class="ws-check">✓</span> Payback calculado com precisão</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PIPELINE CONECTADO DA PLATAFORMA SC4LE.UP (EXCLUSIVO) -->
-    <section class="ws-section" id="plataforma">
-      <div class="wrap">
-        <div class="ws-section-header reveal">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>PIPELINE DE EXPANSÃO</span>
-          </div>
-          <h2>Como a SC4LE.Up estrutura o seu crescimento passo a passo</h2>
-          <p>Reunimos metodologias de expansão de redes, conhecimento de franchising, dados de mercado e inteligência artificial numa única solução.</p>
-        </div>
-
-        <div class="ws-pipeline">
-          <div class="ws-pipeline-card reveal">
-            <span class="ws-pipeline-step">ETAPA 01 · GEOMARKETING</span>
-            <h3 style="font-size: 18px; font-weight: 800; color: #FFF; margin: 0 0 10px;">Estudo de Regiões</h3>
-            <p style="font-size: 13.5px; color: #A1A1AA; line-height: 1.55; margin: 0;">
-              Mapeamento geográfico de mercados com alta demanda reprimida e aderência estatística ao seu modelo.
-            </p>
-          </div>
-
-          <div class="ws-pipeline-card reveal">
-            <span class="ws-pipeline-step">ETAPA 02 · PONTO COMERCIAL</span>
-            <h3 style="font-size: 18px; font-weight: 800; color: #FFF; margin: 0 0 10px;">Análise de Pontos</h3>
-            <p style="font-size: 13.5px; color: #A1A1AA; line-height: 1.55; margin: 0;">
-              Avaliação técnica de cada endereço, densidade de tráfego, potencial de conversão e custo de locação balanceado.
-            </p>
-          </div>
-
-          <div class="ws-pipeline-card reveal">
-            <span class="ws-pipeline-step">ETAPA 03 · MATCH MAKING</span>
-            <h3 style="font-size: 18px; font-weight: 800; color: #FFF; margin: 0 0 10px;">Perfil & Capacidade</h3>
-            <p style="font-size: 13.5px; color: #A1A1AA; line-height: 1.55; margin: 0;">
-              Critérios claros e objetivos para selecionar operadores capacitados que de fato sustentam a operação no mercado.
-            </p>
-          </div>
-
-          <div class="ws-pipeline-card reveal">
-            <span class="ws-pipeline-step">ETAPA 04 · SIMULAÇÃO</span>
-            <h3 style="font-size: 18px; font-weight: 800; color: #FFF; margin: 0 0 10px;">Cenários Consistentes</h3>
-            <p style="font-size: 13.5px; color: #A1A1AA; line-height: 1.55; margin: 0;">
-              Modelagem preditiva de faturamento, margem e payback para tomar decisões fundamentadas e seguras.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MANIFESTO MARINHO PONCI: CITAÇÃO DE IMPACTO ESTILO WORKSHOP -->
-    <section class="ws-section">
-      <div class="wrap reveal">
-        <div class="ws-split-box">
-          <div>
-            <div class="ws-badge">
-              <span class="ws-badge-dot"></span>
-              <span>EXPANSÃO CONSCIENTE</span>
-            </div>
-            <h2 style="font-size:clamp(28px,3.5vw,40px);font-weight:900;color:#fff;line-height:1.15;margin:12px 0 16px;">
-              Construir uma rede que faça sentido para a marca.
-            </h2>
-            <p style="font-size:15px;color:#A1A1AA;line-height:1.65;margin:0 0 16px;">
-              A ideia não é substituir a experiência de quem conduz a expansão, mas oferecer instrumentos precisos para avaliar onde existe uma boa oportunidade, qual o modelo mais adequado e quem tem reais condições de desenvolver o negócio naquele mercado.
-            </p>
-          </div>
-
-          <div style="background:#0A0E0B;border:1px solid #1E261C;border-radius:18px;padding:32px;box-shadow:0 0 35px rgba(2,233,155,0.12);">
-            <div style="color:var(--ws-green);font-size:36px;line-height:1;margin-bottom:8px;font-family:Georgia,serif;">“</div>
-            <p style="font-size:clamp(17px,2vw,20px);font-weight:700;color:#E4E4E7;line-height:1.55;margin:0 0 18px;">
-              Porque abrir novas unidades é apenas uma parte do trabalho. O mais importante é construir uma rede que faça sentido para a marca, com operações viáveis e parceiros preparados para conduzi-las.
-            </p>
-            <div style="display:flex;align-items:center;gap:12px;">
-              <span style="font-family:var(--ws-font-mono);font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--ws-green);">
-                SC4LE.UP · MARINHO PONCI
+            <div class="flex items-center justify-between mb-5">
+              <span class="font-mono text-[10px] tracking-[0.24em] uppercase text-emeraldNeon px-3 py-1 rounded-full border border-emeraldNeon/30 bg-[#030504]">
+                INTELIGÊNCIA TERRITORIAL ATIVA
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-slateMuted">
+                <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_8px_#10E88A]"></span>
+                Live Matrix
               </span>
             </div>
+
+            <!-- Custom Territorial Nodes SVG Visual -->
+            <div class="relative h-64 sm:h-72 w-full rounded-2xl bg-[#030705] border border-white/10 flex items-center justify-center p-4">
+              <svg class="w-full h-full text-emeraldNeon" viewBox="0 0 380 260" fill="none">
+                <!-- Background Grid Coordinates -->
+                <line x1="20" y1="50" x2="360" y2="50" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+                <line x1="20" y1="130" x2="360" y2="130" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+                <line x1="20" y1="210" x2="360" y2="210" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+                <line x1="95" y1="20" x2="95" y2="240" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+                <line x1="190" y1="20" x2="190" y2="240" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+                <line x1="285" y1="20" x2="285" y2="240" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+
+                <!-- Catchment Radius Rings -->
+                <circle cx="190" cy="130" r="85" stroke="currentColor" stroke-opacity="0.22" stroke-width="1.2" stroke-dasharray="3 3" />
+                <circle cx="190" cy="130" r="48" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5" />
+                <circle cx="95" cy="80" r="32" stroke="currentColor" stroke-opacity="0.25" stroke-width="1" />
+                <circle cx="285" cy="180" r="38" stroke="currentColor" stroke-opacity="0.25" stroke-width="1" />
+
+                <!-- Connecting Data Vectors -->
+                <line x1="190" y1="130" x2="95" y2="80" stroke="currentColor" stroke-opacity="0.65" stroke-width="1.8" />
+                <line x1="190" y1="130" x2="285" y2="180" stroke="currentColor" stroke-opacity="0.65" stroke-width="1.8" />
+                <line x1="190" y1="130" x2="295" y2="75" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.4" stroke-dasharray="4 4" />
+                <line x1="190" y1="130" x2="85" y2="190" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.4" stroke-dasharray="4 4" />
+
+                <!-- Hub Central Node (Ponto Estratégico) -->
+                <circle cx="190" cy="130" r="9" fill="#10E88A" class="shadow-[0_0_16px_#10E88A]" />
+                <circle cx="190" cy="130" r="18" stroke="#10E88A" stroke-opacity="0.5" stroke-width="1.5" class="pulse-ring" />
+
+                <!-- Regional Outpost Nodes -->
+                <circle cx="95" cy="80" r="6" fill="#0be086" />
+                <circle cx="285" cy="180" r="6" fill="#0be086" />
+                <circle cx="295" cy="75" r="4.5" fill="#8E9E96" />
+                <circle cx="85" cy="190" r="4.5" fill="#8E9E96" />
+
+                <!-- Label Overlays -->
+                <text x="190" y="112" fill="#F4F7F5" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" text-anchor="middle">POLO CENTRAL</text>
+                <text x="95" y="65" fill="#10E88A" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">CLUSTER A · 94%</text>
+                <text x="285" y="205" fill="#10E88A" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">CLUSTER B · 91%</text>
+              </svg>
+            </div>
+
+            <!-- Metric readout footer -->
+            <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
+              <span class="text-slateMuted font-mono">ÍNDICE DE ADERÊNCIA</span>
+              <span class="text-emeraldNeon font-mono font-bold">ALTA PRECISÃO (98.4%)</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- BANNER FINAL ESTILO WORKSHOP -->
-    <section class="ws-section" style="border-bottom:none;">
-      <div class="wrap reveal">
-        <div class="ws-cta-banner">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>PRÓXIMO PASSO</span>
+    <!-- =================================================================== -->
+    <!-- SECTION 02: O DESAFIO                                               -->
+    <!-- =================================================================== -->
+    <section id="desafio" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
+          O DESAFIO
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-5">
+          Expandir uma rede envolve <span class="text-emerald-glow">decisões importantes.</span>
+        </h2>
+        <p class="text-base sm:text-lg text-slateMuted leading-relaxed">
+          Cada nova praça, contrato e franquia compromete a reputação e o capital da sua marca.
+        </p>
+      </div>
+
+      <!-- 6 Critical Questions Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <!-- Question 01 -->
+        <div class="safe-surface safe-surface-hover rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs tracking-[0.2em] uppercase text-emeraldNeon">01 · CIDADE</span>
+              <span class="w-2 h-2 rounded-full bg-emeraldNeon"></span>
+            </div>
+            <h3 class="text-xl font-bold text-crispWhite leading-snug">
+              Em que cidade entrar?
+            </h3>
           </div>
-          <h2>Vamos estruturar a expansão da sua rede?</h2>
-          <p>Converse diretamente com a equipe do ecossistema Up.INTELLIG3NCE e conheça a tecnologia e os dados da SC4LE.Up aplicados ao seu modelo.</p>
-          <div class="ws-actions">
-            <a class="ws-btn-primary" href="index.html#contato">Conversar com a Equipe</a>
-            <a class="ws-btn-secondary" href="organize.html">Conhecer ORG4NIZE.Up</a>
+          <p class="text-sm text-slateMuted mt-4 leading-relaxed border-t border-white/10 pt-4">
+            Critério demográfico, renda e aderência cultural antes de comprometer esforços de expansão.
+          </p>
+        </div>
+
+        <!-- Question 02 -->
+        <div class="safe-surface safe-surface-hover rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs tracking-[0.2em] uppercase text-emeraldNeon">02 · REGIÃO</span>
+              <span class="w-2 h-2 rounded-full bg-emeraldNeon"></span>
+            </div>
+            <h3 class="text-xl font-bold text-crispWhite leading-snug">
+              Qual região tem maior potencial?
+            </h3>
+          </div>
+          <p class="text-sm text-slateMuted mt-4 leading-relaxed border-t border-white/10 pt-4">
+            Mapeamento preciso de consumo, concorrentes diretos e zonas de vazios de mercado.
+          </p>
+        </div>
+
+        <!-- Question 03 -->
+        <div class="safe-surface safe-surface-hover rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs tracking-[0.2em] uppercase text-emeraldNeon">03 · LOCALIZAÇÃO</span>
+              <span class="w-2 h-2 rounded-full bg-emeraldNeon"></span>
+            </div>
+            <h3 class="text-xl font-bold text-crispWhite leading-snug">
+              O ponto comercial é adequado?
+            </h3>
+          </div>
+          <p class="text-sm text-slateMuted mt-4 leading-relaxed border-t border-white/10 pt-4">
+            Validação técnica de fluxo de pedestres, visibilidade, facilidade de acesso e custo de ocupação.
+          </p>
+        </div>
+
+        <!-- Question 04 -->
+        <div class="safe-surface safe-surface-hover rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs tracking-[0.2em] uppercase text-emeraldNeon">04 · PARCERIA</span>
+              <span class="w-2 h-2 rounded-full bg-emeraldNeon"></span>
+            </div>
+            <h3 class="text-xl font-bold text-crispWhite leading-snug">
+              Quem é o parceiro certo para aquela operação?
+            </h3>
+          </div>
+          <p class="text-sm text-slateMuted mt-4 leading-relaxed border-t border-white/10 pt-4">
+            Identificação de investidores ou operadores alinhados com o momento e a ambição da marca.
+          </p>
+        </div>
+
+        <!-- Question 05 -->
+        <div class="safe-surface safe-surface-hover rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs tracking-[0.2em] uppercase text-emeraldNeon">05 · PERFIL</span>
+              <span class="w-2 h-2 rounded-full bg-emeraldNeon"></span>
+            </div>
+            <h3 class="text-xl font-bold text-crispWhite leading-snug">
+              O candidato a franqueado tem o perfil necessário?
+            </h3>
+          </div>
+          <p class="text-sm text-slateMuted mt-4 leading-relaxed border-t border-white/10 pt-4">
+            Avaliação comportamental, maturidade de liderança e disciplina na execução dos manuais da rede.
+          </p>
+        </div>
+
+        <!-- Question 06 -->
+        <div class="safe-surface safe-surface-hover rounded-3xl p-6 sm:p-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs tracking-[0.2em] uppercase text-emeraldNeon">06 · VIABILIDADE</span>
+              <span class="w-2 h-2 rounded-full bg-emeraldNeon"></span>
+            </div>
+            <h3 class="text-xl font-bold text-crispWhite leading-snug">
+              O negócio será economicamente viável?
+            </h3>
+          </div>
+          <p class="text-sm text-slateMuted mt-4 leading-relaxed border-t border-white/10 pt-4">
+            Projeção financeira realista, margens líquidas estimadas e prazo de retorno com estresse de cenários.
+          </p>
+        </div>
+      </div>
+
+      <!-- Problem Statement Card -->
+      <div class="rounded-3xl bg-gradient-to-r from-[#062016]/90 via-[#040A07]/90 to-[#062016]/90 border border-emeraldNeon/30 p-8 sm:p-10 text-center max-w-4xl mx-auto shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
+        <p class="text-lg sm:text-2xl font-bold text-crispWhite leading-relaxed">
+          São perguntas que exigem <span class="text-emerald-glow">experiência, informação e análise</span>, mas que muitas vezes acabam por ser respondidas com <span class="text-crispWhite/60">dados incompletos.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 03: A SOLUÇÃO                                               -->
+    <!-- =================================================================== -->
+    <section id="solucao" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="rounded-[2.5rem] safe-surface border border-emeraldNeon/25 p-8 sm:p-14 lg:p-16 relative overflow-hidden">
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emeraldNeon/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-3xl">
+          <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-4">
+            A SOLUÇÃO
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-6">
+            Uma só solução para <span class="text-emerald-glow">decidir com mais base.</span>
+          </h2>
+          <p class="text-lg sm:text-xl text-slateMuted leading-relaxed mb-10">
+            A <strong>SC4LE.Up</strong> foi concebida para apoiar este processo, reunindo metodologias de expansão de redes, conhecimento de franchising, dados de mercado e inteligência artificial.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#030504]/70 border border-white/10">
+              <span class="w-6 h-6 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+              <div>
+                <strong class="text-crispWhite block text-sm">Metodologia de Expansão</strong>
+                <span class="text-xs text-slateMuted">Critério validado em mais de 38 anos de liderança em redes.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#030504]/70 border border-white/10">
+              <span class="w-6 h-6 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+              <div>
+                <strong class="text-crispWhite block text-sm">Conhecimento de Franchising</strong>
+                <span class="text-xs text-slateMuted">Estruturação de COF, manuais e conformidade jurídica/operacional.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#030504]/70 border border-white/10">
+              <span class="w-6 h-6 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+              <div>
+                <strong class="text-crispWhite block text-sm">Dados de Mercado</strong>
+                <span class="text-xs text-slateMuted">Indicadores econômicos, fluxo e mapeamento de consumo geolocalizado.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#030504]/70 border border-white/10">
+              <span class="w-6 h-6 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+              <div>
+                <strong class="text-crispWhite block text-sm">Inteligência Artificial</strong>
+                <span class="text-xs text-slateMuted">Cruzamento de variáveis complexas e simulação preditiva de cenários.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 04: O QUE A PLATAFORMA PERMITE                              -->
+    <!-- =================================================================== -->
+    <section id="plataforma" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="max-w-2xl mb-14">
+        <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
+          O QUE A PLATAFORMA PERMITE
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-4">
+          Instrumentos analíticos <span class="text-emerald-glow">para cada decisão.</span>
+        </h2>
+        <p class="text-base sm:text-lg text-slateMuted leading-relaxed">
+          Recursos desenhados especificamente para diretores de expansão, franqueadores e fundadores de redes.
+        </p>
+      </div>
+
+      <!-- 5 Capabilities Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 01 Estudar regiões -->
+        <article class="safe-surface safe-surface-hover rounded-3xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emeraldNeon/10 border border-emeraldNeon/30 flex items-center justify-center text-emeraldNeon mb-6">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-emeraldNeon block mb-2">01 · TERRITÓRIO</span>
+            <h3 class="text-2xl font-extrabold text-crispWhite tracking-tight mb-3">
+              Estudar regiões
+            </h3>
+            <p class="text-slateMuted text-base leading-relaxed">
+              Perceber onde existe potencial e como cada mercado se comporta.
+            </p>
+          </div>
+          <div class="mt-6 pt-5 border-t border-white/10 font-mono text-xs text-emeraldNeon/90">
+            Mapeamento de demanda &amp; vazios
+          </div>
+        </article>
+
+        <!-- 02 Analisar oportunidades comerciais -->
+        <article class="safe-surface safe-surface-hover rounded-3xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emeraldNeon/10 border border-emeraldNeon/30 flex items-center justify-center text-emeraldNeon mb-6">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-emeraldNeon block mb-2">02 · PONTO COMERCIAL</span>
+            <h3 class="text-2xl font-extrabold text-crispWhite tracking-tight mb-3">
+              Analisar oportunidades comerciais
+            </h3>
+            <p class="text-slateMuted text-base leading-relaxed">
+              Avaliar com critério se o ponto e o momento são adequados.
+            </p>
+          </div>
+          <div class="mt-6 pt-5 border-t border-white/10 font-mono text-xs text-emeraldNeon/90">
+            Validação técnica de localização
+          </div>
+        </article>
+
+        <!-- 03 Avaliar candidatos -->
+        <article class="safe-surface safe-surface-hover rounded-3xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emeraldNeon/10 border border-emeraldNeon/30 flex items-center justify-center text-emeraldNeon mb-6">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-emeraldNeon block mb-2">03 · OPERADOR</span>
+            <h3 class="text-2xl font-extrabold text-crispWhite tracking-tight mb-3">
+              Avaliar candidatos
+            </h3>
+            <p class="text-slateMuted text-base leading-relaxed">
+              Analisar o perfil e a capacidade de cada candidato a franqueado.
+            </p>
+          </div>
+          <div class="mt-6 pt-5 border-t border-white/10 font-mono text-xs text-emeraldNeon/90">
+            Qualificação e perfil comportamental
+          </div>
+        </article>
+
+        <!-- 04 Cruzar informação -->
+        <article class="safe-surface safe-surface-hover rounded-3xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emeraldNeon/10 border border-emeraldNeon/30 flex items-center justify-center text-emeraldNeon mb-6">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-emeraldNeon block mb-2">04 · MATCHING</span>
+            <h3 class="text-2xl font-extrabold text-crispWhite tracking-tight mb-3">
+              Cruzar informação
+            </h3>
+            <p class="text-slateMuted text-base leading-relaxed">
+              Relacionar o perfil dos candidatos com as características de cada mercado.
+            </p>
+          </div>
+          <div class="mt-6 pt-5 border-t border-white/10 font-mono text-xs text-emeraldNeon/90">
+            Aderência praça x operador
+          </div>
+        </article>
+
+        <!-- 05 Desenvolver cenários -->
+        <article class="safe-surface safe-surface-hover rounded-3xl p-7 flex flex-col justify-between md:col-span-2 lg:col-span-2">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emeraldNeon/10 border border-emeraldNeon/30 flex items-center justify-center text-emeraldNeon mb-6">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-emeraldNeon block mb-2">05 · SIMULAÇÃO PREDITIVA</span>
+            <h3 class="text-2xl font-extrabold text-crispWhite tracking-tight mb-3">
+              Desenvolver cenários
+            </h3>
+            <p class="text-slateMuted text-base sm:text-lg leading-relaxed max-w-2xl">
+              Construir cenários de expansão mais consistentes e comparáveis, projetando retorno, velocidade de consolidação e resiliência de caixa.
+            </p>
+          </div>
+          <div class="mt-6 pt-5 border-t border-white/10 font-mono text-xs text-emeraldNeon/90">
+            Modelagem comparativa multicritério
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 05: O PRINCÍPIO                                             -->
+    <!-- =================================================================== -->
+    <section id="principio" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="rounded-[2.5rem] safe-surface border border-emeraldNeon/30 p-8 sm:p-14 lg:p-16 relative overflow-hidden">
+        <div class="max-w-3xl">
+          <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-4">
+            O PRINCÍPIO
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-8">
+            A experiência <span class="text-emerald-glow">continua a decidir.</span>
+          </h2>
+
+          <blockquote class="relative pl-6 sm:pl-8 mb-8 border-l-2 border-emeraldNeon">
+            <p class="text-lg sm:text-2xl font-semibold text-crispWhite leading-relaxed tracking-tight">
+              “A ideia não é substituir a experiência de quem conduz a expansão, mas oferecer melhores instrumentos para avaliar onde existe uma boa oportunidade, qual o modelo mais adequado e quem tem condições de desenvolver o negócio naquele mercado.”
+            </p>
+          </blockquote>
+
+          <footer class="pt-5 border-t border-white/10 flex items-center justify-between gap-4">
+            <span class="font-mono text-xs font-semibold tracking-[0.22em] uppercase text-emeraldNeon">
+              MARINHO PONCI · FUNDADOR
+            </span>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-slateMuted">
+              SC4LE.Up
+            </span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 06: PORQUÊ ISTO IMPORTA                                     -->
+    <!-- =================================================================== -->
+    <section id="importancia" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-5">
+          <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
+            PORQUÊ ISTO IMPORTA
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-6">
+            Abrir unidades é só <span class="text-emerald-glow">uma parte do trabalho.</span>
+          </h2>
+          <p class="text-base sm:text-lg text-slateMuted leading-relaxed">
+            Unidades fechadas ou franqueados despreparados drenam recursos e custam caro para a sustentabilidade da marca.
+          </p>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="rounded-3xl bg-gradient-to-br from-[#062016] to-[#040806] border border-emeraldNeon/30 p-8 sm:p-12 shadow-[0_24px_60px_rgba(0,0,0,0.7)]">
+            <div class="w-10 h-10 rounded-full bg-emeraldNeon/20 border border-emeraldNeon/50 flex items-center justify-center text-emeraldNeon mb-6">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p class="text-xl sm:text-3xl font-bold text-crispWhite leading-snug tracking-tight">
+              O mais importante é construir uma rede que faça sentido para a marca, com operações viáveis e parceiros preparados para as conduzir.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 07: CTA FINAL & FORMULÁRIO                                  -->
+    <!-- =================================================================== -->
+    <section id="contato" class="py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="rounded-[2.5rem] bg-[#040806]/95 border border-emeraldNeon/30 p-8 sm:p-14 lg:p-16 backdrop-blur-2xl shadow-[0_30px_90px_rgba(0,0,0,0.85)]">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <!-- Left 6 Cols: Direct Headline & Copy -->
+          <div class="lg:col-span-6">
+            <div class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-4">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
+              <span>CTA FINAL</span>
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-6">
+              Está a pensar em <span class="text-emerald-glow block sm:inline">expandir a sua rede?</span>
+            </h2>
+
+            <p class="text-base sm:text-lg text-slateMuted leading-relaxed mb-8">
+              Fale com a nossa equipa e perceba como a SC4LE.Up pode apoiar a sua próxima decisão.
+            </p>
+
+            <div class="space-y-3 border-t border-white/10 pt-6">
+              <div class="flex items-center gap-3 text-sm text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Diagnóstico inicial de expansão e viabilidade</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Alinhamento direto com o time executivo</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Sem compromisso comercial prévio</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right 6 Cols: Form Card -->
+          <div class="lg:col-span-6">
+            <div class="rounded-3xl bg-[#030504] border border-white/15 p-6 sm:p-8">
+              <div class="font-mono text-[11px] tracking-[0.22em] uppercase text-emeraldNeon mb-2">
+                FORMULÁRIO DE ATENDIMENTO
+              </div>
+              <h3 class="text-2xl font-extrabold text-crispWhite tracking-tight mb-2">
+                Vamos Conversar
+              </h3>
+              <p class="text-sm text-slateMuted mb-6">
+                Preencha os dados abaixo para receber o contacto do nosso especialista em expansão.
+              </p>
+
+              <form id="inline-lead-form" onsubmit="handleFormSubmit(event, 'inline')" class="space-y-4">
+                <div>
+                  <label for="inline-name" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+                    O seu nome
+                  </label>
+                  <input
+                    id="inline-name"
+                    type="text"
+                    required
+                    placeholder="Ex.: Carlos Eduardo"
+                    class="w-full px-4 py-3 rounded-xl bg-[#070C0A] border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label for="inline-company" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+                    Empresa / Rede
+                  </label>
+                  <input
+                    id="inline-company"
+                    type="text"
+                    required
+                    placeholder="Nome da sua marca ou franquia"
+                    class="w-full px-4 py-3 rounded-xl bg-[#070C0A] border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label for="inline-region" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+                    Cidade ou região de interesse
+                  </label>
+                  <input
+                    id="inline-region"
+                    type="text"
+                    required
+                    placeholder="Ex.: Lisboa, Porto, São Paulo, Sul..."
+                    class="w-full px-4 py-3 rounded-xl bg-[#070C0A] border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label for="inline-contact" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+                    WhatsApp ou E-mail
+                  </label>
+                  <input
+                    id="inline-contact"
+                    type="text"
+                    required
+                    placeholder="(11) 99999-9999 ou email@empresa.com"
+                    class="w-full px-4 py-3 rounded-xl bg-[#070C0A] border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50 transition-colors"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn-emerald w-full py-4 rounded-full text-sm font-extrabold tracking-tight mt-2 cursor-pointer"
+                >
+                  Pedir Contacto
+                </button>
+              </form>
+
+              <!-- Inline Success State -->
+              <div id="inline-success" class="hidden text-center py-6">
+                <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/50 flex items-center justify-center text-emeraldNeon shadow-[0_0_24px_rgba(16,232,138,0.3)]">
+                  <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h4 class="text-xl font-extrabold text-crispWhite mb-2">Solicitação enviada</h4>
+                <p id="inline-success-copy" class="text-xs text-slateMuted leading-relaxed"></p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="ws-footer">
-    <div class="wrap ws-footer-inner">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
-        <span>© 2026 Marinho Ponci & Up.INTELLIG3NCE. Todos os direitos reservados.</span>
+  <!-- ===================================================================== -->
+  <!-- MODAL: ATENDIMENTO EXECUTIVO                                          -->
+  <!-- ===================================================================== -->
+  <div
+    id="contact-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+    onclick="if (event.target === this) closeContactModal()"
+  >
+    <div class="modal-panel relative w-full max-w-lg rounded-3xl safe-surface p-6 sm:p-8 border border-emeraldNeon/30">
+      <button
+        type="button"
+        onclick="closeContactModal()"
+        aria-label="Fechar janela"
+        class="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slateMuted hover:text-crispWhite transition-colors cursor-pointer"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Form View -->
+      <div id="modal-form-view">
+        <div class="font-mono text-[11px] tracking-[0.22em] uppercase text-emeraldNeon mb-2">
+          SC4LE.Up · ATENDIMENTO EXECUTIVO
+        </div>
+        <h3 id="modal-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-crispWhite mb-2">
+          Vamos conversar
+        </h3>
+        <p class="text-sm text-slateMuted mb-6">
+          Preencha os seus dados e encaminhamos a sua rede para o especialista em expansão adequado.
+        </p>
+
+        <form onsubmit="handleFormSubmit(event, 'modal')" class="space-y-4">
+          <div>
+            <label for="modal-name" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+              O seu nome
+            </label>
+            <input
+              id="modal-name"
+              type="text"
+              required
+              placeholder="Ex.: Carlos Eduardo"
+              class="w-full px-4 py-3 rounded-xl bg-[#030504]/90 border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50 transition-colors"
+            />
+          </div>
+
+          <div>
+            <label for="modal-company" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+              Empresa / Rede
+            </label>
+            <input
+              id="modal-company"
+              type="text"
+              required
+              placeholder="Nome da sua marca ou franquia"
+              class="w-full px-4 py-3 rounded-xl bg-[#030504]/90 border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50 transition-colors"
+            />
+          </div>
+
+          <div>
+            <label for="modal-region" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+              Cidade ou região de interesse
+            </label>
+            <input
+              id="modal-region"
+              type="text"
+              required
+              placeholder="Ex.: Lisboa, Porto, São Paulo, Sul..."
+              class="w-full px-4 py-3 rounded-xl bg-[#030504]/90 border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50 transition-colors"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="btn-emerald w-full py-4 rounded-full text-sm font-extrabold tracking-tight mt-2 cursor-pointer"
+          >
+            Pedir Contacto
+          </button>
+        </form>
       </div>
-      <nav class="ws-footer-nav" aria-label="Rodapé">
-        <a href="index.html">Início</a>
-        <a href="up-intelligence.html">Up.INTELLIG3NCE</a>
-        <a href="organize.html">ORG4NIZE.Up</a>
-        <a href="dossies.html">Dossiês</a>
-        <a href="blog.html">Blog</a>
-      </nav>
+
+      <!-- Modal Success View -->
+      <div id="modal-success-view" class="hidden text-center py-6">
+        <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/50 flex items-center justify-center text-emeraldNeon shadow-[0_0_24px_rgba(16,232,138,0.3)]">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-extrabold text-crispWhite mb-3">Solicitação recebida</h3>
+        <p id="modal-success-copy" class="text-sm text-slateMuted leading-relaxed mb-7"></p>
+        <button
+          type="button"
+          onclick="closeContactModal()"
+          class="btn-outline px-8 py-3 rounded-full text-sm font-bold cursor-pointer"
+        >
+          Voltar para a página
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- FOOTER                                                                -->
+  <!-- ===================================================================== -->
+  <footer class="border-t border-white/[0.08] py-10 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
+        <span class="font-mono text-xs tracking-[0.22em] uppercase text-crispWhite/90 font-semibold">
+          SC4LE.Up · UP.INTELLIG3NCE · MARINHO PONCI
+        </span>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slateMuted">
+        <a href="index.html" class="hover:text-emeraldNeon transition-colors">Início</a>
+        <span class="text-white/20">·</span>
+        <a href="up-intelligence.html" class="hover:text-emeraldNeon transition-colors">Up.INTELLIG3NCE</a>
+        <span class="text-white/20">·</span>
+        <a href="organize.html" class="hover:text-emeraldNeon transition-colors">ORG4NIZE.Up</a>
+        <span class="text-white/20">·</span>
+        <a href="scale.html" class="text-emeraldNeon font-semibold">SC4LE.Up</a>
+        <span class="text-white/20">·</span>
+        <a href="dossies.html" class="hover:text-emeraldNeon transition-colors">Dossiês</a>
+        <span class="text-white/20">·</span>
+        <a href="blog.html" class="hover:text-emeraldNeon transition-colors">Blog</a>
+      </div>
+
+      <p class="text-xs text-slateMuted">
+        &copy; <span id="year-el">2026</span> UP.INTELLIG3NCE. Todos os direitos reservados.
+      </p>
     </div>
   </footer>
 
-  <!-- BACKDROP E MENU LATERAL ANIMADO -->
-  <div class="ws-side-backdrop" aria-hidden="true"></div>
-  <aside class="ws-side-drawer" aria-label="Navegação Lateral">
-    <div class="ws-drawer-header">
-      <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
-      <button class="ws-drawer-close" type="button" aria-label="Fechar menu">✕</button>
-    </div>
-    <nav class="ws-drawer-nav">
-      <a class="ws-drawer-link" href="index.html">
-        <span><span class="ws-link-index">01</span>Início</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="up-intelligence.html">
-        <span><span class="ws-link-index">02</span>Up.INTELLIG3NCE Hub</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="organize.html">
-        <span><span class="ws-link-index">03</span>ORG4NIZE.Up (PMEs)</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="scale.html" aria-current="page">
-        <span><span class="ws-link-index">04</span>SC4LE.Up (Expansão)</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="dossies.html">
-        <span><span class="ws-link-index">05</span>Dossiês de Franquias</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="blog.html">
-        <span><span class="ws-link-index">06</span>Blog & Artigos</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-    </nav>
-    <div class="ws-drawer-footer">
-      <a class="ws-btn-primary" style="width:100%;text-align:center;" href="index.html#contato">Vamos Conversar</a>
-      <p style="font-size:11px;color:#71717A;margin-top:14px;text-align:center;">© 2026 Marinho Ponci · Up.INTELLIG3NCE</p>
-    </div>
-  </aside>
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: CONTROLS & SUBMISSION                                     -->
+  <!-- ===================================================================== -->
+  <script>
+    function setupMobileMenu() {
+      const btn = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      const ham = document.getElementById('ham-icon');
+      const xIcon = document.getElementById('x-icon');
+      const links = document.querySelectorAll('.mobile-link');
+
+      function setOpen(open) {
+        menu.classList.toggle('hidden', !open);
+        ham.classList.toggle('hidden', open);
+        xIcon.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', String(open));
+      }
+
+      btn.addEventListener('click', function () {
+        setOpen(menu.classList.contains('hidden'));
+      });
+      links.forEach(function (l) {
+        l.addEventListener('click', function () { setOpen(false); });
+      });
+    }
+
+    function openContactModal() {
+      const modal = document.getElementById('contact-modal');
+      document.getElementById('modal-form-view').classList.remove('hidden');
+      document.getElementById('modal-success-view').classList.add('hidden');
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeContactModal() {
+      document.getElementById('contact-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleFormSubmit(e, source) {
+      e.preventDefault();
+      let name = '';
+      let company = '';
+      let region = '';
+
+      if (source === 'inline') {
+        name = document.getElementById('inline-name').value.trim();
+        company = document.getElementById('inline-company').value.trim();
+        region = document.getElementById('inline-region').value.trim();
+
+        document.getElementById('inline-lead-form').classList.add('hidden');
+        const sc = document.getElementById('inline-success');
+        sc.classList.remove('hidden');
+        document.getElementById('inline-success-copy').innerHTML =
+          'Obrigado, <strong class="text-crispWhite">' + name + '</strong>. Registramos o interesse da rede <strong class="text-crispWhite">' + company + '</strong> para a região de <span class="text-emeraldNeon">' + region + '</span>. Entraremos em contacto brevemente.';
+      } else {
+        name = document.getElementById('modal-name').value.trim();
+        company = document.getElementById('modal-company').value.trim();
+        region = document.getElementById('modal-region').value.trim();
+
+        document.getElementById('modal-form-view').classList.add('hidden');
+        const sc = document.getElementById('modal-success-view');
+        sc.classList.remove('hidden');
+        document.getElementById('modal-success-copy').innerHTML =
+          'Obrigado, <strong class="text-crispWhite">' + name + '</strong>. Registramos o interesse da rede <strong class="text-crispWhite">' + company + '</strong> para a região de <span class="text-emeraldNeon">' + region + '</span>. Entraremos em contacto brevemente.';
+      }
+    }
+
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeContactModal();
+      }
+    });
+
+    window.onload = function () {
+      const y = document.getElementById('year-el');
+      if (y) y.textContent = new Date().getFullYear();
+      setupMobileMenu();
+    };
+  </script>
 </body>
 </html>
