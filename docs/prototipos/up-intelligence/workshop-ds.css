@@ -1253,33 +1253,31 @@ img {
 
 /* =========================================================================
    SHOWCASE INTERATIVO UNIFICADO: ECOSSISTEMA UP (ORG4NIZE.Up & SC4LE.Up)
-   Globo central luminoso imersivo sem bordas com split interativo
+   Fundo de ponta a ponta (Full-Bleed 100vw) com fusão imersiva e sem cortes
    ========================================================================= */
-.ws-ecosystem-showcase {
+.ws-ecosystem-section {
   position: relative;
   width: 100%;
-  max-width: 1300px;
-  margin: 30px auto 0;
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  min-height: 560px;
-  display: flex;
+  overflow: hidden;
+  padding-top: 100px;
+  padding-bottom: 110px;
+  background-color: #030504;
 }
 
-/* Background com o Globo do Ecossistema Central (Sem bordas, fusão 100% orgânica) */
-.ws-ecosystem-backdrop {
+/* Background Imersivo de Ponta a Ponta */
+.ws-ecosystem-full-bg {
   position: absolute;
-  inset: -60px 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .ws-ecosystem-globe-picture {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -1290,30 +1288,68 @@ img {
 .ws-ecosystem-globe-img {
   width: 100%;
   height: 100%;
-  max-height: 640px;
-  object-fit: contain;
-  object-position: center;
-  opacity: 0.55;
-  filter: contrast(1.18) brightness(0.92);
-  /* Máscara radial suave para dissolver totalmente quaisquer bordas no fundo preto obsidian */
-  mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 45%, transparent 85%);
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 45%, transparent 85%);
+  object-fit: cover;
+  object-position: center 58%;
+  opacity: 0.44;
+  filter: contrast(1.15) brightness(0.92);
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, opacity 0.8s ease;
 }
 
-/* Vignette escurecendo as extremidades superior/inferior para fusão imperceptível com #030504 */
+/* Vignette escurecendo as extremidades superior, inferior e laterais para fusão 100% orgânica */
 .ws-ecosystem-vignette {
   position: absolute;
   inset: 0;
   z-index: 2;
   background:
-    /* Sombreamento forte e gradual de baixo para cima para destacar o texto */
-    linear-gradient(to top, #030504 0%, rgba(3, 5, 4, 0.94) 30%, rgba(3, 5, 4, 0.45) 60%, transparent 100%),
+    /* Proteção profunda no topo para o título e subtítulo da seção ficarem totalmente nítidos */
+    linear-gradient(to bottom, #030504 0%, rgba(3, 5, 4, 0.98) 18%, rgba(3, 5, 4, 0.60) 38%, transparent 60%),
+    /* Sombreamento suave de baixo para cima */
+    linear-gradient(to top, #030504 0%, rgba(3, 5, 4, 0.95) 20%, rgba(3, 5, 4, 0.45) 50%, transparent 100%),
     /* Sombreamento lateral escurecendo as áreas de texto à esquerda e direita */
-    linear-gradient(to right, #030504 0%, rgba(3, 5, 4, 0.90) 28%, rgba(3, 5, 4, 0.12) 50%, rgba(3, 5, 4, 0.90) 72%, #030504 100%),
-    /* Fade suave no topo */
-    linear-gradient(to bottom, #030504 0%, transparent 20%);
+    linear-gradient(to right, #030504 0%, rgba(3, 5, 4, 0.85) 22%, rgba(3, 5, 4, 0.05) 50%, rgba(3, 5, 4, 0.85) 78%, #030504 100%);
   pointer-events: none;
+}
+
+/* Tipografia do Cabeçalho da Seção sem Cortes */
+.solutions-heading {
+  position: relative;
+  z-index: 6;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.solutions-heading h2 {
+  max-width: 920px !important;
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  margin: 0 auto 16px !important;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
+}
+
+.solutions-heading p {
+  max-width: 900px !important;
+  font-size: clamp(15px, 1.35vw, 17px);
+  line-height: 1.65;
+  color: #E2E8F0;
+  margin: 0 auto !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+}
+
+.ws-ecosystem-showcase {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  min-height: 460px;
+  display: flex;
+  align-items: center;
 }
 
 /* Luzes dinâmicas de atmosfera (Lado esquerdo e Lado direito) */
@@ -1343,23 +1379,27 @@ img {
   z-index: 2;
 }
 
-/* Efeito de hover no palco */
+/* Efeito de hover no palco e na seção */
+.ws-ecosystem-section.is-hover-left .ws-ecosystem-glow-left,
 .ws-ecosystem-showcase.is-hover-left .ws-ecosystem-glow-left {
   opacity: 1;
 }
+.ws-ecosystem-section.is-hover-left .ws-ecosystem-globe-img,
 .ws-ecosystem-showcase.is-hover-left .ws-ecosystem-globe-img {
-  transform: scale(1.04) translateX(15px);
-  filter: contrast(1.2) brightness(0.98);
-  opacity: 0.68;
+  transform: scale(1.03) translateX(15px);
+  filter: contrast(1.2) brightness(0.96);
+  opacity: 0.58;
 }
 
+.ws-ecosystem-section.is-hover-right .ws-ecosystem-glow-right,
 .ws-ecosystem-showcase.is-hover-right .ws-ecosystem-glow-right {
   opacity: 1;
 }
+.ws-ecosystem-section.is-hover-right .ws-ecosystem-globe-img,
 .ws-ecosystem-showcase.is-hover-right .ws-ecosystem-globe-img {
-  transform: scale(1.04) translateX(-15px);
-  filter: contrast(1.25) brightness(1.05);
-  opacity: 0.68;
+  transform: scale(1.03) translateX(-15px);
+  filter: contrast(1.25) brightness(1.02);
+  opacity: 0.58;
 }
 
 /* Divisor central vertical luminoso suave */
@@ -1512,33 +1552,35 @@ img {
 }
 
 @media (max-width: 860px) {
+  .ws-ecosystem-section {
+    padding-top: 70px;
+    padding-bottom: 80px;
+  }
+  .solutions-heading {
+    margin-bottom: 32px;
+  }
   .ws-ecosystem-showcase {
     flex-direction: column;
     min-height: auto;
     gap: 24px;
-    padding: 10px 0;
-  }
-  .ws-ecosystem-backdrop {
-    position: absolute;
-    inset: -20px 0;
-    opacity: 0.65;
+    padding: 0;
   }
   .ws-ecosystem-globe-img {
-    max-height: 520px;
     object-fit: cover;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 50%, transparent 92%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 50%, transparent 92%);
+    object-position: center;
+    opacity: 0.50;
   }
   .ws-ecosystem-divider {
     display: none;
   }
   .ws-ecosystem-panel {
     padding: 0;
+    width: 100%;
   }
   .ws-panel-inner {
     padding: 24px 20px;
     max-width: 100%;
-    background: linear-gradient(180deg, rgba(3, 5, 4, 0.75) 0%, rgba(6, 32, 22, 0.88) 100%);
+    background: linear-gradient(180deg, rgba(3, 5, 4, 0.78) 0%, rgba(6, 32, 22, 0.90) 100%);
   }
   .ws-ecosystem-panel.panel-scale {
     align-items: flex-start;

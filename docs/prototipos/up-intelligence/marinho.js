@@ -257,11 +257,14 @@
   const showcase = document.querySelector('#ecosystem-showcase');
   if (!showcase) return;
 
+  const section = showcase.closest('.ws-ecosystem-section') || showcase;
   const leftPanel = showcase.querySelector('.panel-organize');
   const rightPanel = showcase.querySelector('.panel-scale');
 
   if (leftPanel) {
     leftPanel.addEventListener('mouseenter', () => {
+      section.classList.add('is-hover-left');
+      section.classList.remove('is-hover-right');
       showcase.classList.add('is-hover-left');
       showcase.classList.remove('is-hover-right');
     });
@@ -269,12 +272,15 @@
 
   if (rightPanel) {
     rightPanel.addEventListener('mouseenter', () => {
+      section.classList.add('is-hover-right');
+      section.classList.remove('is-hover-left');
       showcase.classList.add('is-hover-right');
       showcase.classList.remove('is-hover-left');
     });
   }
 
   showcase.addEventListener('mouseleave', () => {
+    section.classList.remove('is-hover-left', 'is-hover-right');
     showcase.classList.remove('is-hover-left', 'is-hover-right');
   });
 
@@ -286,12 +292,20 @@
       const side = panel.dataset.side;
       if (side === 'left') {
         const isActive = showcase.classList.contains('is-hover-left');
+        section.classList.remove('is-hover-left', 'is-hover-right');
         showcase.classList.remove('is-hover-left', 'is-hover-right');
-        if (!isActive) showcase.classList.add('is-hover-left');
+        if (!isActive) {
+          section.classList.add('is-hover-left');
+          showcase.classList.add('is-hover-left');
+        }
       } else {
         const isActive = showcase.classList.contains('is-hover-right');
+        section.classList.remove('is-hover-left', 'is-hover-right');
         showcase.classList.remove('is-hover-left', 'is-hover-right');
-        if (!isActive) showcase.classList.add('is-hover-right');
+        if (!isActive) {
+          section.classList.add('is-hover-right');
+          showcase.classList.add('is-hover-right');
+        }
       }
     });
   });
