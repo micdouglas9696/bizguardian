@@ -237,57 +237,75 @@
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
 
+      // Timeline calibrada para Apple Vision Pro scroll:
+      // Pinned em 100vh de scroll runway (end: '+=100%'), scrub ágil e sem float (0.6s)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: heroSection,
           start: 'top top',
-          end: '+=140%',
+          end: '+=100%',
           pin: true,
-          scrub: 1.1,
+          scrub: 0.6,
           anticipatePin: 1
         }
       });
 
-      // Transição da Cena 1: Fotografia escala suavemente em profundidade e sai de cena
+      // 1. Transição da Cena 1: Fotografia escala suavemente em profundidade e sai de cena
       tl.to('.cinematic-portrait', {
-        scale: 1.16,
-        y: -45,
+        scale: 1.10,
+        y: -35,
         opacity: 0,
+        duration: 0.45,
         ease: 'power1.inOut'
       }, 0)
       .to('.cinematic-scene-1-meta', {
         opacity: 0,
-        y: -25,
+        y: -20,
+        duration: 0.35,
         ease: 'power1.inOut'
       }, 0)
       .to('.cinematic-watermarks', {
-        scale: 1.2,
-        opacity: 0.25,
+        scale: 1.08,
+        opacity: 0,
+        duration: 0.40,
         ease: 'power1.inOut'
-      }, 0);
+      }, 0)
+      .set('.cinematic-scene-1', {
+        visibility: 'hidden',
+        pointerEvents: 'none'
+      }, 0.45);
 
-      // Transição da Cena 2: Proposta de Valor entra com protagonismo tipográfico
+      // 2. Transição da Cena 2: Proposta de Valor entra com protagonismo tipográfico
       tl.fromTo('.cinematic-scene-2', {
         opacity: 0,
-        scale: 0.88,
-        y: 45
+        scale: 0.92,
+        y: 35,
+        pointerEvents: 'none',
+        visibility: 'visible'
       }, {
         opacity: 1,
         scale: 1,
         y: 0,
         pointerEvents: 'auto',
+        visibility: 'visible',
+        duration: 0.42,
         ease: 'power1.out'
-      }, 0.32);
+      }, 0.35);
+
+      // 3. Janela de estabilização (Hold): a Cena 2 permanece 100% nítida, estável e interativa
+      // de 0.77 a 1.00 antes do unpin. Isso elimina totalmente a sensação de animação dupla/travamento!
+      tl.to({}, { duration: 0.23 }, 0.77);
 
       // Header fixa com background dinâmico ao rolar
       ScrollTrigger.create({
         trigger: heroSection,
-        start: '120px top',
+        start: '100px top',
         onEnter: () => document.querySelector('.cinematic-header')?.classList.add('is-scrolled'),
         onLeaveBack: () => document.querySelector('.cinematic-header')?.classList.remove('is-scrolled')
       });
     } else {
       // Fallback suave via requestAnimationFrame se a CDN estiver off
+      heroSection.classList.add('is-fallback-scroll');
       let ticking = false;
       const onNativeScroll = () => {
         if (!ticking) {
@@ -297,9 +315,9 @@
             if (total > 0) {
               const progress = Math.min(Math.max(-rect.top / total, 0), 1);
               const scene1Op = Math.max(0, 1 - progress * 2.2);
-              const scene1Scale = 1 + progress * 0.16;
-              const scene2Op = Math.min(Math.max((progress - 0.3) / 0.55, 0), 1);
-              const scene2Scale = 0.88 + scene2Op * 0.12;
+              const scene1Scale = 1 + progress * 0.12;
+              const scene2Op = Math.min(Math.max((progress - 0.32) / 0.48, 0), 1);
+              const scene2Scale = 0.92 + scene2Op * 0.08;
 
               const portrait = heroSection.querySelector('.cinematic-portrait');
               const meta = heroSection.querySelector('.cinematic-scene-1-meta');
@@ -316,7 +334,7 @@
               if (scene2) {
                 scene2.style.transform = `scale(${scene2Scale})`;
                 scene2.style.opacity = scene2Op;
-                scene2.style.pointerEvents = scene2Op > 0.5 ? 'auto' : 'none';
+                scene2.style.pointerEvents = scene2Op > 0.6 ? 'auto' : 'none';
               }
               if (header) {
                 if (progress > 0.08) header.classList.add('is-scrolled');

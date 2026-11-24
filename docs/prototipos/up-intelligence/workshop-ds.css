@@ -1558,18 +1558,23 @@ img {
   background: #3BFFB7;
 }
 
-/* 2. SECTION HERO PINNED DE 2 CENAS */
+/* 2. SECTION HERO PINNED DE 2 CENAS (APPLE VISION PRO SCROLL) */
 .cinematic-hero-section {
   position: relative;
   width: 100%;
-  height: 230vh; /* Scroll runway para o ScrollTrigger */
+  height: 100vh;
+  height: 100dvh;
   background: #000000;
   overflow: clip;
 }
 
+/* Fallback exclusivo para quando GSAP não for carregado */
+.cinematic-hero-section.is-fallback-scroll {
+  height: 200vh;
+}
+
 .cinematic-pin-stage {
-  position: sticky;
-  top: 0;
+  position: relative;
   width: 100%;
   height: 100vh;
   height: 100dvh;
@@ -1579,6 +1584,11 @@ img {
   overflow: hidden;
   background: #000000;
   perspective: 1200px;
+}
+
+.cinematic-hero-section.is-fallback-scroll .cinematic-pin-stage {
+  position: sticky;
+  top: 0;
 }
 
 /* Aura Esmeralda Atmosférica Central */
@@ -1604,7 +1614,6 @@ img {
   z-index: 2;
   overflow: hidden;
   will-change: transform, opacity;
-  transition: opacity 0.2s ease;
 }
 
 .cinematic-wm {
@@ -1841,7 +1850,11 @@ img {
     height: 60vh;
   }
   .cinematic-hero-section {
-    height: 200vh;
+    height: 100vh;
+    height: 100dvh;
+  }
+  .cinematic-hero-section.is-fallback-scroll {
+    height: 180vh;
   }
   .cinematic-actions {
     flex-direction: column;
