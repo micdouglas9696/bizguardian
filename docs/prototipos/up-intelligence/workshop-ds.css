@@ -1253,26 +1253,25 @@ img {
 
 /* =========================================================================
    SHOWCASE INTERATIVO UNIFICADO: ECOSSISTEMA UP (ORG4NIZE.Up & SC4LE.Up)
-   Globo central luminoso com split interativo esquerdo/direito
+   Globo central luminoso imersivo sem bordas com split interativo
    ========================================================================= */
 .ws-ecosystem-showcase {
   position: relative;
   width: 100%;
-  max-width: 1180px;
-  margin: 40px auto 0;
-  border-radius: 28px;
-  overflow: hidden;
-  background: #030504;
-  border: 1px solid rgba(16, 232, 138, 0.22);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85), 0 0 40px rgba(16, 232, 138, 0.08);
-  min-height: 540px;
+  max-width: 1300px;
+  margin: 30px auto 0;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  min-height: 560px;
   display: flex;
 }
 
-/* Background com o Globo do Ecossistema Central */
+/* Background com o Globo do Ecossistema Central (Sem bordas, fusão 100% orgânica) */
 .ws-ecosystem-backdrop {
   position: absolute;
-  inset: 0;
+  inset: -60px 0;
   z-index: 1;
   display: flex;
   align-items: center;
@@ -1280,23 +1279,35 @@ img {
   pointer-events: none;
 }
 
+.ws-ecosystem-globe-picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .ws-ecosystem-globe-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-height: 640px;
+  object-fit: contain;
   object-position: center;
-  opacity: 0.65;
-  filter: contrast(1.15) brightness(0.9);
+  opacity: 0.92;
+  filter: contrast(1.12) brightness(0.96);
+  /* Máscara radial suave para dissolver totalmente quaisquer bordas no fundo preto obsidian */
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 45%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 45%, transparent 85%);
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, opacity 0.8s ease;
 }
 
-/* Vignette escurecendo as bordas para integração com o fundo preto */
+/* Vignette escurecendo as extremidades superior/inferior para fusão imperceptível com #030504 */
 .ws-ecosystem-vignette {
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: radial-gradient(circle at center, transparent 35%, rgba(3, 5, 4, 0.82) 75%, #030504 100%),
-              linear-gradient(to bottom, #030504 0%, transparent 22%, transparent 78%, #030504 100%);
+  background: radial-gradient(ellipse 85% 75% at center, transparent 35%, rgba(3, 5, 4, 0.7) 75%, #030504 100%),
+              linear-gradient(to bottom, #030504 0%, transparent 18%, transparent 82%, #030504 100%);
   pointer-events: none;
 }
 
@@ -1333,7 +1344,7 @@ img {
 }
 .ws-ecosystem-showcase.is-hover-left .ws-ecosystem-globe-img {
   transform: scale(1.04) translateX(15px);
-  filter: contrast(1.2) brightness(0.95);
+  filter: contrast(1.2) brightness(0.98);
 }
 
 .ws-ecosystem-showcase.is-hover-right .ws-ecosystem-glow-right {
@@ -1344,14 +1355,14 @@ img {
   filter: contrast(1.25) brightness(1.05);
 }
 
-/* Divisor central vertical luminoso */
+/* Divisor central vertical luminoso suave */
 .ws-ecosystem-divider {
   position: absolute;
-  top: 10%;
-  bottom: 10%;
+  top: 15%;
+  bottom: 15%;
   left: 50%;
   width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(16, 232, 138, 0.4), transparent);
+  background: linear-gradient(to bottom, transparent, rgba(16, 232, 138, 0.28), transparent);
   z-index: 4;
   transform: translateX(-50%);
   pointer-events: none;
@@ -1472,6 +1483,48 @@ img {
 }
 .ws-ecosystem-showcase.is-hover-right .panel-organize {
   opacity: 0.45;
+}
+
+@media (max-width: 860px) {
+  .ws-ecosystem-showcase {
+    flex-direction: column;
+    min-height: auto;
+    gap: 32px;
+    padding: 20px 0;
+  }
+  .ws-ecosystem-backdrop {
+    position: absolute;
+    inset: -20px 0;
+    opacity: 0.85;
+  }
+  .ws-ecosystem-globe-img {
+    max-height: 520px;
+    object-fit: cover;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 50%, transparent 92%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 50%, transparent 92%);
+  }
+  .ws-ecosystem-divider {
+    display: none;
+  }
+  .ws-ecosystem-panel {
+    padding: 24px 20px;
+    background: rgba(3, 5, 4, 0.68);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 20px;
+    border: 1px solid rgba(16, 232, 138, 0.14);
+  }
+  .ws-ecosystem-panel.panel-scale {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .ws-ecosystem-panel.panel-scale .ws-panel-inner {
+    margin-left: 0;
+  }
+  .ws-ecosystem-showcase.is-hover-left .panel-scale,
+  .ws-ecosystem-showcase.is-hover-right .panel-organize {
+    opacity: 1;
+  }
 }
 
 /* 4. CARDS TO BUTTON SCROLL EFFECT (Convergência de Cards) */
@@ -2004,12 +2057,19 @@ img {
 
 .cinematic-subtitle {
   font-family: var(--ws-font-sans);
-  font-size: clamp(16px, 1.8vw, 21px);
+  font-size: clamp(15px, 1.55vw, 19px);
   color: #A1A1AA;
-  max-width: 720px;
+  max-width: 980px;
+  width: 100%;
   margin: 0 auto 38px;
   line-height: 1.5;
   font-weight: 400;
+}
+
+@media (min-width: 860px) {
+  .cinematic-subtitle {
+    white-space: nowrap;
+  }
 }
 
 .cinematic-actions {
