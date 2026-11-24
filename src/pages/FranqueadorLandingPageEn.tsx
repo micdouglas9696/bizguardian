@@ -18,42 +18,42 @@ const MODULES = [
         title: 'Is your business franchisable?',
         text: 'How to assess, coldly and realistically, whether your successful company is truly ready to be replicated (maturity, margin and real market differentiators).',
         pills: ['Video', 'Franchisability Checklist'],
-        value: 'R$ 197',
+        value: '$ 197',
     },
     {
         n: 'MOD 02',
         title: 'Legal and Operational Structuring',
         text: 'The truth about the FDD (Franchise Disclosure Document), contracts and operations manuals. How to build the pillars that protect your brand from liabilities.',
         pills: ['Video', 'Disclosure Document Guide'],
-        value: 'R$ 297',
+        value: '$ 297',
     },
     {
         n: 'MOD 03',
         title: 'Network Economics and Royalties',
         text: 'How to calculate and price the franchise fee, royalties and the advertising fund sustainably. The financial equation that secures the franchisor\'s profit.',
         pills: ['Video', 'Royalty Calculator'],
-        value: 'R$ 297',
+        value: '$ 297',
     },
     {
         n: 'MOD 04',
         title: 'Support and Training Structure',
         text: 'How to structure support without bloating your operation. From franchisee onboarding to continuous coaching and training across the network.',
         pills: ['Video', 'Support Matrix'],
-        value: 'R$ 197',
+        value: '$ 197',
     },
     {
         n: 'MOD 05',
         title: 'Selecting Partner Franchisees',
         text: 'How to design the ideal profile and select your first franchisees. The danger of selling to anyone just for the quick cash of the franchise fee.',
         pills: ['Video', 'Interview Script'],
-        value: 'R$ 197',
+        value: '$ 197',
     },
     {
         n: 'MOD 06',
         title: 'Expansion and Conflict Management',
         text: 'How to plan regional or national expansion organically and with structure. Practical strategies to handle conflict and keep the network engaged.',
         pills: ['Video', 'Crisis Management Playbook'],
-        value: 'R$ 297',
+        value: '$ 297',
     },
 ];
 
@@ -90,7 +90,7 @@ const FAQ_ITEMS = [
     },
     {
         q: 'How fast do I get access?',
-        a: 'Immediate access. Credit card and Pix payments release your access credentials by e-mail within seconds.',
+        a: 'Immediate access. Credit card payments release your access credentials by e-mail within seconds.',
     },
     {
         q: 'Is there a guarantee if I do not like it?',
@@ -522,7 +522,7 @@ export default function FranqueadorLandingPageEn() {
                                     {
                                         icon: 'trending_up',
                                         headline: 'Structuring costs are high',
-                                        text: 'Consultancies charge R$ 50,000 to R$ 100,000 to structure a franchise. You want to understand the process step by step before committing that kind of money.',
+                                        text: 'Consultancies charge $20,000 to $50,000 to structure a franchise. You want to understand the process step by step before committing that kind of money.',
                                     },
                                 ].map((item) => (
                                     <div
@@ -710,7 +710,7 @@ export default function FranqueadorLandingPageEn() {
                                         label: 'BONUS',
                                         title: 'The First Franchise Sales Meeting',
                                         text: 'How to present your franchise opportunity to qualified candidates: what to reveal, what to hold back during initial screening, and how to structure the brand\'s commercial proposal professionally.',
-                                        value: 'R$ 397',
+                                        value: '$ 397',
                                     },
                                 ].map((b) => (
                                     <div
@@ -747,10 +747,10 @@ export default function FranqueadorLandingPageEn() {
                                         </div>
                                         <div className="flex items-baseline justify-center gap-2">
                                             <span className="text-2xl text-white/40 line-through tabular-nums">
-                                                R$
+                                                $
                                             </span>
                                             <span className="text-5xl md:text-6xl font-black text-white/40 line-through tabular-nums tracking-tighter">
-                                                1.779
+                                                1,779
                                             </span>
                                         </div>
                                     </div>
@@ -1016,7 +1016,7 @@ export default function FranqueadorLandingPageEn() {
                             </span>
                         </button>
                         <p className="text-center text-[9px] text-white/30 mt-2 font-bold uppercase tracking-[0.15em]">
-                            3× R$ 89 interest-free · Pix R$ 222
+                            Instant digital access · One-time payment of $47
                         </p>
                     </div>
                 </div>

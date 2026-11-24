@@ -8,8 +8,8 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 // "The Future Franchisee Dossier" — Marinho Ponci
 // =====================================================================
 
-const PRICE_PARCELA = '3× of R$ 89.00 interest-free';
-const PRICE_PIX = 'R$ 222.30 via Pix (10% off) or Credit Card';
+const PRICE_PARCELA = 'Instant digital access';
+const PRICE_PIX = 'Single payment via Credit Card';
 
 // 6 modules of the Dossier
 const MODULES = [
@@ -18,42 +18,42 @@ const MODULES = [
         title: 'Assessing your current situation',
         text: 'Before looking at brands, look inward. Profile, financial health, family. The correct decision starts here.',
         pills: ['Video', 'Self-Assessment'],
-        value: 'R$ 197',
+        value: '$ 197',
     },
     {
         n: 'MOD 02',
         title: 'The reality of franchising',
         text: 'No guaranteed salary. No magic formula. What changes when you transition from employee to unit owner.',
         pills: ['Video', 'Timeline'],
-        value: 'R$ 197',
+        value: '$ 197',
     },
     {
         n: 'MOD 03',
         title: 'Market research and purpose',
         text: '"Which franchise makes the most money?" is the wrong question. Marinho shows you the right question to start.',
         pills: ['Video', 'Affinity Map'],
-        value: 'R$ 197',
+        value: '$ 197',
     },
     {
         n: 'MOD 04',
         title: 'Real financial planning',
         text: 'Personal financial X-ray. Real working capital. The danger of excessive leverage. Honest numbers.',
         pills: ['Video', 'Financial X-Ray'],
-        value: 'R$ 297',
+        value: '$ 297',
     },
     {
         n: 'MOD 05',
         title: 'The transition and Garden Theory',
         text: 'How to leave your job without jumping in the dark. The logic of 2/3 preparation for 1/3 execution.',
         pills: ['Video', 'Transition Plan'],
-        value: 'R$ 197',
+        value: '$ 197',
     },
     {
         n: 'MOD 06',
         title: 'The moment of decision',
         text: 'How to turn months of study into conscious action. And how to know when "yes" is ready, or "no" is wiser.',
         pills: ['Video', 'Decision Checklist'],
-        value: 'R$ 297',
+        value: '$ 297',
     },
 ];
 
@@ -90,7 +90,7 @@ const FAQ_ITEMS = [
     },
     {
         q: 'How long does it take to get access?',
-        a: 'Immediate access. For credit card purchases, you receive the login credentials in your email within seconds. For Pix, within 2 minutes after payment confirmation.',
+        a: 'Immediate access. For credit card purchases, you receive the login credentials in your email within seconds.',
     },
     {
         q: 'What if I do not like it? Is there a guarantee?',
@@ -109,8 +109,8 @@ const FAQ_ITEMS = [
         a: 'No. That is the mistake the Dossier fights. You learn to ask the right questions so that the answer to "which brand" comes from you, informed, not sold. Marinho does not recommend brands. He gives a method.',
     },
     {
-        q: 'Can I pay in installments?',
-        a: 'Yes, up to 3× of R$ 89.00 interest-free on credit cards, or Pix with a 10% discount (R$ 222.30).',
+        q: 'How does payment work?',
+        a: 'A single, secure payment of $47 via credit card processed through Stripe with instant access.',
     },
     {
         q: 'How does the invoice work?',
@@ -141,8 +141,8 @@ const PRODUCT_SCHEMA = {
     publisher: { '@id': 'https://marinhoponci.com/#organization' },
     offers: {
         '@type': 'Offer',
-        price: '247.00',
-        priceCurrency: 'BRL',
+        price: '47.00',
+        priceCurrency: 'USD',
         availability: 'https://schema.org/InStock',
         url: 'https://marinhoponci.com/ebook-ingles',
     },
@@ -732,7 +732,7 @@ export default function EbookLandingPageEn() {
                                         label: 'BONUS',
                                         title: 'The Meeting with the Franchisor',
                                         text: 'A complete guide for when you enter that meeting: what to ask, what to observe, what it means when they hesitate, what it means when they speak too fast. Here you learn the body language of the "unspoken".',
-                                        value: 'R$ 397',
+                                        value: '$ 397',
                                     },
                                 ].map((b) => (
                                     <div
@@ -769,7 +769,7 @@ export default function EbookLandingPageEn() {
                                         </div>
                                         <div className="flex items-baseline justify-center gap-2">
                                             <span className="text-2xl text-white/40 line-through tabular-nums">
-                                                R$
+                                                $
                                             </span>
                                             <span className="text-5xl md:text-6xl font-black text-white/40 line-through tabular-nums tracking-tighter">
                                                 1,779
@@ -784,10 +784,10 @@ export default function EbookLandingPageEn() {
                                     </div>
                                     <div className="flex items-baseline justify-center gap-1 mb-2">
                                         <span className="text-3xl font-black text-white/80 align-super">
-                                            R$
+                                            $
                                         </span>
                                         <span className="text-7xl md:text-8xl font-black shimmer-text leading-none tracking-tighter">
-                                            247
+                                            47
                                         </span>
                                     </div>
                                     <div className="text-center text-sm text-white/55 mb-1">
@@ -1062,7 +1062,7 @@ export default function EbookLandingPageEn() {
                                 <span className="italic text-accent-gold">read this.</span>
                             </h2>
                             <p className="text-base md:text-lg text-white/55 leading-[1.75] max-w-xl mx-auto mb-10">
-                                R$ 247 is the cost of clarity before you commit R$ 150k or more. 
+                                $47 is the cost of clarity before you commit $50k or more. 
                                 Permanent access, 7-day guarantee.
                             </p>
 
@@ -1115,7 +1115,7 @@ export default function EbookLandingPageEn() {
                             </span>
                         </button>
                         <p className="text-center text-[9px] text-white/30 mt-2 font-bold uppercase tracking-[0.15em]">
-                            3× R$ 89 interest-free · Pix R$ 222
+                            Instant digital access · One-time payment of $47
                         </p>
                     </div>
                 </div>
