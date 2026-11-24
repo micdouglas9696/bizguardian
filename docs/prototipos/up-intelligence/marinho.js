@@ -149,7 +149,7 @@
 })();
 
 /* =========================================================================
-   3. CARDS TO BUTTON SCROLL EFFECT (CONVERGÊNCIA DINÂMICA)
+   3. CARDS TO BUTTON SCROLL EFFECT (CONVERGÊNCIA DINÂMICA & PARALLAX)
    ========================================================================= */
 (() => {
   const section = document.querySelector('.ws-cards-to-btn-section');
@@ -161,6 +161,8 @@
   if (!cards.length || !targetBtn || !stage) return;
 
   let ticking = false;
+  let mouseXOffset = 0;
+  let mouseYOffset = 0;
 
   const updateConvergence = () => {
     if (!ticking) {
@@ -187,13 +189,14 @@
 
         // Fase de convergência: 0.0 até 0.8
         const pNorm = Math.min(progress / 0.8, 1);
+        const pNormInv = 1 - pNorm;
 
         // Coordenadas relativas ao centro do estágio
         const stageRect = stage.getBoundingClientRect();
         const centerX = stageRect.width / 2;
         const centerY = stageRect.height / 2;
 
-        cards.forEach((card) => {
+        cards.forEach((card, idx) => {
           const cardLeft = card.offsetLeft + card.offsetWidth / 2;
           const cardTop = card.offsetTop + card.offsetHeight / 2;
 
@@ -202,7 +205,15 @@
           const scale = 1 - pNorm * 0.55;
           const opacity = Math.max(0, 1 - pNorm * 1.05);
 
-          card.style.transform = `translate3d(${deltaX.toFixed(1)}px, ${deltaY.toFixed(1)}px, 0) scale(${scale.toFixed(2)})`;
+          // Efeito magnético de mouse: puxar para os lados dinamicamente
+          const mX = (idx % 2 === 0 ? -1 : 1) * mouseXOffset * pNormInv;
+          const mY = (idx < 2 ? -1 : 1) * mouseYOffset * pNormInv;
+          const rotZ = (idx % 2 === 0 ? -1 : 1) * (mouseXOffset * 0.18) * pNormInv;
+
+          const finalX = deltaX + mX;
+          const finalY = deltaY + mY;
+
+          card.style.transform = `translate3d(${finalX.toFixed(1)}px, ${finalY.toFixed(1)}px, 0) scale(${scale.toFixed(2)}) rotate(${rotZ.toFixed(1)}deg)`;
           card.style.opacity = opacity.toFixed(2);
         });
 
@@ -217,9 +228,73 @@
     }
   };
 
+  // Interatividade táctil com o cursor do mouse sobre o palco
+  stage.addEventListener('mousemove', (e) => {
+    const rect = stage.getBoundingClientRect();
+    const relX = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 a 0.5
+    const relY = (e.clientY - rect.top) / rect.height - 0.5; // -0.5 a 0.5
+    mouseXOffset = relX * 36;
+    mouseYOffset = relY * 28;
+    updateConvergence();
+  });
+
+  stage.addEventListener('mouseleave', () => {
+    mouseXOffset = 0;
+    mouseYOffset = 0;
+    updateConvergence();
+  });
+
   window.addEventListener('scroll', updateConvergence, { passive: true });
   window.addEventListener('resize', updateConvergence, { passive: true });
   updateConvergence();
+})();
+
+/* =========================================================================
+   3.1 SHOWCASE INTERATIVO DUAL-GLOBE (ORG4NIZE.Up & SC4LE.Up)
+   Hover dinâmico nos lados esquerdo e direito com foco e glow esmeralda
+   ========================================================================= */
+(() => {
+  const showcase = document.querySelector('#ecosystem-showcase');
+  if (!showcase) return;
+
+  const leftPanel = showcase.querySelector('.panel-organize');
+  const rightPanel = showcase.querySelector('.panel-scale');
+
+  if (leftPanel) {
+    leftPanel.addEventListener('mouseenter', () => {
+      showcase.classList.add('is-hover-left');
+      showcase.classList.remove('is-hover-right');
+    });
+  }
+
+  if (rightPanel) {
+    rightPanel.addEventListener('mouseenter', () => {
+      showcase.classList.add('is-hover-right');
+      showcase.classList.remove('is-hover-left');
+    });
+  }
+
+  showcase.addEventListener('mouseleave', () => {
+    showcase.classList.remove('is-hover-left', 'is-hover-right');
+  });
+
+  // Toque / Mobile: alternar lado ativo ao clicar
+  [leftPanel, rightPanel].forEach(panel => {
+    if (!panel) return;
+    panel.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      const side = panel.dataset.side;
+      if (side === 'left') {
+        const isActive = showcase.classList.contains('is-hover-left');
+        showcase.classList.remove('is-hover-left', 'is-hover-right');
+        if (!isActive) showcase.classList.add('is-hover-left');
+      } else {
+        const isActive = showcase.classList.contains('is-hover-right');
+        showcase.classList.remove('is-hover-left', 'is-hover-right');
+        if (!isActive) showcase.classList.add('is-hover-right');
+      }
+    });
+  });
 })();
 
 /* =========================================================================

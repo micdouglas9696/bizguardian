@@ -1251,81 +1251,227 @@ img {
   100% { transform: translate(-50%, 12px); opacity: 0; }
 }
 
-/* 3. HEXAGON CUT GLASSMORPHISM CARDS */
-.ws-hex-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(24px, 3.5vw, 40px);
-  margin-top: 36px;
-}
-
-.ws-hex-card {
+/* =========================================================================
+   SHOWCASE INTERATIVO UNIFICADO: ECOSSISTEMA UP (ORG4NIZE.Up & SC4LE.Up)
+   Globo central luminoso com split interativo esquerdo/direito
+   ========================================================================= */
+.ws-ecosystem-showcase {
   position: relative;
-  border-radius: 20px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 40px auto 0;
+  border-radius: 28px;
   overflow: hidden;
-  background: #080D09;
-  border: 1px solid var(--ws-border);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  min-height: 440px;
+  background: #030504;
+  border: 1px solid rgba(16, 232, 138, 0.22);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85), 0 0 40px rgba(16, 232, 138, 0.08);
+  min-height: 540px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
 }
 
-.ws-hex-card:hover {
-  border-color: var(--ws-green);
-  transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(2, 233, 155, 0.2);
-}
-
-.ws-hex-media {
+/* Background com o Globo do Ecossistema Central */
+.ws-ecosystem-backdrop {
   position: absolute;
   inset: 0;
   z-index: 1;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
-.ws-hex-media img {
+.ws-ecosystem-globe-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.2s cubic-bezier(0.075, 0.82, 0.165, 1), filter 1.2s ease;
-  filter: brightness(0.7) contrast(1.1);
+  object-position: center;
+  opacity: 0.65;
+  filter: contrast(1.15) brightness(0.9);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, opacity 0.8s ease;
 }
 
-.ws-hex-card:hover .ws-hex-media img {
-  transform: scale(1.15);
-  filter: brightness(0.85) contrast(1.15);
+/* Vignette escurecendo as bordas para integração com o fundo preto */
+.ws-ecosystem-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(circle at center, transparent 35%, rgba(3, 5, 4, 0.82) 75%, #030504 100%),
+              linear-gradient(to bottom, #030504 0%, transparent 22%, transparent 78%, #030504 100%);
+  pointer-events: none;
 }
 
-.ws-hex-glass {
+/* Luzes dinâmicas de atmosfera (Lado esquerdo e Lado direito) */
+.ws-ecosystem-glow-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  background: radial-gradient(circle at 25% 50%, rgba(16, 232, 138, 0.22), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ws-ecosystem-glow-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  background: radial-gradient(circle at 75% 50%, rgba(16, 232, 138, 0.34), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Efeito de hover no palco */
+.ws-ecosystem-showcase.is-hover-left .ws-ecosystem-glow-left {
+  opacity: 1;
+}
+.ws-ecosystem-showcase.is-hover-left .ws-ecosystem-globe-img {
+  transform: scale(1.04) translateX(15px);
+  filter: contrast(1.2) brightness(0.95);
+}
+
+.ws-ecosystem-showcase.is-hover-right .ws-ecosystem-glow-right {
+  opacity: 1;
+}
+.ws-ecosystem-showcase.is-hover-right .ws-ecosystem-globe-img {
+  transform: scale(1.04) translateX(-15px);
+  filter: contrast(1.25) brightness(1.05);
+}
+
+/* Divisor central vertical luminoso */
+.ws-ecosystem-divider {
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(16, 232, 138, 0.4), transparent);
+  z-index: 4;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* Painéis Interativos (Esquerdo = ORG4NIZE.Up, Direito = SC4LE.Up) */
+.ws-ecosystem-panel {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  padding: clamp(32px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ws-panel-inner {
   position: relative;
   z-index: 2;
-  margin: 18px;
-  padding: clamp(22px, 3vw, 32px);
-  /* Chanfro Poligonal / Hexagonal */
-  clip-path: polygon(
-    0% 0px,
-    0px 0%,
-    calc(100% - 36px) 0px,
-    100% 36px,
-    100% 100%,
-    calc(100% - 0px) 100%,
-    36px 100%,
-    0px calc(100% - 36px)
-  );
-  background: rgba(6, 12, 8, 0.82);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(2, 233, 155, 0.35);
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  max-width: 460px;
 }
 
-.ws-hex-card:hover .ws-hex-glass {
-  background: rgba(8, 16, 10, 0.92);
-  border-color: var(--ws-green);
-  box-shadow: 0 0 30px rgba(2, 233, 155, 0.25);
+.ws-ecosystem-panel.panel-organize {
+  align-items: flex-start;
+}
+
+.ws-ecosystem-panel.panel-scale {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.ws-ecosystem-panel.panel-scale .ws-panel-inner {
+  margin-left: auto;
+}
+
+/* Tipografia e Títulos dos Painéis */
+.ws-ecosystem-brand-title {
+  font-family: var(--ws-font-sans);
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  margin: 0 0 8px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.ws-ecosystem-tagline {
+  display: inline-block;
+  font-family: var(--ws-font-mono);
+  font-size: clamp(11px, 1.1vw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ws-green);
+  margin-bottom: 16px;
+}
+
+.ws-ecosystem-desc {
+  font-family: var(--ws-font-sans);
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.65;
+  color: #C0CDC6;
+  margin: 0 0 28px;
+  transition: color 0.3s ease;
+}
+
+/* Botões de Ação com Micro-Glow */
+.ws-ecosystem-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-family: var(--ws-font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: #030504;
+  background: var(--ws-green);
+  border: 1px solid var(--ws-green);
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 0 25px rgba(16, 232, 138, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ws-ecosystem-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(16, 232, 138, 0.65);
+  background: #25ffa0;
+}
+
+.ws-ecosystem-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.ws-ecosystem-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* Estados de Hover: ao focar em um lado, eleva o contraste e ilumina */
+.ws-ecosystem-showcase.is-hover-left .panel-organize .ws-ecosystem-brand-title {
+  color: #FFFFFF;
+  text-shadow: 0 0 24px rgba(16, 232, 138, 0.4);
+}
+.ws-ecosystem-showcase.is-hover-left .panel-scale {
+  opacity: 0.45;
+}
+
+.ws-ecosystem-showcase.is-hover-right .panel-scale .ws-ecosystem-brand-title {
+  color: #FFFFFF;
+  text-shadow: 0 0 28px rgba(16, 232, 138, 0.7);
+}
+.ws-ecosystem-showcase.is-hover-right .panel-scale .ws-ecosystem-tagline {
+  color: #10E88A;
+}
+.ws-ecosystem-showcase.is-hover-right .panel-organize {
+  opacity: 0.45;
 }
 
 /* 4. CARDS TO BUTTON SCROLL EFFECT (Convergência de Cards) */
@@ -1351,46 +1497,113 @@ img {
 
 .ws-converge-stage {
   position: relative;
-  width: min(1000px, 94vw);
-  height: 480px;
+  width: min(1060px, 94vw);
+  height: 520px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Cards de Convergência com Vida, Luminous Glassmorphism e Indicadores Técnicos */
 .ws-converge-card {
   position: absolute;
-  width: clamp(230px, 24vw, 290px);
-  padding: 20px 24px;
-  background: rgba(10, 16, 12, 0.92);
-  border: 1px solid rgba(2, 233, 155, 0.3);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(2, 233, 155, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  width: clamp(260px, 26vw, 320px);
+  padding: 22px 24px;
+  background: radial-gradient(120% 120% at 0% 0%, rgba(16, 232, 138, 0.12) 0%, rgba(6, 32, 22, 0.90) 40%, rgba(3, 5, 4, 0.96) 100%);
+  border: 1px solid rgba(16, 232, 138, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.85), 0 0 24px rgba(16, 232, 138, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   will-change: transform, opacity;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ws-converge-card:hover {
+  border-color: rgba(16, 232, 138, 0.7);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9), 0 0 35px rgba(16, 232, 138, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.ws-converge-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ws-converge-card-tag {
+  color: var(--ws-green);
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--ws-font-mono);
+  letter-spacing: 0.1em;
+}
+
+.ws-card-glow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ws-green);
+  box-shadow: 0 0 8px var(--ws-green);
+  display: inline-block;
+  animation: wsGlowPulse 2.2s infinite ease-in-out;
+}
+
+@keyframes wsGlowPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 12px var(--ws-green); }
 }
 
 .ws-converge-card strong {
   display: block;
-  font-size: 15px;
-  color: #FFF;
-  margin-bottom: 4px;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
 }
 
 .ws-converge-card small {
-  font-size: 12px;
-  color: var(--ws-text-muted);
-  line-height: 1.45;
+  font-size: 12.5px;
+  color: #C0CDC6;
+  line-height: 1.5;
   display: block;
+  margin-bottom: 14px;
+}
+
+/* Micro-Métricas Técnicas */
+.ws-card-micro-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ws-card-metric-label {
+  font-family: var(--ws-font-mono);
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ws-card-metric-badge {
+  font-family: var(--ws-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ws-green);
+  background: rgba(16, 232, 138, 0.12);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(16, 232, 138, 0.22);
 }
 
 /* Posições Iniciais dos 4 Cards */
-.ws-card-pos-1 { top: 30px; left: 40px; }
-.ws-card-pos-2 { top: 30px; right: 40px; }
-.ws-card-pos-3 { bottom: 40px; left: 40px; }
-.ws-card-pos-4 { bottom: 40px; right: 40px; }
+.ws-card-pos-1 { top: 25px; left: 30px; }
+.ws-card-pos-2 { top: 25px; right: 30px; }
+.ws-card-pos-3 { bottom: 35px; left: 30px; }
+.ws-card-pos-4 { bottom: 35px; right: 30px; }
 
 /* Botão Alvo Central de Convergência */
 .ws-converge-target-btn {
@@ -1418,9 +1631,6 @@ img {
 }
 
 @media (max-width: 900px) {
-  .ws-hex-grid {
-    grid-template-columns: 1fr;
-  }
   .ws-cards-to-btn-section {
     height: auto;
   }
@@ -1442,6 +1652,8 @@ img {
     right: unset !important;
     bottom: unset !important;
     width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
     transform: none !important;
     opacity: 1 !important;
   }
@@ -1683,13 +1895,13 @@ img {
 .cinematic-scene-1 {
   z-index: 4;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 80px;
 }
 
 .cinematic-photo-wrap {
   position: relative;
-  height: 72vh;
-  max-height: 680px;
+  height: 84vh;
+  max-height: 820px;
   display: flex;
   align-items: center;
   justify-content: center;
