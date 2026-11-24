@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UP.INTELLIG3NCE · Marinho Ponci | IA &amp; Negócios</title>
+  <title>UP.INTELLIG3NCE · Estratégia de Negócios &amp; IA | Marinho Ponci</title>
 
   <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -90,7 +90,7 @@
     /* Dim 3D canvas cleanly on mobile/tablet so text has 100% legibility */
     @media (max-width: 1023px) {
       #webgl-canvas {
-        opacity: 0.22;
+        opacity: 0.16;
       }
       body.interactive-3d-mode #webgl-canvas {
         opacity: 1;
@@ -177,11 +177,17 @@
 
     /* Solid Dark Glassmorphic Surfaces (Guaranteed Readability) */
     .safe-surface {
-      background: rgba(5, 9, 7, 0.88);
+      background: rgba(5, 10, 8, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Subtle "Up" Geometric Pattern Tile for Section 02 Card */
+    .up-pattern-bg {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='%2300E58B' fill-opacity='0.045'%3E%3Cpath d='M10 18h6v18c0 4.5 3 7.5 7.5 7.5S31 40.5 31 36v-6.5l6-3.4V36c0 7.8-5.7 13.5-13.5 13.5S10 43.8 10 36V18z'/%3E%3Cpath d='M31 26.8V19h-6l9-12 9 12h-6v4.4l-6 3.4z'/%3E%3Cpath fill-rule='evenodd' d='M40 27h5.5v3c1.6-2.1 4-3.4 7-3.4 5.5 0 9.5 4.4 9.5 10.4s-4 10.4-9.5 10.4c-3 0-5.4-1.3-7-3.4v11H40V27zm11.2 15.2c2.9 0 5-2.2 5-5.2s-2.1-5.2-5-5.2-5 2.2-5 5.2 2.1 5.2 5 5.2z'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 56px 56px;
     }
 
     .safe-surface-subtle {
@@ -337,7 +343,7 @@
 
     /* Duotone Minimalist Editorial Photography Treatment */
     .duotone-editorial {
-      filter: grayscale(100%) contrast(1.22) brightness(0.62);
+      filter: grayscale(100%) contrast(1.22) brightness(0.68);
       mix-blend-mode: luminosity;
     }
 
@@ -370,30 +376,45 @@
   <div class="architectural-grid"></div>
 
   <!-- ===================================================================== -->
-  <!-- FIXED TOP NAVIGATION BAR                                              -->
+  <!-- FIXED TOP NAVIGATION BAR (SAME ITEMS AS HOME / UP.INTELLIG3NCE LOGO)  -->
   <!-- ===================================================================== -->
   <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 py-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      <!-- Left: Signature "Marinho Ponci" linking to main Hub -->
-      <a href="index.html" class="group flex items-center gap-3 focus:outline-none" aria-label="Marinho Ponci — Hub Principal">
-        <img
-          src="/marinho-signature-header.png"
-          alt="Marinho Ponci"
-          class="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          onerror="this.onerror=null; this.src='/marinho-signature.png';"
-        />
+      <!-- Left: Official Vector SVG Logo "Up.INTELLIG3NCE" -->
+      <a href="up-intelligence.html" class="group flex items-center gap-2 focus:outline-none" aria-label="Up.INTELLIG3NCE — Início">
+        <svg class="h-8 sm:h-9 w-auto drop-shadow-[0_0_16px_rgba(0,229,139,0.22)]" viewBox="0 0 368 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Official "Up" Icon in Vibrant Emerald (#00E58B) -->
+          <g fill="#00E58B">
+            <path d="M4 17H14.5V37.5C14.5 43.2 18.4 47.2 24.2 47.2C30 47.2 33.9 43.2 33.9 37.5V32.4L44.4 26.6V37.5C44.4 49.4 36.1 57.5 24.2 57.5C12.3 57.5 4 49.4 4 37.5V17Z" />
+            <path d="M33.9 28.2V17.5H24.6L39.15 2L53.7 17.5H44.4V22.4L33.9 28.2Z" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M48.5 24.5H58.8V28.4C61.2 25.5 64.9 23.8 69.4 23.8C78.3 23.8 84.8 30.8 84.8 40.3C84.8 49.8 78.3 56.8 69.4 56.8C64.9 56.8 61.2 55.1 58.8 52.2V62H48.5V24.5ZM66.9 48.2C71.5 48.2 74.8 44.8 74.8 40.3C74.8 35.8 71.5 32.4 66.9 32.4C62.3 32.4 59 35.8 59 40.3C59 44.8 62.3 48.2 66.9 48.2Z" />
+          </g>
+          <!-- White Separator Dot -->
+          <circle cx="94" cy="49.5" r="4.5" fill="#F4F7F5" />
+          <!-- Ultra-Bold Geometric White Typography "INTELLIG3NCE" -->
+          <text
+            x="104"
+            y="54"
+            fill="#F4F7F5"
+            font-family="'Plus Jakarta Sans', system-ui, sans-serif"
+            font-weight="800"
+            font-size="35.5"
+            letter-spacing="-0.03em"
+          >INTELLIG3NCE</text>
+        </svg>
       </a>
 
-      <!-- Center: Floating Pill Navigation (Desktop) -->
+      <!-- Center: Floating Pill Navigation (Same Layout & Items as Home) -->
       <nav
         aria-label="Navegação Principal"
         class="hidden lg:flex items-center gap-1 px-2 py-1.5 rounded-full bg-[#070C0A]/85 border border-white/[0.09] backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.65)]"
       >
-        <a href="#inicio" data-nav="0" class="nav-pill active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Início</a>
-        <a href="#origem" data-nav="1" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Origem</a>
-        <a href="#solucoes" data-nav="2" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Soluções</a>
-        <a href="#visao" data-nav="3" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Visão</a>
-        <a href="#metodo" data-nav="4" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Método</a>
+        <a href="index.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Início</a>
+        <a href="up-intelligence.html" class="nav-pill active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Up.INTELLIG3NCE</a>
+        <a href="organize.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">ORG4NIZE.Up</a>
+        <a href="scale.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">SC4LE.Up</a>
+        <a href="dossies.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Dossiês</a>
+        <a href="blog.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Blog</a>
       </nav>
 
       <!-- Right: Glowing Emerald CTA + Mobile Toggle -->
@@ -426,20 +447,20 @@
     <!-- Mobile Dropdown -->
     <div id="mobile-menu" class="lg:hidden hidden mt-3 max-w-7xl mx-auto rounded-3xl safe-surface p-4">
       <div class="flex flex-col gap-1">
-        <a href="#inicio" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-emeraldNeon bg-emeraldNeon/10">Início</a>
-        <a href="#origem" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">01 · Origem</a>
-        <a href="#solucoes" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">02 · Soluções</a>
-        <a href="#visao" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">03 · Visão do Fundador</a>
-        <a href="#metodo" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">04 · Método Aplicado</a>
-        <a href="#contato" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">05 · Próximo Passo</a>
-
+        <a href="index.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Início</a>
+        <a href="up-intelligence.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-emeraldNeon bg-emeraldNeon/10">Up.INTELLIG3NCE</a>
+        <a href="organize.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">ORG4NIZE.Up</a>
+        <a href="scale.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">SC4LE.Up</a>
+        <a href="dossies.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Dossiês</a>
+        <a href="blog.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Blog</a>
         <div class="my-2 border-t border-white/10"></div>
-        <div class="px-4 py-1 text-[10px] font-mono tracking-widest text-slateMuted uppercase">Ecossistema</div>
-        <a href="index.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Página Principal (Hub)</a>
-        <a href="organize.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">ORG4NIZE.Up</a>
-        <a href="scale.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">SC4LE.Up</a>
-        <a href="dossies.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Dossiês Estratégicos</a>
-        <a href="blog.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Blog &amp; Artigos</a>
+        <div class="px-4 py-1 text-[10px] font-mono tracking-widest text-slateMuted uppercase">Nesta Página</div>
+        <a href="#inicio" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">01 · Decisões Fundamentadas</a>
+        <a href="#origem" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">02 · A Origem</a>
+        <a href="#solucoes" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">03 · Ecossistema Integrado</a>
+        <a href="#visao" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">04 · A Visão do Fundador</a>
+        <a href="#metodo" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">05 · Método Aplicado</a>
+        <a href="#contato" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">06 · Próximo Passo</a>
       </div>
     </div>
   </header>
@@ -506,7 +527,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
         <path stroke-linecap="round" stroke-linejoin="round" d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
       </svg>
-      <span id="explore-3d-label">Explorar 3D</span>
+      <span id="explore-3d-label">Modo Interativo 3D</span>
     </button>
   </div>
 
@@ -516,8 +537,7 @@
   <main class="relative z-10">
 
     <!-- =================================================================== -->
-    <!-- SECTION 01: HERO (TEXT STRICTLY LEFT / 3D STAGE STRICTLY RIGHT)     -->
-    <!-- 3D Formation: Convergência Orbital | UI: Clip-Path Mask-Up Reveal   -->
+    <!-- SECTION 01: HERO (TEXT STRICTLY LEFT / 3D "Up" STRICTLY RIGHT)      -->
     <!-- =================================================================== -->
     <section
       id="inicio"
@@ -532,7 +552,7 @@
             <div class="clip-reveal inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emeraldNeon/[0.08] border border-emeraldNeon/25">
               <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
               <span class="font-mono text-[11px] font-medium tracking-[0.2em] uppercase text-emeraldNeon">
-                UP.INTELLIG3NCE · IA &amp; NEGÓCIOS
+                ESTRATÉGIA DE NEGÓCIOS · TECNOLOGIA
               </span>
             </div>
           </div>
@@ -540,14 +560,13 @@
           <!-- Staggered Clip-Path Headline -->
           <h1 class="text-4xl sm:text-5xl xl:text-[3.55rem] font-extrabold tracking-[-0.035em] leading-[1.06] text-crispWhite mb-6">
             <span class="clip-mask-line"><span class="clip-reveal delay-1">Decisões</span></span>
-            <span class="clip-mask-line"><span class="clip-reveal delay-2">fundamentadas</span></span>
-            <span class="clip-mask-line"><span class="clip-reveal delay-3">constroem <span class="text-emerald-glow">grandes</span></span></span>
-            <span class="clip-mask-line"><span class="clip-reveal delay-4 text-emerald-glow">negócios.</span></span>
+            <span class="clip-mask-line"><span class="clip-reveal delay-2">mais bem</span></span>
+            <span class="clip-mask-line"><span class="clip-reveal delay-3 text-emerald-glow">fundamentadas.</span></span>
           </h1>
 
           <!-- Executive Subtitle -->
           <p class="clip-reveal delay-3 text-base sm:text-lg text-slateMuted leading-relaxed mb-8">
-            Unimos 38 anos de vivência em expansão empresarial à precisão analítica da IA para transformar dados dispersos em critério.
+            Décadas de experiência em gestão e expansão de empresas, apoiadas por tecnologia e inteligência artificial.
           </p>
 
           <!-- CTAs -->
@@ -574,15 +593,15 @@
           <div class="clip-reveal delay-4 grid grid-cols-3 gap-3 pt-6 border-t border-white/10">
             <div>
               <div class="text-lg sm:text-xl font-extrabold text-crispWhite tracking-tight">+38 Anos</div>
-              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Vivência de Mercado</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Experiência de mercado</div>
             </div>
             <div class="border-l border-white/10 pl-3">
-              <div class="text-lg sm:text-xl font-extrabold text-emeraldNeon tracking-tight">IA Aplicada</div>
-              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Análise Preditiva</div>
+              <div class="text-lg sm:text-xl font-extrabold text-emeraldNeon tracking-tight">Informação</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Base para decidir</div>
             </div>
             <div class="border-l border-white/10 pl-3">
               <div class="text-lg sm:text-xl font-extrabold text-crispWhite tracking-tight">100% Critério</div>
-              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Zero Achismo</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Foco na decisão</div>
             </div>
           </div>
         </div>
@@ -593,8 +612,7 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- SECTION 02: A ORIGEM (3D STAGE LEFT / TEXT STRICTLY RIGHT)          -->
-    <!-- 3D Formation: Matriz de Dados (3x3x3) | UI: Editorial Slide + SVG   -->
+    <!-- SECTION 02: A ORIGEM (3D EXPLODED VIEW LEFT / TEXT STRICTLY RIGHT)  -->
     <!-- =================================================================== -->
     <section
       id="origem"
@@ -605,82 +623,66 @@
         <!-- 7-Column Dedicated Empty 3D Stage (LEFT) -->
         <div class="hidden lg:block lg:col-span-7 h-[560px]" aria-hidden="true"></div>
 
-        <!-- 5-Column Safe Zone (RIGHT) -->
-        <div class="lg:col-span-5 max-w-[520px] lg:ml-auto safe-surface rounded-3xl p-6 sm:p-8">
+        <!-- 5-Column Safe Zone (RIGHT) with subtle "Up" geometric pattern tile -->
+        <div class="lg:col-span-5 max-w-[520px] lg:ml-auto safe-surface up-pattern-bg rounded-3xl p-6 sm:p-8">
           <div class="slide-editorial font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
             01 · A ORIGEM
           </div>
 
           <h2 class="slide-editorial delay-1 text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-4">
-            O gargalo raramente é <span class="text-emerald-glow">falta de esforço.</span>
+            O ponto de partida é <span class="text-emerald-glow">quem vive negócios.</span>
           </h2>
 
-          <p class="slide-editorial delay-2 text-base text-slateMuted leading-relaxed mb-6">
-            Empresas travam por operarem no escuro, sem dados organizados para decidir.
+          <p class="slide-editorial delay-2 text-sm sm:text-base text-slateMuted leading-relaxed mb-4">
+            A Up.INTELLIG3NCE nasceu da experiência de quem passou décadas a trabalhar com empresas, a desenvolver negócios e a estruturar operações e processos de crescimento e expansão.
           </p>
 
-          <!-- Minimalist Obsidian-Emerald Architectural Grid Visual -->
-          <div class="slide-editorial delay-2 relative h-28 rounded-2xl overflow-hidden border border-white/10 mb-6 bg-deepEmerald/40">
-            <img
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=75"
-              alt="Arquitetura corporativa minimalista"
-              onerror="this.style.display='none'"
-              class="absolute inset-0 w-full h-full object-cover duotone-editorial opacity-55"
-            />
-            <div class="absolute inset-0 bg-gradient-to-r from-[#030504]/90 via-[#062016]/65 to-[#030504]/85"></div>
-            <!-- Crisp Architectural SVG Overlay -->
-            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 440 112" fill="none" preserveAspectRatio="none">
-              <line x1="0" y1="56" x2="440" y2="56" stroke="#10E88A" stroke-opacity="0.22" stroke-width="1" class="svg-hairline" />
-              <line x1="110" y1="0" x2="110" y2="112" stroke="#10E88A" stroke-opacity="0.16" stroke-width="1" />
-              <line x1="220" y1="0" x2="220" y2="112" stroke="#10E88A" stroke-opacity="0.28" stroke-width="1" />
-              <line x1="330" y1="0" x2="330" y2="112" stroke="#10E88A" stroke-opacity="0.16" stroke-width="1" />
-              <circle cx="220" cy="56" r="4" fill="#10E88A" />
-              <circle cx="220" cy="56" r="16" stroke="#10E88A" stroke-opacity="0.45" stroke-width="1" />
-            </svg>
-            <div class="relative z-10 h-full flex items-end justify-between p-3.5">
-              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon">MATRIZ OPERACIONAL</span>
-              <span class="font-mono text-[10px] tracking-[0.18em] text-crispWhite/60">DADOS → CRITÉRIO</span>
-            </div>
-          </div>
+          <p class="slide-editorial delay-2 text-sm sm:text-base text-slateMuted leading-relaxed mb-4">
+            Aprendemos que grande parte dos problemas não está na falta de esforço, mas na dificuldade de organizar a informação, perceber o que realmente se passa e decidir bem.
+          </p>
+
+          <p class="slide-editorial delay-2 text-sm sm:text-base text-slateMuted leading-relaxed mb-7">
+            Com a evolução da inteligência artificial, passou a ser possível juntar esse conhecimento de negócio a uma capacidade de análise e acompanhamento que antes era difícil e cara para muitas empresas.
+          </p>
 
           <!-- 3 Crisp Pillars with Animated Hairline Dividers -->
           <div class="space-y-4">
             <div class="slide-editorial delay-2">
               <svg class="w-full h-[2px] mb-3" viewBox="0 0 420 2" preserveAspectRatio="none">
-                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.35" stroke-width="1" class="svg-hairline" />
+                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.38" stroke-width="1" class="svg-hairline" />
               </svg>
               <h3 class="text-sm font-bold text-crispWhite tracking-wide flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
-                Trincheira Real
+                Experiência de campo
               </h3>
               <p class="text-sm text-slateMuted mt-1 leading-relaxed">
-                Décadas estruturando operações e expansões do chão de fábrica à diretoria.
+                Décadas a estruturar operações e expansões reais.
               </p>
             </div>
 
             <div class="slide-editorial delay-3">
               <svg class="w-full h-[2px] mb-3" viewBox="0 0 420 2" preserveAspectRatio="none">
-                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.25" stroke-width="1" class="svg-hairline" />
+                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.28" stroke-width="1" class="svg-hairline" />
               </svg>
               <h3 class="text-sm font-bold text-crispWhite tracking-wide flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
-                IA Desmistificada
+                Informação organizada
               </h3>
               <p class="text-sm text-slateMuted mt-1 leading-relaxed">
-                Inteligência analítica de alto nível, antes restrita a grandes corporações.
+                Dados e indicadores claros para decidir com segurança.
               </p>
             </div>
 
             <div class="slide-editorial delay-4">
               <svg class="w-full h-[2px] mb-3" viewBox="0 0 420 2" preserveAspectRatio="none">
-                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.25" stroke-width="1" class="svg-hairline" />
+                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.28" stroke-width="1" class="svg-hairline" />
               </svg>
               <h3 class="text-sm font-bold text-crispWhite tracking-wide flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
-                Liderança no Comando
+                Pessoas no centro
               </h3>
               <p class="text-sm text-slateMuted mt-1 leading-relaxed">
-                A tecnologia processa o cenário; quem decide continua sendo você.
+                A tecnologia é a ferramenta; a liderança é o motor.
               </p>
             </div>
           </div>
@@ -690,7 +692,6 @@
 
     <!-- =================================================================== -->
     <!-- SECTION 03: SOLUÇÕES (SOLID DARK GLASS CARDS / 3D PERIPHERY)        -->
-    <!-- 3D Formation: Dualidade Modular | UI: 3D Tilt + Border Trace        -->
     <!-- =================================================================== -->
     <section
       id="solucoes"
@@ -702,9 +703,12 @@
         <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
           02 · ECOSSISTEMA INTEGRADO
         </div>
-        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite">
-          Duas frentes. <span class="text-emerald-glow">Um mesmo rigor.</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-4">
+          Soluções para cada <span class="text-emerald-glow">fase do negócio.</span>
         </h2>
+        <p class="text-base text-slateMuted leading-relaxed">
+          Cada solução responde a uma necessidade específica, todas com o mesmo propósito: ajudar as empresas a gerir melhor, identificar oportunidades e decidir com mais fundamento.
+        </p>
       </div>
 
       <!-- Two Side-by-Side Solid Dark Glassmorphic Solution Cards -->
@@ -724,7 +728,7 @@
                 <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon block mb-1">
                   01 · GESTÃO, FINANÇAS &amp; ROTINA
                 </span>
-                <span class="font-mono text-[11px] text-slateMuted">SISTEMA ESTRUTURADO</span>
+                <span class="font-mono text-[11px] text-slateMuted">CONTROLE &amp; PREVISIBILIDADE</span>
               </div>
               <!-- Custom Geometric Financial Matrix SVG -->
               <svg class="w-36 h-20 text-emeraldNeon shrink-0" viewBox="0 0 144 80" fill="none">
@@ -743,13 +747,13 @@
             </h3>
 
             <p class="text-base text-slateMuted leading-relaxed mb-7">
-              Para PMEs que precisam dominar margens, caixa e processos antes de acelerar.
+              Para PMEs que precisam de pôr as finanças, a rotina administrativa e os indicadores em ordem antes de acelerar.
             </p>
 
             <ul class="space-y-3.5 mb-8">
               <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-                <span>Caixa e margens sob controle real</span>
+                <span>Tesouraria e margens sob controlo</span>
               </li>
               <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
@@ -757,7 +761,7 @@
               </li>
               <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-                <span>Indicadores confiáveis para crescer</span>
+                <span>Base fiável para crescer</span>
               </li>
             </ul>
           </div>
@@ -797,7 +801,7 @@
                 <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon block mb-1">
                   02 · EXPANSÃO &amp; FRANCHISING
                 </span>
-                <span class="font-mono text-[11px] text-slateMuted">REDE TERRITORIAL IA</span>
+                <span class="font-mono text-[11px] text-slateMuted">INTELIGÊNCIA TERRITORIAL</span>
               </div>
               <!-- Custom Geometric Territorial Nodes SVG -->
               <svg class="w-36 h-20 text-emeraldNeon shrink-0" viewBox="0 0 144 80" fill="none">
@@ -820,21 +824,21 @@
             </h3>
 
             <p class="text-base text-slateMuted leading-relaxed mb-7">
-              Critério técnico com IA para decidir onde, como e com quem escalar sua rede.
+              Critério técnico, com apoio de inteligência artificial, para decidir onde, como e com quem expandir a sua rede.
             </p>
 
             <ul class="space-y-3.5 mb-8">
               <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-                <span>Mapeamento de praças e consumo</span>
+                <span>Estudo de território e de consumo</span>
               </li>
               <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-                <span>Validação técnica de ponto comercial</span>
+                <span>Validação técnica da localização</span>
               </li>
               <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-                <span>Qualificação de franqueados aderentes</span>
+                <span>Qualificação de franquiados</span>
               </li>
             </ul>
           </div>
@@ -862,8 +866,7 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- SECTION 04: VISÃO DO FUNDADOR (EDITORIAL FRAME LEFT / QUOTE RIGHT)  -->
-    <!-- 3D Formation: Anel de Horizonte | UI: Blur-to-Sharp + Quote Bar     -->
+    <!-- SECTION 04: A VISÃO DO FUNDADOR (EDITORIAL FRAME LEFT / QUOTE RIGHT)-->
     <!-- =================================================================== -->
     <section
       id="visao"
@@ -871,41 +874,38 @@
       class="min-h-screen flex items-center py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto"
     >
       <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        <!-- LEFT (5 Cols): Minimalist Monochrome Architectural/Editorial Frame + Emerald Rim -->
+        <!-- LEFT (5 Cols): Minimalist Obsidian-Emerald Architectural Frame with Marinho Ponci Photo -->
         <div class="lg:col-span-5">
-          <div class="blur-focus relative rounded-[2rem] overflow-hidden border border-emeraldNeon/30 shadow-[0_0_55px_rgba(16,232,138,0.16)] bg-[#040907] aspect-[4/5] max-w-[420px] mx-auto lg:mx-0">
-            <!-- Minimalist Monochrome Architecture Photo (with clean fallback) -->
+          <div class="blur-focus relative rounded-[2rem] overflow-hidden border border-emeraldNeon/30 shadow-[0_0_55px_rgba(16,232,138,0.16)] bg-[#040907]/60 backdrop-blur-sm aspect-[4/5] max-w-[420px] mx-auto lg:mx-0">
+            <!-- Marinho Ponci authentic portrait with fallback -->
             <img
               src="/sobre.webp"
-              alt="Marinho Ponci — Business Architecture"
+              alt="Marinho Ponci — Fundador Up.INTELLIG3NCE"
               onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=900&q=80'"
               class="absolute inset-0 w-full h-full object-cover duotone-editorial opacity-65"
             />
-            <!-- Deep Obsidian-Emerald Rim Light Gradient -->
-            <div class="absolute inset-0 bg-gradient-to-t from-[#030504] via-[#062016]/45 to-[#030504]/70"></div>
-            <div class="absolute inset-0 shadow-[inset_0_0_50px_rgba(16,232,138,0.2)] pointer-events-none"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#030504] via-transparent to-[#030504]/60"></div>
+            <div class="absolute inset-0 shadow-[inset_0_0_50px_rgba(16,232,138,0.18)] pointer-events-none"></div>
 
-            <!-- Subtle Watermark Typography + Geometric Monolith Fallback Art -->
-            <svg class="absolute inset-0 w-full h-full opacity-45 pointer-events-none" viewBox="0 0 400 500" fill="none">
-              <circle cx="200" cy="230" r="120" stroke="#10E88A" stroke-opacity="0.25" stroke-width="1" />
-              <circle cx="200" cy="230" r="78" stroke="#10E88A" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="4 6" />
-              <line x1="40" y1="230" x2="360" y2="230" stroke="#10E88A" stroke-opacity="0.2" />
-              <line x1="200" y1="60" x2="200" y2="400" stroke="#10E88A" stroke-opacity="0.2" />
+            <!-- Subtle Technical Frame Reticle -->
+            <svg class="absolute inset-0 w-full h-full opacity-40 pointer-events-none" viewBox="0 0 400 500" fill="none">
+              <circle cx="200" cy="235" r="130" stroke="#10E88A" stroke-opacity="0.22" stroke-width="1" />
+              <line x1="36" y1="235" x2="364" y2="235" stroke="#10E88A" stroke-opacity="0.16" />
+              <line x1="200" y1="60" x2="200" y2="410" stroke="#10E88A" stroke-opacity="0.16" />
             </svg>
 
             <!-- Editorial Caption Overlay -->
             <div class="relative z-10 h-full flex flex-col justify-between p-7">
               <div class="flex items-center justify-between">
-                <span class="font-mono text-[10px] tracking-[0.24em] uppercase text-emeraldNeon bg-[#030504]/70 px-3 py-1 rounded-full border border-emeraldNeon/30">
-                  BUSINESS ARCHITECTURE
+                <span class="font-mono text-[10px] tracking-[0.24em] uppercase text-emeraldNeon bg-[#030504]/75 px-3 py-1 rounded-full border border-emeraldNeon/30">
+                  BUSINESS ARCHITECTURE · +38 ANOS DE CAMPO
                 </span>
                 <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
               </div>
 
               <div>
-                <!-- Subtle Watermark Signature -->
-                <div class="font-mono text-[11px] tracking-[0.28em] uppercase text-crispWhite/45 mb-2">
-                  +38 ANOS DE MERCADO
+                <div class="font-mono text-[11px] tracking-[0.28em] uppercase text-crispWhite/50 mb-2">
+                  +38 ANOS DE CAMPO
                 </div>
                 <div class="text-xl font-extrabold tracking-tight text-crispWhite">
                   Marinho Ponci
@@ -921,7 +921,7 @@
         <!-- RIGHT (6 Cols, Offset 1): Quote & Copy Safe Zone -->
         <div class="lg:col-start-7 lg:col-span-6 max-w-[540px] safe-surface rounded-3xl p-7 sm:p-10">
           <div class="blur-focus font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-4">
-            03 · VISÃO DO FUNDADOR
+            03 · A VISÃO DO FUNDADOR
           </div>
 
           <h2 class="blur-focus delay-1 text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-8">
@@ -936,7 +936,7 @@
             ></span>
 
             <p class="text-lg sm:text-xl lg:text-2xl font-semibold text-crispWhite leading-relaxed tracking-tight">
-              “A Up.INTELLIG3NCE não nasceu em um laboratório de software, mas em balcões de lojas, salas de diretoria e expansões bilionárias.”
+              “A tecnologia é uma parte importante do que fazemos. Mas o ponto de partida continua a ser o conhecimento de negócio e das pessoas que estão à frente dele.”
             </p>
           </blockquote>
 
@@ -945,7 +945,7 @@
               MARINHO PONCI · FUNDADOR
             </span>
             <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-slateMuted">
-              CRITÉRIO &amp; CAMPO
+              UP.INTELLIG3NCE
             </span>
           </footer>
         </div>
@@ -953,8 +953,7 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- SECTION 05: MÉTODO APLICADO (TIMELINE LEFT / 3D MONOLITHS RIGHT)    -->
-    <!-- 3D Formation: Monólitos em Camadas | UI: Cascading + Progress Beam  -->
+    <!-- SECTION 05: MÉTODO APLICADO (TIMELINE LEFT / 3D "Up" PIECES RIGHT)  -->
     <!-- =================================================================== -->
     <section
       id="metodo"
@@ -968,15 +967,16 @@
             04 · MÉTODO APLICADO
           </div>
 
-          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-8">
-            Do caos à clareza <span class="text-emerald-glow">em três etapas.</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-3">
+            Três etapas para <span class="text-emerald-glow">decidir com critério.</span>
           </h2>
+          <p class="text-xs font-mono text-slateMuted mb-7">
+            Passe o rato ou clique em cada etapa para destacar a peça correspondente no 3D.
+          </p>
 
           <!-- Interactive 3-Step Vertical Timeline with Progress Beam -->
           <div class="relative pl-6">
-            <!-- Background Rail -->
             <div class="absolute left-1.5 top-3 bottom-3 w-[2px] bg-white/10 rounded-full"></div>
-            <!-- Animated Emerald Progress Beam -->
             <div
               id="method-progress-beam"
               class="progress-beam-fill absolute left-1.5 top-3 w-[2px] bg-emeraldNeon shadow-[0_0_12px_#10E88A] rounded-full"
@@ -984,7 +984,7 @@
             ></div>
 
             <div class="space-y-4">
-              <!-- Step 01 -->
+              <!-- Step 01 -> Highlights U Base -->
               <div
                 data-method-step="0"
                 onmouseenter="selectMethodLayer(0)"
@@ -993,14 +993,15 @@
               >
                 <span class="absolute -left-[25px] top-6 w-3 h-3 rounded-full bg-emeraldNeon shadow-[0_0_12px_#10E88A] border-2 border-[#030504]"></span>
                 <div class="flex items-center justify-between mb-1.5">
-                  <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">01 · DIAGNÓSTICO DO NEGÓCIO</span>
+                  <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">01 · DIAGNÓSTICO</span>
+                  <span class="font-mono text-[10px] text-crispWhite/50 uppercase">BASE U</span>
                 </div>
                 <p class="text-sm text-slateMuted leading-relaxed">
-                  Mapeamos gargalos operacionais e saúde financeira diretamente com a liderança.
+                  Identificamos os constrangimentos reais, a rotina operacional e a saúde financeira, diretamente com a liderança.
                 </p>
               </div>
 
-              <!-- Step 02 -->
+              <!-- Step 02 -> Highlights p -->
               <div
                 data-method-step="1"
                 onmouseenter="selectMethodLayer(1)"
@@ -1009,14 +1010,15 @@
               >
                 <span class="absolute -left-[25px] top-6 w-3 h-3 rounded-full bg-emeraldNeon/60 border-2 border-[#030504]"></span>
                 <div class="flex items-center justify-between mb-1.5">
-                  <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">02 · ESTRUTURAÇÃO &amp; IA</span>
+                  <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">02 · ESTRUTURAÇÃO &amp; ANÁLISE</span>
+                  <span class="font-mono text-[10px] text-crispWhite/50 uppercase">ESTRUTURA p</span>
                 </div>
                 <p class="text-sm text-slateMuted leading-relaxed">
-                  Organizamos dados dispersos e aplicamos modelos preditivos para revelar oportunidades.
+                  Organizamos a informação dispersa e analisamos o cenário, com apoio de inteligência artificial, para revelar oportunidades.
                 </p>
               </div>
 
-              <!-- Step 03 -->
+              <!-- Step 03 -> Highlights & Elevates Arrow -->
               <div
                 data-method-step="2"
                 onmouseenter="selectMethodLayer(2)"
@@ -1026,23 +1028,23 @@
                 <span class="absolute -left-[25px] top-6 w-3 h-3 rounded-full bg-emeraldNeon/60 border-2 border-[#030504]"></span>
                 <div class="flex items-center justify-between mb-1.5">
                   <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">03 · DECISÃO &amp; ACOMPANHAMENTO</span>
+                  <span class="font-mono text-[10px] text-crispWhite/50 uppercase">SETA UP</span>
                 </div>
                 <p class="text-sm text-slateMuted leading-relaxed">
-                  Entregamos instrumentos claros para cortar excessos ou abrir novas praças com segurança.
+                  Entregamos instrumentos claros para reorganizar custos ou abrir novos mercados com segurança.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 7-Column Dedicated Empty 3D Stage (RIGHT - Stacked Monoliths) -->
+        <!-- 7-Column Dedicated Empty 3D Stage (RIGHT) -->
         <div class="hidden lg:block lg:col-span-7 h-[560px]" aria-hidden="true"></div>
       </div>
     </section>
 
     <!-- =================================================================== -->
-    <!-- SECTION 06: PRÓXIMO PASSO (CENTERED CLEAN CARD / OUTER 3D HALO)     -->
-    <!-- 3D Formation: Vórtice de Precisão | UI: Magnetic CTA + Pulse Halo   -->
+    <!-- SECTION 06: PRÓXIMO PASSO (CENTERED CLEAN CARD / 3D UPPER HALO)     -->
     <!-- =================================================================== -->
     <section
       id="contato"
@@ -1058,21 +1060,21 @@
           ></div>
 
           <!-- High-Contrast Dark Scrim Glassmorphic Card -->
-          <div class="relative z-10 rounded-[2rem] bg-[#040806]/92 border border-white/10 backdrop-blur-2xl p-8 sm:p-14 text-center shadow-[0_30px_80px_rgba(0,0,0,0.85)]">
+          <div class="relative z-10 rounded-[2rem] bg-[#040806]/94 border border-white/10 backdrop-blur-2xl p-8 sm:p-14 text-center shadow-[0_30px_80px_rgba(0,0,0,0.85)]">
             <div class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-4">
               <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
               <span>05 · PRÓXIMO PASSO</span>
             </div>
 
             <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-5">
-              Qual é o próximo movimento <span class="text-emerald-glow block sm:inline">da sua empresa?</span>
+              Em que momento está <span class="text-emerald-glow block sm:inline">a sua empresa?</span>
             </h2>
 
-            <p class="text-base sm:text-lg text-slateMuted max-w-xl mx-auto leading-relaxed mb-10">
-              Converse com nosso time e descubra qual frente do ecossistema acompanha o seu momento.
+            <p class="text-base sm:text-lg text-slateMuted max-w-xl mx-auto leading-relaxed mb-8">
+              Fale com a nossa equipa e perceba qual das soluções do ecossistema Up acompanha o seu próximo passo.
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <button
                 type="button"
                 data-magnetic
@@ -1081,20 +1083,25 @@
               >
                 Vamos Conversar
               </button>
-              <button
-                type="button"
+              <a
+                href="scale.html"
                 data-magnetic
-                onclick="openContactModal('SC4LE.Up')"
-                class="btn-outline w-full sm:w-auto px-9 py-4 rounded-full text-sm sm:text-base font-bold tracking-tight cursor-pointer"
+                class="btn-outline w-full sm:w-auto px-9 py-4 rounded-full text-sm sm:text-base font-bold tracking-tight inline-flex items-center justify-center cursor-pointer"
               >
                 Conhecer SC4LE.Up
-              </button>
+              </a>
+            </div>
+
+            <!-- Leadership Principle Callout -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-slateMuted">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
+              <span><strong>Liderança no comando:</strong> A tecnologia ajuda a analisar o cenário; quem decide continua a ser você.</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Minimal Obsidian Footer with Ecosystem Links -->
+      <!-- Minimal Obsidian Footer with Ecosystem Navigation -->
       <footer class="mt-20 pt-8 border-t border-white/[0.08] flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
         <div class="flex items-center gap-2.5">
           <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
@@ -1104,7 +1111,9 @@
         </div>
 
         <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slateMuted">
-          <a href="index.html" class="hover:text-emeraldNeon transition-colors">Hub Principal</a>
+          <a href="index.html" class="hover:text-emeraldNeon transition-colors">Início</a>
+          <span class="text-white/20">·</span>
+          <a href="up-intelligence.html" class="text-emeraldNeon font-semibold">Up.INTELLIG3NCE</a>
           <span class="text-white/20">·</span>
           <a href="organize.html" class="hover:text-emeraldNeon transition-colors">ORG4NIZE.Up</a>
           <span class="text-white/20">·</span>
@@ -1123,21 +1132,21 @@
   </main>
 
   <!-- ===================================================================== -->
-  <!-- INTERACTIVE OBSIDIAN CONTACT MODAL                                    -->
+  <!-- INTERACTIVE CONTACT MODAL                                             -->
   <!-- ===================================================================== -->
   <div
     id="contact-modal"
     role="dialog"
     aria-modal="true"
-    aria-labelledby="modal-heading"
-    class="modal-backdrop fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
-    onclick="if(event.target === this) closeContactModal()"
+    aria-labelledby="modal-title"
+    class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md"
+    onclick="if (event.target === this) closeContactModal()"
   >
-    <div class="modal-panel safe-surface rounded-3xl w-full max-w-lg p-6 sm:p-8 relative border border-emeraldNeon/30">
+    <div class="modal-panel relative w-full max-w-lg rounded-3xl safe-surface p-6 sm:p-8 border border-emeraldNeon/25">
       <button
         type="button"
         onclick="closeContactModal()"
-        aria-label="Fechar"
+        aria-label="Fechar janela"
         class="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slateMuted hover:text-crispWhite transition-colors cursor-pointer"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1147,93 +1156,74 @@
 
       <!-- Form View -->
       <div id="modal-form-view">
-        <span class="font-mono text-[11px] tracking-[0.22em] uppercase text-emeraldNeon block mb-2">
-          ATENDIMENTO ESTRATÉGICO
-        </span>
-        <h3 id="modal-heading" class="text-2xl sm:text-3xl font-extrabold text-crispWhite tracking-tight mb-2">
-          Vamos Conversar
+        <div class="font-mono text-[11px] tracking-[0.22em] uppercase text-emeraldNeon mb-2">
+          FORMULÁRIO · ATENDIMENTO EXECUTIVO
+        </div>
+        <h3 id="modal-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-crispWhite mb-2">
+          Vamos conversar
         </h3>
         <p class="text-sm text-slateMuted mb-6">
-          Informe o momento da sua operação para direcionarmos a conversa com o time UP.INTELLIG3NCE.
+          Preencha os seus dados e encaminhamos a sua empresa para o especialista mais adequado do ecossistema Up.
         </p>
 
         <form id="lead-form" onsubmit="submitContactForm(event)" class="space-y-4">
           <div>
-            <label for="interest-select" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
-              Frente de Interesse
+            <label for="input-name" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+              O seu nome
             </label>
-            <select
-              id="interest-select"
+            <input
+              id="input-name"
+              type="text"
               required
-              class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite focus:outline-none focus:border-emeraldNeon transition-colors"
-            >
-              <option value="ORG4NIZE.Up">ORG4NIZE.Up — Gestão, Finanças &amp; Rotina</option>
-              <option value="SC4LE.Up">SC4LE.Up — Expansão &amp; Franchising</option>
-              <option value="Diagnóstico Completo">Diagnóstico Completo do Ecossistema</option>
-            </select>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label for="input-name" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
-                Nome
-              </label>
-              <input
-                id="input-name"
-                type="text"
-                required
-                placeholder="Seu nome"
-                class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite placeholder:text-white/30 focus:outline-none focus:border-emeraldNeon transition-colors"
-              />
-            </div>
-
-            <div>
-              <label for="input-company" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
-                Empresa
-              </label>
-              <input
-                id="input-company"
-                type="text"
-                required
-                placeholder="Nome da empresa"
-                class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite placeholder:text-white/30 focus:outline-none focus:border-emeraldNeon transition-colors"
-              />
-            </div>
+              placeholder="Ex.: Carlos Eduardo"
+              class="w-full px-4 py-3 rounded-xl bg-[#030504]/80 border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50"
+            />
           </div>
 
           <div>
-            <label for="input-contact" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
-              WhatsApp ou E-mail
+            <label for="input-company" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+              Empresa / Rede
             </label>
             <input
-              id="input-contact"
+              id="input-company"
               type="text"
               required
-              placeholder="(11) 99999-9999 ou nome@empresa.com"
-              class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite placeholder:text-white/30 focus:outline-none focus:border-emeraldNeon transition-colors"
+              placeholder="Nome da sua empresa"
+              class="w-full px-4 py-3 rounded-xl bg-[#030504]/80 border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite placeholder:text-slateMuted/50"
             />
+          </div>
+
+          <div>
+            <label for="interest-select" class="block text-xs font-mono uppercase tracking-wider text-slateMuted mb-1.5">
+              Frente de interesse
+            </label>
+            <select
+              id="interest-select"
+              class="w-full px-4 py-3 rounded-xl bg-[#030504] border border-white/15 focus:border-emeraldNeon focus:outline-none text-sm text-crispWhite"
+            >
+              <option value="Diagnóstico completo">Diagnóstico completo · UP.INTELLIG3NCE</option>
+              <option value="ORG4NIZE.Up">ORG4NIZE.Up · Gestão, Finanças &amp; Rotina</option>
+              <option value="SC4LE.Up">SC4LE.Up · Expansão de Redes &amp; Franchising</option>
+            </select>
           </div>
 
           <button
             type="submit"
             class="btn-emerald w-full py-3.5 rounded-full text-sm font-extrabold tracking-tight mt-2 cursor-pointer"
           >
-            Solicitar Diagnóstico
+            Pedir Contacto
           </button>
         </form>
       </div>
 
-      <!-- Instant Confirmation View -->
-      <div id="modal-success-view" class="hidden py-6 text-center">
-        <div class="w-16 h-16 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center mx-auto mb-5 shadow-[0_0_30px_rgba(16,232,138,0.28)]">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+      <!-- Success View -->
+      <div id="modal-success-view" class="hidden text-center py-6">
+        <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/50 flex items-center justify-center text-emeraldNeon shadow-[0_0_24px_rgba(16,232,138,0.3)]">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <span class="font-mono text-xs uppercase tracking-[0.22em] text-emeraldNeon block mb-2">
-          SOLICITAÇÃO CONFIRMADA
-        </span>
-        <h3 class="text-2xl font-extrabold text-crispWhite mb-3">Recebemos seus dados.</h3>
+        <h3 class="text-2xl font-extrabold text-crispWhite mb-3">Solicitação recebida</h3>
         <p id="modal-success-copy" class="text-sm text-slateMuted leading-relaxed mb-7"></p>
         <button
           type="button"
@@ -1247,7 +1237,7 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- JAVASCRIPT: 6-MORPH THREE.JS ENGINE + SAFE-ZONE CHOREOGRAPHY + UI     -->
+  <!-- JAVASCRIPT: 3D "Up" SCULPTURE ENGINE + SAFE-ZONE CHOREOGRAPHY + UI    -->
   <!-- ===================================================================== -->
   <script>
     // =========================================================================
@@ -1261,27 +1251,175 @@
       isDragging: false,
       dragStartX: 0,
       dragStartY: 0,
-      orbitYaw: 0,
-      orbitPitch: 0.15,
-      targetOrbitYaw: 0,
-      targetOrbitPitch: 0.15,
+      orbitYaw: -0.35,
+      orbitPitch: 0.12,
+      targetOrbitYaw: -0.35,
+      targetOrbitPitch: 0.12,
       solutionHover: 'none', // 'none' | 'organize' | 'scale'
-      activeMethodLayer: 0,  // 0 | 1 | 2
+      activeMethodLayer: 0,  // 0 (U Base) | 1 (p) | 2 (Arrow)
     };
 
     // Three.js Scene Objects
     let scene, camera, renderer, clock;
-    let masterGroup, coreGroup, coreWire, coreLight;
-    let modules = []; // 27 architectural modules (3x3x3)
-    let rings = [];
-    let particles;
+    let masterGroup;
+    let uBaseGroup, arrowGroup, pGroup;
+    let uPieceMats, arrowPieceMats, pPieceMats;
+    let uWireBack, arrowWireBack, pWireBack;
+    let uEdgeMat, arrowEdgeMat, pEdgeMat;
+    let haloRing, particles, particleVelocities;
 
     function lerp(a, b, t) {
       return a + (b - a) * t;
     }
 
     // =========================================================================
-    // 2. THREE.JS INITIALIZATION (27 MODULES + CORE + 3 RINGS + PARTICLES)
+    // 2. BUILD EXACT 3D "Up" ICON GEOMETRY (3 INDEPENDENT EXTRUDED PIECES)
+    // =========================================================================
+    function createUpSculpturePieces() {
+      const extrudeSettings = {
+        depth: 0.52,
+        bevelEnabled: true,
+        bevelThickness: 0.065,
+        bevelSize: 0.05,
+        bevelOffset: 0,
+        bevelSegments: 5,
+        curveSegments: 32,
+      };
+
+      // Helper to build luxury [faceMaterial, sideMaterial] per independent piece
+      function createLuxuryMaterialPair() {
+        const faceMat = new THREE.MeshPhysicalMaterial({
+          color: 0x0be086,
+          emissive: 0x045e37,
+          emissiveIntensity: 0.42,
+          metalness: 0.32,
+          roughness: 0.18,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.12,
+        });
+        const sideMat = new THREE.MeshPhysicalMaterial({
+          color: 0x06291b,
+          emissive: 0x02170e,
+          emissiveIntensity: 0.25,
+          metalness: 0.88,
+          roughness: 0.22,
+          clearcoat: 0.65,
+          clearcoatRoughness: 0.2,
+        });
+        return [faceMat, sideMat];
+      }
+
+      // Helper to assemble Solid Mesh + Subtle Technical Edge Contour + Exploded Wireframe Back-Layer
+      function assemblePiece(shape, mats) {
+        const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        // Center extrusion depth around z = 0 and nudge X slightly for optical center
+        geo.translate(-0.04, 0.02, -extrudeSettings.depth / 2);
+
+        const group = new THREE.Group();
+        const solidMesh = new THREE.Mesh(geo, mats);
+        group.add(solidMesh);
+
+        const edgesGeo = new THREE.EdgesGeometry(geo, 22);
+        const edgeMat = new THREE.LineBasicMaterial({
+          color: 0x10e88a,
+          transparent: true,
+          opacity: 0.28,
+        });
+        const edgeLines = new THREE.LineSegments(edgesGeo, edgeMat);
+        group.add(edgeLines);
+
+        // Wireframe architectural ghost layer revealed during Section 02 Exploded View
+        const wireBackMat = new THREE.LineBasicMaterial({
+          color: 0x10e88a,
+          transparent: true,
+          opacity: 0.0,
+        });
+        const wireBack = new THREE.LineSegments(edgesGeo, wireBackMat);
+        group.add(wireBack);
+
+        return { group, edgeMat, wireBack, wireBackMat };
+      }
+
+      // -----------------------------------------------------------------------
+      // PIECE 1: "U" BASE (up to ascending diagonal cut on right vertical stem)
+      // -----------------------------------------------------------------------
+      const uShape = new THREE.Shape();
+      uShape.moveTo(-1.86, 0.82);
+      uShape.lineTo(-1.86, -0.22);
+      uShape.absarc(-0.93, -0.22, 0.93, Math.PI, 0, false); // outer bottom arc
+      uShape.lineTo(0.0, 0.26);     // outer right edge up to diagonal cut
+      uShape.lineTo(-0.53, -0.04);  // ascending diagonal cut
+      uShape.lineTo(-0.53, -0.22);
+      uShape.absarc(-0.93, -0.22, 0.40, 0, Math.PI, true);  // inner bottom arc
+      uShape.lineTo(-1.33, 0.82);
+      uShape.closePath();
+
+      uPieceMats = createLuxuryMaterialPair();
+      const uBuilt = assemblePiece(uShape, uPieceMats);
+      uBaseGroup = uBuilt.group;
+      uEdgeMat = uBuilt.edgeMat;
+      uWireBack = uBuilt.wireBack;
+      uWireBack.userData.mat = uBuilt.wireBackMat;
+      masterGroup.add(uBaseGroup);
+
+      // -----------------------------------------------------------------------
+      // PIECE 2: UPWARD ARROW (shaft above diagonal cut + bold triangle head)
+      // -----------------------------------------------------------------------
+      const arrowShape = new THREE.Shape();
+      arrowShape.moveTo(-0.53, 0.18);
+      arrowShape.lineTo(0.0, 0.48);
+      arrowShape.lineTo(0.0, 0.80);
+      arrowShape.lineTo(0.38, 0.80);
+      arrowShape.lineTo(-0.265, 1.66); // crisp arrow apex
+      arrowShape.lineTo(-0.91, 0.80);
+      arrowShape.lineTo(-0.53, 0.80);
+      arrowShape.closePath();
+
+      arrowPieceMats = createLuxuryMaterialPair();
+      const arrowBuilt = assemblePiece(arrowShape, arrowPieceMats);
+      arrowGroup = arrowBuilt.group;
+      arrowEdgeMat = arrowBuilt.edgeMat;
+      arrowWireBack = arrowBuilt.wireBack;
+      arrowWireBack.userData.mat = arrowBuilt.wireBackMat;
+      masterGroup.add(arrowGroup);
+
+      // -----------------------------------------------------------------------
+      // PIECE 3: LOWERCASE "p" (bold geometric stem + circular bowl + hole)
+      // -----------------------------------------------------------------------
+      const pCx = 1.18;
+      const pCy = -0.42;
+      const pRout = 0.78;
+      const pRin = 0.35;
+      const dxStem = 0.77 - pCx;
+      const dyStem = Math.sqrt(pRout * pRout - dxStem * dxStem);
+      const aTop = Math.atan2(dyStem, dxStem);
+      const aBot = Math.atan2(-dyStem, dxStem);
+
+      const pShape = new THREE.Shape();
+      pShape.moveTo(0.24, 0.34);
+      pShape.lineTo(0.24, -1.62);
+      pShape.lineTo(0.77, -1.62);
+      pShape.lineTo(0.77, pCy - dyStem);
+      pShape.absarc(pCx, pCy, pRout, aBot, aTop, false); // outer bowl CCW
+      pShape.lineTo(0.77, 0.34);
+      pShape.closePath();
+
+      // Circular counter hole (CW)
+      const pHole = new THREE.Path();
+      pHole.absarc(pCx, pCy, pRin, 0, Math.PI * 2, true);
+      pShape.holes.push(pHole);
+
+      pPieceMats = createLuxuryMaterialPair();
+      const pBuilt = assemblePiece(pShape, pPieceMats);
+      pGroup = pBuilt.group;
+      pEdgeMat = pBuilt.edgeMat;
+      pWireBack = pBuilt.wireBack;
+      pWireBack.userData.mat = pBuilt.wireBackMat;
+      masterGroup.add(pGroup);
+    }
+
+    // =========================================================================
+    // 3. THREE.JS STUDIO INITIALIZATION
     // =========================================================================
     function initThreeScene() {
       try {
@@ -1289,10 +1427,10 @@
         if (!canvas || typeof THREE === 'undefined') return;
 
         scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x030504, 0.042);
+        scene.fog = new THREE.FogExp2(0x030504, 0.036);
 
-        camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.set(0, 0.2, 8.2);
+        camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 0.15, 8.6);
 
         renderer = new THREE.WebGLRenderer({
           canvas,
@@ -1303,120 +1441,52 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.1;
+        renderer.toneMappingExposure = 1.15;
 
         clock = new THREE.Clock();
 
-        // Lighting
-        scene.add(new THREE.AmbientLight(0x0a2419, 1.5));
+        // Studio Lighting: Cool white key + Emerald rim lights
+        scene.add(new THREE.AmbientLight(0x0b261b, 1.35));
 
-        const dirKey = new THREE.DirectionalLight(0x10e88a, 2.2);
-        dirKey.position.set(6, 8, 6);
-        scene.add(dirKey);
+        const keyLight = new THREE.DirectionalLight(0xe8fff6, 2.1);
+        keyLight.position.set(5, 7, 8);
+        scene.add(keyLight);
 
-        const dirRim = new THREE.DirectionalLight(0x058f55, 1.3);
-        dirRim.position.set(-6, -4, -5);
-        scene.add(dirRim);
+        const emeraldRim1 = new THREE.DirectionalLight(0x10e88a, 2.6);
+        emeraldRim1.position.set(-6, 4, -4);
+        scene.add(emeraldRim1);
 
-        // Master Group (positioned strictly inside Safe-Zone empty viewport half)
+        const emeraldRim2 = new THREE.DirectionalLight(0x00e58b, 1.8);
+        emeraldRim2.position.set(6, -5, -3);
+        scene.add(emeraldRim2);
+
+        // Master Group holding the 3-piece "Up" sculpture
         masterGroup = new THREE.Group();
         scene.add(masterGroup);
 
-        coreLight = new THREE.PointLight(0x10e88a, 3.0, 14);
-        masterGroup.add(coreLight);
+        const localGlow = new THREE.PointLight(0x10e88a, 2.4, 14);
+        localGlow.position.set(0, 0.4, 2.2);
+        masterGroup.add(localGlow);
 
-        // --- CENTRAL OBSIDIAN ICOSAHEDRON CORE (Prominent in Hero) ---
-        coreGroup = new THREE.Group();
-        masterGroup.add(coreGroup);
+        createUpSculpturePieces();
 
-        const coreSolid = new THREE.Mesh(
-          new THREE.IcosahedronGeometry(1.05, 1),
-          new THREE.MeshStandardMaterial({
-            color: 0x06140d,
-            emissive: 0x052b1a,
-            emissiveIntensity: 0.65,
-            roughness: 0.18,
-            metalness: 0.9,
-            flatShading: true,
-          })
+        // Subtle Precision Halo Ring behind sculpture
+        haloRing = new THREE.Mesh(
+          new THREE.TorusGeometry(2.65, 0.012, 12, 120),
+          new THREE.MeshBasicMaterial({ color: 0x10e88a, transparent: true, opacity: 0.22 })
         );
-        coreGroup.add(coreSolid);
+        haloRing.position.z = -0.65;
+        masterGroup.add(haloRing);
 
-        coreWire = new THREE.LineSegments(
-          new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.09, 1)),
-          new THREE.LineBasicMaterial({ color: 0x10e88a, transparent: true, opacity: 0.62 })
-        );
-        coreGroup.add(coreWire);
-
-        // --- 3 PRECISION ORBITAL RINGS ---
-        const ringDefs = [
-          { r: 1.85, tiltX: Math.PI * 0.36, tiltY: 0.25, speed: 0.35 },
-          { r: 2.38, tiltX: -Math.PI * 0.26, tiltY: 0.65, speed: -0.24 },
-          { r: 2.92, tiltX: Math.PI * 0.14, tiltY: -0.45, speed: 0.16 },
-        ];
-
-        ringDefs.forEach((def) => {
-          const rGroup = new THREE.Group();
-          const mesh = new THREE.Mesh(
-            new THREE.TorusGeometry(def.r, 0.011, 10, 120),
-            new THREE.MeshBasicMaterial({ color: 0x10e88a, transparent: true, opacity: 0.38 })
-          );
-          rGroup.add(mesh);
-          rGroup.userData = { ...def, mat: mesh.material };
-          masterGroup.add(rGroup);
-          rings.push(rGroup);
-        });
-
-        // --- 27 ARCHITECTURAL MODULES (Morph across all 6 formations) ---
-        const boxGeo = new THREE.BoxGeometry(0.42, 0.42, 0.42);
-        const edgeGeo = new THREE.EdgesGeometry(boxGeo);
-
-        for (let i = 0; i < 27; i++) {
-          const ix = i % 3;                 // 0..2
-          const iy = Math.floor(i / 3) % 3; // 0..2
-          const iz = Math.floor(i / 9);     // 0..2
-
-          const mGroup = new THREE.Group();
-          const mat = new THREE.MeshStandardMaterial({
-            color: 0x07150f,
-            emissive: 0x08472b,
-            emissiveIntensity: 0.45,
-            roughness: 0.22,
-            metalness: 0.88,
-            transparent: true,
-            opacity: 0.92,
-          });
-          const edgeMat = new THREE.LineBasicMaterial({
-            color: 0x10e88a,
-            transparent: true,
-            opacity: 0.52,
-          });
-
-          mGroup.add(new THREE.Mesh(boxGeo, mat));
-          mGroup.add(new THREE.LineSegments(edgeGeo, edgeMat));
-
-          mGroup.userData = {
-            index: i,
-            ix, iy, iz,
-            mat,
-            edgeMat,
-            angle: (i / 27) * Math.PI * 2,
-          };
-
-          masterGroup.add(mGroup);
-          modules.push(mGroup);
-        }
-
-        // --- SUBTLE EMERALD PARTICLE FIELD ---
-        const pCount = 260;
+        // Discreet Emerald Micro-Particle Field
+        const pCount = 240;
         const pPos = new Float32Array(pCount * 3);
+        particleVelocities = new Float32Array(pCount);
         for (let i = 0; i < pCount; i++) {
-          const r = 4.5 + Math.random() * 12;
-          const theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos(2 * Math.random() - 1);
-          pPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-          pPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.7;
-          pPos[i * 3 + 2] = r * Math.cos(phi) - 3;
+          pPos[i * 3] = (Math.random() - 0.5) * 16;
+          pPos[i * 3 + 1] = (Math.random() - 0.5) * 11;
+          pPos[i * 3 + 2] = (Math.random() - 0.5) * 8 - 2;
+          particleVelocities[i] = 0.004 + Math.random() * 0.008;
         }
         const pGeo = new THREE.BufferGeometry();
         pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
@@ -1424,9 +1494,9 @@
           pGeo,
           new THREE.PointsMaterial({
             color: 0x10e88a,
-            size: 0.036,
+            size: 0.038,
             transparent: true,
-            opacity: 0.48,
+            opacity: 0.46,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
           })
@@ -1448,231 +1518,194 @@
     }
 
     // =========================================================================
-    // 3. 6 DISTINCT 3D FORMATIONS + STRICT SAFE-ZONE POSITIONING
+    // 4. SAFE-ZONE CHOREOGRAPHY FOR ALL 6 SECTIONS (ZERO TEXT OVERLAP)
     // =========================================================================
-    function getSectionStageTransform(sectionIdx) {
+    function getSectionChoreography(sec, t) {
       const isDesktop = window.innerWidth >= 1024;
-      if (!isDesktop) {
-        // Centered subtly behind frosted cards on mobile/tablet
-        return { x: 0, y: 0, z: -1.2, scale: 0.72, ringOpacity: 0.28 };
-      }
+      const base = {
+        gx: 0, gy: 0, gz: -1.5, scale: 0.65,
+        rotX: 0.08, rotY: -0.35, rotZ: 0,
+        uPos: [0, 0, 0], arrowPos: [0, 0, 0], pPos: [0, 0, 0],
+        uEmissive: 0.42, arrowEmissive: 0.45, pEmissive: 0.42,
+        wireOpacity: 0.0, wireOffsetZ: 0.0,
+        haloOpacity: 0.18,
+      };
 
-      switch (sectionIdx) {
-        case 0: // Hero: Text LEFT, 3D strictly RIGHT
-          return { x: 2.8, y: 0.05, z: 0, scale: 1.0, ringOpacity: 0.45 };
-        case 1: // Origem: Text RIGHT, 3D strictly LEFT
-          return { x: -2.8, y: 0.0, z: 0.1, scale: 0.98, ringOpacity: 0.14 };
-        case 2: // Soluções: Cards center, 3D upper-right periphery at reduced scale
-          return { x: 2.85, y: 2.05, z: -2.2, scale: 0.62, ringOpacity: 0.22 };
-        case 3: // Visão: Editorial frame LEFT, 3D Horizon Ring framing left
-          return { x: -2.55, y: 0.05, z: -0.6, scale: 0.92, ringOpacity: 0.34 };
-        case 4: // Método: Timeline LEFT, 3D Stacked Monoliths strictly RIGHT
-          return { x: 2.9, y: 0.0, z: 0.1, scale: 1.0, ringOpacity: 0.16 };
-        case 5: // CTA: Centered card, 3D expands into wide low-opacity outer halo
-          return { x: 0, y: 0, z: -1.5, scale: 1.25, ringOpacity: 0.15 };
-        default:
-          return { x: 2.8, y: 0, z: 0, scale: 1.0, ringOpacity: 0.4 };
-      }
-    }
+      if (isDesktop) {
+        switch (sec) {
+          case 0: // Hero: Text LEFT, 3D "Up" imposing RIGHT at 3/4 executive angle
+            base.gx = 2.65; base.gy = 0.08 + Math.sin(t * 1.3) * 0.14; base.gz = 0.2; base.scale = 1.04;
+            base.rotX = 0.08; base.rotY = -0.38 + Math.sin(t * 0.5) * 0.1;
+            base.haloOpacity = 0.24;
+            break;
 
-    function computeModuleTarget(mod, sectionIdx, t) {
-      const { index, ix, iy, iz, angle } = mod.userData;
+          case 1: // Origem: 3D "Up" slides LEFT — Architectural Exploded View
+            base.gx = -2.65; base.gy = 0.05; base.gz = 0.1; base.scale = 0.96;
+            base.rotX = 0.14; base.rotY = 0.42 + Math.sin(t * 0.45) * 0.08;
+            base.uPos = [-0.14, -0.06, -0.38];
+            base.arrowPos = [0.0, 0.28, 0.55];
+            base.pPos = [0.22, -0.04, 0.16];
+            base.wireOpacity = 0.58;
+            base.wireOffsetZ = -0.58;
+            base.haloOpacity = 0.08;
+            break;
 
-      // Default values
-      let tx = 0, ty = 0, tz = 0;
-      let sx = 0.55, sy = 0.55, sz = 0.55;
-      let rx = 0, ry = 0, rz = 0;
-      let emissive = 0.45;
-      let opacity = 0.9;
+          case 2: // Soluções: Discreet upper-right periphery outside cards + Interactive Hover
+            base.gx = 3.05; base.gy = 2.05; base.gz = -2.1; base.scale = 0.58;
+            base.rotX = 0.1; base.rotY = -0.28;
+            base.haloOpacity = 0.12;
+            if (appState.solutionHover === 'organize') {
+              base.rotX = 0.02; base.rotY = -0.08;
+              base.uPos = [0.04, 0, 0];
+              base.arrowPos = [0, -0.04, 0];
+              base.pPos = [-0.04, 0, 0];
+              base.uEmissive = 0.72; base.arrowEmissive = 0.55; base.pEmissive = 0.72;
+            } else if (appState.solutionHover === 'scale') {
+              base.rotY = -0.22;
+              base.arrowPos = [0, 0.52 + Math.sin(t * 5) * 0.08, 0.25];
+              base.arrowEmissive = 1.65;
+              base.uEmissive = 0.3; base.pEmissive = 0.3;
+            }
+            break;
 
-      if (sectionIdx === 0) {
-        // 1. CONVERGÊNCIA ORBITAL: Sleek small satellite nodes orbiting the core
-        const ringBand = index % 3;
-        const r = 1.9 + ringBand * 0.54;
-        const a = angle + t * (0.28 - ringBand * 0.07);
-        const tilt = (ringBand - 1) * 0.65;
-        tx = Math.cos(a) * r;
-        ty = Math.sin(a) * Math.sin(tilt) * r;
-        tz = Math.sin(a) * Math.cos(tilt) * r;
-        sx = 0.32; sy = 0.32; sz = 0.32;
-        rx = t * 0.6; ry = a;
-        emissive = 0.6;
-      } else if (sectionIdx === 1) {
-        // 2. MATRIZ DE DADOS: Floating 3x3x3 cube lattice rippling with sine waves
-        const spacing = 0.88;
-        const wave = Math.sin(t * 2.1 + ix * 0.9 + iz * 0.9) * 0.18;
-        tx = (ix - 1) * spacing;
-        ty = (iy - 1) * spacing + wave;
-        tz = (iz - 1) * spacing;
-        sx = 0.72; sy = 0.72; sz = 0.72;
-        ry = t * 0.25;
-        emissive = 0.35 + (Math.sin(t * 2.1 + index) * 0.5 + 0.5) * 0.45;
-      } else if (sectionIdx === 2) {
-        // 3. DUALIDADE MODULAR: Cluster A (ORG4NIZE.Up dense block) + Cluster B (SC4LE.Up radial constellation)
-        if (index < 13) {
-          // Structured dense block (left cluster)
-          const lx = index % 3;
-          const ly = Math.floor(index / 3) % 3;
-          const lz = Math.floor(index / 9);
-          const boost = appState.solutionHover === 'organize' ? 1.18 : 0.95;
-          tx = -1.6 + (lx - 1) * 0.52 * boost;
-          ty = (ly - 1) * 0.52 * boost;
-          tz = (lz - 0.5) * 0.52 * boost;
-          sx = 0.72; sy = 0.72; sz = 0.72;
-          emissive = appState.solutionHover === 'organize' ? 1.15 : 0.45;
-        } else {
-          // Expanding radial constellation (right cluster)
-          const subIdx = index - 13;
-          const a = (subIdx / 14) * Math.PI * 2 + t * 0.35;
-          const spread = appState.solutionHover === 'scale' ? 1.65 : 1.15;
-          const r = (0.7 + (subIdx % 3) * 0.35) * spread;
-          tx = 1.6 + Math.cos(a) * r;
-          ty = Math.sin(a * 2) * 0.45;
-          tz = Math.sin(a) * r;
-          sx = 0.42; sy = 0.42; sz = 0.42;
-          rx = a; ry = t * 0.5;
-          emissive = appState.solutionHover === 'scale' ? 1.25 : 0.45;
+          case 3: // Visão: Dramatic rim-lit profile inside LEFT editorial frame
+            base.gx = -2.55; base.gy = 0.12; base.gz = -0.35; base.scale = 0.82;
+            base.rotX = 0.06; base.rotY = 0.82 + Math.sin(t * 0.4) * 0.08;
+            base.uEmissive = 0.35; base.arrowEmissive = 0.65; base.pEmissive = 0.35;
+            base.haloOpacity = 0.26;
+            break;
+
+          case 4: // Método: Timeline LEFT, 3D "Up" RIGHT — highlights U, p, or Arrow
+            base.gx = 2.75; base.gy = 0.05; base.gz = 0.2; base.scale = 1.0;
+            base.rotX = 0.1; base.rotY = -0.34 + Math.sin(t * 0.45) * 0.07;
+            base.haloOpacity = 0.14;
+            if (appState.activeMethodLayer === 0) {
+              base.uPos = [0, 0.06, 0.38];
+              base.uEmissive = 1.45; base.arrowEmissive = 0.18; base.pEmissive = 0.18;
+            } else if (appState.activeMethodLayer === 1) {
+              base.pPos = [0.12, 0.05, 0.42];
+              base.uEmissive = 0.18; base.arrowEmissive = 0.18; base.pEmissive = 1.45;
+            } else {
+              base.arrowPos = [0, 0.42 + Math.sin(t * 3.5) * 0.06, 0.46];
+              base.uEmissive = 0.22; base.arrowEmissive = 1.65; base.pEmissive = 0.22;
+            }
+            break;
+
+          case 5: // Próximo Passo: Pulls back into upper-center peripheral halo
+            base.gx = 0; base.gy = 2.45; base.gz = -2.8; base.scale = 0.72;
+            base.rotX = 0.16; base.rotY = Math.sin(t * 0.45) * 0.28;
+            base.haloOpacity = 0.3;
+            break;
         }
-      } else if (sectionIdx === 3) {
-        // 4. ANEL DE HORIZONTE: Sleek horizontal architectural ring in zero gravity
-        const r = 2.55;
-        const a = angle + t * 0.18;
-        tx = Math.cos(a) * r;
-        ty = Math.sin(a * 3 + t) * 0.08;
-        tz = Math.sin(a) * r;
-        sx = 0.95; sy = 0.14; sz = 0.35;
-        ry = -a;
-        emissive = 0.55;
-        opacity = 0.85;
-      } else if (sectionIdx === 4) {
-        // 5. MONÓLITOS EM CAMADAS: 3 stacked horizontal architectural slabs (layers 01, 02, 03)
-        // Layer 0 (top, iz=0), Layer 1 (mid, iz=1), Layer 2 (bottom, iz=2)
-        const layerIdx = iz; // 0, 1, 2
-        const isActive = appState.activeMethodLayer === layerIdx;
-        const layerBaseY = (1 - layerIdx) * 1.15;
-        const elevateY = isActive ? 0.22 : 0;
-        const spacing = isActive ? 0.76 : 0.68;
-
-        tx = (ix - 1) * spacing;
-        ty = layerBaseY + elevateY + Math.sin(t * 1.6 + layerIdx) * 0.04;
-        tz = (iy - 1) * spacing;
-
-        sx = 1.35; sy = isActive ? 0.34 : 0.24; sz = 1.35;
-        emissive = isActive ? 1.35 : 0.28;
-        opacity = isActive ? 0.98 : 0.65;
       } else {
-        // 6. VÓRTICE DE PRECISÃO: Wide breathing outer halo framing viewport edges (100% center contrast)
-        const breathe = 1 + Math.sin(t * 1.1) * 0.05;
-        const r = 4.35 * breathe;
-        const a = angle + t * 0.1;
-        tx = Math.cos(a) * r;
-        ty = Math.sin(a) * (r * 0.62);
-        tz = Math.sin(a * 2 + t * 0.5) * 0.55;
-        sx = 0.45; sy = 0.16; sz = 0.45;
-        rz = a;
-        emissive = 0.55;
-        opacity = 0.42;
+        // Mobile/Tablet
+        base.gx = 0; base.gy = 0.1; base.gz = -1.2; base.scale = 0.68;
+        base.rotY = Math.sin(t * 0.45) * 0.35;
+        if (sec === 1) {
+          base.uPos = [-0.1, 0, -0.3]; base.arrowPos = [0, 0.25, 0.45]; base.pPos = [0.16, 0, 0.14];
+          base.wireOpacity = 0.45; base.wireOffsetZ = -0.45;
+        }
       }
 
-      return { tx, ty, tz, sx, sy, sz, rx, ry, rz, emissive, opacity };
+      return base;
     }
 
     // =========================================================================
-    // 4. 60FPS ANIMATION LOOP
+    // 5. 60FPS ANIMATION LOOP
     // =========================================================================
     function animate() {
       requestAnimationFrame(animate);
-      if (!renderer || !scene || !camera) return;
+      if (!renderer || !scene || !camera || !masterGroup) return;
 
       const t = clock.getElapsedTime();
       const sec = appState.activeSection;
+      const cfg = getSectionChoreography(sec, t);
 
       appState.orbitYaw = lerp(appState.orbitYaw, appState.targetOrbitYaw, 0.08);
       appState.orbitPitch = lerp(appState.orbitPitch, appState.targetOrbitPitch, 0.08);
 
-      // Master Stage Positioning
       if (appState.interactive3D) {
-        const radius = 7.4;
+        // Free 360° Orbit Inspection Mode
+        const radius = 6.8;
         camera.position.x = lerp(camera.position.x, Math.sin(appState.orbitYaw) * Math.cos(appState.orbitPitch) * radius, 0.09);
         camera.position.y = lerp(camera.position.y, Math.sin(appState.orbitPitch) * radius, 0.09);
         camera.position.z = lerp(camera.position.z, Math.cos(appState.orbitYaw) * Math.cos(appState.orbitPitch) * radius, 0.09);
-        masterGroup.position.set(
-          lerp(masterGroup.position.x, 0, 0.08),
-          lerp(masterGroup.position.y, 0, 0.08),
-          lerp(masterGroup.position.z, 0, 0.08)
-        );
-        masterGroup.scale.setScalar(lerp(masterGroup.scale.x, 1.0, 0.08));
         camera.lookAt(0, 0, 0);
+
+        masterGroup.position.x = lerp(masterGroup.position.x, 0, 0.08);
+        masterGroup.position.y = lerp(masterGroup.position.y, 0, 0.08);
+        masterGroup.position.z = lerp(masterGroup.position.z, 0, 0.08);
+        masterGroup.scale.setScalar(lerp(masterGroup.scale.x, 1.05, 0.08));
+        masterGroup.rotation.x = lerp(masterGroup.rotation.x, 0, 0.08);
+        masterGroup.rotation.y = lerp(masterGroup.rotation.y, 0, 0.08);
       } else {
-        const stage = getSectionStageTransform(sec);
-        camera.position.x = lerp(camera.position.x, appState.mouseX * 0.35, 0.06);
-        camera.position.y = lerp(camera.position.y, 0.2 - appState.mouseY * 0.25, 0.06);
-        camera.position.z = lerp(camera.position.z, 8.2, 0.06);
+        // Smooth Scrollytelling Safe-Zone Interpolation
+        camera.position.x = lerp(camera.position.x, appState.mouseX * 0.28, 0.06);
+        camera.position.y = lerp(camera.position.y, 0.15 - appState.mouseY * 0.2, 0.06);
+        camera.position.z = lerp(camera.position.z, 8.6, 0.06);
         camera.lookAt(0, 0, 0);
 
-        masterGroup.position.x = lerp(masterGroup.position.x, stage.x, 0.065);
-        masterGroup.position.y = lerp(masterGroup.position.y, stage.y, 0.065);
-        masterGroup.position.z = lerp(masterGroup.position.z, stage.z, 0.065);
-        masterGroup.scale.setScalar(lerp(masterGroup.scale.x, stage.scale, 0.065));
+        masterGroup.position.x = lerp(masterGroup.position.x, cfg.gx, 0.065);
+        masterGroup.position.y = lerp(masterGroup.position.y, cfg.gy, 0.065);
+        masterGroup.position.z = lerp(masterGroup.position.z, cfg.gz, 0.065);
+        masterGroup.scale.setScalar(lerp(masterGroup.scale.x, cfg.scale, 0.065));
 
-        // Gentle group orientation per section
-        const targetGroupRotY = sec === 4 ? 0.55 + Math.sin(t * 0.35) * 0.18 : t * 0.09 + appState.mouseX * 0.14;
-        const targetGroupRotX = sec === 4 ? 0.32 : sec === 3 ? 0.22 : appState.mouseY * 0.1;
-        masterGroup.rotation.y = lerp(masterGroup.rotation.y, targetGroupRotY, 0.06);
-        masterGroup.rotation.x = lerp(masterGroup.rotation.x, targetGroupRotX, 0.06);
+        masterGroup.rotation.x = lerp(masterGroup.rotation.x, cfg.rotX + appState.mouseY * 0.1, 0.065);
+        masterGroup.rotation.y = lerp(masterGroup.rotation.y, cfg.rotY + appState.mouseX * 0.16, 0.065);
+        masterGroup.rotation.z = lerp(masterGroup.rotation.z, cfg.rotZ, 0.065);
       }
 
-      // Central Core visibility (full in Hero, subtle/hidden in others)
-      const coreTargetScale = sec === 0 ? 1.0 : sec === 3 ? 0.35 : 0.001;
-      coreGroup.scale.setScalar(lerp(coreGroup.scale.x, coreTargetScale, 0.08));
-      coreGroup.rotation.y = t * 0.42;
-      coreGroup.rotation.x = t * 0.22;
+      // Interpolate the 3 independent "Up" pieces (U Base, Arrow, p)
+      uBaseGroup.position.x = lerp(uBaseGroup.position.x, cfg.uPos[0], 0.08);
+      uBaseGroup.position.y = lerp(uBaseGroup.position.y, cfg.uPos[1], 0.08);
+      uBaseGroup.position.z = lerp(uBaseGroup.position.z, cfg.uPos[2], 0.08);
 
-      // Rings update
-      const stageCfg = getSectionStageTransform(sec);
-      rings.forEach((rg, idx) => {
-        const d = rg.userData;
-        const ringScale = sec === 5 ? 1.55 : sec === 3 ? 1.05 : 1.0;
-        rg.scale.setScalar(lerp(rg.scale.x, ringScale, 0.06));
-        rg.rotation.x = lerp(rg.rotation.x, sec === 3 ? Math.PI * 0.5 : d.tiltX, 0.07);
-        rg.rotation.y = lerp(rg.rotation.y, sec === 3 ? 0 : d.tiltY, 0.07);
-        rg.rotation.z = t * d.speed;
-        d.mat.opacity = lerp(d.mat.opacity, stageCfg.ringOpacity * (idx === 1 ? 1.25 : 0.85), 0.08);
+      arrowGroup.position.x = lerp(arrowGroup.position.x, cfg.arrowPos[0], 0.09);
+      arrowGroup.position.y = lerp(arrowGroup.position.y, cfg.arrowPos[1], 0.09);
+      arrowGroup.position.z = lerp(arrowGroup.position.z, cfg.arrowPos[2], 0.09);
+
+      pGroup.position.x = lerp(pGroup.position.x, cfg.pPos[0], 0.08);
+      pGroup.position.y = lerp(pGroup.position.y, cfg.pPos[1], 0.08);
+      pGroup.position.z = lerp(pGroup.position.z, cfg.pPos[2], 0.08);
+
+      // Independent Emissive Highlights
+      uPieceMats[0].emissiveIntensity = lerp(uPieceMats[0].emissiveIntensity, cfg.uEmissive, 0.1);
+      arrowPieceMats[0].emissiveIntensity = lerp(arrowPieceMats[0].emissiveIntensity, cfg.arrowEmissive, 0.1);
+      pPieceMats[0].emissiveIntensity = lerp(pPieceMats[0].emissiveIntensity, cfg.pEmissive, 0.1);
+
+      // Technical Wireframe Back-Layers (Exploded View in Section 02)
+      [uWireBack, arrowWireBack, pWireBack].forEach((wb) => {
+        wb.position.z = lerp(wb.position.z, cfg.wireOffsetZ, 0.08);
+        wb.userData.mat.opacity = lerp(wb.userData.mat.opacity, cfg.wireOpacity, 0.08);
       });
 
-      // Morph all 27 architectural modules smoothly
-      modules.forEach((mod) => {
-        const target = computeModuleTarget(mod, sec, t);
-        mod.position.x = lerp(mod.position.x, target.tx, 0.075);
-        mod.position.y = lerp(mod.position.y, target.ty, 0.075);
-        mod.position.z = lerp(mod.position.z, target.tz, 0.075);
+      // Subtle Halo Ring
+      if (haloRing) {
+        haloRing.rotation.z = t * 0.12;
+        haloRing.material.opacity = lerp(haloRing.material.opacity, cfg.haloOpacity, 0.07);
+      }
 
-        mod.scale.x = lerp(mod.scale.x, target.sx, 0.075);
-        mod.scale.y = lerp(mod.scale.y, target.sy, 0.075);
-        mod.scale.z = lerp(mod.scale.z, target.sz, 0.075);
-
-        mod.rotation.x = lerp(mod.rotation.x, target.rx, 0.075);
-        mod.rotation.y = lerp(mod.rotation.y, target.ry, 0.075);
-        mod.rotation.z = lerp(mod.rotation.z, target.rz, 0.075);
-
-        mod.userData.mat.emissiveIntensity = lerp(mod.userData.mat.emissiveIntensity, target.emissive, 0.09);
-        mod.userData.mat.opacity = lerp(mod.userData.mat.opacity, target.opacity, 0.09);
-        mod.userData.edgeMat.opacity = lerp(mod.userData.edgeMat.opacity, target.opacity * 0.72, 0.09);
-      });
-
-      if (particles) {
-        particles.rotation.y = t * 0.02;
+      // Micro-Particles (accelerate upward when hovering SC4LE.Up)
+      if (particles && particleVelocities) {
+        const posAttr = particles.geometry.attributes.position;
+        const speedMult = sec === 2 && appState.solutionHover === 'scale' ? 6.5 : 1.0;
+        for (let i = 0; i < particleVelocities.length; i++) {
+          let y = posAttr.getY(i) + particleVelocities[i] * speedMult;
+          if (y > 5.5) y = -5.5;
+          posAttr.setY(i, y);
+        }
+        posAttr.needsUpdate = true;
+        particles.rotation.y = t * 0.015;
       }
 
       renderer.render(scene, camera);
     }
 
     // =========================================================================
-    // 5. SECTION OBSERVERS & UNIQUE UI INTERACTIONS
+    // 6. SECTION OBSERVERS & UNIQUE UI INTERACTIONS
     // =========================================================================
     function setupSectionTracking() {
       const sections = document.querySelectorAll('section[data-section]');
-      const navPills = document.querySelectorAll('.nav-pill');
       const hudBtns = document.querySelectorAll('.hud-btn');
       const hudIndex = document.getElementById('hud-index');
 
@@ -1699,12 +1732,6 @@
                   txt.classList.remove('opacity-100', 'text-emeraldNeon');
                 }
               });
-
-              // Update Top Nav Pill
-              navPills.forEach((pill) => {
-                const navIdx = Number(pill.getAttribute('data-nav'));
-                pill.classList.toggle('active', navIdx === Math.min(idx, 4));
-              });
             }
           });
         },
@@ -1722,7 +1749,7 @@
           const rect = card.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width - 0.5;
           const y = (e.clientY - rect.top) / rect.height - 0.5;
-          card.style.transform = `perspective(900px) rotateX(${(-y * 6).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg) translateY(-3px)`;
+          card.style.transform = 'perspective(900px) rotateX(' + (-y * 6).toFixed(2) + 'deg) rotateY(' + (x * 6).toFixed(2) + 'deg) translateY(-3px)';
         });
         card.addEventListener('mouseleave', () => {
           card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0px)';
@@ -1738,7 +1765,7 @@
       if (scl) scl.classList.toggle('active-solution', mode === 'scale');
     }
 
-    // Section 5: Interactive Method Layer Selection (Synced with 3D Stacked Monoliths)
+    // Section 5: Interactive Method Layer Selection
     function selectMethodLayer(layerIdx) {
       appState.activeMethodLayer = layerIdx;
       const steps = document.querySelectorAll('[data-method-step]');
@@ -1747,7 +1774,7 @@
       });
       const beam = document.getElementById('method-progress-beam');
       if (beam) {
-        beam.style.height = `${((layerIdx + 1) / 3) * 100}%`;
+        beam.style.height = (((layerIdx + 1) / 3) * 100) + '%';
       }
     }
 
@@ -1759,7 +1786,7 @@
           const rect = btn.getBoundingClientRect();
           const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18;
           const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18;
-          btn.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+          btn.style.transform = 'translate(' + dx.toFixed(1) + 'px, ' + dy.toFixed(1) + 'px)';
         });
         btn.addEventListener('mouseleave', () => {
           btn.style.transform = 'translate(0px, 0px)';
@@ -1815,7 +1842,7 @@
     function toggleInteractive3D() {
       appState.interactive3D = !appState.interactive3D;
       document.body.classList.toggle('interactive-3d-mode', appState.interactive3D);
-      document.getElementById('explore-3d-label').textContent = appState.interactive3D ? 'Voltar ao Site' : 'Explorar 3D';
+      document.getElementById('explore-3d-label').textContent = appState.interactive3D ? 'Sair do Modo 3D' : 'Modo Interativo 3D';
       const hint = document.getElementById('orbit-hint');
       hint.classList.toggle('hidden', !appState.interactive3D);
       hint.classList.toggle('flex', appState.interactive3D);
@@ -1827,7 +1854,7 @@
     }
 
     // =========================================================================
-    // 6. MOBILE MENU & INTERACTIVE CONTACT MODAL
+    // 7. MOBILE MENU & INTERACTIVE CONTACT MODAL
     // =========================================================================
     function setupMobileMenu() {
       const btn = document.getElementById('mobile-menu-btn');
@@ -1869,7 +1896,7 @@
       const interest = document.getElementById('interest-select').value;
 
       document.getElementById('modal-success-copy').innerHTML =
-        `Obrigado, <strong class="text-crispWhite">${name}</strong>. Registramos o interesse da <strong class="text-crispWhite">${company}</strong> em <span class="text-emeraldNeon font-semibold">${interest}</span>. Nosso time entrará em contato em breve.`;
+        'Obrigado, <strong class="text-crispWhite">' + name + '</strong>. Encaminhamos o seu interesse na empresa <strong class="text-crispWhite">' + company + '</strong> para o especialista adequado em <span class="text-emeraldNeon font-semibold">' + interest + '</span>. Entraremos em contacto brevemente.';
 
       document.getElementById('modal-form-view').classList.add('hidden');
       document.getElementById('modal-success-view').classList.remove('hidden');
@@ -1884,7 +1911,7 @@
     });
 
     // =========================================================================
-    // 7. BOOTSTRAP
+    // 8. BOOTSTRAP
     // =========================================================================
     window.onload = function () {
       const yearEl = document.getElementById('year-el');
