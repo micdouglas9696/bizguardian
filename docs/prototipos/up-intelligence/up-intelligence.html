@@ -1,374 +1,1903 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Up.INTELLIG3NCE | Estratégia de Negócios, Tecnologia e Inteligência Artificial</title>
-  <link rel="stylesheet" href="workshop-ds.css">
-  <script src="marinho.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UP.INTELLIG3NCE · Marinho Ponci | IA &amp; Negócios</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            obsidian: '#030504',
+            deepEmerald: '#062016',
+            emeraldNeon: '#10E88A',
+            crispWhite: '#F4F7F5',
+            slateMuted: '#8E9E96',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Three.js r128 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg-obsidian: #030504;
+      --deep-emerald: #062016;
+      --neon-emerald: #10E88A;
+      --crisp-white: #F4F7F5;
+      --slate-muted: #8E9E96;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-obsidian);
+      color: var(--crisp-white);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Minimalist dark scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030504;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(16, 232, 138, 0.35);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 232, 138, 0.75);
+    }
+
+    /* Fullscreen fixed 3D WebGL Canvas */
+    #webgl-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    /* Dim 3D canvas cleanly on mobile/tablet so text has 100% legibility */
+    @media (max-width: 1023px) {
+      #webgl-canvas {
+        opacity: 0.22;
+      }
+      body.interactive-3d-mode #webgl-canvas {
+        opacity: 1;
+      }
+    }
+
+    /* Interactive 3D Orbit Exploration Mode */
+    body.interactive-3d-mode #webgl-canvas {
+      pointer-events: auto;
+      cursor: grab;
+      z-index: 40;
+    }
+    body.interactive-3d-mode #webgl-canvas:active {
+      cursor: grabbing;
+    }
+    body.interactive-3d-mode main,
+    body.interactive-3d-mode header,
+    body.interactive-3d-mode #section-hud {
+      opacity: 0.08;
+      pointer-events: none;
+      filter: blur(3px);
+      transition: opacity 0.4s ease, filter 0.4s ease;
+    }
+    main,
+    header,
+    #section-hud {
+      transition: opacity 0.4s ease, filter 0.4s ease;
+    }
+
+    /* Ambient atmospheric lighting */
+    .ambient-emerald-glow {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 65% 45% at 72% 28%, rgba(16, 232, 138, 0.09) 0%, rgba(6, 32, 22, 0.06) 45%, transparent 75%),
+        radial-gradient(ellipse 55% 40% at 22% 78%, rgba(6, 32, 22, 0.28) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .architectural-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(16, 232, 138, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 232, 138, 0.028) 1px, transparent 1px);
+      background-size: 72px 72px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Emerald Text Glow */
+    .text-emerald-glow {
+      color: #10E88A;
+      text-shadow: 0 0 28px rgba(16, 232, 138, 0.42), 0 0 56px rgba(16, 232, 138, 0.16);
+    }
+
+    /* Buttons */
+    .btn-emerald {
+      background: linear-gradient(135deg, #10E88A 0%, #05D67B 100%);
+      color: #030504;
+      box-shadow: 0 0 24px rgba(16, 232, 138, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    }
+    .btn-emerald:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 38px rgba(16, 232, 138, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-outline {
+      background: rgba(5, 9, 7, 0.75);
+      border: 1px solid rgba(244, 247, 245, 0.2);
+      color: #F4F7F5;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.25s ease;
+    }
+    .btn-outline:hover {
+      border-color: rgba(16, 232, 138, 0.65);
+      background: rgba(16, 232, 138, 0.08);
+      box-shadow: 0 0 22px rgba(16, 232, 138, 0.18);
+      transform: translateY(-2px);
+    }
+
+    /* Solid Dark Glassmorphic Surfaces (Guaranteed Readability) */
+    .safe-surface {
+      background: rgba(5, 9, 7, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .safe-surface-subtle {
+      background: rgba(5, 9, 7, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Navbar Active Pill */
+    .nav-pill {
+      color: #8E9E96;
+      transition: all 0.25s ease;
+    }
+    .nav-pill:hover {
+      color: #F4F7F5;
+    }
+    .nav-pill.active {
+      background: rgba(16, 232, 138, 0.14);
+      color: #10E88A;
+      box-shadow: inset 0 0 0 1px rgba(16, 232, 138, 0.28), 0 0 18px rgba(16, 232, 138, 0.16);
+    }
+
+    /* ===================================================================== */
+    /* 6 UNIQUE SECTION UI ANIMATIONS                                        */
+    /* ===================================================================== */
+
+    /* SECTION 1 (HERO): Staggered clip-path mask-up headline reveal */
+    .clip-mask-line {
+      display: block;
+      overflow: hidden;
+    }
+    .clip-reveal {
+      display: block;
+      clip-path: inset(100% 0 0 0);
+      transform: translateY(36px);
+      opacity: 0;
+      transition:
+        clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.7s ease;
+    }
+    .section-visible .clip-reveal {
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .delay-1 { transition-delay: 0.12s; }
+    .delay-2 { transition-delay: 0.24s; }
+    .delay-3 { transition-delay: 0.36s; }
+    .delay-4 { transition-delay: 0.48s; }
+
+    /* SECTION 2 (ORIGEM): Horizontal editorial slide-in + SVG hairline draw */
+    .slide-editorial {
+      opacity: 0;
+      transform: translateX(42px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-visible .slide-editorial {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .svg-hairline {
+      stroke-dasharray: 420;
+      stroke-dashoffset: 420;
+      transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-visible .svg-hairline {
+      stroke-dashoffset: 0;
+    }
+
+    /* SECTION 3 (SOLUÇÕES): 3D Magnetic Tilt Card + Luminous Emerald Border Trace */
+    .tilt-card {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease-out, border-color 0.35s ease, box-shadow 0.35s ease;
+      overflow: hidden;
+    }
+    .tilt-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(125deg, transparent 20%, rgba(16, 232, 138, 0.75) 50%, transparent 80%);
+      background-size: 250% 250%;
+      background-position: 100% 100%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.35s ease, background-position 0.8s ease;
+      pointer-events: none;
+    }
+    .tilt-card:hover::before,
+    .tilt-card.active-solution::before {
+      opacity: 1;
+      background-position: 0% 0%;
+    }
+    .tilt-card:hover,
+    .tilt-card.active-solution {
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.75), 0 0 42px rgba(16, 232, 138, 0.16);
+    }
+
+    /* SECTION 4 (VISÃO): Blur-to-sharp cinematic focus + animated vertical quote bar */
+    .blur-focus {
+      opacity: 0;
+      filter: blur(14px);
+      transform: scale(0.98);
+      transition: opacity 0.95s ease, filter 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-visible .blur-focus {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
+    .quote-bar {
+      transform-origin: top;
+      transform: scaleY(0);
+      transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+    }
+    .section-visible .quote-bar {
+      transform: scaleY(1);
+    }
+
+    /* SECTION 5 (MÉTODO): Cascading timeline + animated vertical progress beam */
+    .cascade-step {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease;
+    }
+    .section-visible .cascade-step {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .method-step-active {
+      border-color: rgba(16, 232, 138, 0.55) !important;
+      background: rgba(16, 232, 138, 0.06) !important;
+      box-shadow: 0 0 32px rgba(16, 232, 138, 0.14);
+    }
+    .progress-beam-fill {
+      transition: height 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* SECTION 6 (CTA): Ambient emerald pulse + magnetic button container */
+    @keyframes emeraldBreath {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.06); }
+    }
+    .cta-pulse-halo {
+      animation: emeraldBreath 4.5s ease-in-out infinite;
+    }
+
+    /* Duotone Minimalist Editorial Photography Treatment */
+    .duotone-editorial {
+      filter: grayscale(100%) contrast(1.22) brightness(0.62);
+      mix-blend-mode: luminosity;
+    }
+
+    /* Modal transitions */
+    .modal-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-panel {
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-backdrop.open .modal-panel {
+      transform: translateY(0) scale(1);
+    }
+  </style>
 </head>
-<body>
-  <div class="ws-notice">ESTUDO DE REDESIGN · DESIGN SYSTEM UP.INTELLIG3NCE</div>
 
-  <!-- 01. BARRA DE NAVEGAÇÃO FIXA (MARINHO PONCI) -->
-  <header class="cinematic-header">
-    <a class="cinematic-brand" href="index.html" aria-label="Marinho Ponci — início">
-      <img src="/marinho-signature-header.png" alt="Marinho Ponci">
-    </a>
+<body class="bg-obsidian text-crispWhite antialiased selection:bg-emeraldNeon/30 selection:text-emeraldNeon">
+  <!-- Fullscreen Interactive 3D WebGL Stage -->
+  <canvas id="webgl-canvas" aria-label="Escultura 3D interativa do ecossistema UP.INTELLIG3NCE"></canvas>
 
-    <nav class="cinematic-nav-pill" aria-label="Navegação principal">
-      <a href="index.html" class="cinematic-nav-item">Início</a>
-      <a href="up-intelligence.html" class="cinematic-nav-item is-active">Up.INTELLIG3NCE</a>
-      <a href="organize.html" class="cinematic-nav-item">ORG4NIZE.Up</a>
-      <a href="scale.html" class="cinematic-nav-item">SC4LE.Up</a>
-      <a href="dossies.html" class="cinematic-nav-item">Dossiês</a>
-      <a href="blog.html" class="cinematic-nav-item">Blog</a>
-    </nav>
+  <!-- Subtle Atmospheric Glows & Architectural Grid -->
+  <div class="ambient-emerald-glow"></div>
+  <div class="architectural-grid"></div>
 
-    <div class="cinematic-header-right">
-      <a class="cinematic-cta-pill" href="index.html#contato">Vamos conversar</a>
-      <button class="ws-menu-toggle-btn ws-mobile-toggle" type="button" aria-label="Abrir Menu Lateral">
-        <span class="ws-toggle-icon">
-          <span class="ws-toggle-bar"></span>
-          <span class="ws-toggle-bar"></span>
-        </span>
-      </button>
+  <!-- ===================================================================== -->
+  <!-- FIXED TOP NAVIGATION BAR                                              -->
+  <!-- ===================================================================== -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <!-- Left: Signature "Marinho Ponci" linking to main Hub -->
+      <a href="index.html" class="group flex items-center gap-3 focus:outline-none" aria-label="Marinho Ponci — Hub Principal">
+        <img
+          src="/marinho-signature-header.png"
+          alt="Marinho Ponci"
+          class="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          onerror="this.onerror=null; this.src='/marinho-signature.png';"
+        />
+      </a>
+
+      <!-- Center: Floating Pill Navigation (Desktop) -->
+      <nav
+        aria-label="Navegação Principal"
+        class="hidden lg:flex items-center gap-1 px-2 py-1.5 rounded-full bg-[#070C0A]/85 border border-white/[0.09] backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.65)]"
+      >
+        <a href="#inicio" data-nav="0" class="nav-pill active px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Início</a>
+        <a href="#origem" data-nav="1" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Origem</a>
+        <a href="#solucoes" data-nav="2" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Soluções</a>
+        <a href="#visao" data-nav="3" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Visão</a>
+        <a href="#metodo" data-nav="4" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Método</a>
+      </nav>
+
+      <!-- Right: Glowing Emerald CTA + Mobile Toggle -->
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          onclick="openContactModal('Diagnóstico Completo')"
+          class="btn-emerald px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-extrabold tracking-tight cursor-pointer"
+        >
+          Vamos conversar
+        </button>
+
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+          class="lg:hidden p-2.5 rounded-full bg-[#070C0A]/90 border border-white/15 text-crispWhite hover:border-emeraldNeon/60 transition-colors"
+        >
+          <svg id="ham-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg id="x-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="lg:hidden hidden mt-3 max-w-7xl mx-auto rounded-3xl safe-surface p-4">
+      <div class="flex flex-col gap-1">
+        <a href="#inicio" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-emeraldNeon bg-emeraldNeon/10">Início</a>
+        <a href="#origem" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">01 · Origem</a>
+        <a href="#solucoes" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">02 · Soluções</a>
+        <a href="#visao" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">03 · Visão do Fundador</a>
+        <a href="#metodo" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">04 · Método Aplicado</a>
+        <a href="#contato" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">05 · Próximo Passo</a>
+
+        <div class="my-2 border-t border-white/10"></div>
+        <div class="px-4 py-1 text-[10px] font-mono tracking-widest text-slateMuted uppercase">Ecossistema</div>
+        <a href="index.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Página Principal (Hub)</a>
+        <a href="organize.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">ORG4NIZE.Up</a>
+        <a href="scale.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">SC4LE.Up</a>
+        <a href="dossies.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Dossiês Estratégicos</a>
+        <a href="blog.html" class="mobile-link px-4 py-2.5 rounded-2xl text-xs font-semibold text-crispWhite/70 hover:text-crispWhite hover:bg-white/5">Blog &amp; Artigos</a>
+      </div>
     </div>
   </header>
 
-  <main>
-    <!-- HERO NO ESTILO WORKSHOP COM BLUEPRINT ASSIMÉTRICO (EXCLUSIVO UP.INTELLIG3NCE) -->
-    <section class="ws-hero">
-      <div class="cinematic-aura" aria-hidden="true"></div>
-      <div class="wrap reveal">
-        <div class="ws-hero-asymmetric">
-          <div>
-            <div class="ws-badge">
-              <span class="ws-badge-dot"></span>
-              <span>ECOSSISTEMA INTEGRADO · IA & NEGÓCIOS</span>
-            </div>
-            <span class="ws-eyebrow">ESTRATÉGIA · TECNOLOGIA · INTELIGÊNCIA ARTIFICIAL</span>
-            <h1 class="ws-title" style="text-align: left; margin: 16px 0;">
-              UP.INTELLIG3NCE <br>
-              <span class="ws-title-green">DECISÕES MAIS BEM FUNDAMENTADAS</span>
-            </h1>
-            <p class="ws-lead" style="text-align: left; margin: 0 0 28px;">
-              Reunimos décadas de vivência prática em desenvolvimento e expansão de empresas com a capacidade analítica da inteligência artificial para ajudar líderes a gerir melhor e identificar oportunidades reais.
-            </p>
-            <div class="ws-actions" style="justify-content: flex-start;">
-              <a class="ws-btn-primary" href="#solucoes">Explorar Soluções</a>
-              <a class="ws-btn-secondary" href="index.html#contato">Falar com Especialistas</a>
-            </div>
-
-            <div class="ws-hero-stats">
-              <div>
-                <div style="font-size: 26px; font-weight: 900; color: var(--ws-green); line-height: 1.1;">+38 Anos</div>
-                <div style="font-size: 11px; font-weight: 700; color: #71717A; text-transform: uppercase; margin-top: 4px;">Vivência de Mercado</div>
-              </div>
-              <div style="border-left: 1px solid #1A261C; padding-left: 24px;">
-                <div style="font-size: 26px; font-weight: 900; color: #FFF; line-height: 1.1;">IA Aplicada</div>
-                <div style="font-size: 11px; font-weight: 700; color: #71717A; text-transform: uppercase; margin-top: 4px;">Análise Preditiva</div>
-              </div>
-              <div style="border-left: 1px solid #1A261C; padding-left: 24px;">
-                <div style="font-size: 26px; font-weight: 900; color: var(--ws-green); line-height: 1.1;">100%</div>
-                <div style="font-size: 11px; font-weight: 700; color: #71717A; text-transform: uppercase; margin-top: 4px;">Foco em Critério</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- FRAME BLUEPRINT DO ECOSSISTEMA UP -->
-          <div class="ws-blueprint-frame">
-            <img src="up-ecosystem.jpeg" alt="Arquitetura do Ecossistema Up.INTELLIG3NCE">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TICKER KINÉTICO DA UP -->
-    <div class="ws-ticker-ribbon">
-      <div class="ws-ticker-track">
-        <div class="ws-ticker-item">
-          <span>UP.INTELLIG3NCE</span>
-          <span class="ws-ticker-dot"></span>
-          <span>ESTRATÉGIA DE NEGÓCIOS</span>
-          <span class="ws-ticker-dot"></span>
-          <span>TECNOLOGIA & IA</span>
-          <span class="ws-ticker-dot"></span>
-          <span>ORG4NIZE.UP</span>
-          <span class="ws-ticker-dot"></span>
-          <span>SC4LE.UP</span>
-          <span class="ws-ticker-dot"></span>
-          <span>MARINHO PONCI</span>
-          <span class="ws-ticker-dot"></span>
-        </div>
-        <div class="ws-ticker-item">
-          <span>UP.INTELLIG3NCE</span>
-          <span class="ws-ticker-dot"></span>
-          <span>ESTRATÉGIA DE NEGÓCIOS</span>
-          <span class="ws-ticker-dot"></span>
-          <span>TECNOLOGIA & IA</span>
-          <span class="ws-ticker-dot"></span>
-          <span>ORG4NIZE.UP</span>
-          <span class="ws-ticker-dot"></span>
-          <span>SC4LE.UP</span>
-          <span class="ws-ticker-dot"></span>
-          <span>MARINHO PONCI</span>
-          <span class="ws-ticker-dot"></span>
-        </div>
-      </div>
+  <!-- ===================================================================== -->
+  <!-- RIGHT-EDGE SECTION PROGRESS HUD (01 / 06)                             -->
+  <!-- ===================================================================== -->
+  <aside
+    id="section-hud"
+    aria-label="Progresso das seções"
+    class="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-end gap-3"
+  >
+    <div class="font-mono text-[11px] tracking-[0.22em] text-emeraldNeon font-semibold mb-1">
+      <span id="hud-index">01</span><span class="text-white/25"> / 06</span>
     </div>
 
-    <!-- NARRATIVA VISUAL: O PONTO DE PARTIDA (A GÊNESE) -->
-    <section class="ws-section">
-      <div class="wrap">
-        <div class="ws-section-header reveal">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>A ORIGEM DO ECOSSISTEMA</span>
-          </div>
-          <h2>O ponto de partida é o conhecimento de quem vive negócios</h2>
-          <p>Grande parte dos problemas das empresas não está na falta de esforço, mas na dificuldade de organizar informações e tomar boas decisões.</p>
-        </div>
+    <div class="flex flex-col items-end gap-2.5">
+      <button onclick="scrollToId('inicio')" data-hud="0" class="hud-btn group flex items-center gap-2.5 cursor-pointer">
+        <span class="hud-txt text-[10px] font-mono uppercase tracking-widest text-emeraldNeon opacity-100 transition-opacity">Início</span>
+        <span class="hud-bar w-6 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_12px_#10E88A] transition-all"></span>
+      </button>
+      <button onclick="scrollToId('origem')" data-hud="1" class="hud-btn group flex items-center gap-2.5 cursor-pointer">
+        <span class="hud-txt text-[10px] font-mono uppercase tracking-widest text-slateMuted opacity-0 group-hover:opacity-100 transition-opacity">Origem</span>
+        <span class="hud-bar w-2 h-1.5 rounded-full bg-white/25 group-hover:bg-white/60 transition-all"></span>
+      </button>
+      <button onclick="scrollToId('solucoes')" data-hud="2" class="hud-btn group flex items-center gap-2.5 cursor-pointer">
+        <span class="hud-txt text-[10px] font-mono uppercase tracking-widest text-slateMuted opacity-0 group-hover:opacity-100 transition-opacity">Soluções</span>
+        <span class="hud-bar w-2 h-1.5 rounded-full bg-white/25 group-hover:bg-white/60 transition-all"></span>
+      </button>
+      <button onclick="scrollToId('visao')" data-hud="3" class="hud-btn group flex items-center gap-2.5 cursor-pointer">
+        <span class="hud-txt text-[10px] font-mono uppercase tracking-widest text-slateMuted opacity-0 group-hover:opacity-100 transition-opacity">Visão</span>
+        <span class="hud-bar w-2 h-1.5 rounded-full bg-white/25 group-hover:bg-white/60 transition-all"></span>
+      </button>
+      <button onclick="scrollToId('metodo')" data-hud="4" class="hud-btn group flex items-center gap-2.5 cursor-pointer">
+        <span class="hud-txt text-[10px] font-mono uppercase tracking-widest text-slateMuted opacity-0 group-hover:opacity-100 transition-opacity">Método</span>
+        <span class="hud-bar w-2 h-1.5 rounded-full bg-white/25 group-hover:bg-white/60 transition-all"></span>
+      </button>
+      <button onclick="scrollToId('contato')" data-hud="5" class="hud-btn group flex items-center gap-2.5 cursor-pointer">
+        <span class="hud-txt text-[10px] font-mono uppercase tracking-widest text-slateMuted opacity-0 group-hover:opacity-100 transition-opacity">Contato</span>
+        <span class="hud-bar w-2 h-1.5 rounded-full bg-white/25 group-hover:bg-white/60 transition-all"></span>
+      </button>
+    </div>
+  </aside>
 
-        <div class="ws-card-grid-3">
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">Experiência de Campo</span>
-            <h3>Trabalho de Trincheira</h3>
-            <p>Décadas trabalhando diretamente com empresários, estruturando operações e participando de processos de crescimento e expansão.</p>
-          </div>
+  <!-- ===================================================================== -->
+  <!-- BOTTOM-RIGHT "EXPLORAR 3D" ORBIT TOGGLE                               -->
+  <!-- ===================================================================== -->
+  <div class="fixed bottom-5 right-5 z-50 flex items-center gap-2.5">
+    <div
+      id="orbit-hint"
+      class="hidden items-center gap-2 px-3.5 py-2 rounded-full safe-surface border-emeraldNeon/40 text-xs font-mono text-emeraldNeon"
+    >
+      <span class="w-2 h-2 rounded-full bg-emeraldNeon animate-pulse"></span>
+      <span>Arraste para orbitar</span>
+    </div>
 
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">IA Desmistificada</span>
-            <h3>Capacidade Analítica</h3>
-            <p>Com a IA, reunimos conhecimento prático de negócios com acompanhamento que antes era caro e inacessível para médias empresas.</p>
-          </div>
+    <button
+      id="explore-3d-btn"
+      type="button"
+      onclick="toggleInteractive3D()"
+      class="flex items-center gap-2 px-4 py-2.5 rounded-full safe-surface hover:border-emeraldNeon/60 text-xs font-mono tracking-wider uppercase text-crispWhite hover:text-emeraldNeon transition-all cursor-pointer"
+    >
+      <svg class="w-4 h-4 text-emeraldNeon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+      </svg>
+      <span id="explore-3d-label">Explorar 3D</span>
+    </button>
+  </div>
 
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">Liderança Ativa</span>
-            <h3>Pessoas no Centro</h3>
-            <p>A tecnologia é uma parte importante do que fazemos. Mas o ponto de partida continua sendo as pessoas e os líderes que conduzem o negócio.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- ===================================================================== -->
+  <!-- MAIN SCROLLYTELLING CONTAINER                                         -->
+  <!-- ===================================================================== -->
+  <main class="relative z-10">
 
-    <!-- AS SOLUÇÕES DO ECOSSISTEMA: CARDS LADO A LADO -->
-    <section class="ws-section" id="solucoes">
-      <div class="wrap">
-        <div class="ws-section-header reveal">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>ECOSSISTEMA INTEGRADO</span>
-          </div>
-          <h2>Soluções especializadas para cada fase do seu negócio</h2>
-          <p>Cada uma voltada para uma necessidade específica, com o mesmo propósito de fundamentar suas decisões:</p>
-        </div>
-
-        <div class="ws-card-grid-2">
-          <!-- ORG4NIZE.UP -->
-          <div class="ws-card reveal" style="border-top:3px solid var(--ws-green);">
-            <div class="ws-icon-box">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">01 · GESTÃO INTERNA, FINANÇAS & ROTINA</span>
-            <h3 style="font-size:28px;">ORG4NIZE.Up</h3>
-            <p>Para pequenas e médias empresas que precisam colocar as finanças, a rotina administrativa e a operação em ordem.</p>
-            
-            <ul class="ws-feature-list">
-              <li><span class="ws-check">✓</span> <span><strong>Finanças com Clareza:</strong> controle real de entradas, saídas e margens.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Rotina sem Sobrecarga:</strong> processos administrativos definidos.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Base para o Futuro:</strong> indicadores confiáveis para planejar crescimento.</span></li>
-            </ul>
-
-            <div style="margin-top:auto;padding-top:14px;">
-              <a class="ws-btn-primary" style="width:100%;" href="organize.html">Conhecer ORG4NIZE.Up</a>
-            </div>
-          </div>
-
-          <!-- SC4LE.UP -->
-          <div class="ws-card reveal" style="border-top:3px solid var(--ws-green);">
-            <div class="ws-icon-box">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">02 · EXPANSÃO DE REDES & FRANCHISING</span>
-            <h3 style="font-size:28px;">SC4LE.Up</h3>
-            <p>Mais informação e critério para decidir onde, como e com quem expandir sua rede com inteligência artificial.</p>
-            
-            <ul class="ws-feature-list">
-              <li><span class="ws-check">✓</span> <span><strong>Estudo de Território:</strong> mapeamento de praças e densidade de consumo.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Validação de Ponto:</strong> análise técnica de fluxo, saturação e custos.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Qualificação de Parceiros:</strong> perfil de franqueado com real aderência.</span></li>
-            </ul>
-
-            <div style="margin-top:auto;padding-top:14px;">
-              <a class="ws-btn-primary" style="width:100%;" href="scale.html">Conhecer SC4LE.Up</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MANIFESTO DE MARINHO PONCI: SPLIT BOX -->
-    <section class="ws-section">
-      <div class="wrap reveal">
-        <div class="ws-split-box">
-          <div>
-            <div class="ws-badge">
-              <span class="ws-badge-dot"></span>
-              <span>A VISÃO DO FUNDADOR</span>
-            </div>
-            <h2 style="font-size:clamp(28px,3.5vw,40px);font-weight:900;color:#fff;line-height:1.15;margin:12px 0 16px;">
-              Tecnologia como meio. Negócios como essência.
-            </h2>
-            <p style="font-size:15px;color:#A1A1AA;line-height:1.65;margin:0 0 16px;">
-              A Up.INTELLIG3NCE não nasceu em um laboratório isolado de software, mas do chão de fábrica, de balcões de lojas, de salas de diretoria e da experiência direta de quem já participou de expansões bilionárias.
-            </p>
-          </div>
-
-          <div style="background:#0A0E0B;border:1px solid #1E261C;border-radius:18px;padding:32px;box-shadow:0 0 35px rgba(2,233,155,0.12);">
-            <div style="color:var(--ws-green);font-size:36px;line-height:1;margin-bottom:8px;font-family:Georgia,serif;">“</div>
-            <p style="font-size:clamp(17px,2vw,20px);font-weight:700;color:#E4E4E7;line-height:1.55;margin:0 0 18px;">
-              A tecnologia é uma parte importante do que fazemos. Mas o ponto de partida continua sendo o conhecimento de negócios e das pessoas que estão à frente deles.
-            </p>
-            <div style="display:flex;align-items:center;gap:12px;">
-              <span style="font-family:var(--ws-font-mono);font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--ws-green);">
-                UP.INTELLIG3NCE · MARINHO PONCI
+    <!-- =================================================================== -->
+    <!-- SECTION 01: HERO (TEXT STRICTLY LEFT / 3D STAGE STRICTLY RIGHT)     -->
+    <!-- 3D Formation: Convergência Orbital | UI: Clip-Path Mask-Up Reveal   -->
+    <!-- =================================================================== -->
+    <section
+      id="inicio"
+      data-section="0"
+      class="min-h-screen flex items-center pt-28 pb-16 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto section-visible"
+    >
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- 5-Column Safe Zone (LEFT) -->
+        <div class="lg:col-span-5 max-w-[520px] safe-surface-subtle lg:bg-transparent lg:border-0 lg:backdrop-blur-none rounded-3xl p-6 sm:p-8 lg:p-0">
+          <!-- Eyebrow -->
+          <div class="clip-mask-line mb-5">
+            <div class="clip-reveal inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emeraldNeon/[0.08] border border-emeraldNeon/25">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
+              <span class="font-mono text-[11px] font-medium tracking-[0.2em] uppercase text-emeraldNeon">
+                UP.INTELLIG3NCE · IA &amp; NEGÓCIOS
               </span>
             </div>
           </div>
+
+          <!-- Staggered Clip-Path Headline -->
+          <h1 class="text-4xl sm:text-5xl xl:text-[3.55rem] font-extrabold tracking-[-0.035em] leading-[1.06] text-crispWhite mb-6">
+            <span class="clip-mask-line"><span class="clip-reveal delay-1">Decisões</span></span>
+            <span class="clip-mask-line"><span class="clip-reveal delay-2">fundamentadas</span></span>
+            <span class="clip-mask-line"><span class="clip-reveal delay-3">constroem <span class="text-emerald-glow">grandes</span></span></span>
+            <span class="clip-mask-line"><span class="clip-reveal delay-4 text-emerald-glow">negócios.</span></span>
+          </h1>
+
+          <!-- Executive Subtitle -->
+          <p class="clip-reveal delay-3 text-base sm:text-lg text-slateMuted leading-relaxed mb-8">
+            Unimos 38 anos de vivência em expansão empresarial à precisão analítica da IA para transformar dados dispersos em critério.
+          </p>
+
+          <!-- CTAs -->
+          <div class="clip-reveal delay-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 mb-10">
+            <a
+              href="#solucoes"
+              class="btn-emerald px-7 py-3.5 rounded-full text-sm font-extrabold tracking-tight text-center inline-flex items-center justify-center gap-2"
+            >
+              <span>Explorar Soluções</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+            <button
+              type="button"
+              onclick="openContactModal('Diagnóstico Completo')"
+              class="btn-outline px-7 py-3.5 rounded-full text-sm font-bold tracking-tight cursor-pointer"
+            >
+              Falar com Especialistas
+            </button>
+          </div>
+
+          <!-- Compact Metrics Strip -->
+          <div class="clip-reveal delay-4 grid grid-cols-3 gap-3 pt-6 border-t border-white/10">
+            <div>
+              <div class="text-lg sm:text-xl font-extrabold text-crispWhite tracking-tight">+38 Anos</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Vivência de Mercado</div>
+            </div>
+            <div class="border-l border-white/10 pl-3">
+              <div class="text-lg sm:text-xl font-extrabold text-emeraldNeon tracking-tight">IA Aplicada</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Análise Preditiva</div>
+            </div>
+            <div class="border-l border-white/10 pl-3">
+              <div class="text-lg sm:text-xl font-extrabold text-crispWhite tracking-tight">100% Critério</div>
+              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Zero Achismo</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7-Column Dedicated Empty 3D Stage (RIGHT) -->
+        <div class="hidden lg:block lg:col-span-7 h-[560px]" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 02: A ORIGEM (3D STAGE LEFT / TEXT STRICTLY RIGHT)          -->
+    <!-- 3D Formation: Matriz de Dados (3x3x3) | UI: Editorial Slide + SVG   -->
+    <!-- =================================================================== -->
+    <section
+      id="origem"
+      data-section="1"
+      class="min-h-screen flex items-center py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto"
+    >
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- 7-Column Dedicated Empty 3D Stage (LEFT) -->
+        <div class="hidden lg:block lg:col-span-7 h-[560px]" aria-hidden="true"></div>
+
+        <!-- 5-Column Safe Zone (RIGHT) -->
+        <div class="lg:col-span-5 max-w-[520px] lg:ml-auto safe-surface rounded-3xl p-6 sm:p-8">
+          <div class="slide-editorial font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
+            01 · A ORIGEM
+          </div>
+
+          <h2 class="slide-editorial delay-1 text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-4">
+            O gargalo raramente é <span class="text-emerald-glow">falta de esforço.</span>
+          </h2>
+
+          <p class="slide-editorial delay-2 text-base text-slateMuted leading-relaxed mb-6">
+            Empresas travam por operarem no escuro, sem dados organizados para decidir.
+          </p>
+
+          <!-- Minimalist Obsidian-Emerald Architectural Grid Visual -->
+          <div class="slide-editorial delay-2 relative h-28 rounded-2xl overflow-hidden border border-white/10 mb-6 bg-deepEmerald/40">
+            <img
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=75"
+              alt="Arquitetura corporativa minimalista"
+              onerror="this.style.display='none'"
+              class="absolute inset-0 w-full h-full object-cover duotone-editorial opacity-55"
+            />
+            <div class="absolute inset-0 bg-gradient-to-r from-[#030504]/90 via-[#062016]/65 to-[#030504]/85"></div>
+            <!-- Crisp Architectural SVG Overlay -->
+            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 440 112" fill="none" preserveAspectRatio="none">
+              <line x1="0" y1="56" x2="440" y2="56" stroke="#10E88A" stroke-opacity="0.22" stroke-width="1" class="svg-hairline" />
+              <line x1="110" y1="0" x2="110" y2="112" stroke="#10E88A" stroke-opacity="0.16" stroke-width="1" />
+              <line x1="220" y1="0" x2="220" y2="112" stroke="#10E88A" stroke-opacity="0.28" stroke-width="1" />
+              <line x1="330" y1="0" x2="330" y2="112" stroke="#10E88A" stroke-opacity="0.16" stroke-width="1" />
+              <circle cx="220" cy="56" r="4" fill="#10E88A" />
+              <circle cx="220" cy="56" r="16" stroke="#10E88A" stroke-opacity="0.45" stroke-width="1" />
+            </svg>
+            <div class="relative z-10 h-full flex items-end justify-between p-3.5">
+              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon">MATRIZ OPERACIONAL</span>
+              <span class="font-mono text-[10px] tracking-[0.18em] text-crispWhite/60">DADOS → CRITÉRIO</span>
+            </div>
+          </div>
+
+          <!-- 3 Crisp Pillars with Animated Hairline Dividers -->
+          <div class="space-y-4">
+            <div class="slide-editorial delay-2">
+              <svg class="w-full h-[2px] mb-3" viewBox="0 0 420 2" preserveAspectRatio="none">
+                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.35" stroke-width="1" class="svg-hairline" />
+              </svg>
+              <h3 class="text-sm font-bold text-crispWhite tracking-wide flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
+                Trincheira Real
+              </h3>
+              <p class="text-sm text-slateMuted mt-1 leading-relaxed">
+                Décadas estruturando operações e expansões do chão de fábrica à diretoria.
+              </p>
+            </div>
+
+            <div class="slide-editorial delay-3">
+              <svg class="w-full h-[2px] mb-3" viewBox="0 0 420 2" preserveAspectRatio="none">
+                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.25" stroke-width="1" class="svg-hairline" />
+              </svg>
+              <h3 class="text-sm font-bold text-crispWhite tracking-wide flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
+                IA Desmistificada
+              </h3>
+              <p class="text-sm text-slateMuted mt-1 leading-relaxed">
+                Inteligência analítica de alto nível, antes restrita a grandes corporações.
+              </p>
+            </div>
+
+            <div class="slide-editorial delay-4">
+              <svg class="w-full h-[2px] mb-3" viewBox="0 0 420 2" preserveAspectRatio="none">
+                <line x1="0" y1="1" x2="420" y2="1" stroke="#10E88A" stroke-opacity="0.25" stroke-width="1" class="svg-hairline" />
+              </svg>
+              <h3 class="text-sm font-bold text-crispWhite tracking-wide flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
+                Liderança no Comando
+              </h3>
+              <p class="text-sm text-slateMuted mt-1 leading-relaxed">
+                A tecnologia processa o cenário; quem decide continua sendo você.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- METODOLOGIA EM 3 PASSOS (ESTILO WORKSHOP) -->
-    <section class="ws-section">
-      <div class="wrap">
-        <div class="ws-section-header reveal">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>MÉTODO APLICADO</span>
+    <!-- =================================================================== -->
+    <!-- SECTION 03: SOLUÇÕES (SOLID DARK GLASS CARDS / 3D PERIPHERY)        -->
+    <!-- 3D Formation: Dualidade Modular | UI: 3D Tilt + Border Trace        -->
+    <!-- =================================================================== -->
+    <section
+      id="solucoes"
+      data-section="2"
+      class="min-h-screen flex flex-col justify-center py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto"
+    >
+      <!-- Top Header (Left-aligned so upper-right 3D periphery stays airy) -->
+      <div class="max-w-xl mb-12">
+        <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
+          02 · ECOSSISTEMA INTEGRADO
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite">
+          Duas frentes. <span class="text-emerald-glow">Um mesmo rigor.</span>
+        </h2>
+      </div>
+
+      <!-- Two Side-by-Side Solid Dark Glassmorphic Solution Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <!-- CARD 01: ORG4NIZE.Up -->
+        <article
+          id="card-organize"
+          data-tilt
+          onmouseenter="setSolutionCluster('organize')"
+          onmouseleave="setSolutionCluster('none')"
+          class="tilt-card safe-surface rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
+        >
+          <div>
+            <!-- Micro-Visual Banner: Structured Financial Matrix -->
+            <div class="relative h-28 rounded-2xl bg-[#040907] border border-white/[0.07] overflow-hidden mb-6 flex items-center justify-between px-5">
+              <div class="relative z-10">
+                <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon block mb-1">
+                  01 · GESTÃO, FINANÇAS &amp; ROTINA
+                </span>
+                <span class="font-mono text-[11px] text-slateMuted">SISTEMA ESTRUTURADO</span>
+              </div>
+              <!-- Custom Geometric Financial Matrix SVG -->
+              <svg class="w-36 h-20 text-emeraldNeon shrink-0" viewBox="0 0 144 80" fill="none">
+                <rect x="10" y="14" width="22" height="22" rx="4" stroke="currentColor" stroke-opacity="0.3" />
+                <rect x="38" y="14" width="22" height="22" rx="4" fill="currentColor" fill-opacity="0.14" stroke="currentColor" stroke-opacity="0.7" />
+                <rect x="66" y="14" width="22" height="22" rx="4" stroke="currentColor" stroke-opacity="0.3" />
+                <rect x="94" y="14" width="38" height="22" rx="4" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.45" />
+                <rect x="10" y="42" width="50" height="22" rx="4" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.5" />
+                <rect x="66" y="42" width="22" height="22" rx="4" fill="currentColor" fill-opacity="0.22" stroke="currentColor" />
+                <rect x="94" y="42" width="38" height="22" rx="4" stroke="currentColor" stroke-opacity="0.3" />
+              </svg>
+            </div>
+
+            <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-crispWhite mb-3">
+              ORG<span class="text-emeraldNeon">4</span>NIZE<span class="text-emeraldNeon">.Up</span>
+            </h3>
+
+            <p class="text-base text-slateMuted leading-relaxed mb-7">
+              Para PMEs que precisam dominar margens, caixa e processos antes de acelerar.
+            </p>
+
+            <ul class="space-y-3.5 mb-8">
+              <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Caixa e margens sob controle real</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Rotina administrativa previsível</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Indicadores confiáveis para crescer</span>
+              </li>
+            </ul>
           </div>
-          <h2>Como atuamos na sua empresa</h2>
-          <p>Três etapas práticas para transformar complexidade em decisões consistentes:</p>
+
+          <div class="pt-5 border-t border-white/[0.08] flex flex-wrap items-center gap-3">
+            <a
+              href="organize.html"
+              class="btn-emerald w-full sm:w-auto px-7 py-3.5 rounded-full text-sm font-extrabold inline-flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Conhecer ORG4NIZE.Up</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+            <button
+              type="button"
+              onclick="openContactModal('ORG4NIZE.Up')"
+              class="btn-outline w-full sm:w-auto px-5 py-3.5 rounded-full text-sm font-bold inline-flex items-center justify-center cursor-pointer"
+            >
+              Diagnóstico Rápido
+            </button>
+          </div>
+        </article>
+
+        <!-- CARD 02: SC4LE.Up -->
+        <article
+          id="card-scale"
+          data-tilt
+          onmouseenter="setSolutionCluster('scale')"
+          onmouseleave="setSolutionCluster('none')"
+          class="tilt-card safe-surface rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
+        >
+          <div>
+            <!-- Micro-Visual Banner: Territorial Network Nodes -->
+            <div class="relative h-28 rounded-2xl bg-[#040907] border border-white/[0.07] overflow-hidden mb-6 flex items-center justify-between px-5">
+              <div class="relative z-10">
+                <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon block mb-1">
+                  02 · EXPANSÃO &amp; FRANCHISING
+                </span>
+                <span class="font-mono text-[11px] text-slateMuted">REDE TERRITORIAL IA</span>
+              </div>
+              <!-- Custom Geometric Territorial Nodes SVG -->
+              <svg class="w-36 h-20 text-emeraldNeon shrink-0" viewBox="0 0 144 80" fill="none">
+                <circle cx="72" cy="40" r="28" stroke="currentColor" stroke-opacity="0.18" stroke-dasharray="3 3" />
+                <circle cx="72" cy="40" r="14" stroke="currentColor" stroke-opacity="0.35" />
+                <line x1="72" y1="40" x2="28" y2="22" stroke="currentColor" stroke-opacity="0.45" />
+                <line x1="72" y1="40" x2="118" y2="18" stroke="currentColor" stroke-opacity="0.65" />
+                <line x1="72" y1="40" x2="112" y2="62" stroke="currentColor" stroke-opacity="0.45" />
+                <line x1="72" y1="40" x2="34" y2="60" stroke="currentColor" stroke-opacity="0.35" />
+                <circle cx="72" cy="40" r="4.5" fill="currentColor" />
+                <circle cx="28" cy="22" r="3" fill="currentColor" fill-opacity="0.7" />
+                <circle cx="118" cy="18" r="3.5" fill="currentColor" />
+                <circle cx="112" cy="62" r="3" fill="currentColor" fill-opacity="0.7" />
+                <circle cx="34" cy="60" r="2.5" fill="currentColor" fill-opacity="0.5" />
+              </svg>
+            </div>
+
+            <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-crispWhite mb-3">
+              SC<span class="text-emeraldNeon">4</span>LE<span class="text-emeraldNeon">.Up</span>
+            </h3>
+
+            <p class="text-base text-slateMuted leading-relaxed mb-7">
+              Critério técnico com IA para decidir onde, como e com quem escalar sua rede.
+            </p>
+
+            <ul class="space-y-3.5 mb-8">
+              <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Mapeamento de praças e consumo</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Validação técnica de ponto comercial</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm sm:text-base text-crispWhite/90">
+                <span class="w-5 h-5 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Qualificação de franqueados aderentes</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-5 border-t border-white/[0.08] flex flex-wrap items-center gap-3">
+            <a
+              href="scale.html"
+              class="btn-emerald w-full sm:w-auto px-7 py-3.5 rounded-full text-sm font-extrabold inline-flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Conhecer SC4LE.Up</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+            <button
+              type="button"
+              onclick="openContactModal('SC4LE.Up')"
+              class="btn-outline w-full sm:w-auto px-5 py-3.5 rounded-full text-sm font-bold inline-flex items-center justify-center cursor-pointer"
+            >
+              Diagnóstico Rápido
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 04: VISÃO DO FUNDADOR (EDITORIAL FRAME LEFT / QUOTE RIGHT)  -->
+    <!-- 3D Formation: Anel de Horizonte | UI: Blur-to-Sharp + Quote Bar     -->
+    <!-- =================================================================== -->
+    <section
+      id="visao"
+      data-section="3"
+      class="min-h-screen flex items-center py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto"
+    >
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <!-- LEFT (5 Cols): Minimalist Monochrome Architectural/Editorial Frame + Emerald Rim -->
+        <div class="lg:col-span-5">
+          <div class="blur-focus relative rounded-[2rem] overflow-hidden border border-emeraldNeon/30 shadow-[0_0_55px_rgba(16,232,138,0.16)] bg-[#040907] aspect-[4/5] max-w-[420px] mx-auto lg:mx-0">
+            <!-- Minimalist Monochrome Architecture Photo (with clean fallback) -->
+            <img
+              src="/sobre.webp"
+              alt="Marinho Ponci — Business Architecture"
+              onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=900&q=80'"
+              class="absolute inset-0 w-full h-full object-cover duotone-editorial opacity-65"
+            />
+            <!-- Deep Obsidian-Emerald Rim Light Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#030504] via-[#062016]/45 to-[#030504]/70"></div>
+            <div class="absolute inset-0 shadow-[inset_0_0_50px_rgba(16,232,138,0.2)] pointer-events-none"></div>
+
+            <!-- Subtle Watermark Typography + Geometric Monolith Fallback Art -->
+            <svg class="absolute inset-0 w-full h-full opacity-45 pointer-events-none" viewBox="0 0 400 500" fill="none">
+              <circle cx="200" cy="230" r="120" stroke="#10E88A" stroke-opacity="0.25" stroke-width="1" />
+              <circle cx="200" cy="230" r="78" stroke="#10E88A" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="4 6" />
+              <line x1="40" y1="230" x2="360" y2="230" stroke="#10E88A" stroke-opacity="0.2" />
+              <line x1="200" y1="60" x2="200" y2="400" stroke="#10E88A" stroke-opacity="0.2" />
+            </svg>
+
+            <!-- Editorial Caption Overlay -->
+            <div class="relative z-10 h-full flex flex-col justify-between p-7">
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[10px] tracking-[0.24em] uppercase text-emeraldNeon bg-[#030504]/70 px-3 py-1 rounded-full border border-emeraldNeon/30">
+                  BUSINESS ARCHITECTURE
+                </span>
+                <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
+              </div>
+
+              <div>
+                <!-- Subtle Watermark Signature -->
+                <div class="font-mono text-[11px] tracking-[0.28em] uppercase text-crispWhite/45 mb-2">
+                  +38 ANOS DE MERCADO
+                </div>
+                <div class="text-xl font-extrabold tracking-tight text-crispWhite">
+                  Marinho Ponci
+                </div>
+                <div class="text-xs font-mono text-emeraldNeon tracking-[0.2em] uppercase mt-1">
+                  FUNDADOR · UP.INTELLIG3NCE
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="ws-card-grid-3">
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">01</div>
-            <span class="ws-card-tag">Etapa 01</span>
-            <h3>Diagnóstico do Negócio</h3>
-            <p>Mapeamos os gargalos reais, a rotina operacional e a saúde dos números diretamente com os líderes.</p>
+        <!-- RIGHT (6 Cols, Offset 1): Quote & Copy Safe Zone -->
+        <div class="lg:col-start-7 lg:col-span-6 max-w-[540px] safe-surface rounded-3xl p-7 sm:p-10">
+          <div class="blur-focus font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-4">
+            03 · VISÃO DO FUNDADOR
           </div>
 
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">02</div>
-            <span class="ws-card-tag">Etapa 02</span>
-            <h3>Estruturação & IA</h3>
-            <p>Organizamos as informações dispersas e aplicamos modelos analíticos de IA para revelar oportunidades reais.</p>
-          </div>
+          <h2 class="blur-focus delay-1 text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-8">
+            Tecnologia como meio. <span class="text-emerald-glow block mt-1">Negócio como essência.</span>
+          </h2>
 
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">03</div>
-            <span class="ws-card-tag">Etapa 03</span>
-            <h3>Decisão & Acompanhamento</h3>
-            <p>Entregamos instrumentos claros para você decidir com segurança: seja reorganizando custos ou abrindo novas praças.</p>
-          </div>
+          <!-- Quote with Animated Vertical Emerald Bar -->
+          <blockquote class="blur-focus delay-2 relative pl-6 sm:pl-7 mb-8">
+            <span
+              aria-hidden="true"
+              class="quote-bar absolute left-0 top-0 bottom-0 w-1 rounded-full bg-gradient-to-b from-emeraldNeon via-emeraldNeon/70 to-emeraldNeon/10 shadow-[0_0_16px_#10E88A]"
+            ></span>
+
+            <p class="text-lg sm:text-xl lg:text-2xl font-semibold text-crispWhite leading-relaxed tracking-tight">
+              “A Up.INTELLIG3NCE não nasceu em um laboratório de software, mas em balcões de lojas, salas de diretoria e expansões bilionárias.”
+            </p>
+          </blockquote>
+
+          <footer class="blur-focus delay-3 pt-5 border-t border-white/10 flex items-center justify-between gap-4">
+            <span class="font-mono text-xs font-semibold tracking-[0.22em] uppercase text-emeraldNeon">
+              MARINHO PONCI · FUNDADOR
+            </span>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-slateMuted">
+              CRITÉRIO &amp; CAMPO
+            </span>
+          </footer>
         </div>
       </div>
     </section>
 
-    <!-- BANNER FINAL ESTILO WORKSHOP -->
-    <section class="ws-section" style="border-bottom:none;">
-      <div class="wrap reveal">
-        <div class="ws-cta-banner">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>PRÓXIMO PASSO</span>
+    <!-- =================================================================== -->
+    <!-- SECTION 05: MÉTODO APLICADO (TIMELINE LEFT / 3D MONOLITHS RIGHT)    -->
+    <!-- 3D Formation: Monólitos em Camadas | UI: Cascading + Progress Beam  -->
+    <!-- =================================================================== -->
+    <section
+      id="metodo"
+      data-section="4"
+      class="min-h-screen flex items-center py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto"
+    >
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- 5-Column Safe Zone (LEFT) -->
+        <div class="lg:col-span-5 max-w-[520px] safe-surface rounded-3xl p-6 sm:p-8">
+          <div class="font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-3">
+            04 · MÉTODO APLICADO
           </div>
-          <h2>Qual é o momento atual da sua empresa?</h2>
-          <p>Converse com a nossa equipe e entenda qual solução do ecossistema Up acompanha o seu próximo passo.</p>
-          <div class="ws-actions">
-            <a class="ws-btn-primary" href="index.html#contato">Vamos Conversar</a>
-            <a class="ws-btn-secondary" href="scale.html">Conhecer SC4LE.Up</a>
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-8">
+            Do caos à clareza <span class="text-emerald-glow">em três etapas.</span>
+          </h2>
+
+          <!-- Interactive 3-Step Vertical Timeline with Progress Beam -->
+          <div class="relative pl-6">
+            <!-- Background Rail -->
+            <div class="absolute left-1.5 top-3 bottom-3 w-[2px] bg-white/10 rounded-full"></div>
+            <!-- Animated Emerald Progress Beam -->
+            <div
+              id="method-progress-beam"
+              class="progress-beam-fill absolute left-1.5 top-3 w-[2px] bg-emeraldNeon shadow-[0_0_12px_#10E88A] rounded-full"
+              style="height: 33%;"
+            ></div>
+
+            <div class="space-y-4">
+              <!-- Step 01 -->
+              <div
+                data-method-step="0"
+                onmouseenter="selectMethodLayer(0)"
+                onclick="selectMethodLayer(0)"
+                class="cascade-step delay-1 method-step-active relative rounded-2xl border border-white/10 bg-[#050A08]/85 p-5 cursor-pointer"
+              >
+                <span class="absolute -left-[25px] top-6 w-3 h-3 rounded-full bg-emeraldNeon shadow-[0_0_12px_#10E88A] border-2 border-[#030504]"></span>
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">01 · DIAGNÓSTICO DO NEGÓCIO</span>
+                </div>
+                <p class="text-sm text-slateMuted leading-relaxed">
+                  Mapeamos gargalos operacionais e saúde financeira diretamente com a liderança.
+                </p>
+              </div>
+
+              <!-- Step 02 -->
+              <div
+                data-method-step="1"
+                onmouseenter="selectMethodLayer(1)"
+                onclick="selectMethodLayer(1)"
+                class="cascade-step delay-2 relative rounded-2xl border border-white/10 bg-[#050A08]/85 p-5 cursor-pointer"
+              >
+                <span class="absolute -left-[25px] top-6 w-3 h-3 rounded-full bg-emeraldNeon/60 border-2 border-[#030504]"></span>
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">02 · ESTRUTURAÇÃO &amp; IA</span>
+                </div>
+                <p class="text-sm text-slateMuted leading-relaxed">
+                  Organizamos dados dispersos e aplicamos modelos preditivos para revelar oportunidades.
+                </p>
+              </div>
+
+              <!-- Step 03 -->
+              <div
+                data-method-step="2"
+                onmouseenter="selectMethodLayer(2)"
+                onclick="selectMethodLayer(2)"
+                class="cascade-step delay-3 relative rounded-2xl border border-white/10 bg-[#050A08]/85 p-5 cursor-pointer"
+              >
+                <span class="absolute -left-[25px] top-6 w-3 h-3 rounded-full bg-emeraldNeon/60 border-2 border-[#030504]"></span>
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="font-mono text-xs font-semibold tracking-[0.18em] text-emeraldNeon">03 · DECISÃO &amp; ACOMPANHAMENTO</span>
+                </div>
+                <p class="text-sm text-slateMuted leading-relaxed">
+                  Entregamos instrumentos claros para cortar excessos ou abrir novas praças com segurança.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7-Column Dedicated Empty 3D Stage (RIGHT - Stacked Monoliths) -->
+        <div class="hidden lg:block lg:col-span-7 h-[560px]" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 06: PRÓXIMO PASSO (CENTERED CLEAN CARD / OUTER 3D HALO)     -->
+    <!-- 3D Formation: Vórtice de Precisão | UI: Magnetic CTA + Pulse Halo   -->
+    <!-- =================================================================== -->
+    <section
+      id="contato"
+      data-section="5"
+      class="min-h-[88vh] flex flex-col justify-between pt-24 pb-10 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto"
+    >
+      <div class="flex-1 flex items-center justify-center">
+        <div class="relative w-full max-w-3xl">
+          <!-- Ambient Emerald Breathing Pulse Behind Card -->
+          <div
+            aria-hidden="true"
+            class="cta-pulse-halo absolute -inset-6 rounded-[2.5rem] bg-[radial-gradient(circle,rgba(16,232,138,0.18)_0%,transparent_70%)] blur-2xl pointer-events-none"
+          ></div>
+
+          <!-- High-Contrast Dark Scrim Glassmorphic Card -->
+          <div class="relative z-10 rounded-[2rem] bg-[#040806]/92 border border-white/10 backdrop-blur-2xl p-8 sm:p-14 text-center shadow-[0_30px_80px_rgba(0,0,0,0.85)]">
+            <div class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.24em] uppercase text-emeraldNeon mb-4">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
+              <span>05 · PRÓXIMO PASSO</span>
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-5">
+              Qual é o próximo movimento <span class="text-emerald-glow block sm:inline">da sua empresa?</span>
+            </h2>
+
+            <p class="text-base sm:text-lg text-slateMuted max-w-xl mx-auto leading-relaxed mb-10">
+              Converse com nosso time e descubra qual frente do ecossistema acompanha o seu momento.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                type="button"
+                data-magnetic
+                onclick="openContactModal('Diagnóstico Completo')"
+                class="btn-emerald w-full sm:w-auto px-9 py-4 rounded-full text-sm sm:text-base font-extrabold tracking-tight cursor-pointer"
+              >
+                Vamos Conversar
+              </button>
+              <button
+                type="button"
+                data-magnetic
+                onclick="openContactModal('SC4LE.Up')"
+                class="btn-outline w-full sm:w-auto px-9 py-4 rounded-full text-sm sm:text-base font-bold tracking-tight cursor-pointer"
+              >
+                Conhecer SC4LE.Up
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Minimal Obsidian Footer with Ecosystem Links -->
+      <footer class="mt-20 pt-8 border-t border-white/[0.08] flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
+          <span class="font-mono text-xs tracking-[0.22em] uppercase text-crispWhite/90 font-semibold">
+            UP.INTELLIG3NCE · MARINHO PONCI
+          </span>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slateMuted">
+          <a href="index.html" class="hover:text-emeraldNeon transition-colors">Hub Principal</a>
+          <span class="text-white/20">·</span>
+          <a href="organize.html" class="hover:text-emeraldNeon transition-colors">ORG4NIZE.Up</a>
+          <span class="text-white/20">·</span>
+          <a href="scale.html" class="hover:text-emeraldNeon transition-colors">SC4LE.Up</a>
+          <span class="text-white/20">·</span>
+          <a href="dossies.html" class="hover:text-emeraldNeon transition-colors">Dossiês</a>
+          <span class="text-white/20">·</span>
+          <a href="blog.html" class="hover:text-emeraldNeon transition-colors">Blog</a>
+        </div>
+
+        <p class="text-xs text-slateMuted">
+          &copy; <span id="year-el">2026</span> UP.INTELLIG3NCE. Todos os direitos reservados.
+        </p>
+      </footer>
     </section>
   </main>
 
-  <footer class="ws-footer">
-    <div class="wrap ws-footer-inner">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
-        <span>© 2026 Marinho Ponci & Up.INTELLIG3NCE. Todos os direitos reservados.</span>
-      </div>
-      <nav class="ws-footer-nav" aria-label="Rodapé">
-        <a href="index.html">Início</a>
-        <a href="organize.html">ORG4NIZE.Up</a>
-        <a href="scale.html">SC4LE.Up</a>
-        <a href="dossies.html">Dossiês</a>
-        <a href="blog.html">Blog</a>
-      </nav>
-    </div>
-  </footer>
+  <!-- ===================================================================== -->
+  <!-- INTERACTIVE OBSIDIAN CONTACT MODAL                                    -->
+  <!-- ===================================================================== -->
+  <div
+    id="contact-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-heading"
+    class="modal-backdrop fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+    onclick="if(event.target === this) closeContactModal()"
+  >
+    <div class="modal-panel safe-surface rounded-3xl w-full max-w-lg p-6 sm:p-8 relative border border-emeraldNeon/30">
+      <button
+        type="button"
+        onclick="closeContactModal()"
+        aria-label="Fechar"
+        class="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slateMuted hover:text-crispWhite transition-colors cursor-pointer"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
 
-  <!-- BACKDROP E MENU LATERAL ANIMADO -->
-  <div class="ws-side-backdrop" aria-hidden="true"></div>
-  <aside class="ws-side-drawer" aria-label="Navegação Lateral">
-    <div class="ws-drawer-header">
-      <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
-      <button class="ws-drawer-close" type="button" aria-label="Fechar menu">✕</button>
+      <!-- Form View -->
+      <div id="modal-form-view">
+        <span class="font-mono text-[11px] tracking-[0.22em] uppercase text-emeraldNeon block mb-2">
+          ATENDIMENTO ESTRATÉGICO
+        </span>
+        <h3 id="modal-heading" class="text-2xl sm:text-3xl font-extrabold text-crispWhite tracking-tight mb-2">
+          Vamos Conversar
+        </h3>
+        <p class="text-sm text-slateMuted mb-6">
+          Informe o momento da sua operação para direcionarmos a conversa com o time UP.INTELLIG3NCE.
+        </p>
+
+        <form id="lead-form" onsubmit="submitContactForm(event)" class="space-y-4">
+          <div>
+            <label for="interest-select" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
+              Frente de Interesse
+            </label>
+            <select
+              id="interest-select"
+              required
+              class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite focus:outline-none focus:border-emeraldNeon transition-colors"
+            >
+              <option value="ORG4NIZE.Up">ORG4NIZE.Up — Gestão, Finanças &amp; Rotina</option>
+              <option value="SC4LE.Up">SC4LE.Up — Expansão &amp; Franchising</option>
+              <option value="Diagnóstico Completo">Diagnóstico Completo do Ecossistema</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="input-name" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
+                Nome
+              </label>
+              <input
+                id="input-name"
+                type="text"
+                required
+                placeholder="Seu nome"
+                class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite placeholder:text-white/30 focus:outline-none focus:border-emeraldNeon transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="input-company" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
+                Empresa
+              </label>
+              <input
+                id="input-company"
+                type="text"
+                required
+                placeholder="Nome da empresa"
+                class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite placeholder:text-white/30 focus:outline-none focus:border-emeraldNeon transition-colors"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="input-contact" class="block text-xs font-mono uppercase tracking-wider text-crispWhite/80 mb-1.5">
+              WhatsApp ou E-mail
+            </label>
+            <input
+              id="input-contact"
+              type="text"
+              required
+              placeholder="(11) 99999-9999 ou nome@empresa.com"
+              class="w-full rounded-2xl bg-[#030504] border border-white/15 px-4 py-3 text-sm text-crispWhite placeholder:text-white/30 focus:outline-none focus:border-emeraldNeon transition-colors"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="btn-emerald w-full py-3.5 rounded-full text-sm font-extrabold tracking-tight mt-2 cursor-pointer"
+          >
+            Solicitar Diagnóstico
+          </button>
+        </form>
+      </div>
+
+      <!-- Instant Confirmation View -->
+      <div id="modal-success-view" class="hidden py-6 text-center">
+        <div class="w-16 h-16 rounded-full bg-emeraldNeon/15 border border-emeraldNeon/45 text-emeraldNeon flex items-center justify-center mx-auto mb-5 shadow-[0_0_30px_rgba(16,232,138,0.28)]">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+        </div>
+        <span class="font-mono text-xs uppercase tracking-[0.22em] text-emeraldNeon block mb-2">
+          SOLICITAÇÃO CONFIRMADA
+        </span>
+        <h3 class="text-2xl font-extrabold text-crispWhite mb-3">Recebemos seus dados.</h3>
+        <p id="modal-success-copy" class="text-sm text-slateMuted leading-relaxed mb-7"></p>
+        <button
+          type="button"
+          onclick="closeContactModal()"
+          class="btn-outline px-8 py-3 rounded-full text-sm font-bold cursor-pointer"
+        >
+          Voltar para a página
+        </button>
+      </div>
     </div>
-    <nav class="ws-drawer-nav">
-      <a class="ws-drawer-link" href="index.html">
-        <span><span class="ws-link-index">01</span>Início</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="up-intelligence.html" aria-current="page">
-        <span><span class="ws-link-index">02</span>Up.INTELLIG3NCE Hub</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="organize.html">
-        <span><span class="ws-link-index">03</span>ORG4NIZE.Up (PMEs)</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="scale.html">
-        <span><span class="ws-link-index">04</span>SC4LE.Up (Expansão)</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="dossies.html">
-        <span><span class="ws-link-index">05</span>Dossiês de Franquias</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-      <a class="ws-drawer-link" href="blog.html">
-        <span><span class="ws-link-index">06</span>Blog & Artigos</span>
-        <span style="color:var(--ws-green)">●</span>
-      </a>
-    </nav>
-    <div class="ws-drawer-footer">
-      <a class="ws-btn-primary" style="width:100%;text-align:center;" href="index.html#contato">Vamos Conversar</a>
-      <p style="font-size:11px;color:#71717A;margin-top:14px;text-align:center;">© 2026 Marinho Ponci · Up.INTELLIG3NCE</p>
-    </div>
-  </aside>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: 6-MORPH THREE.JS ENGINE + SAFE-ZONE CHOREOGRAPHY + UI     -->
+  <!-- ===================================================================== -->
+  <script>
+    // =========================================================================
+    // 1. GLOBAL APPLICATION STATE
+    // =========================================================================
+    const appState = {
+      activeSection: 0,
+      mouseX: 0,
+      mouseY: 0,
+      interactive3D: false,
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      orbitYaw: 0,
+      orbitPitch: 0.15,
+      targetOrbitYaw: 0,
+      targetOrbitPitch: 0.15,
+      solutionHover: 'none', // 'none' | 'organize' | 'scale'
+      activeMethodLayer: 0,  // 0 | 1 | 2
+    };
+
+    // Three.js Scene Objects
+    let scene, camera, renderer, clock;
+    let masterGroup, coreGroup, coreWire, coreLight;
+    let modules = []; // 27 architectural modules (3x3x3)
+    let rings = [];
+    let particles;
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    // =========================================================================
+    // 2. THREE.JS INITIALIZATION (27 MODULES + CORE + 3 RINGS + PARTICLES)
+    // =========================================================================
+    function initThreeScene() {
+      try {
+        const canvas = document.getElementById('webgl-canvas');
+        if (!canvas || typeof THREE === 'undefined') return;
+
+        scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x030504, 0.042);
+
+        camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 0.2, 8.2);
+
+        renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance',
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.1;
+
+        clock = new THREE.Clock();
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0x0a2419, 1.5));
+
+        const dirKey = new THREE.DirectionalLight(0x10e88a, 2.2);
+        dirKey.position.set(6, 8, 6);
+        scene.add(dirKey);
+
+        const dirRim = new THREE.DirectionalLight(0x058f55, 1.3);
+        dirRim.position.set(-6, -4, -5);
+        scene.add(dirRim);
+
+        // Master Group (positioned strictly inside Safe-Zone empty viewport half)
+        masterGroup = new THREE.Group();
+        scene.add(masterGroup);
+
+        coreLight = new THREE.PointLight(0x10e88a, 3.0, 14);
+        masterGroup.add(coreLight);
+
+        // --- CENTRAL OBSIDIAN ICOSAHEDRON CORE (Prominent in Hero) ---
+        coreGroup = new THREE.Group();
+        masterGroup.add(coreGroup);
+
+        const coreSolid = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(1.05, 1),
+          new THREE.MeshStandardMaterial({
+            color: 0x06140d,
+            emissive: 0x052b1a,
+            emissiveIntensity: 0.65,
+            roughness: 0.18,
+            metalness: 0.9,
+            flatShading: true,
+          })
+        );
+        coreGroup.add(coreSolid);
+
+        coreWire = new THREE.LineSegments(
+          new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.09, 1)),
+          new THREE.LineBasicMaterial({ color: 0x10e88a, transparent: true, opacity: 0.62 })
+        );
+        coreGroup.add(coreWire);
+
+        // --- 3 PRECISION ORBITAL RINGS ---
+        const ringDefs = [
+          { r: 1.85, tiltX: Math.PI * 0.36, tiltY: 0.25, speed: 0.35 },
+          { r: 2.38, tiltX: -Math.PI * 0.26, tiltY: 0.65, speed: -0.24 },
+          { r: 2.92, tiltX: Math.PI * 0.14, tiltY: -0.45, speed: 0.16 },
+        ];
+
+        ringDefs.forEach((def) => {
+          const rGroup = new THREE.Group();
+          const mesh = new THREE.Mesh(
+            new THREE.TorusGeometry(def.r, 0.011, 10, 120),
+            new THREE.MeshBasicMaterial({ color: 0x10e88a, transparent: true, opacity: 0.38 })
+          );
+          rGroup.add(mesh);
+          rGroup.userData = { ...def, mat: mesh.material };
+          masterGroup.add(rGroup);
+          rings.push(rGroup);
+        });
+
+        // --- 27 ARCHITECTURAL MODULES (Morph across all 6 formations) ---
+        const boxGeo = new THREE.BoxGeometry(0.42, 0.42, 0.42);
+        const edgeGeo = new THREE.EdgesGeometry(boxGeo);
+
+        for (let i = 0; i < 27; i++) {
+          const ix = i % 3;                 // 0..2
+          const iy = Math.floor(i / 3) % 3; // 0..2
+          const iz = Math.floor(i / 9);     // 0..2
+
+          const mGroup = new THREE.Group();
+          const mat = new THREE.MeshStandardMaterial({
+            color: 0x07150f,
+            emissive: 0x08472b,
+            emissiveIntensity: 0.45,
+            roughness: 0.22,
+            metalness: 0.88,
+            transparent: true,
+            opacity: 0.92,
+          });
+          const edgeMat = new THREE.LineBasicMaterial({
+            color: 0x10e88a,
+            transparent: true,
+            opacity: 0.52,
+          });
+
+          mGroup.add(new THREE.Mesh(boxGeo, mat));
+          mGroup.add(new THREE.LineSegments(edgeGeo, edgeMat));
+
+          mGroup.userData = {
+            index: i,
+            ix, iy, iz,
+            mat,
+            edgeMat,
+            angle: (i / 27) * Math.PI * 2,
+          };
+
+          masterGroup.add(mGroup);
+          modules.push(mGroup);
+        }
+
+        // --- SUBTLE EMERALD PARTICLE FIELD ---
+        const pCount = 260;
+        const pPos = new Float32Array(pCount * 3);
+        for (let i = 0; i < pCount; i++) {
+          const r = 4.5 + Math.random() * 12;
+          const theta = Math.random() * Math.PI * 2;
+          const phi = Math.acos(2 * Math.random() - 1);
+          pPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+          pPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.7;
+          pPos[i * 3 + 2] = r * Math.cos(phi) - 3;
+        }
+        const pGeo = new THREE.BufferGeometry();
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+        particles = new THREE.Points(
+          pGeo,
+          new THREE.PointsMaterial({
+            color: 0x10e88a,
+            size: 0.036,
+            transparent: true,
+            opacity: 0.48,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          })
+        );
+        scene.add(particles);
+
+        window.addEventListener('resize', onResize);
+      } catch (err) {
+        console.warn('WebGL fallback:', err);
+      }
+    }
+
+    function onResize() {
+      if (!camera || !renderer) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // =========================================================================
+    // 3. 6 DISTINCT 3D FORMATIONS + STRICT SAFE-ZONE POSITIONING
+    // =========================================================================
+    function getSectionStageTransform(sectionIdx) {
+      const isDesktop = window.innerWidth >= 1024;
+      if (!isDesktop) {
+        // Centered subtly behind frosted cards on mobile/tablet
+        return { x: 0, y: 0, z: -1.2, scale: 0.72, ringOpacity: 0.28 };
+      }
+
+      switch (sectionIdx) {
+        case 0: // Hero: Text LEFT, 3D strictly RIGHT
+          return { x: 2.8, y: 0.05, z: 0, scale: 1.0, ringOpacity: 0.45 };
+        case 1: // Origem: Text RIGHT, 3D strictly LEFT
+          return { x: -2.8, y: 0.0, z: 0.1, scale: 0.98, ringOpacity: 0.14 };
+        case 2: // Soluções: Cards center, 3D upper-right periphery at reduced scale
+          return { x: 2.85, y: 2.05, z: -2.2, scale: 0.62, ringOpacity: 0.22 };
+        case 3: // Visão: Editorial frame LEFT, 3D Horizon Ring framing left
+          return { x: -2.55, y: 0.05, z: -0.6, scale: 0.92, ringOpacity: 0.34 };
+        case 4: // Método: Timeline LEFT, 3D Stacked Monoliths strictly RIGHT
+          return { x: 2.9, y: 0.0, z: 0.1, scale: 1.0, ringOpacity: 0.16 };
+        case 5: // CTA: Centered card, 3D expands into wide low-opacity outer halo
+          return { x: 0, y: 0, z: -1.5, scale: 1.25, ringOpacity: 0.15 };
+        default:
+          return { x: 2.8, y: 0, z: 0, scale: 1.0, ringOpacity: 0.4 };
+      }
+    }
+
+    function computeModuleTarget(mod, sectionIdx, t) {
+      const { index, ix, iy, iz, angle } = mod.userData;
+
+      // Default values
+      let tx = 0, ty = 0, tz = 0;
+      let sx = 0.55, sy = 0.55, sz = 0.55;
+      let rx = 0, ry = 0, rz = 0;
+      let emissive = 0.45;
+      let opacity = 0.9;
+
+      if (sectionIdx === 0) {
+        // 1. CONVERGÊNCIA ORBITAL: Sleek small satellite nodes orbiting the core
+        const ringBand = index % 3;
+        const r = 1.9 + ringBand * 0.54;
+        const a = angle + t * (0.28 - ringBand * 0.07);
+        const tilt = (ringBand - 1) * 0.65;
+        tx = Math.cos(a) * r;
+        ty = Math.sin(a) * Math.sin(tilt) * r;
+        tz = Math.sin(a) * Math.cos(tilt) * r;
+        sx = 0.32; sy = 0.32; sz = 0.32;
+        rx = t * 0.6; ry = a;
+        emissive = 0.6;
+      } else if (sectionIdx === 1) {
+        // 2. MATRIZ DE DADOS: Floating 3x3x3 cube lattice rippling with sine waves
+        const spacing = 0.88;
+        const wave = Math.sin(t * 2.1 + ix * 0.9 + iz * 0.9) * 0.18;
+        tx = (ix - 1) * spacing;
+        ty = (iy - 1) * spacing + wave;
+        tz = (iz - 1) * spacing;
+        sx = 0.72; sy = 0.72; sz = 0.72;
+        ry = t * 0.25;
+        emissive = 0.35 + (Math.sin(t * 2.1 + index) * 0.5 + 0.5) * 0.45;
+      } else if (sectionIdx === 2) {
+        // 3. DUALIDADE MODULAR: Cluster A (ORG4NIZE.Up dense block) + Cluster B (SC4LE.Up radial constellation)
+        if (index < 13) {
+          // Structured dense block (left cluster)
+          const lx = index % 3;
+          const ly = Math.floor(index / 3) % 3;
+          const lz = Math.floor(index / 9);
+          const boost = appState.solutionHover === 'organize' ? 1.18 : 0.95;
+          tx = -1.6 + (lx - 1) * 0.52 * boost;
+          ty = (ly - 1) * 0.52 * boost;
+          tz = (lz - 0.5) * 0.52 * boost;
+          sx = 0.72; sy = 0.72; sz = 0.72;
+          emissive = appState.solutionHover === 'organize' ? 1.15 : 0.45;
+        } else {
+          // Expanding radial constellation (right cluster)
+          const subIdx = index - 13;
+          const a = (subIdx / 14) * Math.PI * 2 + t * 0.35;
+          const spread = appState.solutionHover === 'scale' ? 1.65 : 1.15;
+          const r = (0.7 + (subIdx % 3) * 0.35) * spread;
+          tx = 1.6 + Math.cos(a) * r;
+          ty = Math.sin(a * 2) * 0.45;
+          tz = Math.sin(a) * r;
+          sx = 0.42; sy = 0.42; sz = 0.42;
+          rx = a; ry = t * 0.5;
+          emissive = appState.solutionHover === 'scale' ? 1.25 : 0.45;
+        }
+      } else if (sectionIdx === 3) {
+        // 4. ANEL DE HORIZONTE: Sleek horizontal architectural ring in zero gravity
+        const r = 2.55;
+        const a = angle + t * 0.18;
+        tx = Math.cos(a) * r;
+        ty = Math.sin(a * 3 + t) * 0.08;
+        tz = Math.sin(a) * r;
+        sx = 0.95; sy = 0.14; sz = 0.35;
+        ry = -a;
+        emissive = 0.55;
+        opacity = 0.85;
+      } else if (sectionIdx === 4) {
+        // 5. MONÓLITOS EM CAMADAS: 3 stacked horizontal architectural slabs (layers 01, 02, 03)
+        // Layer 0 (top, iz=0), Layer 1 (mid, iz=1), Layer 2 (bottom, iz=2)
+        const layerIdx = iz; // 0, 1, 2
+        const isActive = appState.activeMethodLayer === layerIdx;
+        const layerBaseY = (1 - layerIdx) * 1.15;
+        const elevateY = isActive ? 0.22 : 0;
+        const spacing = isActive ? 0.76 : 0.68;
+
+        tx = (ix - 1) * spacing;
+        ty = layerBaseY + elevateY + Math.sin(t * 1.6 + layerIdx) * 0.04;
+        tz = (iy - 1) * spacing;
+
+        sx = 1.35; sy = isActive ? 0.34 : 0.24; sz = 1.35;
+        emissive = isActive ? 1.35 : 0.28;
+        opacity = isActive ? 0.98 : 0.65;
+      } else {
+        // 6. VÓRTICE DE PRECISÃO: Wide breathing outer halo framing viewport edges (100% center contrast)
+        const breathe = 1 + Math.sin(t * 1.1) * 0.05;
+        const r = 4.35 * breathe;
+        const a = angle + t * 0.1;
+        tx = Math.cos(a) * r;
+        ty = Math.sin(a) * (r * 0.62);
+        tz = Math.sin(a * 2 + t * 0.5) * 0.55;
+        sx = 0.45; sy = 0.16; sz = 0.45;
+        rz = a;
+        emissive = 0.55;
+        opacity = 0.42;
+      }
+
+      return { tx, ty, tz, sx, sy, sz, rx, ry, rz, emissive, opacity };
+    }
+
+    // =========================================================================
+    // 4. 60FPS ANIMATION LOOP
+    // =========================================================================
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!renderer || !scene || !camera) return;
+
+      const t = clock.getElapsedTime();
+      const sec = appState.activeSection;
+
+      appState.orbitYaw = lerp(appState.orbitYaw, appState.targetOrbitYaw, 0.08);
+      appState.orbitPitch = lerp(appState.orbitPitch, appState.targetOrbitPitch, 0.08);
+
+      // Master Stage Positioning
+      if (appState.interactive3D) {
+        const radius = 7.4;
+        camera.position.x = lerp(camera.position.x, Math.sin(appState.orbitYaw) * Math.cos(appState.orbitPitch) * radius, 0.09);
+        camera.position.y = lerp(camera.position.y, Math.sin(appState.orbitPitch) * radius, 0.09);
+        camera.position.z = lerp(camera.position.z, Math.cos(appState.orbitYaw) * Math.cos(appState.orbitPitch) * radius, 0.09);
+        masterGroup.position.set(
+          lerp(masterGroup.position.x, 0, 0.08),
+          lerp(masterGroup.position.y, 0, 0.08),
+          lerp(masterGroup.position.z, 0, 0.08)
+        );
+        masterGroup.scale.setScalar(lerp(masterGroup.scale.x, 1.0, 0.08));
+        camera.lookAt(0, 0, 0);
+      } else {
+        const stage = getSectionStageTransform(sec);
+        camera.position.x = lerp(camera.position.x, appState.mouseX * 0.35, 0.06);
+        camera.position.y = lerp(camera.position.y, 0.2 - appState.mouseY * 0.25, 0.06);
+        camera.position.z = lerp(camera.position.z, 8.2, 0.06);
+        camera.lookAt(0, 0, 0);
+
+        masterGroup.position.x = lerp(masterGroup.position.x, stage.x, 0.065);
+        masterGroup.position.y = lerp(masterGroup.position.y, stage.y, 0.065);
+        masterGroup.position.z = lerp(masterGroup.position.z, stage.z, 0.065);
+        masterGroup.scale.setScalar(lerp(masterGroup.scale.x, stage.scale, 0.065));
+
+        // Gentle group orientation per section
+        const targetGroupRotY = sec === 4 ? 0.55 + Math.sin(t * 0.35) * 0.18 : t * 0.09 + appState.mouseX * 0.14;
+        const targetGroupRotX = sec === 4 ? 0.32 : sec === 3 ? 0.22 : appState.mouseY * 0.1;
+        masterGroup.rotation.y = lerp(masterGroup.rotation.y, targetGroupRotY, 0.06);
+        masterGroup.rotation.x = lerp(masterGroup.rotation.x, targetGroupRotX, 0.06);
+      }
+
+      // Central Core visibility (full in Hero, subtle/hidden in others)
+      const coreTargetScale = sec === 0 ? 1.0 : sec === 3 ? 0.35 : 0.001;
+      coreGroup.scale.setScalar(lerp(coreGroup.scale.x, coreTargetScale, 0.08));
+      coreGroup.rotation.y = t * 0.42;
+      coreGroup.rotation.x = t * 0.22;
+
+      // Rings update
+      const stageCfg = getSectionStageTransform(sec);
+      rings.forEach((rg, idx) => {
+        const d = rg.userData;
+        const ringScale = sec === 5 ? 1.55 : sec === 3 ? 1.05 : 1.0;
+        rg.scale.setScalar(lerp(rg.scale.x, ringScale, 0.06));
+        rg.rotation.x = lerp(rg.rotation.x, sec === 3 ? Math.PI * 0.5 : d.tiltX, 0.07);
+        rg.rotation.y = lerp(rg.rotation.y, sec === 3 ? 0 : d.tiltY, 0.07);
+        rg.rotation.z = t * d.speed;
+        d.mat.opacity = lerp(d.mat.opacity, stageCfg.ringOpacity * (idx === 1 ? 1.25 : 0.85), 0.08);
+      });
+
+      // Morph all 27 architectural modules smoothly
+      modules.forEach((mod) => {
+        const target = computeModuleTarget(mod, sec, t);
+        mod.position.x = lerp(mod.position.x, target.tx, 0.075);
+        mod.position.y = lerp(mod.position.y, target.ty, 0.075);
+        mod.position.z = lerp(mod.position.z, target.tz, 0.075);
+
+        mod.scale.x = lerp(mod.scale.x, target.sx, 0.075);
+        mod.scale.y = lerp(mod.scale.y, target.sy, 0.075);
+        mod.scale.z = lerp(mod.scale.z, target.sz, 0.075);
+
+        mod.rotation.x = lerp(mod.rotation.x, target.rx, 0.075);
+        mod.rotation.y = lerp(mod.rotation.y, target.ry, 0.075);
+        mod.rotation.z = lerp(mod.rotation.z, target.rz, 0.075);
+
+        mod.userData.mat.emissiveIntensity = lerp(mod.userData.mat.emissiveIntensity, target.emissive, 0.09);
+        mod.userData.mat.opacity = lerp(mod.userData.mat.opacity, target.opacity, 0.09);
+        mod.userData.edgeMat.opacity = lerp(mod.userData.edgeMat.opacity, target.opacity * 0.72, 0.09);
+      });
+
+      if (particles) {
+        particles.rotation.y = t * 0.02;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    // =========================================================================
+    // 5. SECTION OBSERVERS & UNIQUE UI INTERACTIONS
+    // =========================================================================
+    function setupSectionTracking() {
+      const sections = document.querySelectorAll('section[data-section]');
+      const navPills = document.querySelectorAll('.nav-pill');
+      const hudBtns = document.querySelectorAll('.hud-btn');
+      const hudIndex = document.getElementById('hud-index');
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const idx = Number(entry.target.getAttribute('data-section'));
+              appState.activeSection = idx;
+              entry.target.classList.add('section-visible');
+
+              // Update HUD
+              if (hudIndex) hudIndex.textContent = String(idx + 1).padStart(2, '0');
+              hudBtns.forEach((btn, bIdx) => {
+                const bar = btn.querySelector('.hud-bar');
+                const txt = btn.querySelector('.hud-txt');
+                if (bIdx === idx) {
+                  bar.className = 'hud-bar w-6 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_12px_#10E88A] transition-all';
+                  txt.classList.remove('opacity-0', 'text-slateMuted');
+                  txt.classList.add('opacity-100', 'text-emeraldNeon');
+                } else {
+                  bar.className = 'hud-bar w-2 h-1.5 rounded-full bg-white/25 group-hover:bg-white/60 transition-all';
+                  txt.classList.add('opacity-0', 'text-slateMuted');
+                  txt.classList.remove('opacity-100', 'text-emeraldNeon');
+                }
+              });
+
+              // Update Top Nav Pill
+              navPills.forEach((pill) => {
+                const navIdx = Number(pill.getAttribute('data-nav'));
+                pill.classList.toggle('active', navIdx === Math.min(idx, 4));
+              });
+            }
+          });
+        },
+        { threshold: 0.45 }
+      );
+
+      sections.forEach((s) => observer.observe(s));
+    }
+
+    // Section 3: 3D Magnetic Card Tilt + Solution Cluster Hover
+    function setupTiltCards() {
+      const cards = document.querySelectorAll('[data-tilt]');
+      cards.forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = `perspective(900px) rotateX(${(-y * 6).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg) translateY(-3px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+        });
+      });
+    }
+
+    function setSolutionCluster(mode) {
+      appState.solutionHover = mode;
+      const org = document.getElementById('card-organize');
+      const scl = document.getElementById('card-scale');
+      if (org) org.classList.toggle('active-solution', mode === 'organize');
+      if (scl) scl.classList.toggle('active-solution', mode === 'scale');
+    }
+
+    // Section 5: Interactive Method Layer Selection (Synced with 3D Stacked Monoliths)
+    function selectMethodLayer(layerIdx) {
+      appState.activeMethodLayer = layerIdx;
+      const steps = document.querySelectorAll('[data-method-step]');
+      steps.forEach((el, idx) => {
+        el.classList.toggle('method-step-active', idx === layerIdx);
+      });
+      const beam = document.getElementById('method-progress-beam');
+      if (beam) {
+        beam.style.height = `${((layerIdx + 1) / 3) * 100}%`;
+      }
+    }
+
+    // Section 6: Subtle Magnetic CTA Button Pull
+    function setupMagneticButtons() {
+      const buttons = document.querySelectorAll('[data-magnetic]');
+      buttons.forEach((btn) => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18;
+          const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18;
+          btn.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = 'translate(0px, 0px)';
+        });
+      });
+    }
+
+    // Pointer Events for Parallax & Interactive 3D Orbit
+    function setupPointerControls() {
+      const canvas = document.getElementById('webgl-canvas');
+
+      window.addEventListener('mousemove', (e) => {
+        appState.mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        appState.mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+
+        if (appState.interactive3D && appState.isDragging) {
+          const dx = e.clientX - appState.dragStartX;
+          const dy = e.clientY - appState.dragStartY;
+          appState.dragStartX = e.clientX;
+          appState.dragStartY = e.clientY;
+          appState.targetOrbitYaw -= dx * 0.008;
+          appState.targetOrbitPitch = Math.max(-1.05, Math.min(1.05, appState.targetOrbitPitch + dy * 0.008));
+        }
+      });
+
+      canvas.addEventListener('mousedown', (e) => {
+        if (!appState.interactive3D) return;
+        appState.isDragging = true;
+        appState.dragStartX = e.clientX;
+        appState.dragStartY = e.clientY;
+      });
+      window.addEventListener('mouseup', () => { appState.isDragging = false; });
+
+      // Touch Orbit Support
+      canvas.addEventListener('touchstart', (e) => {
+        if (!appState.interactive3D || !e.touches.length) return;
+        appState.isDragging = true;
+        appState.dragStartX = e.touches[0].clientX;
+        appState.dragStartY = e.touches[0].clientY;
+      }, { passive: true });
+      canvas.addEventListener('touchmove', (e) => {
+        if (!appState.interactive3D || !appState.isDragging || !e.touches.length) return;
+        const dx = e.touches[0].clientX - appState.dragStartX;
+        const dy = e.touches[0].clientY - appState.dragStartY;
+        appState.dragStartX = e.touches[0].clientX;
+        appState.dragStartY = e.touches[0].clientY;
+        appState.targetOrbitYaw -= dx * 0.009;
+        appState.targetOrbitPitch = Math.max(-1.05, Math.min(1.05, appState.targetOrbitPitch + dy * 0.009));
+      }, { passive: true });
+      window.addEventListener('touchend', () => { appState.isDragging = false; });
+    }
+
+    function toggleInteractive3D() {
+      appState.interactive3D = !appState.interactive3D;
+      document.body.classList.toggle('interactive-3d-mode', appState.interactive3D);
+      document.getElementById('explore-3d-label').textContent = appState.interactive3D ? 'Voltar ao Site' : 'Explorar 3D';
+      const hint = document.getElementById('orbit-hint');
+      hint.classList.toggle('hidden', !appState.interactive3D);
+      hint.classList.toggle('flex', appState.interactive3D);
+    }
+
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // =========================================================================
+    // 6. MOBILE MENU & INTERACTIVE CONTACT MODAL
+    // =========================================================================
+    function setupMobileMenu() {
+      const btn = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      const ham = document.getElementById('ham-icon');
+      const xIcon = document.getElementById('x-icon');
+      const links = document.querySelectorAll('.mobile-link');
+
+      function setOpen(open) {
+        menu.classList.toggle('hidden', !open);
+        ham.classList.toggle('hidden', open);
+        xIcon.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', String(open));
+      }
+
+      btn.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+      links.forEach((l) => l.addEventListener('click', () => setOpen(false)));
+    }
+
+    function openContactModal(interest) {
+      const modal = document.getElementById('contact-modal');
+      const select = document.getElementById('interest-select');
+      document.getElementById('modal-form-view').classList.remove('hidden');
+      document.getElementById('modal-success-view').classList.add('hidden');
+      if (interest && select) select.value = interest;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeContactModal() {
+      document.getElementById('contact-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function submitContactForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('input-name').value.trim();
+      const company = document.getElementById('input-company').value.trim();
+      const interest = document.getElementById('interest-select').value;
+
+      document.getElementById('modal-success-copy').innerHTML =
+        `Obrigado, <strong class="text-crispWhite">${name}</strong>. Registramos o interesse da <strong class="text-crispWhite">${company}</strong> em <span class="text-emeraldNeon font-semibold">${interest}</span>. Nosso time entrará em contato em breve.`;
+
+      document.getElementById('modal-form-view').classList.add('hidden');
+      document.getElementById('modal-success-view').classList.remove('hidden');
+      document.getElementById('lead-form').reset();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeContactModal();
+        if (appState.interactive3D) toggleInteractive3D();
+      }
+    });
+
+    // =========================================================================
+    // 7. BOOTSTRAP
+    // =========================================================================
+    window.onload = function () {
+      const yearEl = document.getElementById('year-el');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      initThreeScene();
+      setupSectionTracking();
+      setupTiltCards();
+      setupMagneticButtons();
+      setupPointerControls();
+      setupMobileMenu();
+      animate();
+    };
+  </script>
 </body>
 </html>
