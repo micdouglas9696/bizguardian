@@ -1458,22 +1458,22 @@ img {
   top: 0;
   left: 0;
   width: 100%;
-  height: 82px;
+  height: 88px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 clamp(20px, 4vw, 48px);
+  padding: 0 clamp(24px, 4vw, 56px);
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   box-sizing: border-box;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cinematic-header.is-scrolled {
-  background: rgba(4, 8, 5, 0.88);
+  background: rgba(4, 8, 5, 0.92);
   border-bottom: 1px solid rgba(2, 233, 155, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
 }
@@ -1482,42 +1482,47 @@ img {
   display: flex;
   align-items: center;
   text-decoration: none;
+  z-index: 10;
 }
 
 .cinematic-brand img {
-  height: 38px;
+  height: clamp(48px, 4.2vw, 58px);
   width: auto;
   object-fit: contain;
-  filter: brightness(100);
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 .cinematic-brand:hover img {
-  opacity: 0.88;
-  transform: scale(1.02);
+  opacity: 0.9;
+  transform: scale(1.03);
 }
 
-/* Pílula Central de Navegação */
+/* Pílula Central de Navegação — Centralização Matemática Perfeita */
 .cinematic-nav-pill {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 8px;
+  padding: 6px 10px;
   background: rgba(14, 22, 17, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+  z-index: 5;
+  white-space: nowrap;
 }
 
 .cinematic-nav-item {
   color: #A1A1AA;
   font-family: var(--ws-font-sans);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 500;
   text-decoration: none;
-  padding: 7px 16px;
+  padding: 7px 18px;
   border-radius: 999px;
   transition: all 0.25s ease;
   white-space: nowrap;
@@ -1531,7 +1536,15 @@ img {
   background: #023820;
   color: var(--ws-green);
   font-weight: 700;
-  box-shadow: 0 0 15px rgba(2, 233, 155, 0.25);
+  box-shadow: 0 0 16px rgba(2, 233, 155, 0.25);
+}
+
+/* Lado Direito do Header */
+.cinematic-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
 }
 
 /* Botão Verde "Vamos conversar" */
@@ -1539,7 +1552,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 24px;
+  padding: 11px 26px;
   background: var(--ws-green);
   color: #000000;
   font-family: var(--ws-font-sans);
@@ -1556,6 +1569,11 @@ img {
   transform: scale(1.04);
   box-shadow: 0 0 35px rgba(2, 233, 155, 0.7);
   background: #3BFFB7;
+}
+
+/* Oculta botão toggle no desktop */
+.ws-mobile-toggle {
+  display: none !important;
 }
 
 /* 2. SECTION HERO PINNED DE 2 CENAS (APPLE VISION PRO SCROLL) */
@@ -1844,7 +1862,19 @@ img {
     display: none; /* No mobile abre via menu lateral animado */
   }
   .cinematic-header {
-    height: 72px;
+    height: 74px;
+    padding: 0 20px;
+  }
+  .cinematic-brand img {
+    height: 42px;
+  }
+  .cinematic-cta-pill {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  .ws-mobile-toggle {
+    display: inline-flex !important;
+    padding: 8px 12px;
   }
   .cinematic-photo-wrap {
     height: 60vh;
