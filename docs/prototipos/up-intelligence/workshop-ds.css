@@ -1856,28 +1856,40 @@ img {
   transform: scale(1.03);
 }
 
-/* RESPONSIVIDADE CINEMATOGRÁFICA */
+/* RESPONSIVIDADE CINEMATOGRÁFICA & MOBILE-FIRST */
 @media (max-width: 900px) {
   .cinematic-nav-pill {
     display: none; /* No mobile abre via menu lateral animado */
   }
   .cinematic-header {
-    height: 74px;
-    padding: 0 20px;
+    height: 72px;
+    padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
   }
   .cinematic-brand img {
-    height: 42px;
+    height: 38px;
   }
   .cinematic-cta-pill {
-    padding: 8px 16px;
-    font-size: 12px;
+    padding: 9px 16px;
+    font-size: 13px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .ws-mobile-toggle {
     display: inline-flex !important;
-    padding: 8px 12px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 14px;
+    align-items: center;
+    justify-content: center;
   }
   .cinematic-photo-wrap {
-    height: 60vh;
+    height: 52vh;
+    max-height: 420px;
+  }
+  .cinematic-scene-1-meta {
+    bottom: 20px;
   }
   .cinematic-hero-section {
     height: 100vh;
@@ -1886,14 +1898,31 @@ img {
   .cinematic-hero-section.is-fallback-scroll {
     height: 180vh;
   }
+  .cinematic-title {
+    font-size: clamp(30px, 8vw, 48px);
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+  }
+  .cinematic-subtitle {
+    font-size: clamp(14px, 3.8vw, 17px);
+    line-height: 1.5;
+    margin-bottom: 26px;
+    padding: 0 8px;
+  }
   .cinematic-actions {
     flex-direction: column;
     width: 100%;
+    gap: 12px;
   }
   .cinematic-btn-emerald,
   .cinematic-btn-outline {
     width: 100%;
+    min-height: 48px;
+    font-size: 15px;
+    padding: 14px 24px;
     box-sizing: border-box;
+    text-align: center;
+    justify-content: center;
   }
 }
 
@@ -2215,17 +2244,173 @@ img {
   color: #A1A1AA;
 }
 
+/* Blog & Feature Grid */
+.ws-feature-card {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 36px;
+  background: rgba(10, 16, 12, 0.7);
+  border: 1px solid rgba(2, 233, 155, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  align-items: center;
+}
+
+.ws-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.ws-hero-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 36px;
+  border-top: 1px solid #1A261C;
+  padding-top: 20px;
+}
+
+/* =========================================================================
+   AJUSTES GLOBAIS DE MOBILE (FRONTEND-DESIGN & MOBILE-DESIGN SKILLS)
+   Touch-first, Safe Areas, Zero Horizontal Overflow, Rhythm & Ergonomia
+   ========================================================================= */
 @media (max-width: 900px) {
+  .wrap {
+    width: calc(100% - clamp(24px, 6vw, 40px));
+  }
+
+  .ws-hero {
+    padding: clamp(96px, 15vw, 120px) 0 clamp(36px, 8vw, 56px);
+  }
+
+  .ws-title {
+    font-size: clamp(26px, 7.5vw, 40px);
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+
+  .ws-title-lg {
+    font-size: clamp(22px, 6.5vw, 34px);
+    line-height: 1.15;
+  }
+
+  .ws-lead {
+    font-size: clamp(14px, 3.8vw, 16px);
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+
+  .ws-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .ws-btn-primary,
+  .ws-btn-secondary {
+    width: 100%;
+    min-height: 48px;
+    font-size: 14.5px;
+    box-sizing: border-box;
+    text-align: center;
+    justify-content: center;
+    padding: 14px 22px;
+  }
+
   .ws-dossie-hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 28px;
   }
+
+  .ws-dossie-cover-wrap img {
+    max-height: 300px;
+  }
+
   .ws-modules-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
+
   .ws-guarantee-box {
     flex-direction: column;
     text-align: center;
+    padding: 24px 18px;
+    gap: 16px;
+  }
+
+  .ws-offer-stack {
+    padding: clamp(28px, 6vw, 44px) 18px;
+    border-radius: 18px;
+  }
+
+  .ws-faq-item summary {
+    padding: 16px 18px;
+    font-size: 15px;
+    min-height: 48px;
+  }
+
+  .ws-faq-answer {
+    padding: 0 18px 18px;
+    font-size: 14px;
+  }
+
+  .ws-footer-inner {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ws-footer-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .ws-feature-card {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .ws-feature-card > div:first-child {
+    padding: 24px 18px;
+    order: 2;
+  }
+
+  .ws-feature-card > div:last-child {
+    min-height: 200px;
+    order: 1;
+  }
+
+  .ws-blog-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ws-hero-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .ws-hero-stats > div {
+    border-left: none !important;
+    padding-left: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 10px;
+  }
+
+  .ws-hero-stats > div:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ws-footer-nav {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
