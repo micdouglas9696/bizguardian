@@ -9,53 +9,56 @@
   <script src="marinho.js" defer></script>
 </head>
 <body>
-  <div class="ws-notice">ESTUDO DE REDESIGN · DESIGN SYSTEM UP.INTELLIG3NCE</div>
+  <div class="ws-notice">ESTUDO DE REDESIGN · DESIGN SYSTEM MARINHO PONCI & UP.INTELLIG3NCE</div>
 
-  <header class="ws-header">
-    <div class="wrap ws-header-inner">
-      <a class="ws-logo-link" href="index.html" aria-label="Up.INTELLIG3NCE - Início">
-        <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE">
-      </a>
-      <nav class="ws-desktop-nav" aria-label="Navegação principal">
-        <a href="index.html">Início</a>
-        <a href="up-intelligence.html">Up.INTELLIG3NCE</a>
-        <a href="organize.html">ORG4NIZE.Up</a>
-        <a href="scale.html">SC4LE.Up</a>
-        <a href="dossies.html" aria-current="page">Dossiês</a>
-        <a href="blog.html">Blog</a>
-      </nav>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <a class="ws-header-cta" href="index.html#contato">Vamos conversar</a>
-        <button class="ws-menu-toggle-btn" type="button" aria-label="Abrir Menu Lateral">
-          <span class="ws-toggle-icon">
-            <span class="ws-toggle-bar"></span>
-            <span class="ws-toggle-bar"></span>
-          </span>
-          <span>Menu</span>
-        </button>
-      </div>
+  <!-- 01. BARRA DE NAVEGAÇÃO FIXA (MARINHO PONCI) -->
+  <header class="cinematic-header">
+    <a class="cinematic-brand" href="index.html" aria-label="Marinho Ponci — início">
+      <img src="/marinho-signature-header.png" alt="Marinho Ponci">
+    </a>
+
+    <nav class="cinematic-nav-pill" aria-label="Navegação principal">
+      <a href="index.html" class="cinematic-nav-item">Início</a>
+      <a href="up-intelligence.html" class="cinematic-nav-item">Up.INTELLIG3NCE</a>
+      <a href="organize.html" class="cinematic-nav-item">ORG4NIZE.Up</a>
+      <a href="scale.html" class="cinematic-nav-item">SC4LE.Up</a>
+      <a href="dossies.html" class="cinematic-nav-item is-active">Dossiês</a>
+      <a href="blog.html" class="cinematic-nav-item">Blog</a>
+    </nav>
+
+    <div class="cinematic-header-right">
+      <a class="cinematic-cta-pill" href="index.html#contato">Vamos conversar</a>
+      <button class="ws-menu-toggle-btn ws-mobile-toggle" type="button" aria-label="Abrir Menu Lateral">
+        <span class="ws-toggle-icon">
+          <span class="ws-toggle-bar"></span>
+          <span class="ws-toggle-bar"></span>
+        </span>
+      </button>
     </div>
   </header>
 
   <main>
-    <!-- HERO NO ESTILO WORKSHOP -->
+    <!-- HERO DOSSIÊS NOVO DESIGN SYSTEM -->
     <section class="ws-hero">
-      <div class="wrap ws-hero-center reveal">
-        <div class="ws-badge">
-          <span class="ws-badge-dot"></span>
-          <span>DOSSIÊS ESTRATÉGICOS · FRANCHISING</span>
-        </div>
-        <span class="ws-eyebrow">CONHECIMENTO PARA DECIDIR</span>
-        <h1 class="ws-title">
-          AS PERGUNTAS CERTAS <br>
-          <span class="ws-title-green">ANTES DO PRÓXIMO PASSO</span>
-        </h1>
-        <p class="ws-lead">
-          O mapa completo e estruturado de Marinho Ponci para você dar passos seguros, validar modelos e tomar decisões sem correr riscos desnecessários.
-        </p>
-        <div class="ws-actions">
-          <a class="ws-btn-primary" href="#escolha">Escolher Meu Dossiê</a>
-          <a class="ws-btn-secondary" href="index.html#contato">Falar com Especialistas</a>
+      <div class="cinematic-aura" aria-hidden="true"></div>
+      <div class="wrap reveal">
+        <div class="ws-hero-center">
+          <div class="ws-badge">
+            <span class="ws-badge-dot"></span>
+            <span>FRANCHISING COM CRITÉRIO · METODOLOGIA VALIDADA</span>
+          </div>
+          <span class="ws-eyebrow">CONHECIMENTO PARA DECIDIR</span>
+          <h1 class="ws-title">
+            AS PERGUNTAS CERTAS <br>
+            <span class="ws-title-green">ANTES DO PRÓXIMO PASSO</span>
+          </h1>
+          <p class="ws-lead">
+            O mapa estruturado e realista de Marinho Ponci para você dar passos seguros no franchising — seja para investir como franqueado ou para expandir sua marca como franqueador.
+          </p>
+          <div class="ws-actions" style="justify-content: center;">
+            <a class="ws-btn-primary" href="#escolha">Escolher Meu Dossiê</a>
+            <a class="ws-btn-secondary" href="index.html#contato">Falar com Especialistas</a>
+          </div>
         </div>
       </div>
     </section>
@@ -94,170 +97,227 @@
       </div>
     </div>
 
-    <!-- SELEÇÃO DOS DOSSIÊS: PALCO 3D DUAL-BOOK (EXCLUSIVO DOSSIÊS) -->
+    <!-- ESCOLHA DO DOSSIÊ (DUAL STAGE COM CORES NOVAS) -->
     <section class="ws-section" id="escolha">
-      <div class="wrap">
-        <div class="ws-section-header reveal">
+      <div class="wrap reveal">
+        <div class="ws-section-header">
           <div class="ws-badge">
             <span class="ws-badge-dot"></span>
-            <span>DUAS JORNADAS PRÁTICAS</span>
+            <span>ESTRUTURA DE PRODUÇÃO</span>
           </div>
-          <h2>Escolha o dossiê para o seu momento</h2>
-          <p>Conteúdo direto ao ponto, sem rodeios ou teorias vazias. Selecione o caminho correspondente à sua decisão:</p>
+          <span class="ws-eyebrow">ESCOLHA O SEU MOMENTO</span>
+          <h2 class="ws-title-lg">DOIS CAMINHOS, O MESMO <span class="ws-title-green">RIGOR ESTRATÉGICO</span></h2>
+          <p class="ws-lead">
+            Conteúdo direto, sem jargões desnecessários, com checklists, ferramentas e videoaulas complementares gravadas por Marinho Ponci.
+          </p>
         </div>
 
-        <div class="ws-dual-stage reveal">
-          <!-- DOSSIÊ 01: FUTURO FRANQUEADO -->
-          <div class="ws-book-portal" id="franqueado">
+        <div class="ws-dual-stage" style="margin-top: 48px;">
+          <!-- CARD 01: FUTURO FRANQUEADO -->
+          <div class="ws-book-portal">
             <div class="ws-book-cover-stage">
               <img src="/capaebookdesk_franqueado.webp" alt="Dossiê do Futuro Franqueado">
             </div>
-            <span class="ws-card-tag">JORNADA 01 · PARA QUEM QUER INVESTIR</span>
-            <h3 style="font-size:clamp(22px,2.5vw,28px);font-weight:900;margin:0 0 10px;color:#fff;">
+            <div class="ws-badge" style="margin-bottom: 12px;">
+              <span class="ws-badge-dot"></span>
+              <span>PARA QUEM QUER INVESTIR</span>
+            </div>
+            <h3 style="font-size: 24px; font-weight: 900; color: #FFF; margin: 0 0 10px;">
               Dossiê do Futuro Franqueado
             </h3>
-            <p style="font-size:14px;color:#A1A1AA;line-height:1.6;margin:0 0 18px;">
-              Para quem quer investir em uma franquia com critério real, saber auditar a Circular de Oferta (COF) e não depender de promessas de vendedores.
+            <p style="font-size: 14.5px; color: #A1A1AA; line-height: 1.6; margin: 0 0 20px;">
+              A verdade que ninguém te conta antes de assinar a COF e investir as economias de uma vida. Aprenda a auditar marcas, avaliar o ponto e calcular o capital de giro real.
             </p>
-            
-            <ul class="ws-feature-list" style="margin-bottom:24px;">
-              <li><span class="ws-check">✓</span> <span><strong>Análise de Perfil:</strong> entenda se você tem perfil de operador ou investidor.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Checklist de COF:</strong> perguntas indispensáveis antes de assinar contrato.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Viabilidade Real:</strong> validação de fluxo de caixa, ponto e payback.</span></li>
-            </ul>
 
-            <div style="margin-top:auto;">
-              <a class="ws-btn-primary" style="width:100%;text-align:center;" href="dossie-franqueado.html">Acessar Dossiê do Franqueado</a>
+            <div style="background: rgba(2, 233, 155, 0.05); border: 1px solid rgba(2, 233, 155, 0.15); border-radius: 12px; padding: 16px; margin-bottom: 24px; text-align: left;">
+              <div style="font-size: 11px; font-weight: 800; color: var(--ws-green); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">
+                Inclui no Dossiê:
+              </div>
+              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #E4E4E7;">
+                <li>✓ 6 Módulos completos em vídeo + material escrito</li>
+                <li>✓ Checklist de Auditoria de COF e Contratos</li>
+                <li>✓ Planilha de Capital de Giro e Payback Real</li>
+                <li>✓ Garantia incondicional de 7 dias (Risco Zero)</li>
+              </ul>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <div style="font-size: 22px; font-weight: 900; color: #FFF;">3× de R$ 89,00 <span style="font-size: 13px; font-weight: 400; color: #71717A;">sem juros</span></div>
+              <div style="font-size: 13px; color: var(--ws-green); margin-top: 4px;">ou R$ 222,30 via Pix com 10% off</div>
+            </div>
+
+            <div class="ws-actions" style="justify-content: center;">
+              <a class="ws-btn-primary" style="width: 100%; box-sizing: border-box; text-align: center;" href="dossie-franqueado.html">
+                Acessar Dossiê do Franqueado
+              </a>
             </div>
           </div>
 
-          <!-- DOSSIÊ 02: FUTURO FRANQUEADOR -->
-          <div class="ws-book-portal ws-book-portal-franchisor" id="franqueador">
+          <!-- CARD 02: FUTURO FRANQUEADOR -->
+          <div class="ws-book-portal">
             <div class="ws-book-cover-stage">
-              <img src="/capa_franqueador.png" alt="Dossiê do Futuro Franqueador">
+              <img src="/capaebookdesk_franqueador.webp" alt="Dossiê do Futuro Franqueador">
             </div>
-            <span class="ws-card-tag">JORNADA 02 · PARA QUEM QUER EXPANDIR</span>
-            <h3 style="font-size:clamp(22px,2.5vw,28px);font-weight:900;margin:0 0 10px;color:#fff;">
+            <div class="ws-badge" style="margin-bottom: 12px;">
+              <span class="ws-badge-dot"></span>
+              <span>PARA DONOS DE NEGÓCIOS</span>
+            </div>
+            <h3 style="font-size: 24px; font-weight: 900; color: #FFF; margin: 0 0 10px;">
               Dossiê do Futuro Franqueador
             </h3>
-            <p style="font-size:14px;color:#A1A1AA;line-height:1.6;margin:0 0 18px;">
-              Para empresários que possuem operação validada e querem transformar a marca em uma rede escalável, respeitada e lucrativa.
+            <p style="font-size: 14.5px; color: #A1A1AA; line-height: 1.6; margin: 0 0 20px;">
+              A verdade sobre franquear sua marca antes de dar o primeiro passo. Como formatar manuais, precificar royalties sustentáveis e selecionar franqueados com perfil de sócio.
             </p>
-            
-            <ul class="ws-feature-list" style="margin-bottom:24px;">
-              <li><span class="ws-check">✓</span> <span><strong>Formatação da Rede:</strong> padronização de manuais, processos e governança.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Filtro de Franqueados:</strong> critérios para escolher operadores preparados.</span></li>
-              <li><span class="ws-check">✓</span> <span><strong>Estrutura de Taxas:</strong> modelo financeiro sustentável de royalties e fundo.</span></li>
-            </ul>
 
-            <div style="margin-top:auto;">
-              <a class="ws-btn-primary" style="width:100%;text-align:center;" href="dossie-franqueador.html">Acessar Dossiê do Franqueador</a>
+            <div style="background: rgba(2, 233, 155, 0.05); border: 1px solid rgba(2, 233, 155, 0.15); border-radius: 12px; padding: 16px; margin-bottom: 24px; text-align: left;">
+              <div style="font-size: 11px; font-weight: 800; color: var(--ws-green); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">
+                Inclui no Dossiê:
+              </div>
+              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #E4E4E7;">
+                <li>✓ 6 Módulos estratégicos de franqueabilidade</li>
+                <li>✓ Roteiro de Formatação de COF e Manuais</li>
+                <li>✓ Calculadora de Royalties e Fundo de Propaganda</li>
+                <li>✓ Manual Prático de Gestão de Crise e Conflitos</li>
+              </ul>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <div style="font-size: 22px; font-weight: 900; color: #FFF;">3× de R$ 89,00 <span style="font-size: 13px; font-weight: 400; color: #71717A;">sem juros</span></div>
+              <div style="font-size: 13px; color: var(--ws-green); margin-top: 4px;">ou R$ 222,30 via Pix com 10% off</div>
+            </div>
+
+            <div class="ws-actions" style="justify-content: center;">
+              <a class="ws-btn-primary" style="width: 100%; box-sizing: border-box; text-align: center;" href="dossie-franqueador.html">
+                Acessar Dossiê do Franqueador
+              </a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4 PILARES VISUAIS ESTILO WORKSHOP (CARDS COM ÍCONES NEON) -->
-    <section class="ws-section">
-      <div class="wrap">
-        <div class="ws-section-header reveal">
-          <div class="ws-badge">
-            <span class="ws-badge-dot"></span>
-            <span>MÉTODO PRÁTICO</span>
-          </div>
-          <h2>Por que os Dossiês são diferentes?</h2>
-          <p>Visão prática de quem esteve à frente de grandes redes do varejo e franchising.</p>
-        </div>
-
-        <div class="ws-card-grid-4">
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" strokeLinejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">Critério Real</span>
-            <h3>Sem Promessas Fáceis</h3>
-            <p>Direto aos pontos de risco que os manuais convencionais não contam para você.</p>
-          </div>
-
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" strokeLinejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">Finanças</span>
-            <h3>Blindagem de Capital</h3>
-            <p>Aprenda a analisar DRE, payback e fluxo real antes de comprometer patrimônio.</p>
-          </div>
-
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" strokeLinejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">Jurídico</span>
-            <h3>Segurança Legal</h3>
-            <p>Entenda as cláusulas essenciais da Lei de Franquias para evitar litígios futuros.</p>
-          </div>
-
-          <div class="ws-card reveal">
-            <div class="ws-icon-box">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" strokeLinejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-              </svg>
-            </div>
-            <span class="ws-card-tag">Trincheira</span>
-            <h3>+38 Anos de Prática</h3>
-            <p>Experiência de quem formatou e expandiu redes nacionais com centenas de unidades.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BANNER FINAL ESTILO WORKSHOP -->
-    <section class="ws-section" style="border-bottom:none;">
+    <!-- AUTORIDADE MARINHO PONCI -->
+    <section class="ws-section" style="border-top: 1px solid #1E281F; background: #040805;">
       <div class="wrap reveal">
-        <div class="ws-cta-banner">
+        <div style="display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(32px, 5vw, 64px); align-items: center;">
+          <div style="border-radius: 20px; overflow: hidden; border: 1px solid rgba(2, 233, 155, 0.2); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);">
+            <img src="/sobre.webp" alt="Marinho Ponci" style="width: 100%; height: auto; display: block;">
+          </div>
+          <div>
+            <div class="ws-badge">
+              <span class="ws-badge-dot"></span>
+              <span>AUTOR DO MÉTODO</span>
+            </div>
+            <span class="ws-eyebrow">38 ANOS DE FRANCHISING REAL</span>
+            <h2 style="font-size: clamp(28px, 4.2vw, 44px); font-weight: 900; color: #FFF; margin: 0 0 18px; line-height: 1.15;">
+              Experiência Prática <br>
+              <span style="color: var(--ws-green);">a Serviço da Sua Decisão</span>
+            </h2>
+            <p style="font-size: 15.5px; color: #A1A1AA; line-height: 1.65; margin: 0 0 20px;">
+              Marinho Ponci liderou a formatação e expansão de mais de 850 unidades de franquias em 10 países. Os Dossiês trazem a experiência nua e crua das trincheiras, eliminando os discursos comerciais dos vendedores de franquia para colocar você no controle das suas decisões.
+            </p>
+            <div style="display: flex; gap: 24px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+              <div>
+                <strong style="font-size: 26px; font-weight: 900; color: var(--ws-green);">+850</strong>
+                <p style="font-size: 11px; font-weight: 700; color: #71717A; text-transform: uppercase; margin: 4px 0 0;">Lojas Implantadas</p>
+              </div>
+              <div style="border-left: 1px solid #1E281F; padding-left: 24px;">
+                <strong style="font-size: 26px; font-weight: 900; color: #FFF;">10</strong>
+                <p style="font-size: 11px; font-weight: 700; color: #71717A; text-transform: uppercase; margin: 4px 0 0;">Países Atendidos</p>
+              </div>
+              <div style="border-left: 1px solid #1E281F; padding-left: 24px;">
+                <strong style="font-size: 26px; font-weight: 900; color: var(--ws-green);">100%</strong>
+                <p style="font-size: 11px; font-weight: 700; color: #71717A; text-transform: uppercase; margin: 4px 0 0;">Independência</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ GERAL DOS DOSSIÊS -->
+    <section class="ws-section" style="border-top: 1px solid #1E281F;">
+      <div class="wrap reveal">
+        <div class="ws-section-header">
           <div class="ws-badge">
             <span class="ws-badge-dot"></span>
-            <span>ECOSSISTEMA UP</span>
+            <span>ESCLARECIMENTOS</span>
           </div>
-          <h2>Precisa de apoio estratégico na sua empresa?</h2>
-          <p>Seja para organizar a operação interna ou expandir territorialmente com inteligência artificial, conte com a nossa equipe.</p>
-          <div class="ws-actions">
-            <a class="ws-btn-primary" href="scale.html">Conhecer SC4LE.Up</a>
-            <a class="ws-btn-secondary" href="organize.html">Conhecer ORG4NIZE.Up</a>
-          </div>
+          <h2 class="ws-title-lg">DÚVIDAS FREQUENTES <span class="ws-title-green">SOBRE OS DOSSIÊS</span></h2>
+        </div>
+
+        <div class="ws-faq-list">
+          <details class="ws-faq-item" open>
+            <summary>O Dossiê é apenas um e-book em PDF?</summary>
+            <div class="ws-faq-answer">
+              Não. O Dossiê é uma experiência completa composta pelo manual em PDF estruturado, videoaulas gravadas por Marinho Ponci aprofundando cada tema e ferramentas práticas para download (checklists de auditoria, planilhas financeiras e modelos).
+            </div>
+          </details>
+
+          <details class="ws-faq-item">
+            <summary>Em quanto tempo recebo o acesso?</summary>
+            <div class="ws-faq-answer">
+              O acesso é imediato após a confirmação do pagamento. Você receberá um e-mail com os dados de acesso à plataforma de membros para assistir aos vídeos e baixar os arquivos.
+            </div>
+          </details>
+
+          <details class="ws-faq-item">
+            <summary>Tenho garantia se o conteúdo não fizer sentido para mim?</summary>
+            <div class="ws-faq-answer">
+              Sim! Você tem 7 dias de garantia incondicional. Se assistir às aulas e achar que o material não te ajudou a tomar uma decisão mais segura, basta solicitar o reembolso com um clique e devolveremos 100% do seu investimento.
+            </div>
+          </details>
+
+          <details class="ws-faq-item">
+            <summary>Qual a diferença entre os dois Dossiês?</summary>
+            <div class="ws-faq-answer">
+              O <strong>Dossiê do Futuro Franqueado</strong> é para quem quer comprar uma franquia e deseja saber como avaliar marcas, evitar armadilhas e calcular o payback real. O <strong>Dossiê do Futuro Franqueador</strong> é para empresários donos de marcas próprias que querem saber se estão prontos para franquear seu negócio e como formatar uma rede sem riscos.
+            </div>
+          </details>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- RODAPÉ UNIFICADO -->
   <footer class="ws-footer">
     <div class="wrap ws-footer-inner">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
-        <span>© 2026 Marinho Ponci & Up.INTELLIG3NCE. Todos os direitos reservados.</span>
+      <div class="ws-footer-brand">
+        <a href="index.html">
+          <img src="/marinho-signature-header.png" alt="Marinho Ponci" style="height: 48px; width: auto;">
+        </a>
+        <p style="font-size: 13px; color: #71717A; max-width: 380px; margin-top: 14px; line-height: 1.5;">
+          Business Architecture e inteligência estratégica para apoiar empresários na tomada de decisões seguras de gestão e expansão.
+        </p>
       </div>
-      <nav class="ws-footer-nav" aria-label="Rodapé">
-        <a href="index.html">Início</a>
-        <a href="up-intelligence.html">Up.INTELLIG3NCE</a>
-        <a href="organize.html">ORG4NIZE.Up</a>
-        <a href="scale.html">SC4LE.Up</a>
-        <a href="blog.html">Blog</a>
-      </nav>
+      <div class="ws-footer-nav">
+        <div class="ws-footer-col">
+          <span class="ws-footer-title">Navegação</span>
+          <a href="index.html">Início</a>
+          <a href="up-intelligence.html">Up.INTELLIG3NCE</a>
+          <a href="organize.html">ORG4NIZE.Up</a>
+          <a href="scale.html">SC4LE.Up</a>
+          <a href="dossies.html">Dossiês</a>
+        </div>
+        <div class="ws-footer-col">
+          <span class="ws-footer-title">Ecossistema</span>
+          <a href="dossie-franqueado.html">Dossiê do Franqueado</a>
+          <a href="dossie-franqueador.html">Dossiê do Franqueador</a>
+          <a href="blog.html">Blog & Artigos</a>
+          <a href="index.html#contato">Contato Direto</a>
+        </div>
+      </div>
+    </div>
+    <div class="wrap ws-footer-bottom">
+      <p>© 2026 Marinho Ponci · Up.INTELLIG3NCE. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- BACKDROP E MENU LATERAL ANIMADO -->
+  <!-- MENU LATERAL ANIMADO (OFF-CANVAS) -->
   <div class="ws-side-backdrop" aria-hidden="true"></div>
   <aside class="ws-side-drawer" aria-label="Navegação Lateral">
     <div class="ws-drawer-header">
-      <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" style="height:22px;width:auto;">
+      <img src="/marinho-signature-header.png" alt="Marinho Ponci" style="height: 38px; width: auto;">
       <button class="ws-drawer-close" type="button" aria-label="Fechar menu">✕</button>
     </div>
     <nav class="ws-drawer-nav">
@@ -274,10 +334,10 @@
         <span style="color:var(--ws-green)">●</span>
       </a>
       <a class="ws-drawer-link" href="scale.html">
-        <span><span class="ws-link-index">04</span>SC4LE.Up (Expansão)</span>
+        <span><span class="ws-link-index">04</span>SC4LE.Up (Expansão & IA)</span>
         <span style="color:var(--ws-green)">●</span>
       </a>
-      <a class="ws-drawer-link" href="dossies.html" aria-current="page">
+      <a class="ws-drawer-link" href="dossies.html">
         <span><span class="ws-link-index">05</span>Dossiês de Franquias</span>
         <span style="color:var(--ws-green)">●</span>
       </a>
