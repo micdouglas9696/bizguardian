@@ -286,14 +286,17 @@ export default function EbookSuccessPage() {
                                         <span className="text-accent-gold font-black shrink-0">
                                             2.
                                         </span>
-                                        Você receberá em breve o link da área de membros
-                                        com os 6 módulos
+                                        {isEn
+                                            ? 'You will soon receive the link to the member area with all Dossier chapters'
+                                            : 'Você receberá em breve o link da área de membros com os capítulos do Dossiê'}
                                     </li>
                                     <li className="flex gap-3">
                                         <span className="text-accent-gold font-black shrink-0">
                                             3.
                                         </span>
-                                        Sua nota fiscal será enviada em até 24h
+                                        {isEn
+                                            ? 'Your invoice will be sent within 24 hours'
+                                            : 'Sua nota fiscal será enviada em até 24h'}
                                     </li>
                                 </ol>
                             </div>
@@ -302,11 +305,11 @@ export default function EbookSuccessPage() {
                                 to="/"
                                 className="inline-block px-8 py-4 border border-accent-gold/50 text-accent-gold text-xs font-black uppercase tracking-[0.2em] hover:bg-accent-gold hover:text-black transition-colors"
                             >
-                                Voltar ao site
+                                {isEn ? 'Back to site' : 'Voltar ao site'}
                             </Link>
 
                             <p className="text-[11px] text-white/25 mt-8 uppercase tracking-[0.2em] font-bold">
-                                Garantia de 7 dias incondicional
+                                {isEn ? '15-day unconditional guarantee' : 'Garantia de 15 dias incondicional'}
                             </p>
                         </>
                     )}

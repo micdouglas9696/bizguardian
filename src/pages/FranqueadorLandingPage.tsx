@@ -8,51 +8,51 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 // "O Dossiê do Futuro Franqueador" — Marinho Ponci
 // =====================================================================
 
-const PRICE_PARCELA = '3× de R$ 89,00 sem juros';
-const PRICE_PIX = 'R$ 222,30 via Pix (10% off) ou Cartão';
+const PRICE_PARCELA = 'Pagamento único à vista no cartão de crédito';
+const PRICE_PIX = 'Checkout seguro via Stripe · Acesso imediato';
 
-// 6 módulos do Dossiê do Futuro Franqueador
+// Capítulos do Dossiê do Futuro Franqueador
 const MODULES = [
     {
-        n: 'MOD 01',
+        n: 'CAPÍTULO 01',
         title: 'Franqueabilidade do seu Negócio',
         text: 'Como avaliar de forma fria e realista se a sua empresa de sucesso está realmente pronta para ser replicada (Maturidade, Margem e Diferenciais de mercado).',
-        pills: ['Vídeo', 'Checklist de Franqueabilidade'],
+        pills: ['Vídeo de abertura', 'Checklist de Franqueabilidade', 'Vídeo de conclusão'],
         value: 'R$ 197',
     },
     {
-        n: 'MOD 02',
+        n: 'CAPÍTULO 02',
         title: 'Formatação Jurídica e Operacional',
         text: 'A verdade sobre a COF (Circular de Oferta de Franquia), Contratos e os Manuais de Operações. Como estruturar os pilares que protegem a sua marca de passivos.',
-        pills: ['Vídeo', 'Guia da COF'],
+        pills: ['Vídeo de abertura', 'Guia da COF', 'Vídeo de conclusão'],
         value: 'R$ 297',
     },
     {
-        n: 'MOD 03',
+        n: 'CAPÍTULO 03',
         title: 'Economia da Rede e Royalties',
         text: 'Como calcular e precificar de forma sustentável a Taxa de Franquia, os Royalties e o Fundo de Propaganda. A equação financeira que garante o lucro do Franqueador.',
-        pills: ['Vídeo', 'Calculadora de Royalties'],
+        pills: ['Vídeo de abertura', 'Calculadora de Royalties', 'Vídeo de conclusão'],
         value: 'R$ 297',
     },
     {
-        n: 'MOD 04',
+        n: 'CAPÍTULO 04',
         title: 'Estrutura de Suporte e Treinamento',
         text: 'Como estruturar o suporte sem inchar a sua operação. Do onboarding do franqueado ao acompanhamento e treinamento contínuo da rede.',
-        pills: ['Vídeo', 'Matriz de Suporte'],
+        pills: ['Vídeo de abertura', 'Matriz de Suporte', 'Vídeo de conclusão'],
         value: 'R$ 197',
     },
     {
-        n: 'MOD 05',
+        n: 'CAPÍTULO 05',
         title: 'Seleção de Franqueados Parceiros',
         text: 'Como desenhar o perfil ideal e selecionar os primeiros franqueados. O perigo de vender para qualquer um pelo caixa rápido da taxa de franquia.',
-        pills: ['Vídeo', 'Roteiro de Entrevista'],
+        pills: ['Vídeo de abertura', 'Roteiro de Entrevista', 'Vídeo de conclusão'],
         value: 'R$ 197',
     },
     {
-        n: 'MOD 06',
+        n: 'CAPÍTULO 06',
         title: 'Expansão e Gestão de Conflitos',
         text: 'Como planejar a expansão regional ou nacional de forma orgânica e estruturada. Estratégias práticas para lidar com conflitos e manter a rede engajada.',
-        pills: ['Vídeo', 'Manual de Gestão de Crise'],
+        pills: ['Vídeo de abertura', 'Manual de Gestão de Crise', 'Vídeo de conclusão'],
         value: 'R$ 297',
     },
 ];
@@ -86,15 +86,19 @@ async function startCheckout(productKey?: string): Promise<{ ok: boolean; error?
 const FAQ_ITEMS = [
     {
         q: 'O Dossiê é apenas um e-book?',
-        a: 'Não. É um programa decisório com 6 módulos em vídeo gravados pelo Marinho, roteiros e checklists práticos aplicados para que você possa entender o processo real de formatação da sua marca e expansão, incluindo o bônus "A Primeira Reunião de Venda". Todo o material fica em uma área de membros segura.',
+        a: 'Você recebe acesso à plataforma com os capítulos completos. Cada capítulo abre com um vídeo de apresentação mostrando o que você vai ver, traz exercícios e checklists práticos no meio e fecha com um vídeo de conclusão — além do bônus "A Primeira Reunião de Venda", tudo dentro de uma área de membros segura.',
     },
     {
         q: 'Em quanto tempo recebo o acesso?',
-        a: 'Acesso imediato. Pagamentos via cartão de crédito e Pix liberam as credenciais de acesso no seu e-mail em segundos.',
+        a: 'Acesso imediato. Após a confirmação do pagamento no cartão de crédito, as credenciais de acesso são enviadas ao seu e-mail em segundos.',
     },
     {
         q: 'Tenho garantia se eu não gostar?',
-        a: 'Sim. Você tem 7 dias de garantia incondicional. Se você acessar o material e achar que ele não serve para o momento do seu negócio, basta solicitar o reembolso por e-mail e devolvemos 100% do seu dinheiro.',
+        a: 'Sim. Você tem 15 dias de garantia incondicional. Se você acessar o material e achar que ele não serve para o momento do seu negócio, basta solicitar o reembolso por e-mail e devolvemos 100% do seu dinheiro.',
+    },
+    {
+        q: 'Como funciona o pagamento?',
+        a: 'Pagamento único de R$ 247,00 à vista no cartão de crédito, processado com segurança pela Stripe.',
     },
     {
         q: 'Este dossiê substitui uma consultoria jurídica?',
@@ -638,14 +642,14 @@ export default function FranqueadorLandingPage() {
                                     Estrutura Completa
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                    Seis módulos estratégicos
+                                    Capítulos estratégicos
                                     <br />
                                     <span className="italic text-accent-gold">
                                         + 1 bônus exclusivo.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Acesso permanente ao método conceitual do Marinho Ponci de formatação e franquias.
+                                    Cada capítulo abre com um vídeo de apresentação do que você vai ver, traz exercícios e checklists práticos no meio e fecha com um vídeo de conclusão.
                                 </p>
                             </div>
 
@@ -750,7 +754,7 @@ export default function FranqueadorLandingPage() {
                                                 R$
                                             </span>
                                             <span className="text-5xl md:text-6xl font-black text-white/40 line-through tabular-nums tracking-tighter">
-                                                1.779
+                                                1.879
                                             </span>
                                         </div>
                                     </div>
@@ -882,13 +886,13 @@ export default function FranqueadorLandingPage() {
                                     Garantia incondicional
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.8rem,4vw,2.8rem)] mb-5">
-                                    7 dias.{' '}
+                                    15 dias.{' '}
                                     <span className="italic text-accent-gold">
                                         Risco zero.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Acesse o material, utilize as tabelas e assista às aulas estratégicas. Se não fizer sentido para a sua marca em 7 dias, devolvemos 100% do seu valor.
+                                    Acesse o material, utilize as tabelas e assista às aulas estratégicas. Se não fizer sentido para a sua marca em 15 dias, devolvemos 100% do seu valor.
                                 </p>
                             </div>
 
@@ -964,7 +968,7 @@ export default function FranqueadorLandingPage() {
                                 O Dossiê do Futuro Franqueador
                             </h2>
                             <p className="text-base md:text-lg text-white/55 leading-[1.75] max-w-xl mx-auto mb-10">
-                                R$ 247 é o custo para entender o caminho estratégico real de expansão do seu negócio antes de gastar fortunas com assessoria jurídica ou consultorias sem preparo.
+                                R$ 247 à vista no cartão é o custo para entender o caminho estratégico real de expansão do seu negócio antes de gastar fortunas com assessoria jurídica ou consultorias sem preparo.
                             </p>
 
                             <button
@@ -984,7 +988,7 @@ export default function FranqueadorLandingPage() {
                                 {[
                                     { i: 'verified', l: 'Pagamento Stripe' },
                                     { i: 'lock', l: 'Acesso imediato' },
-                                    { i: 'autorenew', l: '7 dias de garantia' },
+                                    { i: 'autorenew', l: '15 dias de garantia' },
                                 ].map((b) => (
                                     <div
                                         key={b.l}
@@ -1016,7 +1020,7 @@ export default function FranqueadorLandingPage() {
                             </span>
                         </button>
                         <p className="text-center text-[9px] text-white/30 mt-2 font-bold uppercase tracking-[0.15em]">
-                            3× R$ 89 sem juros · Pix R$ 222
+                            R$ 247 à vista no cartão · Acesso imediato
                         </p>
                     </div>
                 </div>

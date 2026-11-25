@@ -11,49 +11,49 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 const PRICE_PARCELA = 'Instant digital access';
 const PRICE_PIX = 'Single payment via Credit Card';
 
-// 6 modules of the Future Franchisor Dossier
+// Chapters of the Future Franchisor Dossier
 const MODULES = [
     {
-        n: 'MOD 01',
+        n: 'CHAPTER 01',
         title: 'Is your business franchisable?',
         text: 'How to assess, coldly and realistically, whether your successful company is truly ready to be replicated (maturity, margin and real market differentiators).',
-        pills: ['Video', 'Franchisability Checklist'],
-        value: '$ 197',
+        pills: ['Opening video', 'Franchisability Checklist', 'Closing video'],
+        value: '$ 39',
     },
     {
-        n: 'MOD 02',
+        n: 'CHAPTER 02',
         title: 'Legal and Operational Structuring',
         text: 'The truth about the FDD (Franchise Disclosure Document), contracts and operations manuals. How to build the pillars that protect your brand from liabilities.',
-        pills: ['Video', 'Disclosure Document Guide'],
-        value: '$ 297',
+        pills: ['Opening video', 'Disclosure Document Guide', 'Closing video'],
+        value: '$ 59',
     },
     {
-        n: 'MOD 03',
+        n: 'CHAPTER 03',
         title: 'Network Economics and Royalties',
         text: 'How to calculate and price the franchise fee, royalties and the advertising fund sustainably. The financial equation that secures the franchisor\'s profit.',
-        pills: ['Video', 'Royalty Calculator'],
-        value: '$ 297',
+        pills: ['Opening video', 'Royalty Calculator', 'Closing video'],
+        value: '$ 59',
     },
     {
-        n: 'MOD 04',
+        n: 'CHAPTER 04',
         title: 'Support and Training Structure',
         text: 'How to structure support without bloating your operation. From franchisee onboarding to continuous coaching and training across the network.',
-        pills: ['Video', 'Support Matrix'],
-        value: '$ 197',
+        pills: ['Opening video', 'Support Matrix', 'Closing video'],
+        value: '$ 39',
     },
     {
-        n: 'MOD 05',
+        n: 'CHAPTER 05',
         title: 'Selecting Partner Franchisees',
         text: 'How to design the ideal profile and select your first franchisees. The danger of selling to anyone just for the quick cash of the franchise fee.',
-        pills: ['Video', 'Interview Script'],
-        value: '$ 197',
+        pills: ['Opening video', 'Interview Script', 'Closing video'],
+        value: '$ 39',
     },
     {
-        n: 'MOD 06',
+        n: 'CHAPTER 06',
         title: 'Expansion and Conflict Management',
         text: 'How to plan regional or national expansion organically and with structure. Practical strategies to handle conflict and keep the network engaged.',
-        pills: ['Video', 'Crisis Management Playbook'],
-        value: '$ 297',
+        pills: ['Opening video', 'Crisis Management Playbook', 'Closing video'],
+        value: '$ 59',
     },
 ];
 
@@ -86,7 +86,7 @@ async function startCheckout(productKey?: string): Promise<{ ok: boolean; error?
 const FAQ_ITEMS = [
     {
         q: 'Is the Dossier just an e-book?',
-        a: 'No. It is a decision-making program with 6 video modules recorded by Marinho, plus scripts and practical checklists so you can understand the real process of structuring and expanding your brand — including the bonus "The First Franchise Sales Meeting". All content lives in a secure members area.',
+        a: 'You receive access to the Dossier organized into chapters. Each chapter opens with a video introducing what you will cover, includes practical exercises and checklists in the middle, and closes with a wrap-up video — plus the bonus "The First Franchise Sales Meeting" inside a secure members area.',
     },
     {
         q: 'How fast do I get access?',
@@ -94,7 +94,7 @@ const FAQ_ITEMS = [
     },
     {
         q: 'Is there a guarantee if I do not like it?',
-        a: 'Yes. You have a 7-day unconditional guarantee. If you access the material and feel it does not fit your current business moment, simply request a refund by e-mail and we return 100% of your money.',
+        a: 'Yes. You have a 15-day unconditional guarantee. If you access the material and feel it does not fit your current business moment, simply request a refund by e-mail and we return 100% of your money.',
     },
     {
         q: 'Does this dossier replace legal counsel?',
@@ -638,14 +638,14 @@ export default function FranqueadorLandingPageEn() {
                                     Complete Structure
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                    Six strategic modules
+                                    Strategic chapters
                                     <br />
                                     <span className="italic text-accent-gold">
                                         + 1 exclusive bonus.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Lifetime access to Marinho Ponci's conceptual method for franchise structuring and expansion.
+                                    Each chapter opens with an intro video showing what you will cover, includes practical exercises and checklists in the middle, and closes with a wrap-up video.
                                 </p>
                             </div>
 
@@ -710,7 +710,7 @@ export default function FranqueadorLandingPageEn() {
                                         label: 'BONUS',
                                         title: 'The First Franchise Sales Meeting',
                                         text: 'How to present your franchise opportunity to qualified candidates: what to reveal, what to hold back during initial screening, and how to structure the brand\'s commercial proposal professionally.',
-                                        value: '$ 397',
+                                        value: '$ 79',
                                     },
                                 ].map((b) => (
                                     <div
@@ -750,7 +750,7 @@ export default function FranqueadorLandingPageEn() {
                                                 $
                                             </span>
                                             <span className="text-5xl md:text-6xl font-black text-white/40 line-through tabular-nums tracking-tighter">
-                                                1,779
+                                                373
                                             </span>
                                         </div>
                                     </div>
@@ -882,13 +882,13 @@ export default function FranqueadorLandingPageEn() {
                                     Unconditional guarantee
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.8rem,4vw,2.8rem)] mb-5">
-                                    7 days.{' '}
+                                    15 days.{' '}
                                     <span className="italic text-accent-gold">
                                         Zero risk.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Access the material, use the worksheets and watch the strategic lessons. If it does not make sense for your brand within 7 days, we refund 100% of your money.
+                                    Access the material, use the worksheets and watch the strategic lessons. If it does not make sense for your brand within 15 days, we refund 100% of your money.
                                 </p>
                             </div>
 
@@ -984,7 +984,7 @@ export default function FranqueadorLandingPageEn() {
                                 {[
                                     { i: 'verified', l: 'Stripe payment' },
                                     { i: 'lock', l: 'Instant access' },
-                                    { i: 'autorenew', l: '7-day guarantee' },
+                                    { i: 'autorenew', l: '15-day guarantee' },
                                 ].map((b) => (
                                     <div
                                         key={b.l}

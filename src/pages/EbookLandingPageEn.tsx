@@ -11,49 +11,49 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 const PRICE_PARCELA = 'Instant digital access';
 const PRICE_PIX = 'Single payment via Credit Card';
 
-// 6 modules of the Dossier
+// Chapters of the Dossier
 const MODULES = [
     {
-        n: 'MOD 01',
+        n: 'CHAPTER 01',
         title: 'Assessing your current situation',
         text: 'Before looking at brands, look inward. Profile, financial health, family. The correct decision starts here.',
-        pills: ['Video', 'Self-Assessment'],
-        value: '$ 197',
+        pills: ['Opening video', 'Self-Assessment', 'Closing video'],
+        value: '$ 39',
     },
     {
-        n: 'MOD 02',
+        n: 'CHAPTER 02',
         title: 'The reality of franchising',
         text: 'No guaranteed salary. No magic formula. What changes when you transition from employee to unit owner.',
-        pills: ['Video', 'Timeline'],
-        value: '$ 197',
+        pills: ['Opening video', 'Timeline', 'Closing video'],
+        value: '$ 39',
     },
     {
-        n: 'MOD 03',
+        n: 'CHAPTER 03',
         title: 'Market research and purpose',
         text: '"Which franchise makes the most money?" is the wrong question. Marinho shows you the right question to start.',
-        pills: ['Video', 'Affinity Map'],
-        value: '$ 197',
+        pills: ['Opening video', 'Affinity Map', 'Closing video'],
+        value: '$ 39',
     },
     {
-        n: 'MOD 04',
+        n: 'CHAPTER 04',
         title: 'Real financial planning',
         text: 'Personal financial X-ray. Real working capital. The danger of excessive leverage. Honest numbers.',
-        pills: ['Video', 'Financial X-Ray'],
-        value: '$ 297',
+        pills: ['Opening video', 'Financial X-Ray', 'Closing video'],
+        value: '$ 59',
     },
     {
-        n: 'MOD 05',
+        n: 'CHAPTER 05',
         title: 'The transition and Garden Theory',
         text: 'How to leave your job without jumping in the dark. The logic of 2/3 preparation for 1/3 execution.',
-        pills: ['Video', 'Transition Plan'],
-        value: '$ 197',
+        pills: ['Opening video', 'Transition Plan', 'Closing video'],
+        value: '$ 39',
     },
     {
-        n: 'MOD 06',
+        n: 'CHAPTER 06',
         title: 'The moment of decision',
         text: 'How to turn months of study into conscious action. And how to know when "yes" is ready, or "no" is wiser.',
-        pills: ['Video', 'Decision Checklist'],
-        value: '$ 297',
+        pills: ['Opening video', 'Decision Checklist', 'Closing video'],
+        value: '$ 59',
     },
 ];
 
@@ -86,7 +86,7 @@ async function startCheckout(productKey?: string): Promise<{ ok: boolean; error?
 const FAQ_ITEMS = [
     {
         q: 'Is the Dossier just a PDF e-book?',
-        a: 'It is not just a PDF. It is an interactive program with 6 video modules recorded by Marinho, practical exercises applicable to your real situation, guided reflections, and the exclusive bonus "The Meeting with the Franchisor". All inside a secure member area with permanent access.',
+        a: 'You receive access to the Dossier organized into chapters. Each chapter opens with a video introducing what you will cover, includes practical exercises along the way, and closes with a wrap-up video — plus the exclusive bonus "The Meeting with the Franchisor" inside a secure member area.',
     },
     {
         q: 'How long does it take to get access?',
@@ -94,7 +94,7 @@ const FAQ_ITEMS = [
     },
     {
         q: 'What if I do not like it? Is there a guarantee?',
-        a: 'Yes. 7-day unconditional guarantee. You access, test, and do the exercises. If it does not make sense, just send an email requesting a refund and we return 100% of your money. No questions asked, no bureaucracy. And you keep the bonuses.',
+        a: 'Yes. 15-day unconditional guarantee. You access, test, and do the exercises. If it does not make sense, just send an email requesting a refund and we return 100% of your money. No questions asked, no bureaucracy.',
     },
     {
         q: 'Does it work if I have not chosen the business segment yet?',
@@ -102,7 +102,7 @@ const FAQ_ITEMS = [
     },
     {
         q: 'How long does it take to consume the material?',
-        a: 'On average, 6 to 8 hours spread across modules. But the recommendation is not to rush: each module brings exercises that require reflection. Those who decide well sleep on the question before answering.',
+        a: 'On average, 6 to 8 hours spread across chapters. But the recommendation is not to rush: each chapter opens with an intro video, includes exercises that require reflection, and closes with a wrap-up video. Those who decide well sleep on the question before answering.',
     },
     {
         q: 'Will I learn which franchise to buy?',
@@ -134,7 +134,7 @@ const PRODUCT_SCHEMA = {
     '@id': 'https://marinhoponci.com/ebook-ingles#product',
     name: 'The Future Franchisee Dossier',
     description:
-        'Interactive program with 6 video modules, practical exercises, and reflections for those about to invest in a franchise. By Marinho Ponci, 38 years behind the scenes in franchising.',
+        'Interactive chapters with an opening video, practical exercises, and a closing video for those about to invest in a franchise. By Marinho Ponci, 38 years behind the scenes in franchising.',
     image: 'https://marinhoponci.com/dossie_ingles.png',
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
     author: { '@id': 'https://marinhoponci.com/#person' },
@@ -660,14 +660,14 @@ export default function EbookLandingPageEn() {
                                     Everything you receive
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                    Six modules
+                                    Complete chapters
                                     <br />
                                     <span className="italic text-accent-gold">
                                         + 1 exclusive bonus.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Each module combines Marinho’s video, practical exercises, and guided reflections. Permanent access.
+                                    Each chapter opens with an intro video showing what you will cover, includes practical exercises along the way, and closes with a wrap-up video.
                                 </p>
                             </div>
 
@@ -732,7 +732,7 @@ export default function EbookLandingPageEn() {
                                         label: 'BONUS',
                                         title: 'The Meeting with the Franchisor',
                                         text: 'A complete guide for when you enter that meeting: what to ask, what to observe, what it means when they hesitate, what it means when they speak too fast. Here you learn the body language of the "unspoken".',
-                                        value: '$ 397',
+                                        value: '$ 79',
                                     },
                                 ].map((b) => (
                                     <div
@@ -772,7 +772,7 @@ export default function EbookLandingPageEn() {
                                                 $
                                             </span>
                                             <span className="text-5xl md:text-6xl font-black text-white/40 line-through tabular-nums tracking-tighter">
-                                                1,779
+                                                353
                                             </span>
                                         </div>
                                     </div>
@@ -907,17 +907,17 @@ export default function EbookLandingPageEn() {
                                     Unconditional Guarantee
                                 </span>
                                 <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.8rem,4vw,2.8rem)] mb-5">
-                                    7 days.{' '}
+                                    15 days.{' '}
                                     <span className="italic text-accent-gold">
                                         Zero risk.
                                     </span>
                                 </h2>
                                 <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                    Access it, do the exercises, and test the method. If it does not make sense to you within 7 days,{' '}
+                                    Access it, do the exercises, and test the method. If it does not make sense to you within 15 days,{' '}
                                     <strong className="text-white">
                                         we refund 100% of your money, no questions asked
-                                    </strong>{' '}
-                                    and you keep the bonuses.
+                                    </strong>
+                                    .
                                 </p>
                             </div>
 
@@ -1063,7 +1063,7 @@ export default function EbookLandingPageEn() {
                             </h2>
                             <p className="text-base md:text-lg text-white/55 leading-[1.75] max-w-xl mx-auto mb-10">
                                 $47 is the cost of clarity before you commit $50k or more. 
-                                Permanent access, 7-day guarantee.
+                                Immediate access, 15-day guarantee.
                             </p>
 
                             <button
@@ -1083,7 +1083,7 @@ export default function EbookLandingPageEn() {
                                 {[
                                     { i: 'verified', l: 'Stripe Payment' },
                                     { i: 'lock', l: 'Immediate Access' },
-                                    { i: 'autorenew', l: '7-Day Guarantee' },
+                                    { i: 'autorenew', l: '15-Day Guarantee' },
                                 ].map((b) => (
                                     <div
                                         key={b.l}

@@ -13,51 +13,51 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 //          Future Pacing · Epiphany Bridge)
 // =====================================================================
 
-const PRICE_PARCELA = '3× de R$ 89,00 sem juros';
-const PRICE_PIX = 'R$ 222,30 via Pix (10% off)';
+const PRICE_PARCELA = 'Pagamento único à vista no cartão de crédito';
+const PRICE_PIX = 'Checkout seguro via Stripe · Acesso imediato';
 
-// 6 módulos do Dossiê (extraído para usar no carrossel)
+// Capítulos do Dossiê
 const MODULES = [
     {
-        n: 'MOD 01',
+        n: 'CAPÍTULO 01',
         title: 'Avaliando a sua situação atual',
         text: 'Antes de olhar para marcas, olhe para dentro. Perfil, saúde financeira, família. A decisão correta começa aqui.',
-        pills: ['Vídeo', 'Autoavaliação'],
+        pills: ['Vídeo de abertura', 'Autoavaliação', 'Vídeo de conclusão'],
         value: 'R$ 197',
     },
     {
-        n: 'MOD 02',
+        n: 'CAPÍTULO 02',
         title: 'A realidade do franchising',
         text: 'Sem salário garantido. Sem fórmula mágica. O que muda quando você passa de colaborador a dono de unidade.',
-        pills: ['Vídeo', 'Linha do tempo'],
+        pills: ['Vídeo de abertura', 'Linha do tempo', 'Vídeo de conclusão'],
         value: 'R$ 197',
     },
     {
-        n: 'MOD 03',
+        n: 'CAPÍTULO 03',
         title: 'Pesquisa de mercado e propósito',
         text: '"Qual franquia dá mais dinheiro?" é a pergunta errada. Marinho mostra qual é a pergunta certa para começar.',
-        pills: ['Vídeo', 'Mapa de afinidades'],
+        pills: ['Vídeo de abertura', 'Mapa de afinidades', 'Vídeo de conclusão'],
         value: 'R$ 197',
     },
     {
-        n: 'MOD 04',
+        n: 'CAPÍTULO 04',
         title: 'Planejamento financeiro real',
         text: 'Raio-X financeiro pessoal. Capital de giro real. O perigo do financiamento excessivo. Os números honestos.',
-        pills: ['Vídeo', 'Raio-X financeiro'],
+        pills: ['Vídeo de abertura', 'Raio-X financeiro', 'Vídeo de conclusão'],
         value: 'R$ 297',
     },
     {
-        n: 'MOD 05',
+        n: 'CAPÍTULO 05',
         title: 'A transição e a Teoria do Jardim',
         text: 'Como sair do emprego sem saltar no escuro. A lógica dos 2/3 de preparação para 1/3 de execução.',
-        pills: ['Vídeo', 'Plano de transição'],
+        pills: ['Vídeo de abertura', 'Plano de transição', 'Vídeo de conclusão'],
         value: 'R$ 197',
     },
     {
-        n: 'MOD 06',
+        n: 'CAPÍTULO 06',
         title: 'O momento da decisão',
         text: 'Como transformar meses de estudo em ação consciente. E como saber quando o "sim" está pronto, ou o "não" é mais sábio.',
-        pills: ['Vídeo', 'Checklist de decisão'],
+        pills: ['Vídeo de abertura', 'Checklist de decisão', 'Vídeo de conclusão'],
         value: 'R$ 297',
     },
 ];
@@ -97,15 +97,15 @@ async function startCheckout(): Promise<{ ok: boolean; error?: string }> {
 const FAQ_ITEMS = [
     {
         q: 'O Dossiê é um e-book em PDF?',
-        a: 'Não é só um PDF. É um programa interativo com 6 módulos em vídeo gravados pelo Marinho, exercícios práticos aplicáveis à sua situação real, reflexões guiadas e o bônus exclusivo "A Reunião com o Franqueador". Tudo dentro de uma área de membro segura, com acesso permanente.',
+        a: 'Você recebe acesso à plataforma com o material completo organizado em capítulos. Cada capítulo abre com um vídeo de apresentação do que você vai ver, traz exercícios práticos no meio e fecha com um vídeo de conclusão — além do bônus exclusivo "A Reunião com o Franqueador", tudo dentro de uma área de membros segura.',
     },
     {
         q: 'Em quanto tempo recebo o acesso?',
-        a: 'Acesso imediato. No cartão, você recebe as credenciais de login no email em segundos. No Pix, em até 2 minutos após a confirmação do pagamento.',
+        a: 'Acesso imediato. Após a confirmação do pagamento no cartão de crédito, você recebe as credenciais de login no e-mail em segundos.',
     },
     {
         q: 'E se eu não gostar? Tem garantia?',
-        a: 'Sim. 7 dias incondicionais. Você acessa, testa, faz os exercícios. Se não fizer sentido, basta um email pedindo reembolso e devolvemos 100%. Sem perguntas, sem burocracia. E você fica com os bônus.',
+        a: 'Sim. 15 dias incondicionais. Você acessa, testa, faz os exercícios. Se não fizer sentido, basta um e-mail pedindo reembolso e devolvemos 100%. Sem perguntas, sem burocracia.',
     },
     {
         q: 'Funciona se eu ainda não escolhi o segmento?',
@@ -113,19 +113,19 @@ const FAQ_ITEMS = [
     },
     {
         q: 'Quanto tempo leva para consumir o material?',
-        a: 'Em média, 6 a 8 horas distribuídas pelos módulos. Mas a recomendação é não consumir corrido: cada módulo traz exercícios que pedem reflexão. Quem decide bem é quem dorme com a pergunta antes de responder.',
+        a: 'Em média, 6 a 8 horas distribuídas pelos capítulos. A recomendação é não consumir corrido: cada capítulo abre com um vídeo de apresentação, traz exercícios que pedem reflexão e fecha com um vídeo de conclusão. Quem decide bem é quem dorme com a pergunta antes de responder.',
     },
     {
         q: 'Vou aprender qual franquia comprar?',
         a: 'Não. Esse é o erro que o Dossiê combate. Você aprende a fazer as perguntas certas para que a resposta de "qual marca" venha de você, informada, não vendida. Marinho não recomenda marcas. Ele dá método.',
     },
     {
-        q: 'Posso parcelar? Tem Pix?',
-        a: '3× de R$ 89,00 sem juros no cartão. No Pix à vista, 10% de desconto (R$ 222,30). Boleto também disponível.',
+        q: 'Como funciona o pagamento?',
+        a: 'Pagamento único de R$ 247,00 à vista no cartão de crédito, processado com segurança pela Stripe e com liberação imediata do acesso.',
     },
     {
         q: 'Como funciona a nota fiscal?',
-        a: 'Emitida automaticamente após o pagamento, enviada por email em até 24h. Pode ser usada como despesa de capacitação profissional na sua declaração.',
+        a: 'Emitida automaticamente após o pagamento e enviada por e-mail em até 24h.',
     },
 ];
 
@@ -145,7 +145,7 @@ const PRODUCT_SCHEMA = {
     '@id': 'https://marinhoponci.com/ebook#product',
     name: 'O Dossiê do Futuro Franqueado',
     description:
-        'Programa interativo com 6 módulos em vídeo, exercícios práticos e reflexões para quem está prestes a investir em uma franquia. Por Marinho Ponci, 38 anos de bastidores no franchising.',
+        'Material interativo em capítulos com vídeo de abertura, exercícios práticos e vídeo de conclusão para quem está prestes a investir em uma franquia. Por Marinho Ponci, 38 anos de bastidores no franchising.',
     image: 'https://marinhoponci.com/capaebookdesk_franqueado.webp',
     brand: { '@type': 'Brand', name: 'Marinho Ponci' },
     author: { '@id': 'https://marinhoponci.com/#person' },
@@ -231,7 +231,7 @@ export default function EbookLandingPage() {
         };
 
         const description =
-            'Descubra a verdade que o consultor da franqueadora esconde de você. Programa interativo com 6 módulos em vídeo do Marinho Ponci. Decida com clareza antes de investir.';
+            'Descubra a verdade que o consultor da franqueadora esconde de você. Material em capítulos com vídeo de abertura, exercícios práticos e vídeo de conclusão do Marinho Ponci. Decida com clareza antes de investir.';
 
         setMeta('description', description);
         setMeta('robots', 'index,follow,max-image-preview:large');
@@ -671,15 +671,15 @@ export default function EbookLandingPage() {
                                 Tudo que você recebe
                             </span>
                             <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.9rem,4.2vw,3.2rem)] mb-5">
-                                Seis módulos
+                                Capítulos completos
                                 <br />
                                 <span className="italic text-accent-gold">
                                     + 1 bônus.
                                 </span>
                             </h2>
                             <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
-                                Cada módulo combina vídeo do Marinho, exercício prático
-                                e reflexão guiada. Acesso permanente.
+                                Cada capítulo abre com um vídeo de apresentação do que você vai ver,
+                                traz exercícios práticos no meio e fecha com um vídeo de conclusão.
                             </p>
                         </div>
 
@@ -927,18 +927,18 @@ export default function EbookLandingPage() {
                                 Garantia incondicional
                             </span>
                             <h2 className="font-black text-white leading-[0.95] tracking-tighter uppercase text-[clamp(1.8rem,4vw,2.8rem)] mb-5">
-                                7 dias.{' '}
+                                15 dias.{' '}
                                 <span className="italic text-accent-gold">
                                     Risco zero.
                                 </span>
                             </h2>
                             <p className="text-[15px] md:text-base text-white/55 leading-[1.75]">
                                 Acesse, faça os exercícios e teste o método. Se não
-                                fizer sentido em 7 dias,{' '}
+                                fizer sentido em 15 dias,{' '}
                                 <strong className="text-white">
                                     devolvemos 100% sem perguntas
-                                </strong>{' '}
-                                e você fica com os bônus.
+                                </strong>
+                                .
                             </p>
                         </div>
 
@@ -1084,8 +1084,8 @@ export default function EbookLandingPage() {
                             <span className="italic text-accent-gold">leia isto.</span>
                         </h2>
                         <p className="text-base md:text-lg text-white/55 leading-[1.75] max-w-xl mx-auto mb-10">
-                            R$ 247 é o custo de clareza antes de você comprometer R$ 150
-                            mil ou mais. Acesso permanente, garantia de 7 dias.
+                            R$ 247 à vista no cartão é o custo de clareza antes de você comprometer R$ 150
+                            mil ou mais. Acesso imediato, garantia de 15 dias.
                         </p>
 
                         <button
@@ -1105,7 +1105,7 @@ export default function EbookLandingPage() {
                             {[
                                 { i: 'verified_user', l: 'Pagamento Stripe' },
                                 { i: 'lock_clock', l: 'Acesso imediato' },
-                                { i: 'replay', l: '7 dias de garantia' },
+                                { i: 'replay', l: '15 dias de garantia' },
                             ].map((b) => (
                                 <div
                                     key={b.l}
@@ -1137,7 +1137,7 @@ export default function EbookLandingPage() {
                         </span>
                     </button>
                     <p className="text-center text-[9px] text-white/30 mt-2 font-bold uppercase tracking-[0.15em]">
-                        3× R$ 89 sem juros · Pix R$ 222
+                        R$ 247 à vista no cartão · Acesso imediato
                     </p>
                 </div>
             </div>
