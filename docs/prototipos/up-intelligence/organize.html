@@ -81,7 +81,7 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 65% 45% at 80% 20%, rgba(16, 232, 138, 0.08) 0%, rgba(6, 32, 22, 0.04) 45%, transparent 75%),
+        radial-gradient(ellipse 65% 45% at 78% 18%, rgba(16, 232, 138, 0.08) 0%, rgba(6, 32, 22, 0.05) 45%, transparent 75%),
         radial-gradient(ellipse 55% 40% at 15% 75%, rgba(6, 32, 22, 0.25) 0%, transparent 70%);
       pointer-events: none;
       z-index: 1;
@@ -91,11 +91,31 @@
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(16, 232, 138, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16, 232, 138, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(16, 232, 138, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 232, 138, 0.022) 1px, transparent 1px);
       background-size: 72px 72px;
       pointer-events: none;
       z-index: 1;
+    }
+
+    /* Subtle "Up" Geometric Pattern Tile */
+    .up-pattern-bg {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='%2310E88A' fill-opacity='0.04'%3E%3Cpath d='M10 18h6v18c0 4.5 3 7.5 7.5 7.5S31 40.5 31 36v-6.5l6-3.4V36c0 7.8-5.7 13.5-13.5 13.5S10 43.8 10 36V18z'/%3E%3Cpath d='M31 26.8V19h-6l9-12 9 12h-6v4.4l-6 3.4z'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 56px 56px;
+    }
+
+    /* Fixed Header Backdrop (Prevents text collision on scroll) */
+    .site-header {
+      background: rgba(3, 5, 4, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .site-header.is-scrolled {
+      background: rgba(3, 8, 5, 0.94);
+      border-bottom-color: rgba(16, 232, 138, 0.22);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
     }
 
     /* Text Glows */
@@ -104,12 +124,12 @@
       text-shadow: 0 0 28px rgba(16, 232, 138, 0.42), 0 0 56px rgba(16, 232, 138, 0.16);
     }
 
-    /* System Buttons (from real app) */
+    /* System Buttons */
     .btn-emerald {
       background: linear-gradient(135deg, #10E88A 0%, #05D67B 100%);
       color: #030504;
       font-weight: 800;
-      box-shadow: 0 0 24px rgba(16, 232, 138, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 24px rgba(16, 232, 138, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
       transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
     }
     .btn-emerald:hover {
@@ -132,27 +152,51 @@
       transform: translateY(-2px);
     }
 
-    /* Real System Glassmorphic Surfaces */
+    /* Real System Glassmorphic Surfaces with Specular Top Rim Light (from Image 5) */
     .system-card {
-      background: rgba(7, 20, 14, 0.88);
+      position: relative;
+      background: linear-gradient(180deg, rgba(8, 22, 15, 0.92) 0%, rgba(4, 12, 8, 0.94) 100%);
       border: 1px solid rgba(16, 232, 138, 0.18);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
       transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+    .system-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rim-color, rgba(16, 232, 138, 0.65)), transparent);
+      opacity: 0.85;
+      pointer-events: none;
     }
     .system-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(16, 232, 138, 0.45);
-      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.8), 0 0 32px rgba(16, 232, 138, 0.15);
+      border-color: var(--hover-border, rgba(16, 232, 138, 0.48));
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.85), 0 0 32px var(--hover-glow, rgba(16, 232, 138, 0.14));
     }
 
     .system-modal-card {
-      background: rgba(5, 18, 12, 0.92);
+      position: relative;
+      background: linear-gradient(180deg, rgba(6, 22, 15, 0.95) 0%, rgba(4, 11, 8, 0.96) 100%);
       border: 1px solid rgba(16, 232, 138, 0.42);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 0 45px rgba(16, 232, 138, 0.25), 0 25px 70px rgba(0, 0, 0, 0.85);
+      box-shadow: 0 0 48px rgba(16, 232, 138, 0.22), 0 25px 70px rgba(0, 0, 0, 0.88);
+    }
+    .system-modal-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 8%;
+      right: 8%;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, #10E88A, transparent);
+      pointer-events: none;
     }
 
     /* Navbar Pill Item */
@@ -183,13 +227,25 @@
       animation-play-state: paused;
     }
 
-    /* Pulse animation */
-    @keyframes pulseSoft {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.08); opacity: 0.4; }
+    /* Reveal animation */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .pulse-soft {
-      animation: pulseSoft 2.5s ease-in-out infinite;
+    .reveal-up.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-up {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .ticker-track {
+        animation: none;
+      }
     }
   </style>
 </head>
@@ -199,27 +255,24 @@
   <div class="architectural-grid"></div>
 
   <!-- ===================================================================== -->
-  <!-- 01. BARRA DE NAVEGAÇÃO FIXA (MARINHO PONCI)                           -->
+  <!-- 01. BARRA DE NAVEGAÇÃO FIXA (IDÊNTICA À HOME / ECOSYSTEM)             -->
   <!-- ===================================================================== -->
-  <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+  <header id="site-header" class="site-header fixed top-0 left-0 right-0 z-50 h-[72px] lg:h-[84px]">
+    <div class="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-10 flex items-center justify-between relative">
       <!-- Left: Signature Marinho Ponci Brand -->
-      <a href="index.html" class="group flex items-center gap-3 focus:outline-none" aria-label="Marinho Ponci — início">
+      <a href="index.html" class="group flex items-center shrink-0 z-10 focus:outline-none" aria-label="Marinho Ponci — início">
         <img
           src="/marinho-signature-header.png"
           alt="Marinho Ponci"
           class="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
           onerror="this.onerror=null; this.src='/marinho-signature.png';"
         />
-        <span class="hidden sm:inline-block font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon/80 px-2.5 py-1 rounded-full border border-emeraldNeon/25 bg-[#040907]">
-          ORG4NIZ.Up
-        </span>
       </a>
 
-      <!-- Center: Floating Pill Navigation (Unified Across Platform) -->
+      <!-- Center: Floating Pill Navigation (Mathematically Centered) -->
       <nav
         aria-label="Navegação principal"
-        class="hidden lg:flex items-center gap-1 px-2 py-1.5 rounded-full bg-[#070C0A]/85 border border-white/[0.09] backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.65)]"
+        class="hidden lg:flex items-center gap-1 px-2 py-1.5 rounded-full bg-[#070C0A]/90 border border-white/[0.09] backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.65)] lg:absolute lg:left-1/2 lg:-translate-x-1/2 z-10 whitespace-nowrap"
       >
         <a href="index.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Início</a>
         <a href="up-intelligence.html" class="nav-pill px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">Up.INTELLIG3NCE</a>
@@ -230,10 +283,10 @@
       </nav>
 
       <!-- Right: Glowing Emerald CTA + Mobile Toggle -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5 sm:gap-3 z-10 shrink-0">
         <a
           href="index.html#contato"
-          class="btn-emerald px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-extrabold tracking-tight cursor-pointer inline-flex items-center"
+          class="btn-emerald px-4 sm:px-6 min-h-[42px] sm:min-h-[44px] rounded-full text-xs sm:text-sm font-extrabold tracking-tight cursor-pointer inline-flex items-center justify-center whitespace-nowrap"
         >
           Vamos conversar
         </a>
@@ -243,7 +296,7 @@
           type="button"
           aria-label="Abrir Menu Lateral"
           aria-expanded="false"
-          class="lg:hidden p-2.5 rounded-full bg-[#070C0A]/90 border border-white/15 text-crispWhite hover:border-emeraldNeon/60 transition-colors"
+          class="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-[#070C0A]/90 border border-white/15 text-crispWhite hover:border-emeraldNeon/60 transition-colors"
         >
           <svg id="ham-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
@@ -256,28 +309,28 @@
     </div>
 
     <!-- Mobile Dropdown -->
-    <div id="mobile-menu" class="lg:hidden hidden mt-3 max-w-7xl mx-auto rounded-3xl system-card p-4">
+    <div id="mobile-menu" class="lg:hidden hidden mx-4 mt-2 rounded-3xl system-modal-card p-4 shadow-2xl">
       <div class="flex flex-col gap-1">
-        <a href="index.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Início</a>
-        <a href="up-intelligence.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Up.INTELLIG3NCE</a>
-        <a href="organize.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-emeraldNeon bg-emeraldNeon/10">ORG4NIZE.Up</a>
-        <a href="scale.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">SC4LE.Up</a>
-        <a href="dossies.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Dossiês</a>
-        <a href="blog.html" class="mobile-link px-4 py-3 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Blog</a>
+        <a href="index.html" class="mobile-link min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Início</a>
+        <a href="up-intelligence.html" class="mobile-link min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Up.INTELLIG3NCE</a>
+        <a href="organize.html" class="mobile-link min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold text-emeraldNeon bg-emeraldNeon/10 border border-emeraldNeon/25">ORG4NIZE.Up</a>
+        <a href="scale.html" class="mobile-link min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">SC4LE.Up</a>
+        <a href="dossies.html" class="mobile-link min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Dossiês</a>
+        <a href="blog.html" class="mobile-link min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold text-crispWhite/80 hover:text-crispWhite hover:bg-white/5">Blog</a>
       </div>
     </div>
   </header>
 
-  <main class="relative z-10 pt-28">
+  <main class="relative z-10 pt-[84px] lg:pt-[96px]">
     <!-- =================================================================== -->
     <!-- HERO NO ESTILO WORKSHOP & REAL SYSTEM MODAL                         -->
     <!-- =================================================================== -->
-    <section class="min-h-[82vh] flex items-center px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto py-12 lg:py-20">
-      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section class="min-h-[82dvh] flex items-center px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto py-10 sm:py-14 lg:py-20">
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
         <!-- 7 Cols Left Content -->
         <div class="lg:col-span-7 max-w-2xl">
           <!-- Real Platform Tagline Eyebrow (from Cover reference) -->
-          <div class="font-mono text-[11px] font-semibold tracking-[0.22em] text-emeraldNeon/90 uppercase mb-4 flex items-center gap-2 flex-wrap">
+          <div class="font-mono text-[10px] sm:text-[11px] font-semibold tracking-[0.14em] sm:tracking-[0.22em] text-emeraldNeon/90 uppercase mb-4 flex items-center gap-x-2 gap-y-1 flex-wrap">
             <span>ORGANIZAÇÃO</span>
             <span class="text-emeraldNeon">•</span>
             <span>ACOMPANHAMENTO</span>
@@ -288,142 +341,151 @@
           </div>
 
           <!-- Top Badge -->
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emeraldNeon/[0.08] border border-emeraldNeon/25 mb-6">
-            <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A]"></span>
-            <span class="font-mono text-[11px] font-medium tracking-[0.2em] uppercase text-emeraldNeon">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emeraldNeon/[0.08] border border-emeraldNeon/25 mb-5 max-w-full">
+            <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A] shrink-0"></span>
+            <span class="font-mono text-[10px] sm:text-[11px] font-medium tracking-[0.12em] sm:tracking-[0.2em] uppercase text-emeraldNeon">
               UP.INTELLIG3NCE · ORGANIZAÇÃO OPERACIONAL &amp; FINANCEIRA
             </span>
           </div>
 
-          <span class="block font-mono text-xs tracking-[0.24em] uppercase text-slateMuted font-bold mb-3">
+          <span class="block font-mono text-[11px] sm:text-xs tracking-[0.18em] sm:tracking-[0.24em] uppercase text-slateMuted font-bold mb-3">
             CLAREZA DE GESTÃO PARA PEQUENAS E MÉDIAS EMPRESAS
           </span>
 
-          <h1 class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-[-0.035em] leading-[1.05] text-crispWhite mb-6">
+          <h1 class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-[-0.035em] leading-[1.06] text-crispWhite mb-5 sm:mb-6">
             ORG4NIZE.UP <br>
             <span class="text-emerald-glow">SUA EMPRESA MAIS ORGANIZADA</span>
           </h1>
 
-          <p class="text-base sm:text-lg text-slateMuted leading-relaxed mb-8 max-w-xl">
+          <p class="text-base sm:text-lg text-slateMuted leading-relaxed mb-7 sm:mb-8 max-w-xl">
             Ajudamos pequenas e médias empresas a organizar as finanças, a rotina administrativa e a operação para planejar os próximos passos com solidez e previsibilidade.
           </p>
 
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 mb-9 sm:mb-10">
             <a
-              class="btn-emerald px-8 py-4 rounded-full text-sm font-extrabold tracking-tight text-center inline-flex items-center justify-center gap-2 cursor-pointer"
+              class="btn-emerald min-h-[48px] px-7 sm:px-8 py-3.5 rounded-full text-sm font-extrabold tracking-tight text-center inline-flex items-center justify-center gap-2 cursor-pointer"
               href="#transformacao"
             >
               <span>Ver a Transformação</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </a>
             <a
-              class="btn-outline px-8 py-4 rounded-full text-sm font-bold tracking-tight text-center cursor-pointer"
+              class="btn-outline min-h-[48px] px-7 sm:px-8 py-3.5 rounded-full text-sm font-bold tracking-tight text-center inline-flex items-center justify-center cursor-pointer"
               href="index.html#contato"
             >
               Falar com a Equipe
             </a>
           </div>
 
-          <!-- Bottom Real Status Badges Strip -->
-          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 text-left">
-            <div>
+          <!-- Bottom Real Status Badges Strip (Responsive stacking without cramped cols on 390px) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 pt-6 border-t border-white/10 text-left">
+            <div class="flex sm:block items-center justify-between">
               <div class="text-base sm:text-lg font-extrabold text-crispWhite tracking-tight">Finanças</div>
-              <div class="text-[11px] font-mono text-slateMuted mt-0.5">DRE &amp; Caixa Real</div>
+              <div class="text-[11px] font-mono text-slateMuted sm:mt-0.5">DRE &amp; Caixa Real</div>
             </div>
-            <div class="border-l border-white/10 pl-4">
+            <div class="flex sm:block items-center justify-between pt-2.5 sm:pt-0 border-t sm:border-t-0 sm:border-l border-white/10 sm:pl-4">
               <div class="text-base sm:text-lg font-extrabold text-emeraldNeon tracking-tight">Operação</div>
-              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Rituais &amp; Rotinas</div>
+              <div class="text-[11px] font-mono text-slateMuted sm:mt-0.5">Rituais &amp; Rotinas</div>
             </div>
-            <div class="border-l border-white/10 pl-4">
+            <div class="flex sm:block items-center justify-between pt-2.5 sm:pt-0 border-t sm:border-t-0 sm:border-l border-white/10 sm:pl-4">
               <div class="text-base sm:text-lg font-extrabold text-crispWhite tracking-tight">Futuro</div>
-              <div class="text-[11px] font-mono text-slateMuted mt-0.5">Visão de Escala</div>
+              <div class="text-[11px] font-mono text-slateMuted sm:mt-0.5">Visão de Escala</div>
             </div>
           </div>
         </div>
 
-        <!-- 5 Cols Right: Real Platform UI Dashboard Card (Extracted from Screenshots 1 & 4) -->
+        <!-- 5 Cols Right: Real Platform UI Dashboard Card (Extracted directly from Screenshots 1 & 4) -->
         <div class="lg:col-span-5">
-          <div class="relative rounded-3xl system-modal-card p-6 sm:p-7 overflow-hidden">
-            <!-- Subtle Top Glow bar -->
-            <div class="w-14 h-1 rounded-full bg-emeraldNeon mx-auto mb-5 shadow-[0_0_12px_#10E88A]"></div>
-
-            <!-- Top Pill Header (Image 1 reference) -->
-            <div class="flex items-center justify-between mb-5 border-b border-white/10 pb-4">
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_8px_#10E88A]"></span>
-                <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon font-semibold">
+          <div class="relative rounded-3xl system-modal-card p-5 sm:p-7 overflow-hidden">
+            <!-- Top Pill Chrome (Image 1 reference) -->
+            <div class="flex items-center justify-between gap-2 mb-5 border-b border-white/10 pb-3.5">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_8px_#10E88A] shrink-0"></span>
+                <span class="font-mono text-[10px] tracking-[0.16em] uppercase text-emeraldNeon font-semibold truncate">
                   PAINEL DO BUSINESS DESIGNER
                 </span>
               </div>
-              <span class="font-mono text-[10px] tracking-[0.14em] uppercase text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full bg-amber-500/10">
-                SIMULADO
-              </span>
+              <div class="flex items-center gap-2 shrink-0">
+                <span class="font-mono text-[10px] tracking-[0.14em] uppercase text-amber-400 border border-amber-500/35 px-2.5 py-0.5 rounded-full bg-amber-500/10 whitespace-nowrap">
+                  SIMULADO
+                </span>
+                <span class="w-6 h-6 rounded-full bg-emeraldNeon text-[#030504] font-extrabold text-[10px] flex items-center justify-center shrink-0" aria-hidden="true">M</span>
+              </div>
             </div>
 
             <!-- Dashboard Mini Header -->
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-between gap-3 mb-4">
               <div>
-                <h4 class="text-xl font-bold text-crispWhite tracking-tight">Empresas</h4>
+                <h4 class="text-xl font-extrabold text-crispWhite tracking-tight">Empresas</h4>
                 <p class="text-xs text-slateMuted font-mono">Análise de gestão integrada</p>
               </div>
-              <div class="flex items-center gap-2">
-                <span class="px-3 py-1 rounded-full bg-emeraldNeon text-[#030504] font-mono text-[10px] font-bold">
-                  + Nova empresa
-                </span>
-              </div>
+              <span class="px-3.5 py-1.5 rounded-full bg-emeraldNeon text-[#030504] font-mono text-[10px] font-extrabold tracking-wide shrink-0 shadow-[0_0_16px_rgba(16,232,138,0.4)] whitespace-nowrap">
+                + Nova empresa
+              </span>
             </div>
 
-            <!-- Simulated Cards Grid (from Image 1 screenshot) -->
-            <div class="space-y-3">
+            <!-- Simulated Search Pill (From Image 1 screenshot) -->
+            <div class="mb-4 px-3.5 py-2 rounded-full bg-[#030906] border border-white/10 flex items-center gap-2 text-xs text-slateMuted/70 font-mono">
+              <svg class="w-3.5 h-3.5 text-slateMuted shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 105.64 5.64a7.5 7.5 0 0010.61 10.61z" />
+              </svg>
+              <span class="truncate">Empresas</span>
+            </div>
+
+            <!-- Simulated Cards List (from Image 1 screenshot) -->
+            <div class="space-y-2.5">
               <!-- Item 1 -->
-              <div class="p-3.5 rounded-2xl bg-[#040D08]/90 border border-emeraldNeon/25 flex items-center justify-between">
-                <div>
-                  <div class="flex items-center gap-2">
+              <div class="p-3.5 rounded-2xl bg-[#040D08]/95 border border-emeraldNeon/25 flex items-center justify-between gap-3 hover:border-emeraldNeon/50 transition-colors">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shrink-0"></span>
                     <span class="text-sm font-bold text-crispWhite">BBQING AVEIRO</span>
                     <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-mono text-slateMuted">Alimentação</span>
                   </div>
-                  <div class="font-mono text-[11px] text-slateMuted mt-1">DRE Gerencial · Margem 24.8%</div>
+                  <div class="font-mono text-[11px] text-slateMuted mt-1 truncate">DRE Gerencial · Margem 24.8%</div>
                 </div>
-                <span class="font-mono text-xs text-emeraldNeon font-semibold">
+                <span class="font-mono text-xs text-emeraldNeon font-semibold shrink-0 whitespace-nowrap">
                   Operando ✓
                 </span>
               </div>
 
               <!-- Item 2 -->
-              <div class="p-3.5 rounded-2xl bg-[#040D08]/90 border border-emeraldNeon/25 flex items-center justify-between">
-                <div>
-                  <div class="flex items-center gap-2">
+              <div class="p-3.5 rounded-2xl bg-[#040D08]/95 border border-emeraldNeon/25 flex items-center justify-between gap-3 hover:border-emeraldNeon/50 transition-colors">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shrink-0"></span>
                     <span class="text-sm font-bold text-crispWhite">LUMI STUDIO</span>
                     <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-mono text-slateMuted">Estética</span>
                   </div>
-                  <div class="font-mono text-[11px] text-slateMuted mt-1">Fluxo Conciliado · Rotina Ativa</div>
+                  <div class="font-mono text-[11px] text-slateMuted mt-1 truncate">Fluxo Conciliado · Rotina Ativa</div>
                 </div>
-                <span class="font-mono text-xs text-emeraldNeon font-semibold">
+                <span class="font-mono text-xs text-emeraldNeon font-semibold shrink-0 whitespace-nowrap">
                   Operando ✓
                 </span>
               </div>
 
               <!-- Item 3 -->
-              <div class="p-3.5 rounded-2xl bg-[#040D08]/90 border border-white/10 flex items-center justify-between">
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="text-sm font-bold text-crispWhite/80">MORENA BEAUTY</span>
+              <div class="p-3.5 rounded-2xl bg-[#040D08]/95 border border-white/10 flex items-center justify-between gap-3 hover:border-sky-400/40 transition-colors">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span>
+                    <span class="text-sm font-bold text-crispWhite/85">MORENA BEAUTY</span>
                     <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-mono text-slateMuted">Beleza</span>
                   </div>
-                  <div class="font-mono text-[11px] text-slateMuted mt-1">Padronização de Rotinas</div>
+                  <div class="font-mono text-[11px] text-slateMuted mt-1 truncate">Padronização de Rotinas</div>
                 </div>
-                <span class="font-mono text-xs text-sky-400 font-semibold">
+                <span class="font-mono text-xs text-sky-400 font-semibold shrink-0 whitespace-nowrap">
                   Em Análise
                 </span>
               </div>
             </div>
 
             <!-- Footer metric from real platform -->
-            <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
-              <span class="text-slateMuted font-mono text-[11px]">CLAREZA FINANCEIRA</span>
-              <span class="text-emeraldNeon font-mono font-bold">100% VISIBILIDADE</span>
+            <div class="mt-4 pt-3.5 border-t border-white/10 flex items-center justify-between gap-2 text-xs">
+              <span class="text-slateMuted font-mono text-[10px] sm:text-[11px]">CLAREZA FINANCEIRA</span>
+              <span class="text-emeraldNeon font-mono font-bold text-[11px] sm:text-xs whitespace-nowrap">100% VISIBILIDADE</span>
             </div>
           </div>
         </div>
@@ -433,8 +495,8 @@
     <!-- =================================================================== -->
     <!-- TICKER KINÉTICO DA UP                                               -->
     <!-- =================================================================== -->
-    <div class="py-4 border-y border-white/[0.08] bg-[#040A07]/90 overflow-hidden">
-      <div class="ticker-track font-mono text-xs tracking-[0.24em] uppercase text-crispWhite/85 flex items-center">
+    <div class="py-3.5 sm:py-4 border-y border-white/[0.08] bg-[#040A07]/95 overflow-hidden">
+      <div class="ticker-track font-mono text-[11px] sm:text-xs tracking-[0.22em] uppercase text-crispWhite/85 flex items-center">
         <div class="flex items-center gap-6 shrink-0 pr-6">
           <span class="text-emeraldNeon font-bold">ORG4NIZE.UP</span>
           <span class="text-emeraldNeon">•</span>
@@ -469,8 +531,8 @@
     <!-- =================================================================== -->
     <!-- QUADRO DE TRANSFORMAÇÃO ANTES VS DEPOIS (EXCLUSIVO ORG4NIZE.UP)     -->
     <!-- =================================================================== -->
-    <section class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto" id="transformacao">
-      <div class="max-w-3xl mb-14">
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto" id="transformacao">
+      <div class="max-w-3xl mb-10 sm:mb-14 reveal-up">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emeraldNeon/10 border border-emeraldNeon/25 mb-4">
           <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
           <span class="font-mono text-[11px] font-semibold tracking-[0.2em] uppercase text-emeraldNeon">
@@ -485,43 +547,49 @@
         </p>
       </div>
 
-      <!-- Before vs After Cards (Reflecting Image 5 diagnostic colors: Coral warning vs Emerald achievement) -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+      <!-- Before vs After Cards (Reflecting Image 5 diagnostic top-rim glow: Coral warning vs Emerald achievement) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
         <!-- Before Card (Coral/Rose Alert Styling from Image 5) -->
-        <div class="rounded-3xl bg-[#090506]/90 border border-rose-500/25 p-7 sm:p-9 shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between">
+        <div
+          class="system-card reveal-up rounded-3xl p-5 sm:p-8 flex flex-col justify-between"
+          style="background: linear-gradient(180deg, rgba(24, 9, 12, 0.92) 0%, rgba(10, 5, 6, 0.95) 100%); border-color: rgba(244, 63, 94, 0.28); --rim-color: rgba(244, 63, 94, 0.75); --hover-border: rgba(244, 63, 94, 0.55); --hover-glow: rgba(244, 63, 94, 0.14);"
+        >
           <div>
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-rose-500/20">
+            <div class="mb-5 pb-4 border-b border-rose-500/20">
+              <div class="mb-3">
+                <span class="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.18em] uppercase text-rose-400 px-2.5 py-1 rounded-full border border-rose-500/35 bg-rose-500/10 whitespace-nowrap">
+                  <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                  MERECEM ATENÇÃO
+                </span>
+              </div>
               <h3 class="text-xl sm:text-2xl font-extrabold text-crispWhite flex items-center gap-3">
-                <span class="w-9 h-9 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-400 flex items-center justify-center text-sm font-bold">
+                <span class="w-9 h-9 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-400 flex items-center justify-center text-sm font-bold shrink-0">
                   ✕
                 </span>
-                O Cenário Sem Método
+                <span>O Cenário Sem Método</span>
               </h3>
-              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-rose-400 px-2.5 py-1 rounded-full border border-rose-500/30 bg-rose-500/10">
-                MERECEM ATENÇÃO
-              </span>
             </div>
 
-            <ul class="space-y-5">
-              <li class="flex items-start gap-3.5">
+            <ul class="space-y-4 sm:space-y-5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✕</span>
                 <span class="text-sm sm:text-base text-crispWhite/90 leading-relaxed">
                   <strong class="text-crispWhite font-bold">Apagando incêndios diários:</strong> Toda decisão operacional depende exclusivamente da presença do dono.
                 </span>
               </li>
-              <li class="flex items-start gap-3.5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✕</span>
                 <span class="text-sm sm:text-base text-crispWhite/90 leading-relaxed">
                   <strong class="text-crispWhite font-bold">Caixa sem visibilidade:</strong> Dinheiro entra e sai sem conciliação clara e com margens reais desconhecidas.
                 </span>
               </li>
-              <li class="flex items-start gap-3.5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✕</span>
                 <span class="text-sm sm:text-base text-crispWhite/90 leading-relaxed">
                   <strong class="text-crispWhite font-bold">Sobrecarga crônica:</strong> Esforço extremo com a sensação constante de trabalhar muito e lucrar pouco.
                 </span>
               </li>
-              <li class="flex items-start gap-3.5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✕</span>
                 <span class="text-sm sm:text-base text-crispWhite/90 leading-relaxed">
                   <strong class="text-crispWhite font-bold">Medo de crescer:</strong> Insegurança para contratar ou abrir novos canais por medo de perder o controle.
@@ -529,46 +597,49 @@
               </li>
             </ul>
           </div>
-          <div class="mt-8 pt-4 border-t border-rose-500/15 font-mono text-xs text-rose-400/80">
+          <div class="mt-7 pt-4 border-t border-rose-500/15 font-mono text-[11px] sm:text-xs text-rose-400/85">
             CUSTO DA DESORGANIZAÇÃO · ALTO DESGASTE
           </div>
         </div>
 
         <!-- After Card (Vibrant Emerald System Container from Images 1 & 4) -->
-        <div class="rounded-3xl system-modal-card p-7 sm:p-9 border border-emeraldNeon/45 flex flex-col justify-between">
+        <div class="system-modal-card reveal-up rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-emeraldNeon/25">
+            <div class="mb-5 pb-4 border-b border-emeraldNeon/25">
+              <div class="mb-3">
+                <span class="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.18em] uppercase text-emeraldNeon px-2.5 py-1 rounded-full border border-emeraldNeon/40 bg-emeraldNeon/10 whitespace-nowrap">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon shadow-[0_0_8px_#10E88A]"></span>
+                  MAIOR CONSISTÊNCIA
+                </span>
+              </div>
               <h3 class="text-xl sm:text-2xl font-extrabold text-crispWhite flex items-center gap-3">
-                <span class="w-9 h-9 rounded-xl bg-emeraldNeon/20 border border-emeraldNeon/50 text-emeraldNeon flex items-center justify-center text-sm font-bold shadow-[0_0_14px_rgba(16,232,138,0.35)]">
+                <span class="w-9 h-9 rounded-xl bg-emeraldNeon/20 border border-emeraldNeon/50 text-emeraldNeon flex items-center justify-center text-sm font-bold shrink-0 shadow-[0_0_14px_rgba(16,232,138,0.35)]">
                   ✓
                 </span>
-                Com o Método ORG4NIZE.Up
+                <span>Com o Método ORG4NIZE.Up</span>
               </h3>
-              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-emeraldNeon px-2.5 py-1 rounded-full border border-emeraldNeon/40 bg-emeraldNeon/10">
-                MAIOR CONSISTÊNCIA
-              </span>
             </div>
 
-            <ul class="space-y-5">
-              <li class="flex items-start gap-3.5">
+            <ul class="space-y-4 sm:space-y-5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/20 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-[0_0_8px_#10E88A]">✓</span>
                 <span class="text-sm sm:text-base text-crispWhite leading-relaxed">
                   <strong class="text-crispWhite font-bold">Rotina descentralizada:</strong> Tarefas administrativas organizadas em rituais claros de execução e acompanhamento.
                 </span>
               </li>
-              <li class="flex items-start gap-3.5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/20 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-[0_0_8px_#10E88A]">✓</span>
                 <span class="text-sm sm:text-base text-crispWhite leading-relaxed">
                   <strong class="text-crispWhite font-bold">Previsibilidade de caixa:</strong> DRE gerencial, margens por serviço e controle rigoroso de fluxo de pagamentos.
                 </span>
               </li>
-              <li class="flex items-start gap-3.5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/20 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-[0_0_8px_#10E88A]">✓</span>
                 <span class="text-sm sm:text-base text-crispWhite leading-relaxed">
                   <strong class="text-crispWhite font-bold">Liderança estratégica:</strong> O empresário assume o papel de líder do negócio, saindo do operacional braçal.
                 </span>
               </li>
-              <li class="flex items-start gap-3.5">
+              <li class="flex items-start gap-3">
                 <span class="w-5 h-5 rounded-full bg-emeraldNeon/20 text-emeraldNeon flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-[0_0_8px_#10E88A]">✓</span>
                 <span class="text-sm sm:text-base text-crispWhite leading-relaxed">
                   <strong class="text-crispWhite font-bold">Base pronta para escala:</strong> Indicadores consolidados que permitem planejar expansão com segurança total.
@@ -576,7 +647,7 @@
               </li>
             </ul>
           </div>
-          <div class="mt-8 pt-4 border-t border-emeraldNeon/20 font-mono text-xs text-emeraldNeon">
+          <div class="mt-7 pt-4 border-t border-emeraldNeon/20 font-mono text-[11px] sm:text-xs text-emeraldNeon">
             METODOLOGIA TESTADA · RESULTADO PREVISÍVEL
           </div>
         </div>
@@ -586,8 +657,8 @@
     <!-- =================================================================== -->
     <!-- OS 3 PILARES PRÁTICOS (ESTRUTURAÇÃO DA ORG4NIZE.UP)                  -->
     <!-- =================================================================== -->
-    <section class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto" id="pilares">
-      <div class="max-w-3xl mb-14">
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto" id="pilares">
+      <div class="max-w-3xl mb-10 sm:mb-14 reveal-up">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emeraldNeon/10 border border-emeraldNeon/25 mb-4">
           <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
           <span class="font-mono text-[11px] font-semibold tracking-[0.2em] uppercase text-emeraldNeon">
@@ -602,10 +673,13 @@
         </p>
       </div>
 
-      <!-- 3 Category Cards Styled like Image 3 Portal Cards -->
+      <!-- 3 Category Cards Styled like Image 3 & 5 Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- 01 Finanças (Emerald Accent) -->
-        <div class="system-card rounded-3xl p-7 sm:p-8 flex flex-col justify-between border-emeraldNeon/35">
+        <div
+          class="system-card reveal-up rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
+          style="border-color: rgba(16, 232, 138, 0.3); --rim-color: #10E88A; --hover-border: rgba(16, 232, 138, 0.6); --hover-glow: rgba(16, 232, 138, 0.16);"
+        >
           <div>
             <div class="flex items-center justify-between mb-6">
               <div class="w-12 h-12 rounded-2xl bg-emeraldNeon/15 border border-emeraldNeon/35 flex items-center justify-center text-emeraldNeon shadow-[0_0_16px_rgba(16,232,138,0.25)]">
@@ -640,7 +714,10 @@
         </div>
 
         <!-- 02 Operação (Cyan Accent from Image 3 & 5) -->
-        <div class="system-card rounded-3xl p-7 sm:p-8 flex flex-col justify-between border-sky-400/35 hover:border-sky-400/60">
+        <div
+          class="system-card reveal-up rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
+          style="background: linear-gradient(180deg, rgba(6, 20, 26, 0.9) 0%, rgba(4, 10, 14, 0.94) 100%); border-color: rgba(56, 189, 248, 0.3); --rim-color: #38BDF8; --hover-border: rgba(56, 189, 248, 0.6); --hover-glow: rgba(56, 189, 248, 0.16);"
+        >
           <div>
             <div class="flex items-center justify-between mb-6">
               <div class="w-12 h-12 rounded-2xl bg-sky-400/15 border border-sky-400/35 flex items-center justify-center text-sky-400 shadow-[0_0_16px_rgba(56,189,248,0.25)]">
@@ -675,7 +752,10 @@
         </div>
 
         <!-- 03 Futuro (Amber Accent from Image 3 & 5) -->
-        <div class="system-card rounded-3xl p-7 sm:p-8 flex flex-col justify-between border-amber-400/35 hover:border-amber-400/60 md:col-span-2 lg:col-span-1">
+        <div
+          class="system-card reveal-up rounded-3xl p-6 sm:p-8 flex flex-col justify-between md:col-span-2 lg:col-span-1"
+          style="background: linear-gradient(180deg, rgba(24, 18, 6, 0.88) 0%, rgba(10, 8, 4, 0.94) 100%); border-color: rgba(245, 158, 11, 0.3); --rim-color: #F59E0B; --hover-border: rgba(245, 158, 11, 0.6); --hover-glow: rgba(245, 158, 11, 0.16);"
+        >
           <div>
             <div class="flex items-center justify-between mb-6">
               <div class="w-12 h-12 rounded-2xl bg-amber-400/15 border border-amber-400/35 flex items-center justify-center text-amber-400 shadow-[0_0_16px_rgba(245,158,11,0.25)]">
@@ -714,83 +794,116 @@
     <!-- =================================================================== -->
     <!-- BANNER FINAL ESTILO WORKSHOP                                        -->
     <!-- =================================================================== -->
-    <section class="py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
-      <div class="rounded-[2.5rem] bg-gradient-to-br from-[#062016] via-[#040C08] to-[#040806] border border-emeraldNeon/35 p-8 sm:p-14 lg:p-16 text-center max-w-4xl mx-auto shadow-[0_30px_80px_rgba(0,0,0,0.85)] relative overflow-hidden">
+    <section class="py-16 sm:py-24 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="reveal-up rounded-[2rem] sm:rounded-[2.5rem] up-pattern-bg bg-gradient-to-br from-[#062016] via-[#040C08] to-[#040806] border border-emeraldNeon/35 p-6 sm:p-14 lg:p-16 text-center max-w-4xl mx-auto shadow-[0_30px_80px_rgba(0,0,0,0.85)] relative overflow-hidden">
         <div class="absolute -top-24 -right-24 w-72 h-72 bg-emeraldNeon/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emeraldNeon/10 border border-emeraldNeon/25 mb-4">
-          <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
-          <span class="font-mono text-[11px] font-semibold tracking-[0.2em] uppercase text-emeraldNeon">
-            PRÓXIMO PASSO
-          </span>
-        </div>
+        <div class="relative z-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emeraldNeon/10 border border-emeraldNeon/25 mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon"></span>
+            <span class="font-mono text-[11px] font-semibold tracking-[0.2em] uppercase text-emeraldNeon">
+              PRÓXIMO PASSO
+            </span>
+          </div>
 
-        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.08] text-crispWhite mb-6">
-          Sua empresa já está organizada e <span class="text-emerald-glow">pronta para expandir?</span>
-        </h2>
+          <h2 class="text-2xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.1] text-crispWhite mb-5 sm:mb-6">
+            Sua empresa já está organizada e <span class="text-emerald-glow">pronta para expandir?</span>
+          </h2>
 
-        <p class="text-base sm:text-lg text-slateMuted leading-relaxed mb-10 max-w-2xl mx-auto">
-          Conheça a SC4LE.Up para estudar cidades, pontos comerciais e selecionar parceiros com critérios objetivos e inteligência artificial.
-        </p>
+          <p class="text-base sm:text-lg text-slateMuted leading-relaxed mb-8 sm:mb-10 max-w-2xl mx-auto">
+            Conheça a SC4LE.Up para estudar cidades, pontos comerciais e selecionar parceiros com critérios objetivos e inteligência artificial.
+          </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a class="btn-emerald px-8 py-4 rounded-full text-sm font-extrabold tracking-tight cursor-pointer" href="scale.html">
-            Conhecer SC4LE.Up
-          </a>
-          <a class="btn-outline px-8 py-4 rounded-full text-sm font-bold tracking-tight cursor-pointer" href="index.html#contato">
-            Falar com a Equipe
-          </a>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 sm:gap-4">
+            <a class="btn-emerald min-h-[48px] px-8 py-3.5 rounded-full text-sm font-extrabold tracking-tight inline-flex items-center justify-center cursor-pointer" href="scale.html">
+              Conhecer SC4LE.Up
+            </a>
+            <a class="btn-outline min-h-[48px] px-8 py-3.5 rounded-full text-sm font-bold tracking-tight inline-flex items-center justify-center cursor-pointer" href="index.html#contato">
+              Falar com a Equipe
+            </a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <!-- ===================================================================== -->
-  <!-- FOOTER                                                                -->
+  <!-- UNIFIED FOOTER (CLEAN TRANSPARENT BRANDING & SAFE INSET)             -->
   <!-- ===================================================================== -->
-  <footer class="border-t border-white/[0.08] py-10 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
-    <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
-      <div class="flex items-center gap-3">
-        <img src="/up-intelligence-logo.webp" alt="Up.INTELLIG3NCE" class="h-6 w-auto" />
-        <span class="text-xs text-slateMuted font-mono">
-          &copy; 2026 Marinho Ponci &amp; Up.INTELLIG3NCE. Todos os direitos reservados.
+  <footer class="border-t border-white/[0.08] py-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto relative z-10">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-5 lg:gap-6 text-center lg:text-left">
+      <div class="flex items-center justify-center lg:justify-start gap-2.5 shrink-0">
+        <span class="w-2 h-2 rounded-full bg-emeraldNeon shadow-[0_0_10px_#10E88A] shrink-0"></span>
+        <span class="font-mono text-[11px] tracking-[0.16em] uppercase text-crispWhite/90 font-semibold whitespace-nowrap">
+          ORG4NIZE.Up · UP.INTELLIG3NCE
         </span>
       </div>
 
-      <nav class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slateMuted" aria-label="Rodapé">
-        <a href="index.html" class="hover:text-emeraldNeon transition-colors">Início</a>
+      <nav class="flex flex-wrap lg:flex-nowrap items-center justify-center gap-x-2.5 sm:gap-x-3 gap-y-2 text-xs font-medium text-slateMuted" aria-label="Rodapé">
+        <a href="index.html" class="hover:text-emeraldNeon transition-colors whitespace-nowrap">Início</a>
         <span class="text-white/20">·</span>
-        <a href="up-intelligence.html" class="hover:text-emeraldNeon transition-colors">Up.INTELLIG3NCE</a>
+        <a href="up-intelligence.html" class="hover:text-emeraldNeon transition-colors whitespace-nowrap">Up.INTELLIG3NCE</a>
         <span class="text-white/20">·</span>
-        <a href="organize.html" class="text-emeraldNeon font-semibold">ORG4NIZE.Up</a>
+        <a href="organize.html" class="text-emeraldNeon font-semibold whitespace-nowrap">ORG4NIZE.Up</a>
         <span class="text-white/20">·</span>
-        <a href="scale.html" class="hover:text-emeraldNeon transition-colors">SC4LE.Up</a>
+        <a href="scale.html" class="hover:text-emeraldNeon transition-colors whitespace-nowrap">SC4LE.Up</a>
         <span class="text-white/20">·</span>
-        <a href="dossies.html" class="hover:text-emeraldNeon transition-colors">Dossiês</a>
+        <a href="dossies.html" class="hover:text-emeraldNeon transition-colors whitespace-nowrap">Dossiês</a>
         <span class="text-white/20">·</span>
-        <a href="blog.html" class="hover:text-emeraldNeon transition-colors">Blog</a>
+        <a href="blog.html" class="hover:text-emeraldNeon transition-colors whitespace-nowrap">Blog</a>
       </nav>
+
+      <p class="text-[11px] sm:text-xs text-slateMuted lg:whitespace-nowrap leading-relaxed max-w-full">
+        &copy; 2026 Marinho Ponci &amp; UP.INTELLIG3NCE. Todos os direitos reservados.
+      </p>
     </div>
   </footer>
 
   <!-- ===================================================================== -->
-  <!-- MOBILE MENU JAVASCRIPT                                                -->
+  <!-- JAVASCRIPT: HEADER SCROLL, REVEAL & MOBILE MENU                       -->
   <!-- ===================================================================== -->
   <script>
     (function() {
+      const header = document.getElementById('site-header');
+      if (header) {
+        const onScroll = () => {
+          header.classList.toggle('is-scrolled', window.scrollY > 24);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      }
+
       const btn = document.getElementById('mobile-menu-btn');
       const menu = document.getElementById('mobile-menu');
       const ham = document.getElementById('ham-icon');
       const xIcon = document.getElementById('x-icon');
-      if (!btn || !menu) return;
+      if (btn && menu) {
+        const setOpen = (open) => {
+          menu.classList.toggle('hidden', !open);
+          ham.classList.toggle('hidden', open);
+          xIcon.classList.toggle('hidden', !open);
+          btn.setAttribute('aria-expanded', String(open));
+        };
+        btn.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+        document.querySelectorAll('.mobile-link').forEach((l) => {
+          l.addEventListener('click', () => setOpen(false));
+        });
+      }
 
-      btn.addEventListener('click', function() {
-        const isOpen = !menu.classList.contains('hidden');
-        menu.classList.toggle('hidden', isOpen);
-        ham.classList.toggle('hidden', !isOpen);
-        xIcon.classList.toggle('hidden', isOpen);
-        btn.setAttribute('aria-expanded', String(!isOpen));
-      });
+      const reveals = document.querySelectorAll('.reveal-up');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add('is-visible'));
+      }
     })();
   </script>
 </body>
